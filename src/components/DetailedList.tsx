@@ -45,7 +45,7 @@ const Styled = {
     position: relative;
     top: 2px;
     border-top: none;
-    border-bottom: 2px dotted gray;
+    border-bottom: 1px dashed #D0D0D0;
   `,
 };
 

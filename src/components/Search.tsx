@@ -11,12 +11,33 @@ export const Search = ({ searchType }: { searchType: string }) => {
         />
         <IoSearch />
       </Styled.Form>
+      <Styled.ResultWrapper>
+        <ul>
+          <li>
+            <IoSearch />
+            송파1동
+          </li>
+          <li>
+            <IoSearch />
+            송파2동
+          </li>
+        </ul>
+      </Styled.ResultWrapper>
     </Styled.Wrapper>
   );
 };
 
 const Styled = {
-  Wrapper: styled.div``,
+  Wrapper: styled.div`
+    li {
+      list-style: none;
+    }
+    ul {
+      margin: 0;
+      padding: 0;
+      padding-left: 5px;
+    }
+  `,
   Form: styled.form`
     border: 1px solid black;
     border-radius: 5px;
@@ -28,22 +49,13 @@ const Styled = {
     outline: none; // input 포커스시의 볼더 없애기
     width: 350px;
   `,
-  Label: styled.label`
-    /* display: inline-block;
-    width: 42px;
-    height: 100%;
-    font-weight: bold; */
+  ResultWrapper: styled.div`
+    border: 1px solid black;
+    padding-left: 5px;
+    margin-top: 5px;
+    border-radius: 5px;
+    width: 380px;
   `,
-  // Button: styled.button`
-  //   width: 100%;
-  //   height: 100%;
-  //   color: rgb(255, 255, 255);
-  //   border: 0px none;
-  //   background: none;
-  //   text-align: center;
-  //   font-size: 16px;
-  //   vertical-align: middle;
-  // `,
 };
 
 export default Search;

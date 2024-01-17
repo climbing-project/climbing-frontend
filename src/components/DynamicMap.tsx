@@ -30,12 +30,14 @@ const DynamicMap = ({ coordinates }: MapProps) => {
     getMap(latitude, longitude);
   }, [latitude, longitude]);
 
-  return <StyledDiv id="map"></StyledDiv>;
+  return <Styled.Wrapper id="map" />;
 };
 
-const StyledDiv = styled.div`
-  width: 100%;
-  height: 400px;
-`;
+const Styled = {
+  Wrapper: styled.div`
+    width: 100%;
+    height: 400px;
+  `,
+};
 
 export default DynamicMap;

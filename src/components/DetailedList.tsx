@@ -8,19 +8,19 @@ interface DetailedListProps {
   items: Array<DetailedListItem>;
 }
 
-const DetailedList: React.FC<DetailedListProps> = ({ items }) => {
+const DetailedList = ({ items }: DetailedListProps) => {
   return (
     <Styled.Wrapper>
       {items.map((item, i) => {
         const keys = Object.keys(item);
         return (
-          <Styled.Item key={i}>
+          <li key={i}>
             <div>{item[keys[0]]}</div>
-            <Styled.Div>
-              <Styled.Hr></Styled.Hr>
-            </Styled.Div>
+            <Styled.Divider>
+              <hr />
+            </Styled.Divider>
             <div>{item[keys[1]]}</div>
-          </Styled.Item>
+          </li>
         );
       })}
     </Styled.Wrapper>
@@ -32,20 +32,22 @@ const Styled = {
     margin-block: 0;
     padding: 0;
     list-style: none;
+
+    li {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    hr {
+      position: relative;
+      top: 2px;
+      border-top: none;
+      border-bottom: 1px dashed #d0d0d0;
+    }
   `,
-  Item: styled.li`
-    display: flex;
-    justify-content: space-between;
-    gap: 8px;
-  `,
-  Div: styled.div`
+  Divider: styled.div`
     flex-grow: 2;
-  `,
-  Hr: styled.hr`
-    position: relative;
-    top: 2px;
-    border-top: none;
-    border-bottom: 1px dashed #D0D0D0;
   `,
 };
 

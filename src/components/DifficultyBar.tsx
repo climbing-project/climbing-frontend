@@ -15,7 +15,7 @@ interface DifficultyBarProps {
   [key: string]: number;
 }
 
-const DifficultyBar: React.FC<DifficultyBarProps> = ({ difficulty = 0 }) => {
+const DifficultyBar = ({ difficulty = 0 }: DifficultyBarProps) => {
   const colorCount = DIFFICULTY_COLORS.length;
   const barColors = DIFFICULTY_COLORS.slice(0, difficulty).concat(
     Array(colorCount - difficulty).fill(undefined),
@@ -23,15 +23,15 @@ const DifficultyBar: React.FC<DifficultyBarProps> = ({ difficulty = 0 }) => {
 
   return (
     <Styled.Wrapper>
-      <Bar.Container>
+      <Styled.BarContainer>
         {barColors.map((color, i) => (
-          <Bar.Box key={i} $color={color} />
+          <Styled.BarItem key={i} $color={color} />
         ))}
-      </Bar.Container>
-      <Label>
+      </Styled.BarContainer>
+      <Styled.Label>
         <span>easy</span>
         <span>hard</span>
-      </Label>
+      </Styled.Label>
     </Styled.Wrapper>
   );
 };
@@ -41,26 +41,22 @@ const Styled = {
     display: flex;
     flex-direction: column;
   `,
-};
-
-const Bar = {
-  Container: styled.div`
+  BarContainer: styled.div`
     display: flex;
     gap: 2px;
   `,
-  Box: styled.div<{ $color?: string }>`
+  BarItem: styled.div<{ $color?: string }>`
     height: 33px;
     flex: 1 0 0;
     background: ${(props) => props.$color || '#d9d9d9'};
   `,
+  Label: styled.div`
+    display: flex;
+    justify-content: space-between;
+    color: #b7b7b7;
+    line-height: 150%;
+    margin-top: 4px;
+  `,
 };
-
-const Label = styled.div`
-  display: flex;
-  justify-content: space-between;
-  color: #b7b7b7;
-  line-height: 150%;
-  margin-top: 4px;
-`;
 
 export default DifficultyBar;

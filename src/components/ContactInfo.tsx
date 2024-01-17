@@ -28,7 +28,7 @@ const CONTACT_ICONS: IconsType = {
   instagram: <BsInstagram />,
 };
 
-const ContactInfo: React.FC<ContactInfoProps> = ({ contactList }) => {
+const ContactInfo = ({ contactList }: ContactInfoProps) => {
   // 임시 - 백엔드와 데이터 구조 협의 후 수정 필요
   const sampleList = [
     { platform: 'twitter', address: 'sdlfkj' },
@@ -40,9 +40,9 @@ const ContactInfo: React.FC<ContactInfoProps> = ({ contactList }) => {
   return (
     <Styled.Wrapper>
       {contactList.map((contact) => (
-        <Styled.Item key={contact.platform}>
+        <div key={contact.platform}>
           {CONTACT_ICONS[contact.platform]} {contact.address}
-        </Styled.Item>
+        </div>
       ))}
     </Styled.Wrapper>
   );
@@ -53,11 +53,12 @@ const Styled = {
     display: flex;
     gap: 30px;
     width: 100%;
-  `,
-  Item: styled.div`
-    display: flex;
-    gap: 8px;
-    align-items: center;
+
+    div {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
   `,
 };
 

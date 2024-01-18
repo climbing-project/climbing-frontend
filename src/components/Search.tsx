@@ -1,6 +1,26 @@
 import { styled } from "styled-components";
 import { IoSearch } from "react-icons/io5";
 
+interface AddressListProps {
+  items: Array<Address>;
+}
+
+interface Address {
+  address: string;
+}
+
+const sampleAddress = [
+  [
+    { address: "잠실" },
+    { address: "잠실2동" },
+    { address: "잠실1동" },
+    { address: "송파동" },
+    { address: "송파2동" },
+    { address: "송파1동" },
+    { address: "송파1동" },
+  ],
+];
+
 export const Search = ({ searchType }: { searchType: string }) => {
   return (
     <Styled.Wrapper>

@@ -1,8 +1,10 @@
 import { styled } from "styled-components";
+import reactStringReplace from "react-string-replace";
 
 interface DropDownProps {
   prefixIcon?: JSX.Element; // list왼쪽 react-icon 컴포넌트 태그
   width?: string; // 길이 없을 시, 하위 컴포넌트 크기에 맞춤
+  highlightWord?: String; // 강조 문구 있을 시, 강조 표시
   dropItems: Array<DropItem>;
 }
 
@@ -11,11 +13,18 @@ export interface DropItem {
   info: string;
 }
 
-const DropDown = ({ prefixIcon, width, dropItems }: DropDownProps) => {
+const DropDown = ({
+  prefixIcon,
+  width,
+  highlightWord = "",
+  dropItems,
+}: DropDownProps) => {
   const listItems = dropItems.map(({ id, info }: DropItem) => (
     <li key={id}>
       {prefixIcon || null}
-      {info}
+      {reactStringReplace(info, highlightWord as string, (match) => (
+        <b>{match}</b>
+      ))}
     </li>
   ));
 

@@ -11,6 +11,7 @@ interface AddressListProps {
 
 export const Search = ({ addressList }: AddressListProps) => {
   const searchRef = useRef<HTMLInputElement>(null);
+  const [index, setIndex] = useState(-1);
   const [isInputFocus, setInputFocus] = useState(false);
   const [filterStr, setFilterStr] = useState("");
   const filteredList = addressList.filter((addressItem) =>
@@ -31,7 +32,6 @@ export const Search = ({ addressList }: AddressListProps) => {
     };
   }, [searchRef]);
 
-  // const handleInputChange = (event) => {};
   return (
     <Styled.Wrapper ref={searchRef}>
       <Styled.Form>
@@ -42,10 +42,21 @@ export const Search = ({ addressList }: AddressListProps) => {
             e.stopPropagation(); // 상위로 이벤트 전송 막음
           }}
           onFocus={(e) => {
+            setIndex(-1);
             setInputFocus(true);
           }}
           onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => {
-            setFilterStr((e.target as HTMLInputElement).value);
+            if (e.key == "ArrowUp") {
+              if (index > -1) {
+                setIndex(index - 1);
+              }
+            } else if (e.key == "ArrowDown") {
+              if (index < filteredList.length - 1) {
+                setIndex(index + 1);
+              }
+            } else {
+              setFilterStr((e.target as HTMLInputElement).value);
+            }
           }}
         />
         <IoSearch />
@@ -55,7 +66,8 @@ export const Search = ({ addressList }: AddressListProps) => {
           prefixIcon={<IoSearch />}
           dropItems={filteredList}
           highlightWord={filterStr}
-          width="365px"
+          highlightIndex={index}
+          width="385px"
         />
       )}
     </Styled.Wrapper>

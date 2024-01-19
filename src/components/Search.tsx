@@ -60,6 +60,10 @@ export const Search = ({ addressList }: AddressListProps) => {
                   filteredList[index + 1].info;
                 setIndex(index + 1);
               }
+            } else if (e.key == "Escape") {
+              (e.target as HTMLInputElement).value = "";
+              setFilterStr("");
+              setIndex(-1);
             } else {
               setFilterStr((e.target as HTMLInputElement).value);
             }

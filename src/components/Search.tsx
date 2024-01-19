@@ -12,15 +12,20 @@ interface AddressListProps {
 export const Search = ({ addressList }: AddressListProps) => {
   const searchRef = useRef<HTMLInputElement>(null);
   const [isInputFocus, setInputFocus] = useState(false);
+  const [filterStr, setFilterStr] = useState("");
+  const filteredList = addressList.filter((addressItem) =>
+    addressItem.info.match(filterStr)
+  );
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent): void {
       if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
         setInputFocus(false);
-        console.log("hi");
       }
     }
+
     document.addEventListener("mousedown", handleClickOutside);
+
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -39,13 +44,17 @@ export const Search = ({ addressList }: AddressListProps) => {
           onFocus={(e) => {
             setInputFocus(true);
           }}
+          onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => {
+            setFilterStr((e.target as HTMLInputElement).value);
+          }}
         />
         <IoSearch />
       </Styled.Form>
-      {isInputFocus && (
+      {isInputFocus && filteredList.length != 0 && (
         <DropDown
           prefixIcon={<IoSearch />}
-          dropItems={addressList}
+          dropItems={filteredList}
+          highlightWord={filterStr}
           width="365px"
         />
       )}

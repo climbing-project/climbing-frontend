@@ -2,8 +2,8 @@
 
 import { styled } from "styled-components";
 import { IoSearch } from "react-icons/io5";
-import DropDown, { DropItem } from "./DropDown";
 import { useEffect, useRef, useState } from "react";
+import DropDown, { DropItem } from "./DropDown";
 
 interface AddressListProps {
   addressList: Array<DropItem>;
@@ -48,10 +48,16 @@ export const Search = ({ addressList }: AddressListProps) => {
           onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => {
             if (e.key == "ArrowUp") {
               if (index > -1) {
+                if (index != 0) {
+                  (e.target as HTMLInputElement).value =
+                    filteredList[index - 1].info;
+                }
                 setIndex(index - 1);
               }
             } else if (e.key == "ArrowDown") {
               if (index < filteredList.length - 1) {
+                (e.target as HTMLInputElement).value =
+                  filteredList[index + 1].info;
                 setIndex(index + 1);
               }
             } else {

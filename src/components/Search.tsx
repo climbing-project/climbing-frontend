@@ -1,23 +1,33 @@
 "use client";
 
 import { styled } from "styled-components";
-import { IoSearch } from "react-icons/io5";
 import { useEffect, useRef, useState } from "react";
 import DropDown, { DropItem } from "./DropDown";
 
-interface AddressListProps {
-  addressList: Array<DropItem>;
+interface SearchProps {
+  dataList: Array<DropItem>;
+  width?: string;
+  fontSize?: string;
+  placeholder?: string;
+  postfixIcon?: JSX.Element; // 검색창에 표시되는 아이콘
 }
 
-export const Search = ({ addressList }: AddressListProps) => {
+export const Search = ({
+  dataList,
+  width,
+  fontSize,
+  placeholder = "",
+  postfixIcon,
+}: SearchProps) => {
   const searchRef = useRef<HTMLInputElement>(null);
   const [index, setIndex] = useState(-1);
   const [isInputFocus, setInputFocus] = useState(false);
   const [filterStr, setFilterStr] = useState("");
-  const filteredList = addressList.filter((addressItem) =>
-    addressItem.info.match(filterStr)
+  const filteredList = dataList.filter((dataItem) =>
+    dataItem.info.match(filterStr)
   );
 
+  // 바깥쪽을 클릭했을때 dropdown 숨기기 위해
   useEffect(() => {
     function handleClickOutside(e: MouseEvent): void {
       if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
@@ -33,11 +43,12 @@ export const Search = ({ addressList }: AddressListProps) => {
   }, [searchRef]);
 
   return (
-    <Styled.Wrapper ref={searchRef}>
+    <Styled.Wrapper width={width} ref={searchRef}>
       <Styled.Form>
         <Styled.Input
           type="text"
-          placeholder="주소를 입력하면 실내암벽장을 찾아드려요."
+          placeholder={placeholder}
+          fontSize={fontSize}
           onClick={(e) => {
             e.stopPropagation(); // 상위로 이벤트 전송 막음
           }}
@@ -69,15 +80,15 @@ export const Search = ({ addressList }: AddressListProps) => {
             }
           }}
         />
-        <IoSearch />
+        {postfixIcon}
       </Styled.Form>
       {isInputFocus && filteredList.length != 0 && (
         <DropDown
-          prefixIcon={<IoSearch />}
+          prefixIcon={postfixIcon}
           dropItems={filteredList}
           highlightWord={filterStr}
           highlightIndex={index}
-          width="385px"
+          fontSize={fontSize}
         />
       )}
     </Styled.Wrapper>
@@ -85,20 +96,26 @@ export const Search = ({ addressList }: AddressListProps) => {
 };
 
 const Styled = {
-  Wrapper: styled.div`
-    display: inline-block;
+  Wrapper: styled.div<{
+    width?: string;
+  }>`
+    ${(props) => props.width && `width: ${props.width};`}
   `,
   Form: styled.form`
+    display: flex;
+    justify-content: space-between;
     border: 1px solid black;
     border-radius: 5px;
-    padding-left: 5px;
+    padding: 5px;
     margin-bottom: 5px;
-    width: 380px;
   `,
-  Input: styled.input`
+  Input: styled.input<{
+    fontSize?: string;
+  }>`
     border: none;
     outline: none; // input 포커스시의 볼더 없애기
-    width: 350px;
+    width: 80%;
+    ${(props) => props.fontSize && `font-size: ${props.fontSize};`}
   `,
 };
 

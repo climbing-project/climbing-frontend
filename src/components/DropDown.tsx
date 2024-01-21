@@ -2,11 +2,12 @@ import { styled } from "styled-components";
 import reactStringReplace from "react-string-replace";
 
 interface DropDownProps {
+  dropItems: Array<DropItem>;
   prefixIcon?: JSX.Element; // list왼쪽 react-icon 컴포넌트 태그
-  width?: string; // 길이 없을 시, 하위 컴포넌트 크기에 맞춤
   highlightWord?: String; // 강조 문구 있을 시, 강조 표시
   highlightIndex?: number; // 강조할 행은 강조표시
-  dropItems: Array<DropItem>;
+  width?: string; // search컴포넌트 없이 dropdown 단독으로 쓸때만 사용
+  fontSize?: string;
 }
 
 export interface DropItem {
@@ -15,14 +16,15 @@ export interface DropItem {
 }
 
 const DropDown = ({
+  dropItems,
   prefixIcon,
-  width,
   highlightWord = "",
   highlightIndex = -1,
-  dropItems,
+  width,
+  fontSize,
 }: DropDownProps) => {
   const listItems = dropItems.map(({ id, info }: DropItem, index) => (
-    <S.Element key={id} highlight={index == highlightIndex}>
+    <S.Element key={id} highlight={index == highlightIndex} fontSize={fontSize}>
       {prefixIcon || null}
       {reactStringReplace(info, highlightWord as string, (match) => (
         <b>{match}</b>
@@ -43,10 +45,10 @@ const S = {
   }>`
     border: 1px solid black;
     border-radius: 5px;
-    padding: 0px;
+    padding-top: 5px;
+    padding-bottom: 5px;
     margin: 0px;
-    ${(props) =>
-      props.width ? `width: ${props.width};` : `display:inline-block;`}
+    ${(props) => props.width && `width: ${props.width};`}
   `,
   Group: styled.ul`
     margin: 0;
@@ -54,9 +56,11 @@ const S = {
   `,
   Element: styled.li<{
     highlight: boolean;
+    fontSize?: string;
   }>`
-    padding-left: 10px;
+    padding-left: 5px;
     list-style: none;
+    ${(props) => props.fontSize && `font-size: ${props.fontSize}`};
     ${(props) => props.highlight && `background-color: #eeee8d`};
   `,
 };

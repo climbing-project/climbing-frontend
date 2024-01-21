@@ -1,4 +1,5 @@
 import { Search } from "@/components/Search";
+import { IoSearch } from "react-icons/io5";
 import styled from "styled-components";
 
 const sampleAddress = [
@@ -13,7 +14,13 @@ const sampleAddress = [
 const SearchBanner = () => {
   return (
     <Styled.Wrapper>
-      <Search addressList={sampleAddress} />
+      <Search
+        dataList={sampleAddress}
+        width="350px"
+        // fontSize="10px"
+        postfixIcon={<IoSearch />}
+        placeholder="주소를 입력하면 실내암벽장을 찾아드려요."
+      />
     </Styled.Wrapper>
   );
 };

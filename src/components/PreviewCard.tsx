@@ -54,6 +54,7 @@ const S = {
     border: 1px solid black;
     border-radius: 5px;
     overflow: hidden;
+    margin: 10px;
   `,
   ImageWrapper: styled.div`
     height: 60%;

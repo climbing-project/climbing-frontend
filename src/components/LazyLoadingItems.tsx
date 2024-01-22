@@ -11,7 +11,10 @@ const LazyLoadingItems = ({ cardList }: LoadingProps) => {
 const S = {
   Wrapper: styled.div<{
     width?: string;
-  }>``,
+  }>`
+    display: flex;
+    flex-wrap: wrap;
+  `,
 };
 
 export default LazyLoadingItems;

@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import SearchBanner from "./searchBanner";
+import WallListBanner from "./wallListBanner";
 
 // Todo: header, footer 추가 필요
 // Todo: 암장 목록 추가 필요
@@ -9,7 +10,7 @@ const Home = () => {
     <Styled.Wrapper>
       {/* <Header /> */}
       <SearchBanner />
-      {/* <WallList /> */}
+      <WallListBanner />
       {/* <Footer /> */}
     </Styled.Wrapper>
   );

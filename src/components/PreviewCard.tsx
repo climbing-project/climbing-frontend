@@ -20,7 +20,7 @@ interface CardProps {
 
 const PreviewCard = ({ width, height, cardInfo }: CardProps) => {
   return (
-    <S.Container width={width} height={height}>
+    <S.Container className="container" width={width} height={height}>
       <S.ImageWrapper>
         <S.Image src={img01} alt="image" fill />
       </S.ImageWrapper>
@@ -51,9 +51,6 @@ const S = {
   }>`
     width: ${(props) => props.width || `350px`};
     height: ${(props) => props.height || `100px`};
-    border: 1px solid black;
-    border-radius: 5px;
-    overflow: hidden;
     margin: 10px;
   `,
   ImageWrapper: styled.div`

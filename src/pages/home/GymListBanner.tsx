@@ -2,7 +2,7 @@ import LazyLoadingItems from "@/components/LazyLoadingItems";
 import PreviewCard from "@/components/PreviewCard";
 import styled from "styled-components";
 
-const sampleWalls = [
+const sampleGyms = [
   {
     thumbnailSrc: "/public/thumbnail2.png",
     address: "서울 강남구 신사동 529-4 B2",
@@ -54,16 +54,16 @@ const sampleWalls = [
   },
 ];
 
-const wallList = sampleWalls.map((wallInfo, index) => {
+const GymList = sampleGyms.map((GymInfo, index) => {
   return (
-    <PreviewCard key={index} width="350px" height="300px" cardInfo={wallInfo} />
+    <PreviewCard key={index} width="350px" height="300px" cardInfo={GymInfo} />
   );
 });
 
-const WallListBanner = () => {
+const GymListBanner = () => {
   return (
     <Styled.Wrapper>
-      <LazyLoadingItems cardList={wallList} />
+      <LazyLoadingItems cardList={GymList} />
     </Styled.Wrapper>
   );
 };
@@ -72,4 +72,4 @@ const Styled = {
   Wrapper: styled.div``,
 };
 
-export default WallListBanner;
+export default GymListBanner;

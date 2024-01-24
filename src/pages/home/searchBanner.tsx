@@ -1,6 +1,8 @@
 import { Search } from "@/components/Search";
 import { IoSearch } from "react-icons/io5";
 import styled from "styled-components";
+import { GymSampleInfo } from ".";
+import { FormEventHandler } from "react";
 
 const sampleAddress = [
   { id: 1, info: "잠실" },
@@ -16,10 +18,10 @@ const SearchBanner = () => {
     <Styled.Wrapper>
       <Search
         dataList={sampleAddress}
-        width="350px"
-        // fontSize="10px"
+        width="400px"
         postfixIcon={<IoSearch />}
         placeholder="주소를 입력하면 실내암벽장을 찾아드려요."
+        // handleSubmit={handleGyms as (unknown: unknown) => unknown}
       />
     </Styled.Wrapper>
   );

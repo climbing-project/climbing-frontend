@@ -4,7 +4,7 @@ import img01 from "../../public/thumbnail3.jpg";
 import { IoBookmarkOutline } from "react-icons/io5";
 import { FcLikePlaceholder } from "react-icons/fc";
 
-interface WallInfo {
+interface GymInfo {
   thumbnailSrc: string;
   address: string;
   name: string;
@@ -15,14 +15,15 @@ interface WallInfo {
 interface CardProps {
   width?: string;
   height?: string;
-  cardInfo: WallInfo;
+  cardInfo: GymInfo;
 }
 
+// TODO: 로드 시 큰 이미지가 먼저 뜨는 현상 수정필요(priority로 임시수정)
 const PreviewCard = ({ width, height, cardInfo }: CardProps) => {
   return (
     <S.Container className="container" width={width} height={height}>
       <S.ImageWrapper>
-        <S.Image src={img01} alt="image" fill />
+        <S.Image src={img01} alt="image" priority={true} />
       </S.ImageWrapper>
       <S.InfoContainer>
         <S.MainInfoContainer>
@@ -58,6 +59,8 @@ const S = {
     position: relative;
   `,
   Image: styled(Image)`
+    width: 100%;
+    height: 100%;
     object-fit: "cover";
   `,
   InfoContainer: styled.div`

@@ -24,10 +24,14 @@ const DropDown = ({
   fontSize,
 }: DropDownProps) => {
   const listItems = dropItems.map(({ id, info }: DropItem, index) => (
-    <S.Element key={id} highlight={index == highlightIndex} fontSize={fontSize}>
+    <S.Element
+      key={index}
+      $highlight={index == highlightIndex}
+      fontSize={fontSize}
+    >
       {prefixIcon || null}
-      {reactStringReplace(info, highlightWord as string, (match) => (
-        <b>{match}</b>
+      {reactStringReplace(info, highlightWord as string, (match, index) => (
+        <b key={index}>{match}</b>
       ))}
     </S.Element>
   ));
@@ -55,13 +59,13 @@ const S = {
     padding: 0;
   `,
   Element: styled.li<{
-    highlight: boolean;
+    $highlight: boolean;
     fontSize?: string;
   }>`
     padding-left: 5px;
     list-style: none;
     ${(props) => props.fontSize && `font-size: ${props.fontSize}`};
-    ${(props) => props.highlight && `background-color: #eeee8d`};
+    ${(props) => props.$highlight && `background-color: #eeee8d`};
   `,
 };
 

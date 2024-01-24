@@ -1,15 +1,7 @@
 import styled from "styled-components";
 import { useState } from "react";
 import GymListBanner from "./GymListBanner";
-import SearchBanner from "./SearchBanner";
-
-export interface GymSampleInfo {
-  thumbnailSrc: string;
-  address: string;
-  name: string;
-  latestSettingDay: string;
-  likeNumber: number;
-}
+import SearchBanner from "./searchBanner";
 
 const sampleGyms: GymSampleInfo[] = [
   {
@@ -63,11 +55,21 @@ const sampleGyms: GymSampleInfo[] = [
   },
 ];
 
+export interface GymSampleInfo {
+  thumbnailSrc: string;
+  address: string;
+  name: string;
+  latestSettingDay: string;
+  likeNumber: number;
+}
+
 const Home = () => {
+  const [gymLists, setGymLists] = useState<GymSampleInfo[]>(sampleGyms);
+
   return (
     <Styled.Wrapper>
-      <SearchBanner />
-      <GymListBanner />
+      <SearchBanner setGymList={setGymLists} />
+      <GymListBanner gymList={gymLists} setGymList={setGymLists} />
     </Styled.Wrapper>
   );
 };

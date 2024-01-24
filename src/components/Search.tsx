@@ -3,7 +3,6 @@
 import { styled } from "styled-components";
 import { FormEventHandler, useEffect, useRef, useState } from "react";
 import DropDown, { DropItem } from "./DropDown";
-import { Console } from "console";
 
 interface SearchProps {
   dataList: Array<DropItem>;
@@ -11,7 +10,7 @@ interface SearchProps {
   fontSize?: string;
   placeholder?: string;
   postfixIcon?: JSX.Element; // 검색창에 표시되는 아이콘
-  // handleSubmit?: (unknown: unknown) => unknown;
+  onSubmit?: (arg: unknown) => unknown; // 엔터 클릭시 발생되는 이벤트
 }
 
 export const Search = ({
@@ -20,8 +19,8 @@ export const Search = ({
   fontSize,
   placeholder = "",
   postfixIcon,
-}: // handleSubmit,
-SearchProps) => {
+  onSubmit,
+}: SearchProps) => {
   const searchRef = useRef<HTMLInputElement>(null);
   const [index, setIndex] = useState(-1);
   const [isInputFocus, setInputFocus] = useState(false);
@@ -47,8 +46,10 @@ SearchProps) => {
 
   return (
     <Styled.Wrapper width={width} ref={searchRef}>
-      <Styled.Form onSubmit={() => console.log("hello")}>
+      <Styled.Form onSubmit={onSubmit} autoComplete="off">
+        {/* form에 action 요소 추가하여 전송할 주소 설정가능 */}
         <Styled.Input
+          name="search"
           type="text"
           placeholder={placeholder}
           fontSize={fontSize}

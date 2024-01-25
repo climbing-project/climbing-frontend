@@ -1,5 +1,8 @@
 import { Search } from "@/components/Search";
+import { IoSearch } from "react-icons/io5";
 import styled from "styled-components";
+import { GymSampleInfo } from ".";
+import { Dispatch, FormEventHandler, SetStateAction } from "react";
 
 const sampleAddress = [
   { id: 1, info: "잠실" },
@@ -10,10 +13,40 @@ const sampleAddress = [
   { id: 6, info: "송파1동" },
 ];
 
-const SearchBanner = () => {
+const sampleList = [
+  {
+    thumbnailSrc: "/public/thumbnail2.png",
+    address: "서울 강남구 신사1동 529-4 B2",
+    name: "search클릭",
+    latestSettingDay: "22.03.04",
+    likeNumber: 156,
+  },
+];
+
+interface SearchBannerProps {
+  setGymList: Dispatch<SetStateAction<GymSampleInfo[]>>;
+}
+
+const SearchBanner = ({ setGymList }: SearchBannerProps) => {
+  const handleGymList = (event: {
+    [x: string]: any;
+    preventDefault: () => void;
+  }) => {
+    event.preventDefault();
+    console.log(event.target["search"].value);
+    // const res = await getSearchRequest(userInput); // 서버로 요청해서 데이터 받기
+    setGymList(sampleList);
+  };
+
   return (
     <Styled.Wrapper>
-      <Search addressList={sampleAddress} />
+      <Search
+        dataList={sampleAddress}
+        width="400px"
+        postfixIcon={<IoSearch />}
+        placeholder="주소를 입력하면 실내암벽장을 찾아드려요."
+        onSubmit={handleGymList as (unknown: unknown) => unknown}
+      />
     </Styled.Wrapper>
   );
 };

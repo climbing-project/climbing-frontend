@@ -1,7 +1,15 @@
-const Home = () => {
+"use client";
+
+import Home from "@/pages/home";
+import GlobalStyle from "@/styles/global-styles";
+
+const App = () => {
   return (
-      <div>first page</div>
+    <div>
+      <GlobalStyle />
+      <Home />
+    </div>
   );
 };
 
-export default Home;
+export default App;

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import TextField from "./TextField";
 
 const NewGymForm = () => {
   return (
@@ -6,6 +7,7 @@ const NewGymForm = () => {
       <Styled.Form>
         <div>
           <h4>암장명</h4>
+          <TextField formName={'name'} characterLimit={20} />
         </div>
         <div>
           <h4>암장 주소</h4>

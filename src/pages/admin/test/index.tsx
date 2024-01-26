@@ -56,17 +56,8 @@ const AdminPage = () => {
       },
       body: JSON.stringify(newData),
     });
-    const result = await data.json();
 
-    const deleteElem = document.getElementById(
-      `${newData.id}-delete`,
-    ) as HTMLElement;
-    const updateElem = document.getElementById(
-      `${newData.id}-update`,
-    ) as HTMLElement;
-    deleteElem.remove();
-    updateElem.remove();
-    paintDom(result);
+    updateDom(newData);
   };
 
   // CRUD: Delete
@@ -84,21 +75,22 @@ const AdminPage = () => {
 
   const paintDom = (gymData: GymFormData) => {
     const deleteDiv = document.createElement('div');
+    deleteDiv.id = `${gymData.id as string}-delete`;
+    deleteDiv.setAttribute('style', 'display:flex; flex-direction:column');
+
     const updateDiv = document.createElement('div');
+    updateDiv.id = `${gymData.id as string}-update`;
+    updateDiv.setAttribute('style', 'display:flex; flex-direction:column');
 
-    deleteDiv.innerHTML = `<div id='${gymData.id as string}-delete' style='display:flex; flex-direction:column;'>
-    <div>
+    deleteDiv.innerHTML = `
     <div><strong>암장명:</strong>&nbsp;${gymData.name}</div>
-    </div>
     <button id='${gymData.id}-detlbtn'>삭제</button>
-    </div>`;
+    `;
 
-    updateDiv.innerHTML = `<div id='${gymData.id as string}-update' style='display:flex; flex-direction:column;'>
-    <div>
+    updateDiv.innerHTML = `
     <div><strong>암장명:</strong>&nbsp;${gymData.name}</div>
-    </div>
     <button id='${gymData.id}-updbtn'>수정</button>
-    </div>`;
+    `;
 
     const updateContainer = document.getElementById(
       'update-container',
@@ -125,11 +117,8 @@ const AdminPage = () => {
       `${gymData.id}-update`,
     ) as HTMLDivElement;
     parent.innerHTML = `
-    <div>
-    <div><strong>암장명:</strong>&nbsp;<input id='edit-name' value='${gymData.name}'/></div>
-    </div>
-    <button id='${gymData.id}-applybtn'>적용</button>
-    </div>
+      <div><strong>암장명:</strong>&nbsp;<input id='edit-name' value='${gymData.name}'/></div>
+      <button id='${gymData.id}-applybtn'>적용</button>
     `;
 
     const btn = document.getElementById(
@@ -147,6 +136,34 @@ const AdminPage = () => {
       name: (document.getElementById('edit-name') as HTMLInputElement).value,
     };
     return data;
+  };
+
+  const updateDom = (newData: GymFormData) => {
+    const deleteElem = document.getElementById(
+      `${newData.id}-delete`,
+    ) as HTMLElement;
+    const updateElem = document.getElementById(
+      `${newData.id}-update`,
+    ) as HTMLElement;
+
+    deleteElem.innerHTML = `
+    <div><strong>암장명:</strong>&nbsp;${newData.name}</div>
+    <button id='${newData.id}-detlbtn'>삭제</button>
+    `;
+
+    updateElem.innerHTML = `
+    <div><strong>암장명:</strong>&nbsp;${newData.name}</div>
+    <button id='${newData.id}-updbtn'>수정</button>
+    `;
+
+    const updateBtn = document.getElementById(
+      `${newData.id}-updbtn`,
+    ) as HTMLButtonElement;
+    const deleteBtn = document.getElementById(
+      `${newData.id}-detlbtn`,
+    ) as HTMLButtonElement;
+    deleteBtn.addEventListener('click', () => deleteData(newData.id as string));
+    updateBtn.addEventListener('click', () => getEditFields(newData));
   };
 
   const attachListener = () => {

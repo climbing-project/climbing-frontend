@@ -37,16 +37,18 @@ const GymListBanner = ({ gymList, setGymList }: GymListBannerProps) => {
     );
   });
 
-  const CardList = gymList.map((gymInfo, index) => {
-    return (
-      <PreviewCard
-        key={index}
-        width="350px"
-        height="300px"
-        cardInfo={gymInfo}
-      />
-    );
-  });
+  const CardList =
+    gymList &&
+    gymList.map((gymInfo, index) => {
+      return (
+        <PreviewCard
+          key={index}
+          width="350px"
+          height="300px"
+          cardInfo={gymInfo}
+        />
+      );
+    });
 
   return (
     <Styled.Wrapper>

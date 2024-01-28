@@ -13,28 +13,13 @@ const NewGymForm = () => {
           <h4>암장 주소</h4>
         </div>
         <div>
-          <h4>암장 설명</h4>
-        </div>
-        <div>
-          <h4>관련 태그</h4>
-        </div>
-        <div>
           <h4>이용금액</h4>
         </div>
         <div>
           <h4>영업시간</h4>
         </div>
         <div>
-          <h4>시설 정보</h4>
-        </div>
-        <div>
-          <h4>난이도</h4>
-        </div>
-        <div>
           <h4>연락처</h4>
-        </div>
-        <div>
-          <h4>암장 사진</h4>
         </div>
         <input type="submit" name="" />
       </Styled.Form>

@@ -63,7 +63,7 @@ export interface GymSampleInfo {
   likeNumber: number;
 }
 
-const Home = async () => {
+const Home = () => {
   const getData = async () => {
     const res = await fetch("http://localhost:3000/gyms");
     const data = await res.json();
@@ -71,9 +71,9 @@ const Home = async () => {
   };
   const [gymLists, setGymLists] = useState<GymSampleInfo[]>([]); //sampleGyms
 
-  useEffect(() => {
-    getData;
-  }, []);
+  // useEffect(() => {
+  //   getData;
+  // }, []);
 
   return (
     <Styled.Wrapper>

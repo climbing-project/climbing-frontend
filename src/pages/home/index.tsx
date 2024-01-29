@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import GymListBanner from "./GymListBanner";
 import SearchBanner from "./searchBanner";
 
@@ -63,8 +63,17 @@ export interface GymSampleInfo {
   likeNumber: number;
 }
 
-const Home = () => {
-  const [gymLists, setGymLists] = useState<GymSampleInfo[]>(sampleGyms);
+const Home = async () => {
+  const getData = async () => {
+    const res = await fetch("http://localhost:3000/gyms");
+    const data = await res.json();
+    setGymLists(data);
+  };
+  const [gymLists, setGymLists] = useState<GymSampleInfo[]>([]); //sampleGyms
+
+  useEffect(() => {
+    getData;
+  }, []);
 
   return (
     <Styled.Wrapper>

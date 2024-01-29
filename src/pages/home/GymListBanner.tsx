@@ -20,13 +20,19 @@ interface GymListBannerProps {
 }
 
 const GymListBanner = ({ gymList, setGymList }: GymListBannerProps) => {
+  const getData = async (sort: string | null) => {
+    const res = await fetch(`http://localhost:3000/gyms?s={sort}`);
+    const data = await res.json();
+    setGymList(data);
+  };
   const sortingType = ["인기순", "최신순", "거리순"];
 
   const handleClick: MouseEventHandler<HTMLButtonElement> = (event) => {
     // 누른 버튼(인기순,최신순..)에 따라 다른값을 서버로 요청해서 데이터 받기
     // const res = await getSearchRequest(userInput);
     console.log(event.currentTarget.textContent);
-    setGymList(sampleList);
+    getData(event.currentTarget.textContent);
+    // setGymList(sampleList);
   };
 
   const SortingButtons = sortingType.map((type, index) => {

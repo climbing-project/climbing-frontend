@@ -28,14 +28,20 @@ interface SearchBannerProps {
 }
 
 const SearchBanner = ({ setGymList }: SearchBannerProps) => {
+  const getData = async (input: string | null) => {
+    const res = await fetch(`http://localhost:3000/search?q={input}`);
+    const data = await res.json();
+    setGymList(data);
+  };
+
   const handleGymList = (event: {
     [x: string]: any;
     preventDefault: () => void;
   }) => {
     event.preventDefault();
     console.log(event.target["search"].value);
-    // const res = await getSearchRequest(userInput); // 서버로 요청해서 데이터 받기
-    setGymList(sampleList);
+    getData(event.target["search"].value); // 서버로 요청해서 데이터 받기
+    // setGymList(sampleList);
   };
 
   return (

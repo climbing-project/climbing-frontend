@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import TextField from "./TextField";
 import AddressField from './AddressField';
+import ContactField from './ContactField';
 
 const NewGymForm = () => {
   return (
@@ -15,13 +16,8 @@ const NewGymForm = () => {
           <AddressField />
         </div>
         <div>
-          <h4>이용금액</h4>
-        </div>
-        <div>
-          <h4>영업시간</h4>
-        </div>
-        <div>
           <h4>연락처</h4>
+          <ContactField />
         </div>
         <input type="submit" name="" />
       </Styled.Form>

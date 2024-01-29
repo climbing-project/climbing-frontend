@@ -9,12 +9,45 @@ interface NewData {
 interface GymFormData {
   id?: string;
   name: string;
+  address: {
+    addr1: string;
+    addr2: string;
+    addr3: string;
+    addr4: string;
+  };
+  coordinates?: {
+    latitude: string;
+    longitude: string;
+  };
 }
 
 const AdminPage = () => {
   const [dbData, setDbData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => attachListener(), []);
+  useEffect(() => {
+    attachListener();
+    const mapApi =
+      'https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=lm660e08li&submodules=geocoder';
+    const script = document.querySelector(
+      `script[src='${mapApi}']`,
+    ) as HTMLScriptElement;
+
+    if (script) {
+      handleLoader();
+      return;
+    }
+
+    const newScript = document.createElement('script');
+    newScript.type = 'text/javascript';
+    newScript.src = mapApi;
+    document.head.appendChild(newScript);
+    newScript.onload = handleLoader;
+  }, []);
+
+  const handleLoader = () => {
+    setIsLoading(false);
+  };
 
   // CRUD: Create
   const createData = async (input: GymFormData) => {
@@ -82,13 +115,17 @@ const AdminPage = () => {
     updateDiv.id = `${gymData.id as string}-update`;
     updateDiv.setAttribute('style', 'display:flex; flex-direction:column');
 
+    const fullAddress = `${gymData.address.addr1} ${gymData.address.addr2} ${gymData.address.addr3} ${gymData.address.addr4}`;
+
     deleteDiv.innerHTML = `
     <div><strong>암장명:</strong>&nbsp;${gymData.name}</div>
+    <div><strong>암장 주소:</strong>&nbsp;${fullAddress}</div>
     <button id='${gymData.id}-detlbtn'>삭제</button>
     `;
 
     updateDiv.innerHTML = `
     <div><strong>암장명:</strong>&nbsp;${gymData.name}</div>
+    <div><strong>암장 주소:</strong>&nbsp;${fullAddress}</div>
     <button id='${gymData.id}-updbtn'>수정</button>
     `;
 
@@ -113,11 +150,13 @@ const AdminPage = () => {
   };
 
   const getEditFields = (gymData: GymFormData) => {
+    const { addr1, addr2, addr3, addr4 } = gymData.address;
     const parent = document.getElementById(
       `${gymData.id}-update`,
     ) as HTMLDivElement;
     parent.innerHTML = `
       <div><strong>암장명:</strong>&nbsp;<input id='edit-name' value='${gymData.name}'/></div>
+      <div><strong>암장 주소:</strong>&nbsp;<input id='edit-address' value='${addr1} ${addr2} ${addr3}' disabled/><input id='edit-building' value='${addr4}' disabled/></div>
       <button id='${gymData.id}-applybtn'>적용</button>
     `;
 
@@ -131,9 +170,21 @@ const AdminPage = () => {
   };
 
   const getChangedFields = (id: string): GymFormData => {
+    const fullAddress = (
+      document.getElementById('edit-address') as HTMLInputElement
+    ).value;
+    const addr4 = (document.getElementById('edit-building') as HTMLInputElement)
+      .value;
+    const [addr1, addr2, ...addr3] = fullAddress.split(' ');
     const data: GymFormData = {
       id,
       name: (document.getElementById('edit-name') as HTMLInputElement).value,
+      address: {
+        addr1,
+        addr2,
+        addr3: addr3.join(' '),
+        addr4,
+      },
     };
     return data;
   };
@@ -181,8 +232,21 @@ const AdminPage = () => {
   };
 
   const getValidEntries = (formData: NewData): GymFormData => {
+    const [addr1, addr2, ...addr3] = (
+      formData['street-address'] as string
+    ).split(' ');
     const validData: GymFormData = {
       name: formData.name as string,
+      address: {
+        addr1,
+        addr2,
+        addr3: addr3.join(' '),
+        addr4: formData['building-address'] as string,
+      },
+      coordinates: {
+        latitude: formData.latitude as string,
+        longitude: formData.longitude as string,
+      },
     };
 
     return validData;

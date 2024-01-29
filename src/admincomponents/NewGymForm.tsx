@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import TextField from "./TextField";
+import AddressField from './AddressField';
 
 const NewGymForm = () => {
   return (
@@ -11,6 +12,7 @@ const NewGymForm = () => {
         </div>
         <div>
           <h4>암장 주소</h4>
+          <AddressField />
         </div>
         <div>
           <h4>이용금액</h4>

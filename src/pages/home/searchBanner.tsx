@@ -52,6 +52,7 @@ const SearchBanner = ({ setGymList }: SearchBannerProps) => {
         postfixIcon={<IoSearch />}
         placeholder="주소를 입력하면 실내암벽장을 찾아드려요."
         onSubmit={handleGymList as (unknown: unknown) => unknown}
+        useLocation={true}
       />
     </Styled.Wrapper>
   );
@@ -61,7 +62,7 @@ const Styled = {
   Wrapper: styled.div`
     display: flex;
     justify-content: center;
-    margin-bottom: 100px;
+    margin-bottom: 150px;
     margin-top: 50px;
   `,
 };

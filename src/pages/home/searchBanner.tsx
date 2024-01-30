@@ -58,7 +58,12 @@ const SearchBanner = ({ setGymList }: SearchBannerProps) => {
 };
 
 const Styled = {
-  Wrapper: styled.div``,
+  Wrapper: styled.div`
+    display: flex;
+    justify-content: center;
+    margin-bottom: 100px;
+    margin-top: 50px;
+  `,
 };
 
 export default SearchBanner;

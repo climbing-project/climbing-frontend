@@ -24,7 +24,7 @@ interface CardProps {
 const PreviewCard = ({ width, height, cardInfo }: CardProps) => {
   return (
     <S.Container className="container" width={width} height={height}>
-      <Link href={`/gyms/${cardInfo.id}`}>
+      <Link href={`/gyms/${cardInfo.id}`} style={{ textDecoration: "none" }}>
         <S.ImageWrapper>
           <S.Image src={img01} alt="image" priority={true} />
         </S.ImageWrapper>

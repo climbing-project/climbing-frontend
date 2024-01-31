@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useSession, signIn, signOut } from "next-auth/react";
 
-const LoginButton = () => {
+const OtherLogin = () => {
   const { data: session } = useSession();
 
   if (session) {
@@ -24,4 +24,4 @@ const Styled = {
   Wrapper: styled.div``,
 };
 
-export default LoginButton;
+export default OtherLogin;

@@ -1,9 +1,10 @@
 import styled from "styled-components";
-import GymListBanner from "../home/GymListBanner";
+import GymListBanner from "../../components/GymListBanner";
 import { IoSearch } from "react-icons/io5";
 import router, { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Search from "@/components/Search";
+
 const sampleGyms: GymSampleInfo[] = [
   {
     id: 1,
@@ -101,19 +102,21 @@ const SearchPage = () => {
 
   return (
     <Styled.Wrapper>
-      <Search
-        dataList={sampleAddress}
-        width="400px"
-        postfixIcon={<IoSearch />}
-        placeholder="주소를 입력하면 실내암벽장을 찾아드려요."
-        onSubmit={handleGymList as (unknown: unknown) => unknown}
-        useLocation={true}
-        searchWord={searchWord}
-      />
+      <Styled.SearchWrapper>
+        <Search
+          dataList={sampleAddress}
+          width="400px"
+          postfixIcon={<IoSearch />}
+          placeholder="주소를 입력하면 실내암벽장을 찾아드려요."
+          onSubmit={handleGymList as (unknown: unknown) => unknown}
+          useLocation={true}
+          searchWord={searchWord}
+        />
+      </Styled.SearchWrapper>
       <GymListBanner
         gymList={gymLists}
         setGymList={setGymLists}
-        // searchWord={props.router.query.q}
+        searchWord={searchWord}
       />
     </Styled.Wrapper>
   );
@@ -121,6 +124,12 @@ const SearchPage = () => {
 
 const Styled = {
   Wrapper: styled.div``,
+  SearchWrapper: styled.div`
+    margin-top: 20px;
+    top: 0;
+    position: fixed;
+    z-index: 101;
+  `,
 };
 
 export default SearchPage;

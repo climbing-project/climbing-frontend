@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import GymListBanner from "./GymListBanner";
+import GymListBanner from "../../components/GymListBanner";
 import SearchBanner from "./searchBanner";
 
 const sampleGyms: GymSampleInfo[] = [

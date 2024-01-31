@@ -124,6 +124,7 @@ const Styled = {
   Wrapper: styled.div<{
     width?: string;
   }>`
+    background-color: white;
     position: relative;
     ${(props) => props.width && `width: ${props.width};`}
   `,

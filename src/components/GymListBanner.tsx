@@ -1,7 +1,7 @@
 import LazyLoadingItems from "@/components/LazyLoadingItems";
 import PreviewCard from "@/components/PreviewCard";
 import styled from "styled-components";
-import { GymSampleInfo } from ".";
+import { GymSampleInfo } from "../pages/home";
 import { Dispatch, MouseEventHandler, SetStateAction } from "react";
 import router from "next/router";
 
@@ -88,6 +88,7 @@ const Styled = {
   ButtonWrapper: styled.div`
     display: flex;
     justify-content: flex-end;
+    margin-bottom: 20px;
   `,
   SortButton: styled.button`
     margin-left: 10px;

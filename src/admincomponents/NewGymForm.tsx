@@ -1,8 +1,18 @@
+import { useState } from 'react';
 import styled from 'styled-components';
-import TextField from "./TextField";
+import TextField from './TextField';
 import AddressField from './AddressField';
 
 const NewGymForm = () => {
+  const [address, setAddress] = useState({
+    jibunAddress: '',
+    roadAddress: '',
+    unitAddress: '',
+  });
+  const [coordinates, setCoordinates] = useState({ latitude: 0, longitude: 0 });
+  console.log(address);
+  console.log(coordinates);
+
   return (
     <Styled.Wrapper>
       <Styled.Form>
@@ -12,7 +22,7 @@ const NewGymForm = () => {
         </div>
         <div>
           <h4>암장 주소</h4>
-          <AddressField />
+          <AddressField setAddress={setAddress} setCoordinates={setCoordinates} />
         </div>
         <div>
           <h4>이용금액</h4>

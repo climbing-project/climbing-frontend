@@ -11,6 +11,7 @@ interface SearchProps {
   placeholder?: string;
   postfixIcon?: JSX.Element; // 검색창에 표시되는 아이콘
   onSubmit?: (arg: unknown) => unknown; // 엔터 클릭시 발생되는 이벤트
+  useLocation?: boolean; // 현재 위치로 검색
 }
 
 export const Search = ({
@@ -20,6 +21,7 @@ export const Search = ({
   placeholder = "",
   postfixIcon,
   onSubmit,
+  useLocation = false,
 }: SearchProps) => {
   const searchRef = useRef<HTMLInputElement>(null);
   const [index, setIndex] = useState(-1);
@@ -28,6 +30,11 @@ export const Search = ({
   const filteredList = dataList.filter((dataItem) =>
     dataItem.info.match(filterStr)
   );
+  // const handleClick = (e: MouseEvent) => {
+
+  // };
+
+  // const handleMoueOver = () => {};
 
   // 바깥쪽을 클릭했을때 dropdown 숨기기 위해
   useEffect(() => {
@@ -93,6 +100,9 @@ export const Search = ({
           highlightWord={filterStr}
           highlightIndex={index}
           fontSize={fontSize}
+          // onClick={handleClick}
+          // onMouseOver={handleMouseOver}
+          useLocation={useLocation}
         />
       )}
     </Styled.Wrapper>
@@ -103,6 +113,7 @@ const Styled = {
   Wrapper: styled.div<{
     width?: string;
   }>`
+    position: relative;
     ${(props) => props.width && `width: ${props.width};`}
   `,
   Form: styled.form`

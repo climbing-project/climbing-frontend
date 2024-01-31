@@ -3,8 +3,10 @@ import Image from "next/image";
 import img01 from "../../public/thumbnail3.jpg";
 import { IoBookmarkOutline } from "react-icons/io5";
 import { FcLikePlaceholder } from "react-icons/fc";
+import Link from "next/link";
 
 interface GymInfo {
+  id: number;
   thumbnailSrc: string;
   address: string;
   name: string;
@@ -22,25 +24,27 @@ interface CardProps {
 const PreviewCard = ({ width, height, cardInfo }: CardProps) => {
   return (
     <S.Container className="container" width={width} height={height}>
-      <S.ImageWrapper>
-        <S.Image src={img01} alt="image" priority={true} />
-      </S.ImageWrapper>
-      <S.InfoContainer>
-        <S.MainInfoContainer>
-          <S.NameContainer>
-            <div>{cardInfo.address}</div>
-            <div>{cardInfo.name}</div>
-          </S.NameContainer>
-          <IoBookmarkOutline />
-        </S.MainInfoContainer>
-        <S.SubInfoContainer>
-          <S.Date>최근 세팅일 : {cardInfo.latestSettingDay}</S.Date>
-          <S.LikeContainer>
-            {cardInfo.likeNumber}
-            <FcLikePlaceholder />
-          </S.LikeContainer>
-        </S.SubInfoContainer>
-      </S.InfoContainer>
+      <Link href={`/gyms/${cardInfo.id}`} style={{ textDecoration: "none" }}>
+        <S.ImageWrapper>
+          <S.Image src={img01} alt="image" priority={true} />
+        </S.ImageWrapper>
+        <S.InfoContainer>
+          <S.MainInfoContainer>
+            <S.NameContainer>
+              <div>{cardInfo.address}</div>
+              <div>{cardInfo.name}</div>
+            </S.NameContainer>
+            <IoBookmarkOutline />
+          </S.MainInfoContainer>
+          <S.SubInfoContainer>
+            <S.Date>최근 세팅일 : {cardInfo.latestSettingDay}</S.Date>
+            <S.LikeContainer>
+              {cardInfo.likeNumber}
+              <FcLikePlaceholder />
+            </S.LikeContainer>
+          </S.SubInfoContainer>
+        </S.InfoContainer>
+      </Link>
     </S.Container>
   );
 };

@@ -1,6 +1,14 @@
 import { useEffect, useState } from 'react';
 import type { InferGetServerSidePropsType, GetServerSideProps } from 'next';
 import styled from 'styled-components';
+import {
+  IoShareSocialOutline,
+  IoHeart,
+  IoHeartOutline,
+  IoBookmark,
+  IoBookmarkOutline,
+} from 'react-icons/io5';
+import { FaLocationDot } from 'react-icons/fa6';
 import Tag from '@/components/Tag';
 import DetailedList from '@/components/DetailedList';
 import DifficultyBar from '@/components/DifficultyBar';
@@ -41,51 +49,51 @@ const GymInfo = ({
   return (
     <Styled.Wrapper>
       <Styled.Placeholder>
-        <div className="photos">암장 사진</div>
+        <div className='photos'>암장 사진</div>
       </Styled.Placeholder>
       <Styled.InfoContainer>
         <Styled.Column>
-          <div className="sub-header">
-            [지도 아이콘] {gymData.address}
+          <div className='sub-header'>
+            <FaLocationDot /> {gymData.address}
             <br />
-            <div className="sub-name">
+            <div className='sub-name'>
               <span>{gymData.name}</span>&nbsp;
-              <span>[버튼 아이콘]</span>
+              <IoHeartOutline /> <IoBookmarkOutline /> <IoShareSocialOutline />
             </div>
           </div>
           <Styled.Placeholder>
-            <div className="description">{gymData.description}</div>
+            <div className='description'>{gymData.description}</div>
           </Styled.Placeholder>
           {isLoading ? null : <DynamicMap coordinates={gymData.coordinates} />}
           <div>댓글</div>
         </Styled.Column>
         <Styled.Column>
-          <div>
+          <Styled.SideContainer className='container'>
             <h4>관련 태그</h4>
             {gymData.tags.map((tag: string, i: number) => (
               <Tag key={i} text={tag} />
             ))}
-          </div>
-          <div>
+          </Styled.SideContainer>
+          <Styled.SideContainer className='container'>
             <h4>이용금액</h4>
             <DetailedList items={gymData.pricing} />
-          </div>
-          <div>
+          </Styled.SideContainer>
+          <Styled.SideContainer className='container'>
             <h4>영업시간</h4>
             <DetailedList items={gymData.openHours} />
-          </div>
-          <div>
+          </Styled.SideContainer>
+          <Styled.SideContainer className='container'>
             <h4>시설 정보</h4>
             {gymData.accommodations.join(', ')}
-          </div>
-          <div>
+          </Styled.SideContainer>
+          <Styled.SideContainer className='container'>
             <h4>난이도</h4>
             <DifficultyBar difficulty={gymData.difficulty} />
-          </div>
-          <div>
+          </Styled.SideContainer>
+          <Styled.SideContainer className='container'>
             <h4>연락처</h4>
             <ContactInfo contactList={gymData.contact} />
-          </div>
+          </Styled.SideContainer>
         </Styled.Column>
       </Styled.InfoContainer>
     </Styled.Wrapper>
@@ -107,7 +115,7 @@ const Styled = {
   Column: styled.div`
     display: flex;
     flex-direction: column;
-    gap: 32px;
+    gap: 16px;
 
     div {
       border: 1px solid #eeeeee;
@@ -117,6 +125,9 @@ const Styled = {
       margin-top: 0;
       margin-bottom: 16px;
     }
+  `,
+  SideContainer: styled.div`
+    padding: 24px 28px;
   `,
   // 임시 컴포넌트 - 최종 프로덕트에서 제외
   Placeholder: styled.div`
@@ -151,7 +162,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     address: '서울시 강남구 테헤란로 123',
     coordinates: {
       latitude: 37.3595704,
-      longitude: 127.1054221
+      longitude: 127.1054221,
     },
     name: '클라이밍성지',
     description: `1940년대 프랑스 전문 산악인들의 교육 훈련용으로 시작된 이후, 인공으로 만들어진 암벽 구조물을 손과 발을 사용하여 등반하는 레저스포츠로 발전하였다. '인공암벽등반'이라고도 한다. 유럽과 러시아, 미국으로 전파되어 다양한 국제 대회가 개최되었고, 1987년 국제산악연맹(UIAA)에서 스포츠클라이밍에 관한 규정을 제정하면서 스포츠 경기로서의 규칙을 갖추었다. 한국에는 1988년에 도입되었고, 전국적으로 빠르게 보급되어 사계절 내내 즐길 수 있는 레저 스포츠로서 각광받고 있다. 제32회 올림픽경기대회(도쿄 올림픽)부터 올림픽 정식 종목으로 채택되었다.`,

@@ -15,7 +15,7 @@ const Navbar = () => {
               <Link href={"/login"}>로그인</Link>
             </S.ButtonWrapper>
             <S.ButtonWrapper>
-              <Link href={"/login"}>회원가입</Link>
+              <Link href={"/join"}>회원가입</Link>
             </S.ButtonWrapper>
             <S.ButtonWrapper>=</S.ButtonWrapper>
           </S.MenuContainer>

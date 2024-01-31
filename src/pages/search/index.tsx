@@ -1,7 +1,9 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
 import GymListBanner from "../../components/GymListBanner";
-import SearchBanner from "./searchBanner";
+import { IoSearch } from "react-icons/io5";
+import router, { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import Search from "@/components/Search";
 
 const sampleGyms: GymSampleInfo[] = [
   {
@@ -62,6 +64,15 @@ const sampleGyms: GymSampleInfo[] = [
   },
 ];
 
+const sampleAddress = [
+  { id: 1, info: "잠실" },
+  { id: 2, info: "잠실2동" },
+  { id: 3, info: "잠실1동" },
+  { id: 4, info: "송파동" },
+  { id: 5, info: "송파2동" },
+  { id: 6, info: "송파1동" },
+];
+
 export interface GymSampleInfo {
   id: number;
   thumbnailSrc: string;
@@ -71,28 +82,54 @@ export interface GymSampleInfo {
   likeNumber: number;
 }
 
-const Home = () => {
-  const getData = async () => {
-    const res = await fetch("http://localhost:3000/gyms");
-    const data = await res.json();
-    setGymLists(data);
-  };
+const SearchPage = () => {
+  const searchWord = useRouter().query.q as string;
+
   const [gymLists, setGymLists] = useState<GymSampleInfo[]>(sampleGyms); //sampleGyms
 
-  // useEffect(() => {
-  //   getData;
-  // }, []);
+  const handleGymList = (event: {
+    target: any;
+    preventDefault: () => void;
+  }) => {
+    event.preventDefault();
+
+    // 검색내용 포함시켜 라우팅
+    router.push({
+      pathname: "/search",
+      query: { q: event.target["search"].value },
+    });
+  };
 
   return (
     <Styled.Wrapper>
-      <SearchBanner setGymList={setGymLists} />
-      <GymListBanner gymList={gymLists} setGymList={setGymLists} />
+      <Styled.SearchWrapper>
+        <Search
+          dataList={sampleAddress}
+          width="400px"
+          postfixIcon={<IoSearch />}
+          placeholder="주소를 입력하면 실내암벽장을 찾아드려요."
+          onSubmit={handleGymList as (unknown: unknown) => unknown}
+          useLocation={true}
+          searchWord={searchWord}
+        />
+      </Styled.SearchWrapper>
+      <GymListBanner
+        gymList={gymLists}
+        setGymList={setGymLists}
+        searchWord={searchWord}
+      />
     </Styled.Wrapper>
   );
 };
 
 const Styled = {
   Wrapper: styled.div``,
+  SearchWrapper: styled.div`
+    margin-top: 20px;
+    top: 0;
+    position: fixed;
+    z-index: 101;
+  `,
 };
 
-export default Home;
+export default SearchPage;

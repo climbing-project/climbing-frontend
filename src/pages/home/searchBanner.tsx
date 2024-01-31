@@ -3,6 +3,7 @@ import { IoSearch } from "react-icons/io5";
 import styled from "styled-components";
 import { GymSampleInfo } from ".";
 import { Dispatch, FormEventHandler, SetStateAction } from "react";
+import router from "next/router";
 
 const sampleAddress = [
   { id: 1, info: "잠실" },
@@ -35,12 +36,20 @@ const SearchBanner = ({ setGymList }: SearchBannerProps) => {
   };
 
   const handleGymList = (event: {
-    [x: string]: any;
+    target: any;
     preventDefault: () => void;
   }) => {
     event.preventDefault();
-    console.log(event.target["search"].value);
-    getData(event.target["search"].value); // 서버로 요청해서 데이터 받기
+
+    // 검색내용 포함시켜 라우팅
+    router.push({
+      pathname: "/search",
+      query: { q: event.target["search"].value },
+    });
+
+    // console.log(event.target["search"].value);
+    // getData(event.target["search"].value); // 서버로 요청해서 데이터 받기
+
     // setGymList(sampleList);
   };
 

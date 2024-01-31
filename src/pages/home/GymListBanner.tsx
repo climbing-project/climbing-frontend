@@ -3,6 +3,7 @@ import PreviewCard from "@/components/PreviewCard";
 import styled from "styled-components";
 import { GymSampleInfo } from ".";
 import { Dispatch, MouseEventHandler, SetStateAction } from "react";
+import router from "next/router";
 
 const sampleList = [
   {
@@ -17,9 +18,14 @@ const sampleList = [
 interface GymListBannerProps {
   gymList: Array<GymSampleInfo>;
   setGymList: Dispatch<SetStateAction<GymSampleInfo[]>>;
+  searchWord?: string;
 }
 
-const GymListBanner = ({ gymList, setGymList }: GymListBannerProps) => {
+const GymListBanner = ({
+  gymList,
+  setGymList,
+  searchWord,
+}: GymListBannerProps) => {
   const getData = async (sort: string | null) => {
     const res = await fetch(`http://localhost:3000/gyms?s=${sort}`);
     const data = await res.json();
@@ -30,9 +36,22 @@ const GymListBanner = ({ gymList, setGymList }: GymListBannerProps) => {
   const handleButtonClick: MouseEventHandler<HTMLButtonElement> = (event) => {
     // 누른 버튼(인기순,최신순..)에 따라 다른값을 서버로 요청해서 데이터 받기
     // const res = await getSearchRequest(userInput);
-    console.log(event.currentTarget.textContent);
-    getData(event.currentTarget.textContent);
+    // console.log(event.currentTarget.textContent);
+    // getData(event.currentTarget.textContent);
     // setGymList(sampleList);
+
+    // 검색내용 포함시켜 라우팅
+    if (searchWord) {
+      router.push({
+        pathname: "/search",
+        query: { r: searchWord, s: event.currentTarget.textContent },
+      });
+    } else {
+      router.push({
+        pathname: "/search",
+        query: { s: event.currentTarget.textContent },
+      });
+    }
   };
 
   const SortingButtons = sortingType.map((type, index) => {

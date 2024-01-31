@@ -44,7 +44,7 @@ const GymListBanner = ({
     if (searchWord) {
       router.push({
         pathname: "/search",
-        query: { r: searchWord, s: event.currentTarget.textContent },
+        query: { q: searchWord, s: event.currentTarget.textContent },
       });
     } else {
       router.push({

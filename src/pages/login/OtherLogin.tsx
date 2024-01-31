@@ -15,7 +15,7 @@ const OtherLogin = () => {
   return (
     <>
       Not signed in <br />
-      <button onClick={() => signIn()}>Sign in</button>
+      <button onClick={() => signIn()}>다른 방법으로 로그인</button>
     </>
   );
 };

@@ -20,7 +20,7 @@ const GeneralLogin = () => {
 
 const S = {
   Wrapper: styled.div`
-    /* height: 500px; */
+    margin-bottom: 100px;
   `,
 };
 

@@ -15,7 +15,7 @@ const TextField = ({ formName = undefined, characterLimit }: TextFieldProps) => 
   };
 
   return (
-    <input name={formName} value={input} onChange={(e) => handleInput(e)} />
+    <input name={formName} className='field__name' value={input} onChange={(e) => handleInput(e)} required={true} />
   );
 };
 

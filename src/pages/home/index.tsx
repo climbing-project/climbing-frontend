@@ -1,10 +1,11 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import GymListBanner from "./GymListBanner";
 import SearchBanner from "./searchBanner";
 
 const sampleGyms: GymSampleInfo[] = [
   {
+    id: 1,
     thumbnailSrc: "/public/thumbnail2.png",
     address: "서울 강남구 신사1동 529-4 B2",
     name: "더자스클라이밍짐2",
@@ -12,6 +13,7 @@ const sampleGyms: GymSampleInfo[] = [
     likeNumber: 156,
   },
   {
+    id: 2,
     thumbnailSrc: "./public/thumbnail1.png",
     address: "서울 강남구 신사2동 529-4 B1",
     name: "더자스클라이밍짐",
@@ -19,6 +21,7 @@ const sampleGyms: GymSampleInfo[] = [
     likeNumber: 155,
   },
   {
+    id: 3,
     thumbnailSrc: "./public/thumbnail2.png",
     address: "서울 송파구 신사동 529-4 B2",
     name: "더자스클라이밍짐2",
@@ -26,6 +29,7 @@ const sampleGyms: GymSampleInfo[] = [
     likeNumber: 156,
   },
   {
+    id: 4,
     thumbnailSrc: "./public/thumbnail3.png",
     address: "서울 송파구 송파동 신사동 529-4 B3",
     name: "더자스클라이밍짐3",
@@ -33,6 +37,7 @@ const sampleGyms: GymSampleInfo[] = [
     likeNumber: 157,
   },
   {
+    id: 5,
     thumbnailSrc: "./public/thumbnail2.png",
     address: "서울 송파구 송파2동 529-4 B2",
     name: "더자스클라이밍짐2",
@@ -40,6 +45,7 @@ const sampleGyms: GymSampleInfo[] = [
     likeNumber: 156,
   },
   {
+    id: 6,
     thumbnailSrc: "./public/thumbnail1.png",
     address: "서울 강남구 신사동 529-4 B1",
     name: "더자스클라이밍짐1",
@@ -47,6 +53,7 @@ const sampleGyms: GymSampleInfo[] = [
     likeNumber: 155,
   },
   {
+    id: 7,
     thumbnailSrc: "./public/thumbnail1.png",
     address: "서울 강남구 신사동 529-4 B1",
     name: "더자스클라이밍짐1",
@@ -56,6 +63,7 @@ const sampleGyms: GymSampleInfo[] = [
 ];
 
 export interface GymSampleInfo {
+  id: number;
   thumbnailSrc: string;
   address: string;
   name: string;
@@ -64,7 +72,16 @@ export interface GymSampleInfo {
 }
 
 const Home = () => {
-  const [gymLists, setGymLists] = useState<GymSampleInfo[]>(sampleGyms);
+  const getData = async () => {
+    const res = await fetch("http://localhost:3000/gyms");
+    const data = await res.json();
+    setGymLists(data);
+  };
+  const [gymLists, setGymLists] = useState<GymSampleInfo[]>(sampleGyms); //sampleGyms
+
+  // useEffect(() => {
+  //   getData;
+  // }, []);
 
   return (
     <Styled.Wrapper>

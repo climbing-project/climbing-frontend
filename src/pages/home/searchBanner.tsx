@@ -28,14 +28,20 @@ interface SearchBannerProps {
 }
 
 const SearchBanner = ({ setGymList }: SearchBannerProps) => {
+  const getData = async (input: string | null) => {
+    const res = await fetch(`http://localhost:3000/search?q={input}`);
+    const data = await res.json();
+    setGymList(data);
+  };
+
   const handleGymList = (event: {
     [x: string]: any;
     preventDefault: () => void;
   }) => {
     event.preventDefault();
     console.log(event.target["search"].value);
-    // const res = await getSearchRequest(userInput); // 서버로 요청해서 데이터 받기
-    setGymList(sampleList);
+    getData(event.target["search"].value); // 서버로 요청해서 데이터 받기
+    // setGymList(sampleList);
   };
 
   return (
@@ -46,13 +52,19 @@ const SearchBanner = ({ setGymList }: SearchBannerProps) => {
         postfixIcon={<IoSearch />}
         placeholder="주소를 입력하면 실내암벽장을 찾아드려요."
         onSubmit={handleGymList as (unknown: unknown) => unknown}
+        useLocation={true}
       />
     </Styled.Wrapper>
   );
 };
 
 const Styled = {
-  Wrapper: styled.div``,
+  Wrapper: styled.div`
+    display: flex;
+    justify-content: center;
+    margin-bottom: 150px;
+    margin-top: 50px;
+  `,
 };
 
 export default SearchBanner;

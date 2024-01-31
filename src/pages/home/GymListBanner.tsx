@@ -20,33 +20,41 @@ interface GymListBannerProps {
 }
 
 const GymListBanner = ({ gymList, setGymList }: GymListBannerProps) => {
+  const getData = async (sort: string | null) => {
+    const res = await fetch(`http://localhost:3000/gyms?s=${sort}`);
+    const data = await res.json();
+    setGymList(data);
+  };
   const sortingType = ["인기순", "최신순", "거리순"];
 
-  const handleClick: MouseEventHandler<HTMLButtonElement> = (event) => {
+  const handleButtonClick: MouseEventHandler<HTMLButtonElement> = (event) => {
     // 누른 버튼(인기순,최신순..)에 따라 다른값을 서버로 요청해서 데이터 받기
     // const res = await getSearchRequest(userInput);
     console.log(event.currentTarget.textContent);
-    setGymList(sampleList);
+    getData(event.currentTarget.textContent);
+    // setGymList(sampleList);
   };
 
   const SortingButtons = sortingType.map((type, index) => {
     return (
-      <Styled.SortButton key={index} onClick={handleClick}>
+      <Styled.SortButton key={index} onClick={handleButtonClick}>
         {type}
       </Styled.SortButton>
     );
   });
 
-  const CardList = gymList.map((gymInfo, index) => {
-    return (
-      <PreviewCard
-        key={index}
-        width="350px"
-        height="300px"
-        cardInfo={gymInfo}
-      />
-    );
-  });
+  const CardList =
+    gymList &&
+    gymList.map((gymInfo, index) => {
+      return (
+        <PreviewCard
+          key={index}
+          width="350px"
+          height="300px"
+          cardInfo={gymInfo}
+        />
+      );
+    });
 
   return (
     <Styled.Wrapper>
@@ -60,10 +68,10 @@ const Styled = {
   Wrapper: styled.div``,
   ButtonWrapper: styled.div`
     display: flex;
-    justify-content: flex-start;
+    justify-content: flex-end;
   `,
   SortButton: styled.button`
-    margin: 5px;
+    margin-left: 10px;
   `,
 };
 

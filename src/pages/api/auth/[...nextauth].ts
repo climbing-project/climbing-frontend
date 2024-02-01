@@ -15,9 +15,6 @@ export default NextAuth({
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        // 외부 서버와 통신하여 유저 정보와 토큰을 가져오는 로직을 여기에 구현합니다.
-
-        // 외부 서버와의 통신을 통해 유저 정보와 토큰을 가져옵니다.
         const response = await fetch(
           "https://http://localhost:3000/api/login",
           {
@@ -30,18 +27,17 @@ export default NextAuth({
         const data = await response.json();
 
         if (data.ok) {
-          // 유저 정보와 토큰을 NextAuth.js 세션에 저장합니다.
           return {
             name: data.name,
             email: data.email,
             token: data.token,
           };
         } else {
-          // 로그인 실패 시 null을 반환합니다.
           return null as any;
         }
       },
     }),
+    // 다른 경로로 로그인 => 콜백으로 토큰받아서 서버에 넘겨줘야..
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,

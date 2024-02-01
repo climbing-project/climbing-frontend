@@ -16,7 +16,6 @@ export default NextAuth({
       },
       async authorize(credentials) {
         // 외부 서버와 통신하여 유저 정보와 토큰을 가져오는 로직을 여기에 구현합니다.
-        const { username, password } = credentials!;
 
         // 외부 서버와의 통신을 통해 유저 정보와 토큰을 가져옵니다.
         const response = await fetch(
@@ -24,16 +23,13 @@ export default NextAuth({
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              username,
-              password,
-            }),
+            body: JSON.stringify(credentials),
           }
         );
 
         const data = await response.json();
 
-        if (data) {
+        if (data.ok) {
           // 유저 정보와 토큰을 NextAuth.js 세션에 저장합니다.
           return {
             name: data.name,

@@ -24,7 +24,15 @@ const NewGymForm = ({ handleSubmit }: NewGymFormProps) => {
           const nameField = document.querySelector(
             '.field__name',
           ) as HTMLInputElement;
-          handleSubmit({ name: nameField.value, address, coordinates });
+          const contactField = document.querySelector(
+            '.field__contact',
+          ) as HTMLInputElement;
+          handleSubmit({
+            name: nameField.value,
+            address,
+            coordinates,
+            contact: [{ platform: 'phone', info: contactField.value }],
+          });
         }}
       >
         <div>

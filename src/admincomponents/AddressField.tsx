@@ -1,8 +1,24 @@
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { Address } from 'react-daum-postcode';
 import PostcodeReader from './PostcodeReader';
 
-const AddressField = () => {
+type AddressObject = {
+  jibunAddress: string;
+  roadAddress: string;
+  unitAddress: string;
+};
+
+type CoordinatesObject = {
+  latitude: number;
+  longitude: number;
+};
+
+interface AddressFieldProps {
+  setAddress: Dispatch<SetStateAction<AddressObject>>;
+  setCoordinates: Dispatch<SetStateAction<CoordinatesObject>>;
+}
+
+const AddressField = ({ setAddress, setCoordinates }: AddressFieldProps) => {
   const [isShowing, setIsShowing] = useState(false);
 
   const handleOverlay = () => {
@@ -10,16 +26,23 @@ const AddressField = () => {
     else setIsShowing(true);
   };
 
-  const getCoords = (queryString: string) => {
+  const callGeocodingApi = (queryString: string) => {
     naver.maps.Service.geocode({ query: queryString }, (status, response) => {
       if (status === naver.maps.Service.Status.ERROR)
         console.log('error occurred'); // 추후에 예외 처리
 
       const [result] = response.v2.addresses;
-      (document.querySelector('.field__latitude') as HTMLInputElement).value =
-        result.y;
-      (document.querySelector('.field__longitude') as HTMLInputElement).value =
-        result.x;
+
+      // 지번 주소, 도로명 주소, 좌표를 state에 저장 (상세 주소는 별도 onChange 이벤트를 통해 저장)
+      setAddress((prev) => ({
+        ...prev,
+        jibunAddress: result.jibunAddress,
+        roadAddress: result.roadAddress,
+      }));
+      setCoordinates({
+        latitude: Number(result.y),
+        longitude: Number(result.x),
+      });
     });
   };
 
@@ -36,34 +59,29 @@ const AddressField = () => {
 
     (
       document.querySelector('.field__display-address') as HTMLInputElement
-    ).value = `(${zonecode}) ${displayAddress}`;
-    (
-      document.querySelector('.field__street-address') as HTMLInputElement
-    ).value = `${roadAddress}`;
+    ).value = `${displayAddress} (${zonecode})`;
 
-    getCoords(roadAddress);
+    callGeocodingApi(roadAddress);
     setIsShowing(false);
+
     (
-      document.querySelector('.field__building-address') as HTMLInputElement
+      document.querySelector('.field__unit-address') as HTMLInputElement
     ).focus();
   };
 
   return (
     <div>
-      <input className="field__display-address" disabled />
+      <input className='field__display-address' readOnly={true} />
       <input
-        className="field__building-address"
-        name="building-address"
-        placeholder="상세 주소"
+        className='field__unit-address'
+        name='unit-address'
+        placeholder='상세 주소'
+        required={true}
+        onChange={(e) =>
+          setAddress((prev) => ({ ...prev, unitAddress: e.target.value }))
+        }
       />
-      <input type="button" onClick={handleOverlay} value="우편번호 찾기" />
-      <input
-        type="hidden"
-        className="field__street-address"
-        name="street-address"
-      />
-      <input type="hidden" className="field__latitude" name="latitude" />
-      <input type="hidden" className="field__longitude" name="longitude" />
+      <input type='button' onClick={handleOverlay} value='우편번호 찾기' />
       {isShowing ? (
         <PostcodeReader
           handleClose={handleOverlay}

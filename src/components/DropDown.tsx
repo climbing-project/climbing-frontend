@@ -10,6 +10,7 @@ interface DropDownProps {
   width?: string; // search컴포넌트 없이 dropdown 단독으로 쓸때만 사용
   fontSize?: string;
   useLocation?: boolean;
+  handleClick?: (arg: unknown) => unknown;
 }
 
 export interface DropItem {
@@ -25,12 +26,14 @@ const DropDown = ({
   width,
   fontSize,
   useLocation = false,
+  handleClick,
 }: DropDownProps) => {
   const listItems = dropItems.map(({ id, info }: DropItem, index) => (
     <S.Element
       key={index}
       $highlight={index == highlightIndex}
       fontSize={fontSize}
+      onClick={handleClick}
     >
       {prefixIcon || null}
       {reactStringReplace(info, highlightWord as string, (match, index) => (
@@ -52,12 +55,15 @@ const S = {
     width?: string;
   }>`
     position: absolute;
+    z-index: 1;
+    margin: 0px;
+    background-color: white;
+
     width: ${(props) => props.width || `100%`};
     border: 1px solid black;
     border-radius: 5px;
     padding-top: 5px;
     padding-bottom: 5px;
-    margin: 0px;
   `,
   Group: styled.ul`
     margin: 0;

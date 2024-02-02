@@ -14,10 +14,11 @@ const ContactField = () => {
   return (
     <div>
       <input
-        name="contact"
+        name='contact'
+        className='field__contact'
         value={input}
         onChange={(e) => handleInput(e.target.value)}
-        placeholder="전화번호 입력"
+        placeholder='전화번호 입력'
         required={true}
       />
     </div>

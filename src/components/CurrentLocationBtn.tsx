@@ -8,12 +8,13 @@ const GEOToAddress = async (longitude: number, latitude: number) => {
       `https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?x=${longitude}&y=${latitude}`,
       {
         headers: {
-          Authorization: `KakaoAK 6d1676e0163eaef1e97668b69b73c6b7`,
+          Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_KAKAO_REST_API}`,
         },
       }
     )
   ).json();
-  return response["documents"][1]["address_name"]; // 송파2동 까지 나옴
+
+  return response["documents"][1]["address_name"]; // ~~2동 까지 나옴
 };
 
 const CurrentLocationBtn = () => {

@@ -2,23 +2,22 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import NewGymForm from '@/admincomponents/NewGymForm';
 
-interface NewData {
-  [key: string]: FormDataEntryValue;
-}
-
 interface GymFormData {
   id?: string;
   name: string;
   address: {
-    addr1: string;
-    addr2: string;
-    addr3: string;
-    addr4: string;
+    jibunAddress: string;
+    roadAddress: string;
+    unitAddress: string;
   };
   coordinates?: {
-    latitude: string;
-    longitude: string;
+    latitude: number;
+    longitude: number;
   };
+  contact: Array<{
+    platform: string;
+    info: string;
+  }>;
 }
 
 const AdminPage = () => {
@@ -26,7 +25,6 @@ const AdminPage = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    attachListener();
     const mapApi =
       'https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=lm660e08li&submodules=geocoder';
     const script = document.querySelector(
@@ -115,17 +113,19 @@ const AdminPage = () => {
     updateDiv.id = `${gymData.id as string}-update`;
     updateDiv.setAttribute('style', 'display:flex; flex-direction:column');
 
-    const fullAddress = `${gymData.address.addr1} ${gymData.address.addr2} ${gymData.address.addr3} ${gymData.address.addr4}`;
+    const fullAddress = `${gymData.address.roadAddress} ${gymData.address.unitAddress}`;
 
     deleteDiv.innerHTML = `
     <div><strong>암장명:</strong>&nbsp;${gymData.name}</div>
     <div><strong>암장 주소:</strong>&nbsp;${fullAddress}</div>
+    <div><strong>연락처:</strong>&nbsp;${gymData.contact[0].info}</div>
     <button id='${gymData.id}-detlbtn'>삭제</button>
     `;
 
     updateDiv.innerHTML = `
     <div><strong>암장명:</strong>&nbsp;${gymData.name}</div>
     <div><strong>암장 주소:</strong>&nbsp;${fullAddress}</div>
+    <div><strong>연락처:</strong>&nbsp;${gymData.contact[0].info}</div>
     <button id='${gymData.id}-updbtn'>수정</button>
     `;
 
@@ -150,13 +150,15 @@ const AdminPage = () => {
   };
 
   const getEditFields = (gymData: GymFormData) => {
-    const { addr1, addr2, addr3, addr4 } = gymData.address;
+    const { jibunAddress, roadAddress, unitAddress } = gymData.address;
     const parent = document.getElementById(
       `${gymData.id}-update`,
     ) as HTMLDivElement;
     parent.innerHTML = `
       <div><strong>암장명:</strong>&nbsp;<input id='edit-name' value='${gymData.name}'/></div>
-      <div><strong>암장 주소:</strong>&nbsp;<input id='edit-address' value='${addr1} ${addr2} ${addr3}' disabled/><input id='edit-building' value='${addr4}' disabled/></div>
+      <div><strong>암장 주소:</strong>&nbsp;<input id='edit-address' value='${roadAddress}'/><input id='edit-building' value='${unitAddress}'/></div>
+      <div><strong>연락처:</strong>&nbsp;<input id='edit-contact' value='${gymData.contact[0].info}'/></div>
+      <input type='hidden' id='edit-hidden' value='${jibunAddress}' />
       <button id='${gymData.id}-applybtn'>적용</button>
     `;
 
@@ -170,21 +172,31 @@ const AdminPage = () => {
   };
 
   const getChangedFields = (id: string): GymFormData => {
-    const fullAddress = (
+    const roadAddress = (
       document.getElementById('edit-address') as HTMLInputElement
     ).value;
-    const addr4 = (document.getElementById('edit-building') as HTMLInputElement)
-      .value;
-    const [addr1, addr2, ...addr3] = fullAddress.split(' ');
+    const unitAddress = (
+      document.getElementById('edit-building') as HTMLInputElement
+    ).value;
+    const jibunAddress = (
+      document.getElementById('edit-hidden') as HTMLInputElement
+    ).value;
+
     const data: GymFormData = {
       id,
       name: (document.getElementById('edit-name') as HTMLInputElement).value,
       address: {
-        addr1,
-        addr2,
-        addr3: addr3.join(' '),
-        addr4,
+        jibunAddress,
+        roadAddress,
+        unitAddress,
       },
+      contact: [
+        {
+          platform: 'phone',
+          info: (document.getElementById('edit-contact') as HTMLInputElement)
+            .value,
+        },
+      ],
     };
     return data;
   };
@@ -199,11 +211,15 @@ const AdminPage = () => {
 
     deleteElem.innerHTML = `
     <div><strong>암장명:</strong>&nbsp;${newData.name}</div>
+    <div><strong>암장 주소:</strong>&nbsp;${newData.address.roadAddress} ${newData.address.unitAddress}</div>
+    <div><strong>연락처:</strong>&nbsp;${newData.contact[0].info}</div>
     <button id='${newData.id}-detlbtn'>삭제</button>
     `;
 
     updateElem.innerHTML = `
     <div><strong>암장명:</strong>&nbsp;${newData.name}</div>
+    <div><strong>암장 주소:</strong>&nbsp;${newData.address.roadAddress} ${newData.address.unitAddress}</div>
+    <div><strong>연락처:</strong>&nbsp;${newData.contact[0].info}</div>
     <button id='${newData.id}-updbtn'>수정</button>
     `;
 
@@ -217,46 +233,16 @@ const AdminPage = () => {
     updateBtn.addEventListener('click', () => getEditFields(newData));
   };
 
-  const attachListener = () => {
-    const form = document.querySelector('form') as HTMLFormElement;
-    form.addEventListener('submit', (e: Event) => {
-      e.preventDefault();
-
-      const formData = Object.fromEntries(
-        new FormData(form as HTMLFormElement),
-      );
-      const validData = getValidEntries(formData);
-
-      return createData(validData);
-    });
-  };
-
-  const getValidEntries = (formData: NewData): GymFormData => {
-    const [addr1, addr2, ...addr3] = (
-      formData['street-address'] as string
-    ).split(' ');
-    const validData: GymFormData = {
-      name: formData.name as string,
-      address: {
-        addr1,
-        addr2,
-        addr3: addr3.join(' '),
-        addr4: formData['building-address'] as string,
-      },
-      coordinates: {
-        latitude: formData.latitude as string,
-        longitude: formData.longitude as string,
-      },
-    };
-
-    return validData;
+  const handleSubmit = (formData: GymFormData) => {
+    // 검증 스텝 추가
+    return createData(formData);
   };
 
   return (
     <>
       <Title>Create</Title>
       <Wrapper>
-        <NewGymForm />
+        <NewGymForm handleSubmit={handleSubmit} />
       </Wrapper>
       <Title>Retrieve</Title>
       <Wrapper>

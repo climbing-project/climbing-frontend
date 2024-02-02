@@ -56,7 +56,8 @@ const S = {
   }>`
     width: ${(props) => props.width || `350px`};
     height: ${(props) => props.height || `100px`};
-    margin: 10px;
+    margin-right: 25px;
+    margin-bottom: 25px;
   `,
   ImageWrapper: styled.div`
     height: 60%;

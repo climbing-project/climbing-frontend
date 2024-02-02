@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import NewGymForm from '@/admincomponents/NewGymForm';
 
 interface NewGymData {
+  id?: string;
   name: string;
   address: {
     jibunAddress: string;
@@ -51,10 +52,11 @@ const GymRegistration = () => {
   const handleSubmit = (formData: NewGymData) => {
     // 서버로부터 내려받는 데이터의 형식에 따라 처리 (현재는 id만 응답받는다는 가정 하에 then에 id만 명시함)
     createData(formData).then((id) => {
+      formData.id = id;
       router.push(
         {
           pathname: '/admin/edit',
-          query: { gymData: JSON.stringify(formData), id },
+          query: { newRegister: true, gymData: JSON.stringify(formData) },
         },
         '/admin/edit',
       );

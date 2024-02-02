@@ -71,7 +71,7 @@ const GymInfo = ({
           <Styled.SideContainer className='container'>
             <h4>관련 태그</h4>
             {gymData.tags.map((tag: string, i: number) => (
-              <Tag key={i} text={tag} />
+              <Tag key={i} prefix='#' text={tag} />
             ))}
           </Styled.SideContainer>
           <Styled.SideContainer className='container'>
@@ -194,7 +194,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       '짐볼',
       '어린이 놀이터',
     ],
-    tags: ['#암벽', '#짱', '#운동', '#하세요'],
+    tags: ['암벽', '짱', '운동', '하세요'],
     contact: [
       { platform: 'twitter', address: 'sdlfkj' },
       { platform: 'facebook', address: 'sdlfkj' },

@@ -49,48 +49,48 @@ const GymInfo = ({
   return (
     <Styled.Wrapper>
       <Styled.Placeholder>
-        <div className='photos'>암장 사진</div>
+        <div className="photos">암장 사진</div>
       </Styled.Placeholder>
       <Styled.InfoContainer>
         <Styled.Column>
-          <div className='sub-header'>
+          <div className="sub-header">
             <FaLocationDot /> {gymData.address}
             <br />
-            <div className='sub-name'>
+            <div className="sub-name">
               <span>{gymData.name}</span>&nbsp;
               <IoHeartOutline /> <IoBookmarkOutline /> <IoShareSocialOutline />
             </div>
           </div>
           <Styled.Placeholder>
-            <div className='description'>{gymData.description}</div>
+            <div className="description">{gymData.description}</div>
           </Styled.Placeholder>
           {isLoading ? null : <DynamicMap coordinates={gymData.coordinates} />}
           <div>댓글</div>
         </Styled.Column>
         <Styled.Column>
-          <Styled.SideContainer className='container'>
+          <Styled.SideContainer className="container">
             <h4>관련 태그</h4>
             {gymData.tags.map((tag: string, i: number) => (
-              <Tag key={i} prefix='#' text={tag} />
+              <Tag key={i} prefix="#" text={tag} />
             ))}
           </Styled.SideContainer>
-          <Styled.SideContainer className='container'>
+          <Styled.SideContainer className="container">
             <h4>이용금액</h4>
             <DetailedList items={gymData.pricing} />
           </Styled.SideContainer>
-          <Styled.SideContainer className='container'>
+          <Styled.SideContainer className="container">
             <h4>영업시간</h4>
             <DetailedList items={gymData.openHours} />
           </Styled.SideContainer>
-          <Styled.SideContainer className='container'>
+          <Styled.SideContainer className="container">
             <h4>시설 정보</h4>
             {gymData.accommodations.join(', ')}
           </Styled.SideContainer>
-          <Styled.SideContainer className='container'>
+          <Styled.SideContainer className="container">
             <h4>난이도</h4>
             <DifficultyBar difficulty={gymData.difficulty} />
           </Styled.SideContainer>
-          <Styled.SideContainer className='container'>
+          <Styled.SideContainer className="container">
             <h4>연락처</h4>
             <ContactInfo contactList={gymData.contact} />
           </Styled.SideContainer>

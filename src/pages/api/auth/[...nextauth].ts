@@ -53,25 +53,29 @@ export default NextAuth({
   ],
   //  jwt나 세션 쓸때
   callbacks: {
-    async session(session, token) {
-      // 세션에 토큰 정보를 추가합니다.
-      session.token = token.token;
+    //   async session(session, token) {
+    //     // 세션에 토큰 정보를 추가합니다.
+    //     session.token = token.token;
+    //     console.log("token*******************" + session.token);
+    //     return session;
+    //   },
+    // },
+    // session: {
+    //   jwt: true,
+    // },
+
+    async jwt({ token, user, account }) {
+      // if (account) {
+      //   token.accessToken = account.access_token;
+      // }
+      // token.userId = 123;
+      // token.test = "test";
+      console.log("token*******************" + token);
+      return token;
+    },
+    async session({ session, token, user }) {
+      console.log("session*******************" + session);
       return session;
     },
   },
-  session: {
-    jwt: true,
-  },
-
-  // async jwt({ token, account }) {
-  //   if (account) {
-  //     token.accessToken = account.access_token;
-  //   }
-  //   return token;
-  // },
-  // async session({ session, token, user }) {
-  // session.accessToken = token.accessToken
-  // return session
-  // }
-  // },
 });

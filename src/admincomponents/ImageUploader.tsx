@@ -24,10 +24,11 @@ const ImageUploader = ({ updateList }: ImageUploadProps) => {
     },
   });
 
-  const handleUpload = async (file: File) => {
+  // AWS S3에 업로드
+  const handleUpload = async (file: File, fileName: string) => {
     const params = {
       Bucket: BUCKET_NAME,
-      Key: `${FOLDER_NAME}/${file.name}`,
+      Key: `${FOLDER_NAME}/${fileName}`,
       Body: file,
     };
 
@@ -48,14 +49,13 @@ const ImageUploader = ({ updateList }: ImageUploadProps) => {
 
     const droppedFiles = Array.from(e.dataTransfer.files);
     let rejectedFileCount = 0;
-    // console.log(droppedItems.types)
 
     droppedFiles.forEach((file) => {
-      // console.log(file.type);
       if (ALLOWED_IMAGE_TYPES.includes(file.type)) {
-        // AWS S3에 업로드
-        handleUpload(file);
-        files.push(`${S3_PATH}${FOLDER_NAME}/${file.name}`);
+        // 랜덤한 파일명 생성
+        const randomizedFileName = crypto.randomUUID() + '.png';
+        handleUpload(file, randomizedFileName);
+        files.push(`${S3_PATH}${FOLDER_NAME}/${randomizedFileName}`);
       } else {
         // 유효한 이미지 형식(jpeg/png)이 아닐 시 이용자에게 알리기 위해 파일 갯수 트랙킹
         rejectedFileCount += 1;

@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import Image from 'next/image';
 import styled from 'styled-components';
 import ImageUploader from '@/admincomponents/ImageUploader';
+import ImageList from '@/admincomponents/ImageList';
 
 interface GymData {
   id: string;
@@ -99,6 +100,8 @@ const EditPage = () => {
       <Styled.Main>
         <h3>암장 이미지</h3>
         <ImageUploader updateList={handleImageUpdate} />
+        <br />
+        <ImageList images={images} />
         <div>
           {currentData?.images?.map((image) => (
             <Image src={image} key={image} alt="asdf" />

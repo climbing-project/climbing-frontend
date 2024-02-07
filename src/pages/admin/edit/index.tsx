@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import styled from 'styled-components';
@@ -85,7 +85,7 @@ const EditPage = () => {
     setCurrentData(sampleData);
   };
 
-  const handleImageUpdate = (arr: string[]) => {
+  const handleImageUpdate = async (arr: string[]) => {
     setImages((current) => [...current, ...arr]);
   };
 
@@ -99,7 +99,7 @@ const EditPage = () => {
       </Styled.Sidebar>
       <Styled.Main>
         <h3>암장 이미지</h3>
-        <ImageUploader updateList={handleImageUpdate} />
+        <ImageUploader handleImageUpdate={handleImageUpdate} />
         <br />
         <ImageList images={images} />
         <div>

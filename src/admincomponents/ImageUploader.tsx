@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { MdOutlineUploadFile } from 'react-icons/md';
 
 interface ImageUploadProps {
-  updateList: (arr: string[]) => void;
+  handleImageUpdate: (arr: string[]) => void;
 }
 
 const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png'];
@@ -15,7 +15,7 @@ const BUCKET_NAME = 'oruritest';
 const S3_PATH = 'https://oruritest.s3.ap-northeast-2.amazonaws.com/';
 const FOLDER_NAME = 'bubu';
 
-const ImageUploader = ({ updateList }: ImageUploadProps) => {
+const ImageUploader = ({ handleImageUpdate }: ImageUploadProps) => {
   const client = new S3Client({
     region: S3_REGION,
     credentials: {
@@ -31,21 +31,21 @@ const ImageUploader = ({ updateList }: ImageUploadProps) => {
       Key: `${FOLDER_NAME}/${fileName}`,
       Body: file,
     };
+    const files: string[] = [];
 
     try {
       await client.send(new PutObjectCommand(params));
     } catch (error) {
       console.log('에러 발생: ' + error);
+    } finally {
+      files.push(`${S3_PATH}${FOLDER_NAME}/${fileName}`);
+      handleImageUpdate(files);
     }
   };
 
   const handleDrop: DragEventHandler = (e) => {
     e.preventDefault();
-
     if (e.dataTransfer.files.length === 0) return;
-
-    const files: string[] = [];
-    console.log(e.dataTransfer.files);
 
     const droppedFiles = Array.from(e.dataTransfer.files);
     let rejectedFileCount = 0;
@@ -55,7 +55,6 @@ const ImageUploader = ({ updateList }: ImageUploadProps) => {
         // 랜덤한 파일명 생성
         const randomizedFileName = crypto.randomUUID() + '.png';
         handleUpload(file, randomizedFileName);
-        files.push(`${S3_PATH}${FOLDER_NAME}/${randomizedFileName}`);
       } else {
         // 유효한 이미지 형식(jpeg/png)이 아닐 시 이용자에게 알리기 위해 파일 갯수 트랙킹
         rejectedFileCount += 1;
@@ -65,8 +64,6 @@ const ImageUploader = ({ updateList }: ImageUploadProps) => {
     if (rejectedFileCount > 0) {
       alert(`${rejectedFileCount}개의 파일은 업로드되지 않았습니다.`);
     }
-
-    updateList(files);
   };
 
   return (

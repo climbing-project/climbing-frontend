@@ -102,33 +102,49 @@ const EditPage = () => {
   return (
     <Styled.Wrapper>
       <Styled.Sidebar>
-        <h4>암장 정보 관리</h4>
+        <h3>암장 정보 관리</h3>
         <div>기본 정보</div>
         <div>상세 정보</div>
         <h4>댓글 관리</h4>
       </Styled.Sidebar>
       <Styled.Main>
-        <h3>암장 이미지</h3>
-        <ImageUploader handleImageUpdate={handleImageUpdate} />
-        <br />
-        {currentData?.images ? (
-          <ImageList images={currentData!.images} />
-        ) : null}
-        <h3>기본 정보</h3>
-        <div>
-          <h4>암장 이름</h4>
-          {currentData?.name}
-        </div>
-        <div>
-          <h4>주소</h4>
-          {currentData?.address.roadAddress} {currentData?.address.unitAddress}
-        </div>
-        <div>
-          <h4>연락처</h4>
-          {currentData?.contact[0].info}
-        </div>
-        <h3>설명글</h3>
-        <div>{currentData?.description}</div>
+        <Styled.Container>
+          <Styled.Header>암장 이미지</Styled.Header>
+          <Styled.Content $direction="column">
+            <ImageUploader handleImageUpdate={handleImageUpdate} />
+            {currentData?.images ? (
+              <ImageList images={currentData!.images} />
+            ) : null}
+          </Styled.Content>
+        </Styled.Container>
+        <Styled.Container>
+          <Styled.Header>기본 정보</Styled.Header>
+          <Styled.Content $direction="row">
+            <div>
+              <h4>암장 이름</h4>
+              <Styled.TextField>{currentData?.name}</Styled.TextField>
+            </div>
+            <div>
+              <h4>주소</h4>
+              <Styled.TextField>
+                {currentData?.address.roadAddress}{' '}
+                {currentData?.address.unitAddress}
+              </Styled.TextField>
+            </div>
+            <div>
+              <h4>연락처</h4>
+              <Styled.TextField>
+                {currentData?.contact[0].info}
+              </Styled.TextField>
+            </div>
+          </Styled.Content>
+        </Styled.Container>
+        <Styled.Container>
+          <Styled.Header>설명글</Styled.Header>
+          <Styled.Content>
+            <div>{currentData?.description}</div>
+          </Styled.Content>
+        </Styled.Container>
       </Styled.Main>
     </Styled.Wrapper>
   );
@@ -139,14 +155,49 @@ const Styled = {
     display: flex;
     justify-content: space-between;
     /* gap: 20px; */
-    background: #fafaf8;
   `,
   Sidebar: styled.div`
     display: flex;
     flex-direction: column;
     width: 20vw;
   `,
-  Main: styled.div``,
+  Main: styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+    background: #fafaf8;
+    padding: 36px;
+  `,
+  Container: styled.div`
+    background: white;
+    border: 1px solid #d0d0d0;
+  `,
+  Header: styled.div`
+    border-bottom: 1px solid #d0d0d0;
+    font-weight: 700;
+    font-size: 24px;
+    padding: 32px 40px;
+  `,
+  Content: styled.div<{ $direction?: string }>`
+    padding: 32px 40px;
+    display: flex;
+    flex-direction: ${(props) => props.$direction};
+    flex-wrap: wrap;
+    gap: 20px;
+
+    h4 {
+      margin-top: 0;
+      margin-bottom: 8px;
+    }
+  `,
+  TextField: styled.div`
+    box-sizing: border-box;
+    background: #fafafa;
+    border-radius: 8px;
+    border: 1px solid #d0d0d0;
+    padding: 12px 18px;
+    width: 350px;
+  `,
 };
 
 export default EditPage;

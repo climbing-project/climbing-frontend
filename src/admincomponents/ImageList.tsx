@@ -11,7 +11,9 @@ const ImageList = ({ images }: ImageListProps) => {
   return (
     <Styled.Wrapper>
       {images.map((image, i) => (
-        <Styled.Image key={i}><Image src={image} fill={true} alt={image.replace(URL_PREFIX, '')} /></Styled.Image>
+        <Styled.Image key={i}>
+          <Image src={image} fill={true} alt={image.replace(URL_PREFIX, '')} />
+        </Styled.Image>
       ))}
     </Styled.Wrapper>
   );
@@ -26,14 +28,14 @@ const Styled = {
   `,
   Image: styled.div`
     position: relative;
-    border: 1px dashed gray;
+    border: 1px solid #d0d0d0;
     width: 140px;
     height: 80px;
 
     img {
       object-fit: cover;
     }
-  `
-}
+  `,
+};
 
 export default ImageList;

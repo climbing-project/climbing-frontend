@@ -1,6 +1,5 @@
-import { Suspense, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import Image from 'next/image';
 import styled from 'styled-components';
 import ImageUploader from '@/admincomponents/ImageUploader';
 import ImageList from '@/admincomponents/ImageList';
@@ -34,7 +33,6 @@ interface GymData {
 const EditPage = () => {
   const [currentData, setCurrentData] = useState<null | GymData>(null);
   const router = useRouter();
-  const [images, setImages] = useState<string[]>([]); // 추후 필요 시 리팩토링
 
   // 서버로부터 암장정보 fetch
   useEffect(() => {
@@ -80,13 +78,25 @@ const EditPage = () => {
         },
       ],
       latestSettingDay: '24.02.01',
+      images: [
+        'https://oruritest.s3.ap-northeast-2.amazonaws.com/bubu/43869ea0-2c95-49c2-915f-c06fc6abfdf1.png',
+        'https://oruritest.s3.ap-northeast-2.amazonaws.com/bubu/e71ff822-088f-4629-926c-de0645578b07.png',
+      ],
     };
 
     setCurrentData(sampleData);
   };
 
-  const handleImageUpdate = async (arr: string[]) => {
-    setImages((current) => [...current, ...arr]);
+  const handleImageUpdate = (arr: string[]) => {
+    if (currentData!.images) {
+      const currentList = [...currentData!.images];
+      setCurrentData(
+        (current) =>
+          ({ ...current, images: [...currentList, ...arr] }) as GymData,
+      );
+    } else {
+      setCurrentData((current) => ({ ...current, images: arr }) as GymData);
+    }
   };
 
   return (
@@ -101,12 +111,9 @@ const EditPage = () => {
         <h3>암장 이미지</h3>
         <ImageUploader handleImageUpdate={handleImageUpdate} />
         <br />
-        <ImageList images={images} />
-        <div>
-          {currentData?.images?.map((image) => (
-            <Image src={image} key={image} alt="asdf" />
-          ))}
-        </div>
+        {currentData?.images ? (
+          <ImageList images={currentData!.images} />
+        ) : null}
         <h3>기본 정보</h3>
         <div>
           <h4>암장 이름</h4>

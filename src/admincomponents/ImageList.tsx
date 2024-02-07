@@ -21,6 +21,8 @@ const Styled = {
   Wrapper: styled.div`
     display: flex;
     gap: 10px;
+    flex-wrap: wrap;
+    max-width: 600px;
   `,
   Image: styled.div`
     position: relative;

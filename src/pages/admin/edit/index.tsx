@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import styled from 'styled-components';
+import ImageUploader from '@/admincomponents/ImageUploader';
 
 interface GymData {
   id: string;
@@ -32,6 +33,7 @@ interface GymData {
 const EditPage = () => {
   const [currentData, setCurrentData] = useState<null | GymData>(null);
   const router = useRouter();
+  const [images, setImages] = useState<string[]>([]); // 추후 필요 시 리팩토링
 
   // 서버로부터 암장정보 fetch
   useEffect(() => {
@@ -82,6 +84,10 @@ const EditPage = () => {
     setCurrentData(sampleData);
   };
 
+  const handleImageUpdate = (arr: string[]) => {
+    setImages((current) => [...current, ...arr]);
+  };
+
   return (
     <Styled.Wrapper>
       <Styled.Sidebar>
@@ -92,6 +98,7 @@ const EditPage = () => {
       </Styled.Sidebar>
       <Styled.Main>
         <h3>암장 이미지</h3>
+        <ImageUploader updateList={handleImageUpdate} />
         <div>
           {currentData?.images?.map((image) => (
             <Image src={image} key={image} alt="asdf" />
@@ -120,12 +127,14 @@ const EditPage = () => {
 const Styled = {
   Wrapper: styled.div`
     display: flex;
-    gap: 20px;
+    justify-content: space-between;
+    /* gap: 20px; */
+    background: #fafaf8;
   `,
   Sidebar: styled.div`
     display: flex;
     flex-direction: column;
-    max-width: 20vw;
+    width: 20vw;
   `,
   Main: styled.div``,
 };

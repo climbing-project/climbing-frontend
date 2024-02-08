@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
-import ImageField from '@/admincomponents/ImageField';
+import ImageField from '@/components/admin/ImageField';
 
 export interface GymData {
   id: string;

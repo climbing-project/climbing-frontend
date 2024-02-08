@@ -78,8 +78,8 @@ const EditPage = () => {
       ],
       latestSettingDay: '24.02.01',
       images: [
-        'https://oruritest.s3.ap-northeast-2.amazonaws.com/bubu/43869ea0-2c95-49c2-915f-c06fc6abfdf1.png',
-        'https://oruritest.s3.ap-northeast-2.amazonaws.com/bubu/e71ff822-088f-4629-926c-de0645578b07.png',
+        'https://oruritest.s3.ap-northeast-2.amazonaws.com/bubu/89f0ca92-d610-4086-9a2b-434309cec270.png',
+        'https://oruritest.s3.ap-northeast-2.amazonaws.com/bubu/c6c61a96-a8d7-4fe3-90e8-76ade182aa70.png',
       ],
     };
 

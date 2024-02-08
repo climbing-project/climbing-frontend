@@ -1,48 +1,14 @@
 import { DragEventHandler } from 'react';
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import styled from 'styled-components';
 import { MdOutlineUploadFile } from 'react-icons/md';
 
 interface ImageUploadProps {
-  handleImageUpdate: (arr: string[]) => void;
+  handleS3Upload: (file: File, fileName: string) => Promise<void>;
 }
 
 const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png'];
 
-// 테스트용 값
-const S3_REGION = 'ap-northeast-2';
-const BUCKET_NAME = 'oruritest';
-const S3_PATH = 'https://oruritest.s3.ap-northeast-2.amazonaws.com/';
-const FOLDER_NAME = 'bubu';
-
-const ImageUploader = ({ handleImageUpdate }: ImageUploadProps) => {
-  const client = new S3Client({
-    region: S3_REGION,
-    credentials: {
-      accessKeyId: process.env.NEXT_PUBLIC_ACCESS_KEY as string,
-      secretAccessKey: process.env.NEXT_PUBLIC_SECRET_ACCESS_KEY as string,
-    },
-  });
-
-  // AWS S3에 업로드
-  const handleUpload = async (file: File, fileName: string) => {
-    const params = {
-      Bucket: BUCKET_NAME,
-      Key: `${FOLDER_NAME}/${fileName}`,
-      Body: file,
-    };
-    const files: string[] = [];
-
-    try {
-      await client.send(new PutObjectCommand(params));
-    } catch (error) {
-      console.log('에러 발생: ' + error);
-    } finally {
-      files.push(`${S3_PATH}${FOLDER_NAME}/${fileName}`);
-      handleImageUpdate(files);
-    }
-  };
-
+const ImageUploader = ({ handleS3Upload }: ImageUploadProps) => {
   const handleDrop: DragEventHandler = (e) => {
     e.preventDefault();
     if (e.dataTransfer.files.length === 0) return;
@@ -54,7 +20,7 @@ const ImageUploader = ({ handleImageUpdate }: ImageUploadProps) => {
       if (ALLOWED_IMAGE_TYPES.includes(file.type)) {
         // 랜덤한 파일명 생성
         const randomizedFileName = crypto.randomUUID() + '.png';
-        handleUpload(file, randomizedFileName);
+        handleS3Upload(file, randomizedFileName);
       } else {
         // 유효한 이미지 형식(jpeg/png)이 아닐 시 이용자에게 알리기 위해 파일 갯수 트랙킹
         rejectedFileCount += 1;

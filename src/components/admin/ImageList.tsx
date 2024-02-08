@@ -3,17 +3,17 @@ import styled from 'styled-components';
 
 interface ImageListProps {
   images: string[];
-  handleImageDelete: (url: string) => void;
+  handleS3Delete: (url: string) => void;
 }
 
 const URL_PREFIX = 'https://oruritest.s3.ap-northeast-2.amazonaws.com/bubu/';
 
-const ImageList = ({ images, handleImageDelete }: ImageListProps) => {
+const ImageList = ({ images, handleS3Delete }: ImageListProps) => {
   return (
     <Styled.Wrapper>
       {images.map((image, i) => (
         <Styled.Image key={i}>
-          <Styled.DeleteButton onClick={() => handleImageDelete(image)}>
+          <Styled.DeleteButton onClick={() => handleS3Delete(image)}>
             X
           </Styled.DeleteButton>
           <Image src={image} fill alt={image.replace(URL_PREFIX, '')} />

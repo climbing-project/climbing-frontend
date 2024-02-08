@@ -36,27 +36,27 @@ const ImageField = ({ imageData, setCurrentData }: ImageFieldProps) => {
       Key: `${FOLDER_NAME}/${fileName}`,
       Body: file,
     };
-    const files: string[] = [];
 
     try {
       await client.send(new PutObjectCommand(params));
     } catch (error) {
       console.log('에러 발생: ' + error);
     } finally {
-      files.push(`${S3_PATH}${FOLDER_NAME}/${fileName}`);
-      handleImageUpload(files);
+      handleImageUpload(`${S3_PATH}${FOLDER_NAME}/${fileName}`);
     }
   };
 
-  const handleImageUpload = (arr: string[]) => {
+  const handleImageUpload = (newImage: string) => {
     if (imageData) {
       const currentList = [...imageData];
       setCurrentData(
         (current) =>
-          ({ ...current, images: [...currentList, ...arr] }) as GymData,
+          ({ ...current, images: [...currentList, newImage] }) as GymData,
       );
     } else {
-      setCurrentData((current) => ({ ...current, images: arr }) as GymData);
+      setCurrentData(
+        (current) => ({ ...current, images: [newImage] }) as GymData,
+      );
     }
   };
 

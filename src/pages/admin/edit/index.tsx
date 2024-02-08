@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
-import ImageUploader from '@/admincomponents/ImageUploader';
-import ImageList from '@/admincomponents/ImageList';
+import ImageField from '@/admincomponents/ImageField';
 
-interface GymData {
+export interface GymData {
   id: string;
   name: string;
   address: {
@@ -87,22 +86,6 @@ const EditPage = () => {
     setCurrentData(sampleData);
   };
 
-  const handleImageUpdate = (arr: string[]) => {
-    if (currentData!.images) {
-      const currentList = [...currentData!.images];
-      setCurrentData(
-        (current) =>
-          ({ ...current, images: [...currentList, ...arr] }) as GymData,
-      );
-    } else {
-      setCurrentData((current) => ({ ...current, images: arr }) as GymData);
-    }
-  };
-
-  const handleImageDelete = (url: string) => {
-    console.log("delete " + url)
-  }
-
   return (
     <Styled.Wrapper>
       <Styled.Sidebar>
@@ -115,10 +98,10 @@ const EditPage = () => {
         <Styled.Container>
           <Styled.Header>암장 이미지</Styled.Header>
           <Styled.Content $direction="column">
-            <ImageUploader handleImageUpdate={handleImageUpdate} />
-            {currentData?.images ? (
-              <ImageList handleImageDelete={handleImageDelete} images={currentData!.images} />
-            ) : null}
+            <ImageField
+              imageData={currentData?.images ? currentData.images : null}
+              setCurrentData={setCurrentData}
+            />
           </Styled.Content>
         </Styled.Container>
         <Styled.Container>

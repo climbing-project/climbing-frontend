@@ -99,6 +99,10 @@ const EditPage = () => {
     }
   };
 
+  const handleImageDelete = (url: string) => {
+    console.log("delete " + url)
+  }
+
   return (
     <Styled.Wrapper>
       <Styled.Sidebar>
@@ -113,7 +117,7 @@ const EditPage = () => {
           <Styled.Content $direction="column">
             <ImageUploader handleImageUpdate={handleImageUpdate} />
             {currentData?.images ? (
-              <ImageList images={currentData!.images} />
+              <ImageList handleImageDelete={handleImageDelete} images={currentData!.images} />
             ) : null}
           </Styled.Content>
         </Styled.Container>

@@ -1,14 +1,12 @@
-"use client";
+"use cliebt";
 import { styled } from "styled-components";
 import Link from "next/link";
-import { MouseEvent, useEffect, useState } from "react";
-import AuthButton from "./auth/AuthBar";
+import { useEffect, useState } from "react";
 import AuthBar from "./auth/AuthBar";
 import { usePathname } from "next/navigation";
-import { FaBullseye } from "react-icons/fa6";
 
 // navbar(헤더)를 보여주지 않을 페이지 주소 지정
-const nonNavPage = ["/login", "join"];
+const nonNavPage = ["/login", "/join"];
 
 const Navbar = () => {
   const pathName = usePathname();
@@ -16,12 +14,8 @@ const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    nonNavPage.some((url) => {
-      if (pathName?.includes(url)) {
-        return setShowNavBar(false);
-      }
-      setShowNavBar(true);
-    });
+    const needNavBar = !nonNavPage.some((url) => pathName?.includes(url));
+    setShowNavBar(needNavBar);
   }, [pathName]);
 
   return (

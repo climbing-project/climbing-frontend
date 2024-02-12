@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { FormEventHandler } from "react";
+import Link from "next/link";
 
 const GeneralLogin = () => {
   const handleSubmit = async (event: any) => {
@@ -33,6 +34,11 @@ const GeneralLogin = () => {
         />
         <S.ButtonBox type="submit">로그인</S.ButtonBox>
       </S.LoginForm>
+      <S.OptionContainer>
+        <S.Option href={"/find/password"}>비밀번호 찾기</S.Option>
+        <S.Option href={"/find/id"}>아이디 찾기</S.Option>
+        <S.Option href={"/join"}>회원가입</S.Option>
+      </S.OptionContainer>
     </S.Wrapper>
   );
 };
@@ -55,6 +61,15 @@ const S = {
     height: 40px;
     background-color: #f9f2f2;
     border: none;
+  `,
+  OptionContainer: styled.div`
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-end;
+  `,
+  Option: styled(Link)`
+    text-decoration: none;
+    margin-left: 20px;
   `,
 };
 

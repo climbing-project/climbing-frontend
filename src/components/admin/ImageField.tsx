@@ -9,7 +9,8 @@ import ImageList from './ImageList';
 import { GymData } from '@/pages/admin/edit';
 
 interface ImageFieldProps {
-  imageData: string[] | null;
+  originalImg: string[] | null;
+  thumbnailImg: string[] | null;
   setCurrentData: Dispatch<SetStateAction<GymData | null>>;
 }
 
@@ -19,7 +20,11 @@ const BUCKET_NAME = 'oruritest';
 const S3_PATH = 'https://oruritest.s3.ap-northeast-2.amazonaws.com/';
 const FOLDER_NAME = 'bubu';
 
-const ImageField = ({ imageData, setCurrentData }: ImageFieldProps) => {
+const ImageField = ({
+  originalImg,
+  thumbnailImg,
+  setCurrentData,
+}: ImageFieldProps) => {
   // S3 클라이언트 생성
   const client = new S3Client({
     region: S3_REGION,
@@ -47,28 +52,41 @@ const ImageField = ({ imageData, setCurrentData }: ImageFieldProps) => {
   };
 
   const handleImageUpload = (newImage: string) => {
-    if (imageData) {
-      const currentList = [...imageData];
-      setCurrentData(
-        (current) =>
-          ({ ...current, images: [...currentList, newImage] }) as GymData,
-      );
-    } else {
-      setCurrentData(
-        (current) => ({ ...current, images: [newImage] }) as GymData,
-      );
+    const key = newImage.includes('thumb_') ? 'imageThumbnails' : 'images';
+    let currentList: string[];
+
+    switch (key) {
+      case 'imageThumbnails':
+        currentList = thumbnailImg ? [...thumbnailImg] : [];
+        setCurrentData(
+          (current) =>
+            ({ ...current, [key]: [...currentList, newImage] }) as GymData,
+        );
+        break;
+
+      case 'images':
+        currentList = originalImg ? [...originalImg] : [];
     }
+    setCurrentData(
+      (current) =>
+        ({ ...current, [key]: [...currentList, newImage] }) as GymData,
+    );
   };
 
   const handleS3Delete = async (url: string) => {
     const fileKey = url.replace(S3_PATH, '');
-    const params = {
+    const thumbParams = {
       Bucket: BUCKET_NAME,
       Key: fileKey,
     };
+    const originParams = {
+      Bucket: BUCKET_NAME,
+      Key: fileKey.replace('thumb_', ''),
+    };
 
     try {
-      await client.send(new DeleteObjectCommand(params));
+      await client.send(new DeleteObjectCommand(thumbParams));
+      await client.send(new DeleteObjectCommand(originParams));
     } catch (error) {
       console.log('에러 발생: ' + error);
     } finally {
@@ -77,17 +95,27 @@ const ImageField = ({ imageData, setCurrentData }: ImageFieldProps) => {
   };
 
   const handleImageDelete = (url: string) => {
-    const filteredList = imageData?.filter((imageUrl) => imageUrl !== url);
-    setCurrentData(
-      (current) => ({ ...current, images: filteredList }) as GymData,
-    );
+    const originUrl = url.replace('thumb_', '');
+    setCurrentData((current) => {
+      const filteredOriginList = current!.images!.filter(
+        (img) => img !== originUrl,
+      );
+      const filteredThumbnailList = current!.imageThumbnails!.filter(
+        (img) => img !== url,
+      );
+      return {
+        ...current,
+        images: filteredOriginList,
+        imageThumbnails: filteredThumbnailList,
+      } as GymData;
+    });
   };
 
   return (
     <>
       <ImageUploader handleS3Upload={handleS3Upload} />
-      {imageData ? (
-        <ImageList handleS3Delete={handleS3Delete} images={imageData} />
+      {thumbnailImg ? (
+        <ImageList handleS3Delete={handleS3Delete} images={thumbnailImg} />
       ) : null}
     </>
   );

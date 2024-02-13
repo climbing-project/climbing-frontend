@@ -13,7 +13,7 @@ const MAX_HEIGHT = 760;
 const MAX_PHOTO_COUNT = 5;
 const IMG_FORMAT = 'JPEG';
 const THUMBNAIL_WIDTH = 140;
-const THUMBNAIL_HEIGHT = 80;
+const THUMBNAIL_HEIGHT = 140;
 
 const ImageUploader = ({ handleS3Upload }: ImageUploadProps) => {
   const handleDrop: DragEventHandler = (e) => {
@@ -40,6 +40,19 @@ const ImageUploader = ({ handleS3Upload }: ImageUploadProps) => {
           (resizedImg) => {
             const randomizedFileName = `${crypto.randomUUID()}.${IMG_FORMAT}`;
             handleS3Upload(resizedImg as File, randomizedFileName);
+            FileResizer.imageFileResizer(
+              resizedImg as File,
+              THUMBNAIL_WIDTH,
+              THUMBNAIL_HEIGHT,
+              IMG_FORMAT,
+              100,
+              0,
+              (thumb) => {
+                const thumbFileName = `thumb_${randomizedFileName}`;
+                handleS3Upload(thumb as File, thumbFileName);
+              },
+              'file',
+            );
           },
           'file',
         );

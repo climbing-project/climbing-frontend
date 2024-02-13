@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
-import ImageField from '@/components/admin/ImageField';
+import ImageEditor from '@/components/admin/ImageEditor';
+import BasicInfoEditor from '@/components/admin/BasicInfoEditor';
+import DescriptionEditor from '@/components/admin/DescriptionEditor';
 
 export interface GymData {
   id: string;
@@ -21,6 +23,7 @@ export interface GymData {
   }>;
   latestSettingDay: string;
   images?: Array<string>;
+  imageThumbnails?: Array<string>;
   openHours?: Array<{ days: string; hours: string }>;
   pricing?: Array<{ item: string; price: string }>;
   tags?: Array<string>;
@@ -31,13 +34,17 @@ export interface GymData {
 
 const EditPage = () => {
   const [currentData, setCurrentData] = useState<null | GymData>(null);
+  const [loadedData, setLoadedData] = useState<null | GymData>(null);
+  const [isEdited, setIsEdited] = useState(false);
   const router = useRouter();
+  console.log(currentData);
 
   // 서버로부터 암장정보 fetch
   useEffect(() => {
     // 신규 생성일 경우 router query로 넘어온 데이터를 state에 저장하고 early return함
     if (router.query.newRegister) {
       const { gymData } = router.query;
+      setLoadedData(JSON.parse(gymData as string));
       setCurrentData(JSON.parse(gymData as string));
       return;
     }
@@ -57,7 +64,7 @@ const EditPage = () => {
 
     // 관리자계정 정보/API가 준비되기 전에 사용할 임의값
     const sampleData = {
-      id: 'sample-id',
+      id: '6e5b9475-8916-4785-ba85-b262fbf06efb',
       name: '샘플암장2',
       address: {
         jibunAddress: '대전광역시 동구 판암동 498-14',
@@ -77,13 +84,20 @@ const EditPage = () => {
         },
       ],
       latestSettingDay: '24.02.01',
-      images: [
-        'https://oruritest.s3.ap-northeast-2.amazonaws.com/bubu/89f0ca92-d610-4086-9a2b-434309cec270.png',
-        'https://oruritest.s3.ap-northeast-2.amazonaws.com/bubu/c6c61a96-a8d7-4fe3-90e8-76ade182aa70.png',
-      ],
     };
 
+    setLoadedData(sampleData);
     setCurrentData(sampleData);
+  };
+
+  const updateData = async () => {
+    await fetch(`http://localhost:3000/gyms/${currentData!.id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(currentData!),
+    });
   };
 
   return (
@@ -95,43 +109,20 @@ const EditPage = () => {
         <h4>댓글 관리</h4>
       </Styled.Sidebar>
       <Styled.Main>
-        <Styled.Container>
-          <Styled.Header>암장 이미지</Styled.Header>
-          <Styled.Content $direction="column">
-            <ImageField
-              imageData={currentData?.images ? currentData.images : null}
-              setCurrentData={setCurrentData}
-            />
-          </Styled.Content>
-        </Styled.Container>
-        <Styled.Container>
-          <Styled.Header>기본 정보</Styled.Header>
-          <Styled.Content $direction="row">
-            <div>
-              <h4>암장 이름</h4>
-              <Styled.TextField>{currentData?.name}</Styled.TextField>
-            </div>
-            <div>
-              <h4>주소</h4>
-              <Styled.TextField>
-                {currentData?.address.roadAddress}{' '}
-                {currentData?.address.unitAddress}
-              </Styled.TextField>
-            </div>
-            <div>
-              <h4>연락처</h4>
-              <Styled.TextField>
-                {currentData?.contact[0].info}
-              </Styled.TextField>
-            </div>
-          </Styled.Content>
-        </Styled.Container>
-        <Styled.Container>
-          <Styled.Header>설명글</Styled.Header>
-          <Styled.Content>
-            <div>{currentData?.description}</div>
-          </Styled.Content>
-        </Styled.Container>
+        <ImageEditor
+          images={currentData?.images}
+          thumbnails={currentData?.imageThumbnails}
+          setCurrentData={setCurrentData}
+        />
+        <BasicInfoEditor
+          name={currentData?.name}
+          address={currentData?.address}
+          contactList={currentData?.contact}
+        />
+        <DescriptionEditor description={currentData?.description} />
+        <button onClick={updateData} disabled={!isEdited}>
+          저장
+        </button>
       </Styled.Main>
     </Styled.Wrapper>
   );
@@ -154,36 +145,6 @@ const Styled = {
     gap: 36px;
     background: #fafaf8;
     padding: 36px;
-  `,
-  Container: styled.div`
-    background: white;
-    border: 1px solid #d0d0d0;
-  `,
-  Header: styled.div`
-    border-bottom: 1px solid #d0d0d0;
-    font-weight: 700;
-    font-size: 24px;
-    padding: 32px 40px;
-  `,
-  Content: styled.div<{ $direction?: string }>`
-    padding: 32px 40px;
-    display: flex;
-    flex-direction: ${(props) => props.$direction};
-    flex-wrap: wrap;
-    gap: 20px;
-
-    h4 {
-      margin-top: 0;
-      margin-bottom: 8px;
-    }
-  `,
-  TextField: styled.div`
-    box-sizing: border-box;
-    background: #fafafa;
-    border-radius: 8px;
-    border: 1px solid #d0d0d0;
-    padding: 12px 18px;
-    width: 350px;
   `,
 };
 

@@ -12,7 +12,7 @@ const Join = () => {
       nickName: { label: event.target.nickName.value, type: "nickName" },
     };
 
-    const response = await fetch("https://http://localhost:3000/members/join", {
+    const response = await fetch("http://localhost:3000/members/join", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(credentials),

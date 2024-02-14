@@ -70,6 +70,7 @@ const S = {
   Option: styled(Link)`
     text-decoration: none;
     margin-left: 20px;
+    font-size: 12px;
   `,
 };
 

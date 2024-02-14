@@ -86,7 +86,7 @@ const EditPage = () => {
     // 암장 등록이 돼있는 경우 fetch로 데이터를 불러와 state에 저장
     fetchData();
     setIsLoading(false);
-  }, []);
+  }, [router.query]);
 
   const compareData = () => {
     let dataChanged = false;

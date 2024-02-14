@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import { GymData } from '@/pages/admin/edit';
 
@@ -11,10 +11,9 @@ const DescriptionEditor = ({
   description,
   setCurrentData,
 }: DescriptionEditorProps) => {
-  const [descriptionInput, setDescriptionInput] = useState(description);
   const handleChange = (input: string) => {
     if (input.length > 300) return;
-    setDescriptionInput(input);
+    setCurrentData((prev) => ({ ...prev, description: input }) as GymData);
   };
   return (
     <Styled.Wrapper>
@@ -22,12 +21,11 @@ const DescriptionEditor = ({
       <Styled.Content>
         <Styled.TextField>
           <textarea
-            value={descriptionInput}
+            value={description}
             onChange={(e) => handleChange(e.target.value)}
-            onBlur={(e) => setCurrentData((prev) => ({...prev, description: e.target.value} as GymData))}
           />
         </Styled.TextField>
-        {descriptionInput.length}/300
+        {description.length}/300
       </Styled.Content>
     </Styled.Wrapper>
   );

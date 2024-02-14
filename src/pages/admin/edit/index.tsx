@@ -36,6 +36,34 @@ export interface GymData {
   accommodations?: Array<string>;
 }
 
+const sampleData = {
+  id: '6e5b9475-8916-4785-ba85-b262fbf06efb',
+  name: '샘플암장1',
+  address: {
+    jibunAddress: '대전광역시 동구 판암동 498-14',
+    roadAddress: '대전광역시 동구 판교3길 3',
+    unitAddress: '4층',
+  },
+  description:
+    '왜 은행회관 헬스클럽에 다녀야할까요? Why Health Club 은행회관 헬스클럽은 고품격입니다. 기구 및 각종 인테리어 최고급으로 품격을 느낄 수 있습니다. 최고급 헬스클럽과 사우나가 준비된 은행회관 헬스클럽에서 지금 바로 다짐해 보세요! ',
+  coordinates: {
+    latitude: 36.318415,
+    longitude: 127.4521708,
+  },
+  contact: '1588-1588',
+  sns: [
+    {
+      platform: 'twitter',
+      account: 'qwerty',
+    },
+    {
+      platform: 'facebook',
+      account: 'qwerty',
+    },
+  ],
+  latestSettingDay: '24.02.01',
+};
+
 const EditPage = () => {
   const [currentData, setCurrentData] = useState<null | GymData>(null);
   const [loadedData, setLoadedData] = useState<null | GymData>(null);
@@ -61,7 +89,7 @@ const EditPage = () => {
   }, []);
 
   const compareData = () => {
-    let dataChanged;
+    let dataChanged = false;
     const dataKeys = Object.keys(currentData as GymData);
 
     dataKeys.forEach((key) => {
@@ -72,7 +100,18 @@ const EditPage = () => {
         dataChanged = true;
     });
 
-    if (dataChanged) return updateData();
+    return dataChanged;
+  };
+
+  const handlePageChange = (page: number) => {
+    if (currentPage === page) return;
+    const dataChanged = compareData();
+    if (!dataChanged) return setCurrentPage(page);
+    const response = confirm('수정 중인 데이터가 있습니다. 이동할까요?');
+    if (response) {
+      setCurrentData(loadedData);
+      setCurrentPage(page);
+    }
   };
 
   const fetchData = () => {
@@ -81,40 +120,27 @@ const EditPage = () => {
     const id = '전역상태에서 가져온 값';
     fetch(`API주소_${id}`)
       .then((response) => response.json())
-      .then((data) => setData(data));
+      .then((data) => {
+        setLoadedData(data);
+        setCurrentData(data);
+      });
     */
 
     // 관리자계정 정보/API가 준비되기 전에 사용할 임의값
-    const sampleData = {
-      id: '6e5b9475-8916-4785-ba85-b262fbf06efb',
-      name: '샘플암장2',
-      address: {
-        jibunAddress: '대전광역시 동구 판암동 498-14',
-        roadAddress: '대전광역시 동구 판교3길 3',
-        unitAddress: '4층',
-      },
-      description:
-        '왜 은행회관 헬스클럽에 다녀야할까요? Why Health Club 은행회관 헬스클럽은 고품격입니다. 기구 및 각종 인테리어 최고급으로 품격을 느낄 수 있습니다. 최고급 헬스클럽과 사우나가 준비된 은행회관 헬스클럽에서 지금 바로 다짐해 보세요! ',
-      coordinates: {
-        latitude: 36.318415,
-        longitude: 127.4521708,
-      },
-      contact: '1588-1588',
-      sns: [
-        {
-          platform: 'twitter',
-          account: 'qwerty',
-        },
-        {
-          platform: 'facebook',
-          account: 'qwerty',
-        },
-      ],
-      latestSettingDay: '24.02.01',
-    };
-
-    setLoadedData(sampleData);
-    setCurrentData(sampleData);
+    fetch('http://localhost:3000/gyms/6e5b9475-8916-4785-ba85-b262fbf06efb')
+      .then((response) => response.json())
+      .then((data) => {
+        setLoadedData(data);
+        setCurrentData(data);
+      })
+      .catch((error) => {
+        console.log(error.message);
+        console.log(
+          'json-server 서버가 오프라인입니다. 암장 정보를 샘플값으로 대체합니다.',
+        );
+        setLoadedData(sampleData);
+        setCurrentData(sampleData);
+      });
   };
 
   const updateData = async () => {
@@ -131,22 +157,8 @@ const EditPage = () => {
     <Styled.Wrapper>
       <Styled.Sidebar>
         <h3>암장 정보 관리</h3>
-        <Styled.Link
-          onClick={() => {
-            if (currentPage === 1) return;
-            setCurrentPage(1);
-          }}
-        >
-          기본 정보
-        </Styled.Link>
-        <Styled.Link
-          onClick={() => {
-            if (currentPage === 2) return;
-            setCurrentPage(2);
-          }}
-        >
-          상세 정보
-        </Styled.Link>
+        <Styled.Link onClick={() => handlePageChange(1)}>기본 정보</Styled.Link>
+        <Styled.Link onClick={() => handlePageChange(2)}>상세 정보</Styled.Link>
         <h4>댓글 관리</h4>
       </Styled.Sidebar>
       {isLoading ? (
@@ -163,9 +175,11 @@ const EditPage = () => {
               <BasicInfoEditor
                 name={currentData?.name || ''}
                 address={
-                  currentData
-                    ? currentData.address
-                    : { jibunAddress: '', roadAddress: '', unitAddress: '' }
+                  currentData?.address || {
+                    jibunAddress: '',
+                    roadAddress: '',
+                    unitAddress: '',
+                  }
                 }
                 contact={currentData?.contact || ''}
                 snsList={currentData?.sns}
@@ -183,7 +197,14 @@ const EditPage = () => {
               <DifficultyEditor setCurrentData={setCurrentData} />
             </>
           )}
-          <button onClick={compareData}>저장</button>
+          <button
+            onClick={() => {
+              const dataChanged = compareData();
+              if (dataChanged) updateData();
+            }}
+          >
+            저장
+          </button>
         </Styled.Main>
       )}
     </Styled.Wrapper>
@@ -210,6 +231,10 @@ const Styled = {
   `,
   Link: styled.div`
     cursor: pointer;
+
+    &:hover {
+      color: #1aabff;
+    }
   `,
 };
 

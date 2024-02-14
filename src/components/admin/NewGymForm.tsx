@@ -40,7 +40,7 @@ const NewGymForm = ({ handleSubmit }: NewGymFormProps) => {
             name: nameField.value,
             address,
             coordinates,
-            contact: [{ platform: 'phone', info: contactField.value }],
+            contact: contactField.value,
             latestSettingDay: getSettingDate(),
           });
         }}

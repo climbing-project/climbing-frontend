@@ -4,6 +4,9 @@ import styled from 'styled-components';
 import ImageEditor from '@/components/admin/ImageEditor';
 import BasicInfoEditor from '@/components/admin/BasicInfoEditor';
 import DescriptionEditor from '@/components/admin/DescriptionEditor';
+import OpenHoursEditor from '@/components/admin/OpenHoursEditor';
+import AccommodationsEditor from '@/components/admin/AccommodationsEditor';
+import DifficultyEditor from '@/components/admin/DifficultyEditor';
 
 export interface GymData {
   id: string;
@@ -17,11 +20,12 @@ export interface GymData {
     latitude: number;
     longitude: number;
   };
-  contact: Array<{
-    platform: string;
-    info: string;
-  }>;
+  contact: string;
   latestSettingDay: string;
+  sns?: Array<{
+    platform: string;
+    account: string;
+  }>;
   images?: Array<string>;
   imageThumbnails?: Array<string>;
   openHours?: Array<{ days: string; hours: string }>;
@@ -35,7 +39,8 @@ export interface GymData {
 const EditPage = () => {
   const [currentData, setCurrentData] = useState<null | GymData>(null);
   const [loadedData, setLoadedData] = useState<null | GymData>(null);
-  const [isEdited, setIsEdited] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
   const router = useRouter();
   console.log(currentData);
 
@@ -46,12 +51,29 @@ const EditPage = () => {
       const { gymData } = router.query;
       setLoadedData(JSON.parse(gymData as string));
       setCurrentData(JSON.parse(gymData as string));
+      setIsLoading(false);
       return;
     }
 
     // 암장 등록이 돼있는 경우 fetch로 데이터를 불러와 state에 저장
     fetchData();
+    setIsLoading(false);
   }, []);
+
+  const compareData = () => {
+    let dataChanged;
+    const dataKeys = Object.keys(currentData as GymData);
+
+    dataKeys.forEach((key) => {
+      if (
+        currentData![key as keyof typeof currentData] !==
+        loadedData![key as keyof typeof loadedData]
+      )
+        dataChanged = true;
+    });
+
+    if (dataChanged) return updateData();
+  };
 
   const fetchData = () => {
     /*
@@ -77,10 +99,15 @@ const EditPage = () => {
         latitude: 36.318415,
         longitude: 127.4521708,
       },
-      contact: [
+      contact: '1588-1588',
+      sns: [
         {
-          platform: 'phone',
-          info: '1588-1588',
+          platform: 'twitter',
+          account: 'qwerty',
+        },
+        {
+          platform: 'facebook',
+          account: 'qwerty',
         },
       ],
       latestSettingDay: '24.02.01',
@@ -104,26 +131,61 @@ const EditPage = () => {
     <Styled.Wrapper>
       <Styled.Sidebar>
         <h3>암장 정보 관리</h3>
-        <div>기본 정보</div>
-        <div>상세 정보</div>
+        <Styled.Link
+          onClick={() => {
+            if (currentPage === 1) return;
+            setCurrentPage(1);
+          }}
+        >
+          기본 정보
+        </Styled.Link>
+        <Styled.Link
+          onClick={() => {
+            if (currentPage === 2) return;
+            setCurrentPage(2);
+          }}
+        >
+          상세 정보
+        </Styled.Link>
         <h4>댓글 관리</h4>
       </Styled.Sidebar>
-      <Styled.Main>
-        <ImageEditor
-          images={currentData?.images}
-          thumbnails={currentData?.imageThumbnails}
-          setCurrentData={setCurrentData}
-        />
-        <BasicInfoEditor
-          name={currentData?.name}
-          address={currentData?.address}
-          contactList={currentData?.contact}
-        />
-        <DescriptionEditor description={currentData?.description} />
-        <button onClick={updateData} disabled={!isEdited}>
-          저장
-        </button>
-      </Styled.Main>
+      {isLoading ? (
+        <div>데이터 로딩 중</div>
+      ) : (
+        <Styled.Main>
+          {currentPage === 1 ? (
+            <>
+              <ImageEditor
+                images={currentData?.images}
+                thumbnails={currentData?.imageThumbnails}
+                setCurrentData={setCurrentData}
+              />
+              <BasicInfoEditor
+                name={currentData?.name || ''}
+                address={
+                  currentData
+                    ? currentData.address
+                    : { jibunAddress: '', roadAddress: '', unitAddress: '' }
+                }
+                contact={currentData?.contact || ''}
+                snsList={currentData?.sns}
+                setCurrentData={setCurrentData}
+              />
+              <DescriptionEditor
+                description={currentData?.description || ''}
+                setCurrentData={setCurrentData}
+              />
+            </>
+          ) : (
+            <>
+              <OpenHoursEditor setCurrentData={setCurrentData} />
+              <AccommodationsEditor setCurrentData={setCurrentData} />
+              <DifficultyEditor setCurrentData={setCurrentData} />
+            </>
+          )}
+          <button onClick={compareData}>저장</button>
+        </Styled.Main>
+      )}
     </Styled.Wrapper>
   );
 };
@@ -132,11 +194,11 @@ const Styled = {
   Wrapper: styled.div`
     display: flex;
     justify-content: space-between;
-    /* gap: 20px; */
   `,
   Sidebar: styled.div`
     display: flex;
     flex-direction: column;
+    flex-shrink: 0;
     width: 20vw;
   `,
   Main: styled.div`
@@ -145,6 +207,9 @@ const Styled = {
     gap: 36px;
     background: #fafaf8;
     padding: 36px;
+  `,
+  Link: styled.div`
+    cursor: pointer;
   `,
 };
 

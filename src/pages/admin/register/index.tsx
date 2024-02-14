@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
-import NewGymForm from '@/admincomponents/NewGymForm';
+import NewGymForm from '@/components/admin/NewGymForm';
 
 interface NewGymData {
   id?: string;
@@ -65,6 +65,11 @@ const GymRegistration = () => {
 
   // CRUD: Create
   const createData = async (input: NewGymData) => {
+    // Test용 값 세팅
+    const testId = crypto.randomUUID();
+    input.id = testId;
+    // 백엔드 API로 교체 시 삭제
+
     const data = await fetch('http://localhost:3000/gyms', {
       method: 'POST',
       headers: {
@@ -75,7 +80,7 @@ const GymRegistration = () => {
     });
     const result = await data.json(); // 서버로부터 id를 내려받을 예정
     // return result;
-    return crypto.randomUUID(); // 시뮬레이팅을 위한 임의값 (서버 API가 생성되면 삭제!)
+    return testId; // 시뮬레이팅을 위한 임의값 (서버 API가 생성되면 삭제!)
   };
 
   return (

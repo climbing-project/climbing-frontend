@@ -2,11 +2,11 @@ import { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import { GymData } from '@/pages/admin/edit';
 
-interface DifficultyEditorProps {
+interface GradeEditorProps {
   setCurrentData: Dispatch<SetStateAction<GymData | null>>;
 }
 
-const DifficultyEditor = ({setCurrentData}: DifficultyEditorProps) => {
+const GradeEditor = ({setCurrentData}: GradeEditorProps) => {
   return (
     <Styled.Wrapper>
       <Styled.Header>난이도</Styled.Header>
@@ -35,4 +35,4 @@ const Styled = {
   `,
 };
 
-export default DifficultyEditor;
+export default GradeEditor;

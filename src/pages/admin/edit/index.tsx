@@ -197,7 +197,7 @@ const EditPage = () => {
                 accommodationsList={currentData?.accommodations}
                 setCurrentData={setCurrentData}
               />
-              <GradeEditor setCurrentData={setCurrentData} />
+              <GradeEditor gradesList={currentData?.grades} setCurrentData={setCurrentData} />
             </>
           )}
           <button

@@ -4,15 +4,41 @@ import GradeBlock from './GradeBlock';
 import { GymData } from '@/pages/admin/edit';
 
 interface GradeEditorProps {
+  gradesList: string[] | undefined;
   setCurrentData: Dispatch<SetStateAction<GymData | null>>;
 }
 
-const GradeEditor = ({ setCurrentData }: GradeEditorProps) => {
+const NEW_LIST = ['#d9d9d9', '#d9d9d9', '#d9d9d9'];
+
+const GradeEditor = ({ gradesList, setCurrentData }: GradeEditorProps) => {
+  const handleColorChange = (index: number, color: string) => {
+    const currentList = gradesList ? [...gradesList] : [...NEW_LIST];
+    currentList[index] = color;
+    setCurrentData(
+      (prev) => ({ ...prev, grades: [...currentList] }) as GymData,
+    );
+  };
   return (
     <Styled.Wrapper>
       <Styled.Header>난이도</Styled.Header>
       <Styled.Content>
-        <GradeBlock />
+        {gradesList
+          ? gradesList.map((grade, i) => (
+              <GradeBlock
+                key={i}
+                index={i}
+                color={grade}
+                handleColorChange={handleColorChange}
+              />
+            ))
+          : NEW_LIST.map((grade, i) => (
+              <GradeBlock
+                key={i}
+                index={i}
+                color={grade}
+                handleColorChange={handleColorChange}
+              />
+            ))}
       </Styled.Content>
     </Styled.Wrapper>
   );
@@ -34,7 +60,7 @@ const Styled = {
     display: flex;
     flex-direction: ${(props) => props.$direction};
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 6px;
   `,
 };
 

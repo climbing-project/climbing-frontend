@@ -1,23 +1,54 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import ColorPicker from './ColorPicker';
 
-const GradeBlock = () => {
-  const [blockColor, setBlockColor] = useState('#d9d9d9');
+interface GradeBlockProps {
+  index: number;
+  color: string;
+  handleColorChange: (index: number, color: string) => void;
+}
+
+const GradeBlock = ({
+  index,
+  color,
+  handleColorChange,
+}: GradeBlockProps) => {
+  const [blockColor, setBlockColor] = useState(color);
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const handleColorSelect = (color: string) => {
+    setBlockColor(color);
+    handleColorChange(index, color);
+  };
+
+  const handleMouseEnter = () => setIsExpanded(true);
+  const handleMouseLeave = () => setIsExpanded(false);
+
   return (
-    <>
-      <Styled.Block $color={blockColor} />
-      <ColorPicker setBlockColor={setBlockColor} />
-    </>
+    <Styled.Wrapper>
+      <Styled.Block
+        $color={blockColor}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      />
+      {isExpanded ? (
+        <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+          <ColorPicker handleColorSelect={handleColorSelect} />
+        </div>
+      ) : null}
+    </Styled.Wrapper>
   );
 };
 
 const Styled = {
+  Wrapper: styled.div`
+    position: relative;
+  `,
   Block: styled.div<{ $color: string }>`
     box-sizing: border-box;
     border: 1px solid #d0d0d0;
-    width: 100px;
-    height: 100px;
+    width: 65px;
+    height: 45px;
     background: ${({ $color }) => $color};
     cursor: pointer;
   `,

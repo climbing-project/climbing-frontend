@@ -6,7 +6,7 @@ import BasicInfoEditor from '@/components/admin/BasicInfoEditor';
 import DescriptionEditor from '@/components/admin/DescriptionEditor';
 import OpenHoursEditor from '@/components/admin/OpenHoursEditor';
 import AccommodationsEditor from '@/components/admin/AccommodationsEditor';
-import DifficultyEditor from '@/components/admin/DifficultyEditor';
+import GradeEditor from '@/components/admin/GradeEditor';
 
 export interface GymData {
   id: string;
@@ -51,6 +51,7 @@ const sampleData = {
     longitude: 127.4521708,
   },
   contact: '1588-1588',
+  accommodations: ['moonboard', 'showers'],
   sns: [
     {
       platform: 'twitter',
@@ -134,7 +135,6 @@ const EditPage = () => {
         setCurrentData(data);
       })
       .catch((error) => {
-        console.log(error.message);
         console.log(
           'json-server 서버가 오프라인입니다. 암장 정보를 샘플값으로 대체합니다.',
         );
@@ -193,8 +193,8 @@ const EditPage = () => {
           ) : (
             <>
               <OpenHoursEditor setCurrentData={setCurrentData} />
-              <AccommodationsEditor setCurrentData={setCurrentData} />
-              <DifficultyEditor setCurrentData={setCurrentData} />
+              <AccommodationsEditor accommodationsList={currentData?.accommodations} setCurrentData={setCurrentData} />
+              <GradeEditor setCurrentData={setCurrentData} />
             </>
           )}
           <button

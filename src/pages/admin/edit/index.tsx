@@ -193,14 +193,20 @@ const EditPage = () => {
           ) : (
             <>
               <OpenHoursEditor setCurrentData={setCurrentData} />
-              <AccommodationsEditor accommodationsList={currentData?.accommodations} setCurrentData={setCurrentData} />
+              <AccommodationsEditor
+                accommodationsList={currentData?.accommodations}
+                setCurrentData={setCurrentData}
+              />
               <GradeEditor setCurrentData={setCurrentData} />
             </>
           )}
           <button
             onClick={() => {
               const dataChanged = compareData();
-              if (dataChanged) updateData();
+              if (dataChanged) {
+                updateData();
+                setLoadedData(currentData);
+              }
             }}
           >
             저장

@@ -1,16 +1,19 @@
 import { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
+import GradeBlock from './GradeBlock';
 import { GymData } from '@/pages/admin/edit';
 
 interface GradeEditorProps {
   setCurrentData: Dispatch<SetStateAction<GymData | null>>;
 }
 
-const GradeEditor = ({setCurrentData}: GradeEditorProps) => {
+const GradeEditor = ({ setCurrentData }: GradeEditorProps) => {
   return (
     <Styled.Wrapper>
       <Styled.Header>난이도</Styled.Header>
-      <Styled.Content>{"테스트"}</Styled.Content>
+      <Styled.Content>
+        <GradeBlock />
+      </Styled.Content>
     </Styled.Wrapper>
   );
 };

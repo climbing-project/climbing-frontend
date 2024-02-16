@@ -7,6 +7,7 @@ import DescriptionEditor from '@/components/admin/DescriptionEditor';
 import OpenHoursEditor from '@/components/admin/OpenHoursEditor';
 import AccommodationsEditor from '@/components/admin/AccommodationsEditor';
 import GradeEditor from '@/components/admin/GradeEditor';
+import PricingEditor from '@/components/admin/PricingEditor';
 
 export interface GymData {
   id: string;
@@ -28,7 +29,7 @@ export interface GymData {
   }>;
   images?: Array<string>;
   imageThumbnails?: Array<string>;
-  openHours?: Array<{ days: string; openTime: string; closeTime: string; }>;
+  openHours?: Array<{ days: string; openTime: string; closeTime: string }>;
   pricing?: Array<{ item: string; price: string }>;
   tags?: Array<string>;
   description?: string;
@@ -192,12 +193,22 @@ const EditPage = () => {
             </>
           ) : (
             <>
-              <OpenHoursEditor openHoursList={currentData?.openHours} setCurrentData={setCurrentData} />
+              <PricingEditor
+                pricingList={currentData?.pricing}
+                setCurrentData={setCurrentData}
+              />
+              <OpenHoursEditor
+                openHoursList={currentData?.openHours}
+                setCurrentData={setCurrentData}
+              />
               <AccommodationsEditor
                 accommodationsList={currentData?.accommodations}
                 setCurrentData={setCurrentData}
               />
-              <GradeEditor gradesList={currentData?.grades} setCurrentData={setCurrentData} />
+              <GradeEditor
+                gradesList={currentData?.grades}
+                setCurrentData={setCurrentData}
+              />
             </>
           )}
           <button

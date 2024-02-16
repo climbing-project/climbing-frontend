@@ -41,18 +41,16 @@ const OpenHoursEditor = ({
     <Styled.Wrapper>
       <Styled.Header>영업 시간</Styled.Header>
       <Styled.Content $direction="column">
-        {openHoursList
-          ? openHoursList.map(({ days, openTime, closeTime }, i) => (
-              <OpenHoursField
-                index={i}
-                days={days}
-                openTime={openTime}
-                closeTime={closeTime}
-                key={i}
-                handleChange={handleChange}
-              />
-            ))
-          : null}
+        {openHoursList?.map(({ days, openTime, closeTime }, i) => (
+          <OpenHoursField
+            index={i}
+            days={days}
+            openTime={openTime}
+            closeTime={closeTime}
+            key={i}
+            handleChange={handleChange}
+          />
+        ))}
         <button onClick={handleAddField}>옵션 추가</button>
       </Styled.Content>
     </Styled.Wrapper>
@@ -80,23 +78,6 @@ const Styled = {
     & > div {
       display: flex;
       gap: 8px;
-    }
-  `,
-  TextField: styled.div`
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    background: #fafafa;
-    border-radius: 8px;
-    border: 1px solid #d0d0d0;
-    padding: 12px 18px;
-
-    input,
-    select {
-      border: none;
-      background: transparent;
-      width: 100%;
-      padding: 0;
     }
   `,
 };

@@ -242,6 +242,7 @@ const Styled = {
   Main: styled.div`
     display: flex;
     flex-direction: column;
+    flex: 1 0 0;
     gap: 36px;
     background: #fafaf8;
     padding: 36px;

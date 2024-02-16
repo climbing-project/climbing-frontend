@@ -11,13 +11,18 @@ const AccommodationsEditor = ({
   accommodationsList,
   setCurrentData,
 }: AccommodationsEditorProps) => {
-  const handleChange = (checkedItem: string, isChecked: boolean) => {
-    if (isChecked) {
+  const handleChange = (
+    target: HTMLInputElement,
+    checkedItem: string,
+    isChecked: boolean,
+  ) => {
+    if (!isChecked) {
       const prevList = accommodationsList ? accommodationsList : [];
       setCurrentData(
         (prev) =>
           ({ ...prev, accommodations: [...prevList, checkedItem] }) as GymData,
       );
+      target.checked = !isChecked;
     } else {
       const filteredList = accommodationsList?.filter(
         (item) => item !== checkedItem,
@@ -25,24 +30,29 @@ const AccommodationsEditor = ({
       setCurrentData(
         (prev) => ({ ...prev, accommodations: [...filteredList!] }) as GymData,
       );
+      target.checked = !isChecked;
     }
   };
   return (
     <Styled.Wrapper>
       <Styled.Header>시설 정보</Styled.Header>
       <Styled.Content>
-        {ACCOMMODATIONS_LIST.map(({ value, text }) => (
-          <label key={value}>
+        {ACCOMMODATIONS_LIST.map(({ value, text }, i) => (
+          <Styled.TextField
+            key={i}
+            onClick={(e) => {
+              const input = (e.target as HTMLElement)
+                .firstElementChild as HTMLInputElement;
+              handleChange(input, input.name, input.checked);
+            }}
+          >
             <input
               type="checkbox"
               name={value}
               defaultChecked={accommodationsList?.includes(value)}
-              onChange={(e) => {
-                handleChange(e.target.name, e.target.checked);
-              }}
             />
-            {text}
-          </label>
+            <span>{text}</span>
+          </Styled.TextField>
         ))}
       </Styled.Content>
     </Styled.Wrapper>
@@ -66,6 +76,32 @@ const Styled = {
     flex-direction: ${(props) => props.$direction};
     flex-wrap: wrap;
     gap: 20px;
+  `,
+  TextField: styled.div`
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #fafafa;
+    border-radius: 8px;
+    border: 1px solid #d0d0d0;
+    padding: 12px 18px;
+    width: 175px;
+    gap: 8px;
+    cursor: pointer;
+
+    input {
+      border: none;
+      background: transparent;
+      padding: 0px;
+      flex-shrink: 1;
+      pointer-events: none;
+    }
+
+    span {
+      flex: 1 0 0;
+      pointer-events: none;
+    }
   `,
 };
 

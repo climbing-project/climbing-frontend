@@ -28,7 +28,7 @@ export interface GymData {
   }>;
   images?: Array<string>;
   imageThumbnails?: Array<string>;
-  openHours?: Array<{ days: string; hours: string }>;
+  openHours?: Array<{ days: string; openTime: string; closeTime: string; }>;
   pricing?: Array<{ item: string; price: string }>;
   tags?: Array<string>;
   description?: string;
@@ -192,7 +192,7 @@ const EditPage = () => {
             </>
           ) : (
             <>
-              <OpenHoursEditor setCurrentData={setCurrentData} />
+              <OpenHoursEditor openHoursList={currentData?.openHours} setCurrentData={setCurrentData} />
               <AccommodationsEditor
                 accommodationsList={currentData?.accommodations}
                 setCurrentData={setCurrentData}

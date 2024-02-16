@@ -1,25 +1,28 @@
-import { BaseSyntheticEvent, Dispatch, SetStateAction } from 'react';
+import { BaseSyntheticEvent } from 'react';
 import styled from 'styled-components';
 
 const GRADE_COLORS = [
-  '#f472b6',
-  '#e11d48',
-  '#f75454',
-  '#ff8138',
-  '#a1421c',
-  '#fbdb24',
-  '#c4ff57',
-  '#67dc3c',
-  '#059669',
-  '#05b4bd',
-  '#abe2ff',
-  '#319bf8',
-  '#243dcb',
-  '#a855f7',
-  '#652fc9',
-  '#fdfdfd',
-  '#a5a5a5',
-  '#1e1e1e',
+  '#F39897',
+  '#F8CEA6',
+  '#FBF3B3',
+  '#D1EBAC',
+  '#B6D3F1',
+  '#B7ADE9',
+  '#FF6355',
+  '#FBA949',
+  '#FAE442',
+  '#8BD448',
+  '#2AA8F2',
+  '#9C4F96',
+  '#9B4244',
+  '#A66A40',
+  '#B7AA5E',
+  '#569556',
+  '#4C709A',
+  '#664980',
+  '#FDFDFD',
+  '#A5A5A5',
+  '#1E1E1E',
 ];
 
 interface ColorPickerProps {
@@ -50,7 +53,7 @@ const Styled = {
     right: 0px;
     display: flex;
     flex-wrap: wrap;
-    width: calc(27px * 5 + 6px * 4);
+    width: calc(27px * 6 + 6px * 5);
     gap: 6px;
     background: #f1f0f0;
     border-radius: 8px;

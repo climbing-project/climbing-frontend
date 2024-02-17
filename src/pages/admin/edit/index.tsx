@@ -35,6 +35,22 @@ export interface GymData {
   accommodations?: Array<string>;
 }
 
+const INITIAL_DATA = {
+  id: '',
+  name: '',
+  address: {
+    jibunAddress: '',
+    roadAddress: '',
+    unitAddress: '',
+  },
+  coordinates: {
+    latitude: 0,
+    longitude: 0,
+  },
+  contact: '',
+  latestSettingDay: '',
+};
+
 const sampleData = {
   id: '6e5b9475-8916-4785-ba85-b262fbf06efb',
   name: '샘플암장1',
@@ -56,12 +72,11 @@ const sampleData = {
 };
 
 const EditPage = () => {
-  const [currentData, setCurrentData] = useState<null | GymData>(null);
-  const [loadedData, setLoadedData] = useState<null | GymData>(null);
+  const [currentData, setCurrentData] = useState<GymData>(INITIAL_DATA);
+  const [loadedData, setLoadedData] = useState<GymData>(INITIAL_DATA);
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const router = useRouter();
-  console.log(currentData);
 
   // 서버로부터 암장정보 fetch
   useEffect(() => {
@@ -80,18 +95,9 @@ const EditPage = () => {
   }, [router.query]);
 
   const compareData = () => {
-    let dataChanged = false;
-    const dataKeys = Object.keys(currentData as GymData);
-
-    dataKeys.forEach((key) => {
-      if (
-        currentData![key as keyof typeof currentData] !==
-        loadedData![key as keyof typeof loadedData]
-      )
-        dataChanged = true;
-    });
-
-    return dataChanged;
+    const currentValue = JSON.stringify(currentData);
+    const loadedValue = JSON.stringify(loadedData);
+    return currentValue !== loadedValue;
   };
 
   const handlePageChange = (page: number) => {
@@ -100,7 +106,7 @@ const EditPage = () => {
     if (!dataChanged) return setCurrentPage(page);
     const response = confirm('수정 중인 데이터가 있습니다. 이동할까요?');
     if (response) {
-      setCurrentData(loadedData);
+      setCurrentData(JSON.parse(JSON.stringify(loadedData)));
       setCurrentPage(page);
     }
   };
@@ -112,24 +118,28 @@ const EditPage = () => {
     fetch(`API주소_${id}`)
       .then((response) => response.json())
       .then((data) => {
-        setLoadedData(data);
-        setCurrentData(data);
+        setLoadedData(JSON.parse(JSON.stringify(data)));
+        setCurrentData(JSON.parse(JSON.stringify(data)));
+      })
+      .catch((error) => {
+        //에러 핸들링
       });
     */
 
     // 관리자계정 정보/API가 준비되기 전에 사용할 임의값
-    fetch('http://localhost:3000/gyms/6e5b9475-8916-4785-ba85-b262fbf06efb')
+    fetch('http://localhost:3000/gyms/a7a1')
       .then((response) => response.json())
       .then((data) => {
-        setLoadedData(data);
-        setCurrentData(data);
+        setLoadedData(JSON.parse(JSON.stringify(data)));
+        setCurrentData(JSON.parse(JSON.stringify(data)));
       })
       .catch((error) => {
+        // 테스트를 위한 임시방편 (추후 에러 핸들링 코드로 교체 필요)
         console.log(
           'json-server 서버가 오프라인입니다. 암장 정보를 샘플값으로 대체합니다.',
         );
-        setLoadedData(sampleData);
-        setCurrentData(sampleData);
+        setLoadedData(JSON.parse(JSON.stringify(sampleData)));
+        setCurrentData(JSON.parse(JSON.stringify(sampleData)));
       });
   };
 
@@ -158,51 +168,39 @@ const EditPage = () => {
           {currentPage === 1 ? (
             <>
               <ImageEditor
-                images={currentData?.images}
-                thumbnails={currentData?.imageThumbnails}
+                images={currentData.images}
+                thumbnails={currentData.imageThumbnails}
                 setCurrentData={setCurrentData}
               />
               <BasicInfoEditor
-                name={currentData?.name || ''}
-                address={
-                  currentData?.address || {
-                    jibunAddress: '',
-                    roadAddress: '',
-                    unitAddress: '',
-                  }
-                }
-                contact={currentData?.contact || ''}
-                snsList={
-                  currentData?.sns || {
-                    twitter: '',
-                    facebook: '',
-                    instagram: '',
-                  }
-                }
-                homepage={currentData?.homepage || ''}
+                name={currentData.name}
+                address={currentData.address}
+                contact={currentData.contact}
+                snsList={currentData.sns}
+                homepage={currentData.homepage}
                 setCurrentData={setCurrentData}
               />
               <DescriptionEditor
-                description={currentData?.description || ''}
+                description={currentData.description}
                 setCurrentData={setCurrentData}
               />
             </>
           ) : (
             <>
               <PricingEditor
-                pricingList={currentData?.pricing}
+                pricingList={currentData.pricing}
                 setCurrentData={setCurrentData}
               />
               <OpenHoursEditor
-                openHoursList={currentData?.openHours}
+                openHoursList={currentData.openHours}
                 setCurrentData={setCurrentData}
               />
               <AccommodationsEditor
-                accommodationsList={currentData?.accommodations}
+                accommodationsList={currentData.accommodations}
                 setCurrentData={setCurrentData}
               />
               <GradeEditor
-                gradesList={currentData?.grades}
+                gradesList={currentData.grades}
                 setCurrentData={setCurrentData}
               />
             </>
@@ -212,7 +210,7 @@ const EditPage = () => {
               const dataChanged = compareData();
               if (dataChanged) {
                 updateData();
-                setLoadedData(currentData);
+                setLoadedData(JSON.parse(JSON.stringify(currentData)));
               }
             }}
           >

@@ -5,7 +5,7 @@ import {
   BsFacebook,
   BsInstagram,
   BsTelephoneFill,
-  BsGlobe2
+  BsGlobe2,
 } from 'react-icons/bs';
 import { IoSearch } from 'react-icons/io5';
 import { GymData } from '@/pages/admin/edit';
@@ -14,9 +14,9 @@ interface BasicInfoProps {
   name: string;
   address: { jibunAddress: string; roadAddress: string; unitAddress: string };
   contact: string;
-  snsList: { twitter?: string; facebook?: string; instagram?: string };
-  homepage: string;
-  setCurrentData: Dispatch<SetStateAction<GymData | null>>;
+  snsList?: { twitter?: string; facebook?: string; instagram?: string };
+  homepage?: string;
+  setCurrentData: Dispatch<SetStateAction<GymData>>;
 }
 
 const REGEX_NUMBER = /^[0-9-]*$/;
@@ -54,6 +54,17 @@ const BasicInfoEditor = ({
     });
   };
 
+  const handleAddressChange = (input: string, key: string) => {
+    if (input.length > 30) return;
+    setCurrentData((prev) => {
+      const newObject = prev
+        ? { ...prev.address }
+        : { jibunAddress: '', roadAddress: '', unitAddress: '' };
+      newObject[key as keyof typeof newObject] = input;
+      return { ...prev, address: newObject } as GymData;
+    });
+  };
+
   return (
     <Styled.Wrapper>
       <Styled.Header>기본 정보</Styled.Header>
@@ -74,7 +85,10 @@ const BasicInfoEditor = ({
             <Styled.TextField $width="450px">
               <input defaultValue={address.roadAddress} readOnly />
               <input
-                defaultValue={address.unitAddress}
+                value={address.unitAddress}
+                onChange={(e) =>
+                  handleAddressChange(e.target.value, 'unitAddress')
+                }
                 placeholder="상세 주소"
               />
               <IoSearch className="field-icon" onClick={() => console.log()} />
@@ -92,7 +106,8 @@ const BasicInfoEditor = ({
               />
               {contact.length}/15
             </Styled.TextField>
-          </div><div>
+          </div>
+          <div>
             <h4>도메인</h4>
             <Styled.TextField $width="350px">
               <BsGlobe2 />
@@ -112,7 +127,9 @@ const BasicInfoEditor = ({
                   {icon}
                   <input
                     name={platform}
-                    value={snsList[platform as keyof typeof snsList]}
+                    value={
+                      snsList ? snsList[platform as keyof typeof snsList] : ''
+                    }
                     onChange={(e) => {
                       handleSnsChange(e.target.value, e.target.name);
                     }}
@@ -145,7 +162,8 @@ const Styled = {
     flex-wrap: wrap;
     gap: 20px;
 
-    .field__list, & > div {
+    .field__list,
+    & > div {
       display: flex;
       gap: 8px;
     }

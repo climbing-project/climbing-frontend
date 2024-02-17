@@ -5,7 +5,7 @@ import { GymData } from '@/pages/admin/edit';
 
 interface GradeEditorProps {
   gradesList: string[] | undefined;
-  setCurrentData: Dispatch<SetStateAction<GymData | null>>;
+  setCurrentData: Dispatch<SetStateAction<GymData>>;
 }
 
 const NEW_LIST = ['#d9d9d9', '#d9d9d9', '#d9d9d9'];

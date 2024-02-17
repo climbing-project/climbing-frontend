@@ -7,7 +7,7 @@ interface OpenHoursEditorProps {
   openHoursList:
     | Array<{ days: string; openTime: string; closeTime: string }>
     | undefined;
-  setCurrentData: Dispatch<SetStateAction<GymData | null>>;
+  setCurrentData: Dispatch<SetStateAction<GymData>>;
 }
 
 const OpenHoursEditor = ({

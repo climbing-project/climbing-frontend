@@ -11,7 +11,7 @@ import { GymData } from '@/pages/admin/edit';
 interface ImageFieldProps {
   originalImg: string[] | null;
   thumbnailImg: string[] | null;
-  setCurrentData: Dispatch<SetStateAction<GymData | null>>;
+  setCurrentData: Dispatch<SetStateAction<GymData>>;
 }
 
 // 테스트용 값

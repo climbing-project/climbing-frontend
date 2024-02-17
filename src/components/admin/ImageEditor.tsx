@@ -6,7 +6,7 @@ import { GymData } from '@/pages/admin/edit';
 interface ImageEditorProps {
   images: string[] | undefined;
   thumbnails: string[] | undefined;
-  setCurrentData: Dispatch<SetStateAction<GymData | null>>;
+  setCurrentData: Dispatch<SetStateAction<GymData>>;
 }
 
 const ImageEditor = ({

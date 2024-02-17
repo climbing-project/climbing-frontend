@@ -4,7 +4,7 @@ import { GymData } from '@/pages/admin/edit';
 
 interface AccommodationsEditorProps {
   accommodationsList: string[] | undefined;
-  setCurrentData: Dispatch<SetStateAction<GymData | null>>;
+  setCurrentData: Dispatch<SetStateAction<GymData>>;
 }
 
 const AccommodationsEditor = ({
@@ -18,9 +18,11 @@ const AccommodationsEditor = ({
   ) => {
     if (!isChecked) {
       const prevList = accommodationsList ? accommodationsList : [];
+      const newList = [...prevList, checkedItem].sort((a, b) =>
+        a > b ? 1 : -1,
+      );
       setCurrentData(
-        (prev) =>
-          ({ ...prev, accommodations: [...prevList, checkedItem] }) as GymData,
+        (prev) => ({ ...prev, accommodations: [...newList] }) as GymData,
       );
       target.checked = !isChecked;
     } else {

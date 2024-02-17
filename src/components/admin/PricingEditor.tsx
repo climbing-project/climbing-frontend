@@ -5,7 +5,7 @@ import { GymData } from '@/pages/admin/edit';
 
 interface PricingEditorProps {
   pricingList: Array<{ item: string; price: string }> | undefined;
-  setCurrentData: Dispatch<SetStateAction<GymData | null>>;
+  setCurrentData: Dispatch<SetStateAction<GymData>>;
 }
 
 const PricingEditor = ({ pricingList, setCurrentData }: PricingEditorProps) => {

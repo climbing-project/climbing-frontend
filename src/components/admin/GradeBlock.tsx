@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import ColorPicker from './ColorPicker';
 
@@ -8,11 +8,7 @@ interface GradeBlockProps {
   handleColorChange: (index: number, color: string) => void;
 }
 
-const GradeBlock = ({
-  index,
-  color,
-  handleColorChange,
-}: GradeBlockProps) => {
+const GradeBlock = ({ index, color, handleColorChange }: GradeBlockProps) => {
   const [blockColor, setBlockColor] = useState(color);
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -43,11 +39,12 @@ const GradeBlock = ({
 const Styled = {
   Wrapper: styled.div`
     position: relative;
+    flex: 1 0 0;
   `,
   Block: styled.div<{ $color: string }>`
     box-sizing: border-box;
     border: 1px solid #d0d0d0;
-    width: 65px;
+    width: inherit;
     height: 45px;
     background: ${({ $color }) => $color};
     cursor: pointer;

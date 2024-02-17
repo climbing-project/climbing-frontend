@@ -23,10 +23,8 @@ export interface GymData {
   };
   contact: string;
   latestSettingDay: string;
-  sns?: Array<{
-    platform: string;
-    account: string;
-  }>;
+  sns?: { twitter?: string; facebook?: string; instagram?: string };
+  homepage?: string;
   images?: Array<string>;
   imageThumbnails?: Array<string>;
   openHours?: Array<{ days: string; openTime: string; closeTime: string }>;
@@ -53,16 +51,7 @@ const sampleData = {
   },
   contact: '1588-1588',
   accommodations: ['moonboard', 'showers'],
-  sns: [
-    {
-      platform: 'twitter',
-      account: 'qwerty',
-    },
-    {
-      platform: 'facebook',
-      account: 'qwerty',
-    },
-  ],
+  sns: { twitter: 'qwerty', facebook: 'asdfg' },
   latestSettingDay: '24.02.01',
 };
 
@@ -183,7 +172,14 @@ const EditPage = () => {
                   }
                 }
                 contact={currentData?.contact || ''}
-                snsList={currentData?.sns}
+                snsList={
+                  currentData?.sns || {
+                    twitter: '',
+                    facebook: '',
+                    instagram: '',
+                  }
+                }
+                homepage={currentData?.homepage || ''}
                 setCurrentData={setCurrentData}
               />
               <DescriptionEditor

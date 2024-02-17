@@ -7,7 +7,7 @@ import {
   BsTelephoneFill,
   BsGlobe2,
 } from 'react-icons/bs';
-import { IoSearch } from 'react-icons/io5';
+import AddressField from './AddressField';
 import { GymData } from '@/pages/admin/edit';
 
 interface BasicInfoProps {
@@ -54,17 +54,6 @@ const BasicInfoEditor = ({
     });
   };
 
-  const handleAddressChange = (input: string, key: string) => {
-    if (input.length > 30) return;
-    setCurrentData((prev) => {
-      const newObject = prev
-        ? { ...prev.address }
-        : { jibunAddress: '', roadAddress: '', unitAddress: '' };
-      newObject[key as keyof typeof newObject] = input;
-      return { ...prev, address: newObject } as GymData;
-    });
-  };
-
   return (
     <Styled.Wrapper>
       <Styled.Header>기본 정보</Styled.Header>
@@ -83,15 +72,10 @@ const BasicInfoEditor = ({
           <div>
             <h4>주소</h4>
             <Styled.TextField $width="450px">
-              <input defaultValue={address.roadAddress} readOnly />
-              <input
-                value={address.unitAddress}
-                onChange={(e) =>
-                  handleAddressChange(e.target.value, 'unitAddress')
-                }
-                placeholder="상세 주소"
+              <AddressField
+                address={address}
+                handleAddressChange={setCurrentData}
               />
-              <IoSearch className="field-icon" onClick={() => console.log()} />
             </Styled.TextField>
           </div>
         </div>
@@ -184,6 +168,10 @@ const Styled = {
       background: transparent;
       width: 100%;
       padding: 0;
+    }
+
+    input:nth-child(3) {
+      width: 50%;
     }
 
     .field-icon {

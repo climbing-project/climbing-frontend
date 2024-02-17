@@ -10,7 +10,7 @@ import GradeEditor from '@/components/admin/GradeEditor';
 import PricingEditor from '@/components/admin/PricingEditor';
 
 export interface GymData {
-  id: string;
+  id?: string;
   name: string;
   address: {
     jibunAddress: string;
@@ -36,7 +36,6 @@ export interface GymData {
 }
 
 const INITIAL_DATA = {
-  id: '',
   name: '',
   address: {
     jibunAddress: '',

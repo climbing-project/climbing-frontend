@@ -4,16 +4,8 @@ import AddressField from './AddressField';
 import { GymData } from '@/pages/admin/edit';
 
 interface NewGymFormProps {
-  handleSubmit: Function;
+  handleSubmit: (formData: GymData) => void;
 }
-
-// export interface FormGymData {
-//   name: string;
-//   address: { jibunAddress: string; roadAddress: string; unitAddress: string };
-//   coordinates: { latitude: number; longitude: number };
-//   contact: string;
-//   latestSettingDay: string;
-// }
 
 const REGEX_NUMBER = /^[0-9-]*$/;
 
@@ -25,7 +17,6 @@ const NewGymForm = ({ handleSubmit }: NewGymFormProps) => {
     contact: '',
     latestSettingDay: '',
   });
-  console.log(formData);
 
   const handleInput = (input: string, type: string, key: string) => {
     if (input.length > 20) return;

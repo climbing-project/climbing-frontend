@@ -29,20 +29,24 @@ const BasicInfoEditor = ({
   homepage,
   setCurrentData,
 }: BasicInfoProps) => {
-  const handleNameChange = (input: string) => {
-    if (input.length > 20) return;
-    setCurrentData((prev) => ({ ...prev, name: input }) as GymData);
-  };
+  const handleTextChange = (input: string, key: string) => {
+    switch (key) {
+      case 'name': {
+        if (input.length > 20) return;
+        break;
+      }
+      case 'homepage': {
+        if (input.length > 50) return;
+        break;
+      }
+      case 'contact': {
+        if (!REGEX_NUMBER.test(input)) return;
+        if (input.length > 15) return;
+        break;
+      }
+    }
 
-  const handleHomepageChange = (input: string) => {
-    if (input.length > 50) return;
-    setCurrentData((prev) => ({ ...prev, homepage: input }) as GymData);
-  };
-
-  const handleContactChange = (input: string) => {
-    if (!REGEX_NUMBER.test(input)) return;
-    if (input.length > 15) return;
-    setCurrentData((prev) => ({ ...prev, contact: input }) as GymData);
+    setCurrentData((prev) => ({ ...prev, [key]: input }) as GymData);
   };
 
   const handleSnsChange = (input: string, key: string) => {
@@ -64,7 +68,7 @@ const BasicInfoEditor = ({
             <Styled.TextField $width="380px">
               <input
                 value={name}
-                onChange={(e) => handleNameChange(e.target.value)}
+                onChange={(e) => handleTextChange(e.target.value, 'name')}
               />
               {name.length}/20
             </Styled.TextField>
@@ -86,7 +90,7 @@ const BasicInfoEditor = ({
               <BsTelephoneFill />
               <input
                 value={contact}
-                onChange={(e) => handleContactChange(e.target.value)}
+                onChange={(e) => handleTextChange(e.target.value, 'contact')}
               />
               {contact.length}/15
             </Styled.TextField>
@@ -96,8 +100,8 @@ const BasicInfoEditor = ({
             <Styled.TextField $width="350px">
               <BsGlobe2 />
               <input
-                value={homepage}
-                onChange={(e) => handleHomepageChange(e.target.value)}
+                value={homepage || ''}
+                onChange={(e) => handleTextChange(e.target.value, 'homepage')}
               />
             </Styled.TextField>
           </div>
@@ -111,9 +115,7 @@ const BasicInfoEditor = ({
                   {icon}
                   <input
                     name={platform}
-                    value={
-                      snsList ? snsList[platform as keyof typeof snsList] : ''
-                    }
+                    value={snsList?.[platform as keyof typeof snsList] || ''}
                     onChange={(e) => {
                       handleSnsChange(e.target.value, e.target.name);
                     }}

@@ -25,7 +25,7 @@ const DescriptionEditor = ({
             onChange={(e) => handleChange(e.target.value)}
           />
         </Styled.TextField>
-        {description?.length}/300
+        {description?.length || 0}/300
       </Styled.Content>
     </Styled.Wrapper>
   );

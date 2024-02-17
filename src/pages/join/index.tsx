@@ -1,15 +1,16 @@
 import InputWithTitle from "@/components/InputWithTitle";
+import { useState } from "react";
 import styled from "styled-components";
 
 const Join = () => {
+  const [isValid, setIsValid] = useState(false);
   const handleSubmit = async (event: any) => {
     event.preventDefault();
 
     const credentials = {
-      username: { label: event.target.username.value, type: "text" },
+      username: { label: event.target.email.value, type: "email" },
       password: { label: event.target.password.value, type: "password" },
-      email: { label: event.target.email.value, type: "email" },
-      nickName: { label: event.target.nickName.value, type: "nickName" },
+      nickname: { label: event.target.nickname.value, type: "nickname" },
     };
 
     const response = await fetch("http://localhost:3000/members/join", {
@@ -35,11 +36,19 @@ const Join = () => {
   return (
     <S.Wrapper>
       <S.JoinForm className="container" onSubmit={handleSubmit}>
-        <InputWithTitle name="username" title="아이디" />
-        <InputWithTitle name="password" title="비밀번호" />
-        <InputWithTitle name="reEnterPassword" title="비밀번호 재확인" />
-        <InputWithTitle name="nickName" title="닉네임" />
-        <InputWithTitle name="email" title="이메일" />
+        <InputWithTitle
+          name="email"
+          type="email"
+          title="아이디(이메일)"
+          checkValidity={true}
+        />
+        <InputWithTitle name="password" type="password" title="비밀번호" />
+        <InputWithTitle
+          name="reEnterPassword"
+          type="password"
+          title="비밀번호 재확인"
+        />
+        <InputWithTitle name="nickname" title="닉네임" checkValidity={true} />
         <S.ButtonBox type="submit">가입하기</S.ButtonBox>
       </S.JoinForm>
     </S.Wrapper>

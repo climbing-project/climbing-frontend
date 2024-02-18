@@ -9,6 +9,30 @@ import AccommodationsEditor from '@/components/admin/AccommodationsEditor';
 import GradeEditor from '@/components/admin/GradeEditor';
 import PricingEditor from '@/components/admin/PricingEditor';
 
+// 테스트용 상수값
+const testId = '75334254-93a8-4cfb-afec-29e368ac0803'
+const testEndpoint = 'http://localhost:3000/gyms/'
+const testUrl = `${testEndpoint}${testId}`
+const sampleData = {
+  id: 'sampleid',
+  name: '샘플암장1',
+  address: {
+    jibunAddress: '대전광역시 동구 판암동 498-14',
+    roadAddress: '대전광역시 동구 판교3길 3',
+    unitAddress: '4층',
+  },
+  description:
+    '왜 은행회관 헬스클럽에 다녀야할까요? Why Health Club 은행회관 헬스클럽은 고품격입니다. 기구 및 각종 인테리어 최고급으로 품격을 느낄 수 있습니다. 최고급 헬스클럽과 사우나가 준비된 은행회관 헬스클럽에서 지금 바로 다짐해 보세요! ',
+  coordinates: {
+    latitude: 36.318415,
+    longitude: 127.4521708,
+  },
+  contact: '1588-1588',
+  accommodations: ['moonboard', 'showers'],
+  sns: { twitter: 'qwerty', facebook: 'asdfg' },
+  latestSettingDay: '24.02.01',
+};
+
 export interface GymData {
   id?: string;
   name: string;
@@ -48,26 +72,6 @@ const INITIAL_DATA = {
   },
   contact: '',
   latestSettingDay: '',
-};
-
-const sampleData = {
-  id: '6e5b9475-8916-4785-ba85-b262fbf06efb',
-  name: '샘플암장1',
-  address: {
-    jibunAddress: '대전광역시 동구 판암동 498-14',
-    roadAddress: '대전광역시 동구 판교3길 3',
-    unitAddress: '4층',
-  },
-  description:
-    '왜 은행회관 헬스클럽에 다녀야할까요? Why Health Club 은행회관 헬스클럽은 고품격입니다. 기구 및 각종 인테리어 최고급으로 품격을 느낄 수 있습니다. 최고급 헬스클럽과 사우나가 준비된 은행회관 헬스클럽에서 지금 바로 다짐해 보세요! ',
-  coordinates: {
-    latitude: 36.318415,
-    longitude: 127.4521708,
-  },
-  contact: '1588-1588',
-  accommodations: ['moonboard', 'showers'],
-  sns: { twitter: 'qwerty', facebook: 'asdfg' },
-  latestSettingDay: '24.02.01',
 };
 
 const EditPage = () => {
@@ -126,7 +130,7 @@ const EditPage = () => {
     */
 
     // 관리자계정 정보/API가 준비되기 전에 사용할 임의값
-    fetch('http://localhost:3000/gyms/a7a1')
+    fetch(`${testUrl}`)
       .then((response) => response.json())
       .then((data) => {
         setLoadedData(JSON.parse(JSON.stringify(data)));
@@ -143,7 +147,7 @@ const EditPage = () => {
   };
 
   const updateData = async () => {
-    await fetch(`http://localhost:3000/gyms/${currentData!.id}`, {
+    await fetch(`${testEndpoint}${currentData!.id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -213,7 +217,7 @@ const EditPage = () => {
               }
             }}
           >
-            저장
+            저장하기
           </button>
         </Styled.Main>
       )}

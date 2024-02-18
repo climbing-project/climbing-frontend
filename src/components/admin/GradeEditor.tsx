@@ -9,15 +9,16 @@ interface GradeEditorProps {
   setCurrentData: Dispatch<SetStateAction<GymData>>;
 }
 
-const NEW_LIST = ['#d9d9d9', '#d9d9d9'];
+const NEW_GRADES = ['#d9d9d9', '#d9d9d9'];
+const DEFAULT_COLOR = '#d9d9d9';
 
 const GradeEditor = ({ gradesList, setCurrentData }: GradeEditorProps) => {
   const handleCreate = () => {
-    setCurrentData((prev) => ({ ...prev, grades: [...NEW_LIST] }) as GymData);
+    setCurrentData((prev) => ({ ...prev, grades: [...NEW_GRADES] }) as GymData);
   };
 
   const handleColorChange = (index: number, color: string) => {
-    const currentList = gradesList ? [...gradesList] : [...NEW_LIST];
+    const currentList = gradesList ? [...gradesList] : [...NEW_GRADES];
     currentList[index] = color;
     setCurrentData(
       (prev) => ({ ...prev, grades: [...currentList] }) as GymData,
@@ -29,7 +30,7 @@ const GradeEditor = ({ gradesList, setCurrentData }: GradeEditorProps) => {
       if (gradesList!.length === 10) return;
       setCurrentData((prev) => {
         const currentList = [...prev.grades!];
-        return { ...prev, grades: [...currentList, '#d9d9d9'] } as GymData;
+        return { ...prev, grades: [...currentList, DEFAULT_COLOR] } as GymData;
       });
     } else {
       if (gradesList!.length === 2) return;

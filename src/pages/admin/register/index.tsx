@@ -3,6 +3,9 @@ import styled from 'styled-components';
 import NewGymForm from '@/components/admin/NewGymForm';
 import { GymData } from '../edit';
 
+// 테스트용 상수값
+const testEndpoint = 'http://localhost:3000/gyms/'
+
 const GymRegistration = () => {
   const router = useRouter();
 
@@ -27,7 +30,7 @@ const GymRegistration = () => {
     input.id = testId;
     // ↑ 백엔드 API로 교체 시 삭제
 
-    const data = await fetch('http://localhost:3000/gyms', {
+    const data = await fetch(testEndpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

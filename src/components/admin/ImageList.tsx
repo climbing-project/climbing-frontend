@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import styled from 'styled-components';
+import { RiDeleteBin6Fill } from 'react-icons/ri';
 
 interface ImageListProps {
   images: string[];
@@ -14,7 +15,7 @@ const ImageList = ({ images, handleS3Delete }: ImageListProps) => {
       {images.map((image, i) => (
         <Styled.Image key={i}>
           <Styled.DeleteButton onClick={() => handleS3Delete(image)}>
-            X
+            <RiDeleteBin6Fill color="#ffffff" />
           </Styled.DeleteButton>
           <Image src={image} fill alt={image.replace(URL_PREFIX, '')} />
         </Styled.Image>
@@ -46,7 +47,6 @@ const Styled = {
     right: 0;
     top: 0;
     background: red;
-    color: white;
     display: flex;
     justify-content: center;
     align-items: center;

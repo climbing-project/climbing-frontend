@@ -10,9 +10,9 @@ import GradeEditor from '@/components/admin/GradeEditor';
 import PricingEditor from '@/components/admin/PricingEditor';
 
 // 테스트용 상수값
-const testId = '75334254-93a8-4cfb-afec-29e368ac0803'
-const testEndpoint = 'http://localhost:3000/gyms/'
-const testUrl = `${testEndpoint}${testId}`
+const testId = '75334254-93a8-4cfb-afec-29e368ac0803';
+const testEndpoint = 'http://localhost:3000/gyms/';
+const testUrl = `${testEndpoint}${testId}`;
 const sampleData = {
   id: 'sampleid',
   name: '샘플암장1',
@@ -97,15 +97,13 @@ const EditPage = () => {
     setIsLoading(false);
   }, [router.query]);
 
-  const compareData = () => {
-    const currentValue = JSON.stringify(currentData);
-    const loadedValue = JSON.stringify(loadedData);
-    return currentValue !== loadedValue;
+  const compareData = (oldData: any, newData: any) => {
+    return JSON.stringify(oldData) !== JSON.stringify(newData);
   };
 
   const handlePageChange = (page: number) => {
     if (currentPage === page) return;
-    const dataChanged = compareData();
+    const dataChanged = compareData(loadedData, currentData);
     if (!dataChanged) return setCurrentPage(page);
     const response = confirm('수정 중인 데이터가 있습니다. 이동할까요?');
     if (response) {
@@ -146,13 +144,13 @@ const EditPage = () => {
       });
   };
 
-  const updateData = async () => {
+  const updateData = async (data: string) => {
     await fetch(`${testEndpoint}${currentData!.id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(currentData!),
+      body: data,
     });
   };
 
@@ -210,9 +208,9 @@ const EditPage = () => {
           )}
           <button
             onClick={() => {
-              const dataChanged = compareData();
+              const dataChanged = compareData(loadedData, currentData);
               if (dataChanged) {
-                updateData();
+                updateData(JSON.stringify(currentData));
                 setLoadedData(JSON.parse(JSON.stringify(currentData)));
               }
             }}

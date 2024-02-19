@@ -3,7 +3,9 @@ import { useState } from "react";
 import styled from "styled-components";
 
 const Join = () => {
-  const [isValid, setIsValid] = useState(false);
+  const [isEmailValid, setIsEmailValid] = useState(false);
+  const [isNicknameValid, setIsNicknameValid] = useState(false);
+
   const handleSubmit = async (event: any) => {
     event.preventDefault();
 
@@ -40,7 +42,8 @@ const Join = () => {
           name="email"
           type="email"
           title="아이디(이메일)"
-          checkValidity={true}
+          setValidity={setIsEmailValid}
+          validity={isEmailValid}
         />
         <InputWithTitle name="password" type="password" title="비밀번호" />
         <InputWithTitle
@@ -48,8 +51,18 @@ const Join = () => {
           type="password"
           title="비밀번호 재확인"
         />
-        <InputWithTitle name="nickname" title="닉네임" checkValidity={true} />
-        <S.ButtonBox type="submit">가입하기</S.ButtonBox>
+        <InputWithTitle
+          name="nickname"
+          title="닉네임"
+          setValidity={setIsNicknameValid}
+          validity={isNicknameValid}
+        />
+        <S.ButtonBox
+          type="submit"
+          disabled={isEmailValid && isNicknameValid ? false : true}
+        >
+          가입하기
+        </S.ButtonBox>
       </S.JoinForm>
     </S.Wrapper>
   );

@@ -1,32 +1,50 @@
+import { Dispatch, SetStateAction } from "react";
 import { styled } from "styled-components";
 
 interface InputProps {
   name: string;
   title: string;
   type?: string;
-  checkValidity?: boolean;
+  setValidity?: Dispatch<SetStateAction<boolean>>;
+  validity?: boolean;
 }
 
 export const InputWithTitle = ({
   name,
   title,
   type = "text",
-  checkValidity = false,
+  setValidity,
+  validity,
 }: InputProps) => {
-  const handleChange = async (event: { target: { name: string } }) => {
-    if (!checkValidity) return;
-    const res = await fetch(`http://localhost:3000/members/${name}Check`);
-    const data = await res.json();
-    if (data) {
-      // 가입가능
+  const handleChange = async (event: {
+    target: {
+      value: string;
+      name: string;
+    };
+  }) => {
+    if (!setValidity) return;
+    // const res = await fetch(`http://localhost:3000/members/${name}Check`);
+    // const data = await res.json();
+
+    // 서버 없어서 임시 로직 적용(5자 이상일시 valid)
+    if (event.target.value.length >= 5) {
+      // 중복이 없을때 사용가능
+      setValidity(true);
     } else {
-      //가입 불가
+      setValidity(false);
     }
   };
+
+  const handleWarningText = () => {
+    return setValidity && !validity ? `중복된 ${name}이 존재합니다` : "";
+    // return <Styled.Warning>text</Styled.Warning>;
+  };
+
   return (
     <Styled.Wrapper>
       <Styled.Title>{title}</Styled.Title>
       <Styled.Input name={name} type={type} onChange={handleChange} />
+      <Styled.Warning>{handleWarningText()}</Styled.Warning>
     </Styled.Wrapper>
   );
 };
@@ -40,6 +58,11 @@ const Styled = {
   Title: styled.div``,
   Input: styled.input`
     height: 30px;
+  `,
+  Warning: styled.div`
+    height: 10px;
+    font-size: 12px;
+    color: red;
   `,
 };
 

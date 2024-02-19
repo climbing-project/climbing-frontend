@@ -6,52 +6,61 @@ import useS3 from './useS3';
 import { GymData } from '@/pages/admin/edit';
 
 interface ImageEditorProps {
-  images: string[] | undefined;
+  loadedImages: string[] | undefined;
   thumbnails: string[] | undefined;
   setCurrentData: Dispatch<SetStateAction<GymData>>;
+  setLoadedData: Dispatch<SetStateAction<GymData>>;
+  updateData: (data: string) => Promise<void>;
 }
 
 const ImageEditor = ({
-  images,
+  loadedImages,
   thumbnails,
   setCurrentData,
+  setLoadedData,
+  updateData,
 }: ImageEditorProps) => {
-  const uploadImage = (newImage: string) => {
-    const key = newImage.includes('thumb_') ? 'imageThumbnails' : 'images';
-    let currentList: string[];
+  const uploadImage = (newThumbnail: string, fileCount: number) => {
+    if (!newThumbnail.includes('thumb_')) return;
 
-    switch (key) {
-      case 'imageThumbnails':
-        currentList = thumbnails ? [...thumbnails] : [];
-        setCurrentData(
-          (current) =>
-            ({ ...current, [key]: [...currentList, newImage] }) as GymData,
-        );
-        break;
+    const newImage = newThumbnail.replace('thumb_', '');
 
-      case 'images':
-        currentList = images ? [...images] : [];
-    }
-    setCurrentData(
-      (current) =>
-        ({ ...current, [key]: [...currentList, newImage] }) as GymData,
-    );
-  };
-
-  const deleteImage = (url: string) => {
-    const originUrl = url.replace('thumb_', '');
     setCurrentData((current) => {
-      const filteredOriginList = current!.images!.filter(
-        (img) => img !== originUrl,
-      );
-      const filteredThumbnailList = current!.imageThumbnails!.filter(
-        (img) => img !== url,
-      );
+      const currentThumbnails = current.imageThumbnails || [];
+      const currentImages = current.images || [];
+      if (
+        currentThumbnails.length - (loadedImages ? loadedImages.length : 0) ===
+        fileCount - 1
+      ) {
+        const images = [...currentImages, newImage];
+        const imageThumbnails = [...currentThumbnails, newThumbnail];
+        updateData(JSON.stringify({ images, imageThumbnails }));
+        setLoadedData((prev) => ({ ...prev, images, imageThumbnails }));
+      }
       return {
         ...current,
-        images: filteredOriginList,
-        imageThumbnails: filteredThumbnailList,
-      } as GymData;
+        images: [...currentImages, newImage],
+        imageThumbnails: [...currentThumbnails, newThumbnail],
+      };
+    });
+  };
+
+  const deleteImage = (thumbUrl: string) => {
+    const imageUrl = thumbUrl.replace('thumb_', '');
+    setCurrentData((prev) => {
+      const images = prev.images!.filter((img) => img !== imageUrl);
+      const imageThumbnails = prev.imageThumbnails!.filter(
+        (img) => img !== thumbUrl,
+      );
+      updateData(JSON.stringify({ images, imageThumbnails }));
+      return { ...prev, images, imageThumbnails };
+    });
+    setLoadedData((prev) => {
+      const images = prev.images!.filter((img) => img !== imageUrl);
+      const imageThumbnails = prev.imageThumbnails!.filter(
+        (img) => img !== thumbUrl,
+      );
+      return { ...prev, images, imageThumbnails };
     });
   };
 

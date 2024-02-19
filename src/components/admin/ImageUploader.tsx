@@ -4,7 +4,11 @@ import styled from 'styled-components';
 import { MdOutlineUploadFile } from 'react-icons/md';
 
 interface ImageUploadProps {
-  handleS3Upload: (file: File, fileName: string) => Promise<void>;
+  handleS3Upload: (
+    file: File,
+    fileName: string,
+    fileCount: number,
+  ) => Promise<void>;
 }
 
 const ALLOWED_IMG_TYPES = ['image/jpeg', 'image/png'];
@@ -20,46 +24,49 @@ const ImageUploader = ({ handleS3Upload }: ImageUploadProps) => {
     e.preventDefault();
     if (e.dataTransfer.files.length === 0) return;
     if (e.dataTransfer.files.length > MAX_PHOTO_COUNT)
+      // 이미 업로드된 파일 갯수를 포함한 전체 파일수를 사용하도록 추후 리팩토링
       return alert(
         `사진은 최대 ${MAX_PHOTO_COUNT}장까지 업로드할 수 있습니다.`,
       );
 
-    const droppedFiles = Array.from(e.dataTransfer.files);
-    let rejectedFileCount = 0;
+    const allFiles = Array.from(e.dataTransfer.files);
+    const uploadFiles = allFiles.filter((file) =>
+      ALLOWED_IMG_TYPES.includes(file.type),
+    );
+    const uploadFileCount = uploadFiles.length;
+    const rejectedFileCount = allFiles.length - uploadFileCount; // 유효한 이미지 형식(jpeg/png)이 아닐 시 이용자에게 알리기 위해 파일 갯수 트랙킹
 
-    droppedFiles.forEach((file) => {
-      if (ALLOWED_IMG_TYPES.includes(file.type)) {
-        // 파일 리사이징 및 랜덤 파일명 생성
-        FileResizer.imageFileResizer(
-          file,
-          MAX_WIDTH,
-          MAX_HEIGHT,
-          IMG_FORMAT,
-          70,
-          0,
-          (resizedImg) => {
-            const randomizedFileName = `${crypto.randomUUID()}.${IMG_FORMAT}`;
-            handleS3Upload(resizedImg as File, randomizedFileName);
-            FileResizer.imageFileResizer(
-              resizedImg as File,
-              THUMBNAIL_WIDTH,
-              THUMBNAIL_HEIGHT,
-              IMG_FORMAT,
-              100,
-              0,
-              (thumb) => {
-                const thumbFileName = `thumb_${randomizedFileName}`;
-                handleS3Upload(thumb as File, thumbFileName);
-              },
-              'file',
-            );
-          },
-          'file',
-        );
-      } else {
-        // 유효한 이미지 형식(jpeg/png)이 아닐 시 이용자에게 알리기 위해 파일 갯수 트랙킹
-        rejectedFileCount += 1;
-      }
+    uploadFiles.forEach((file, i) => {
+      FileResizer.imageFileResizer(
+        file,
+        MAX_WIDTH,
+        MAX_HEIGHT,
+        IMG_FORMAT,
+        70,
+        0,
+        (resizedImg) => {
+          const randomizedFileName = `${crypto.randomUUID()}.${IMG_FORMAT}`;
+          handleS3Upload(
+            resizedImg as File,
+            randomizedFileName,
+            uploadFileCount,
+          );
+          FileResizer.imageFileResizer(
+            resizedImg as File,
+            THUMBNAIL_WIDTH,
+            THUMBNAIL_HEIGHT,
+            IMG_FORMAT,
+            100,
+            0,
+            (thumb) => {
+              const thumbFileName = `thumb_${randomizedFileName}`;
+              handleS3Upload(thumb as File, thumbFileName, uploadFileCount);
+            },
+            'file',
+          );
+        },
+        'file',
+      );
     });
 
     if (rejectedFileCount > 0) {

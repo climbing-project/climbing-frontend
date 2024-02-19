@@ -169,9 +169,11 @@ const EditPage = () => {
           {currentPage === 1 ? (
             <>
               <ImageEditor
-                images={currentData.images}
+                loadedImages={loadedData.images}
                 thumbnails={currentData.imageThumbnails}
                 setCurrentData={setCurrentData}
+                setLoadedData={setLoadedData}
+                updateData={updateData}
               />
               <BasicInfoEditor
                 name={currentData.name}

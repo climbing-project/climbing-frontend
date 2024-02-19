@@ -12,7 +12,7 @@ const FOLDER_NAME = 'bubu';
 const THUMBNAIL_PREFIX = 'thumb_';
 
 const useS3 = (
-  uploadCallback: (url: string) => void,
+  uploadCallback: (url: string, fileCount: number) => void,
   deleteCallback: (url: string) => void,
 ) => {
   // S3 클라이언트 생성
@@ -25,7 +25,11 @@ const useS3 = (
   });
 
   // S3에 업로드하는 함수
-  const handleS3Upload = async (file: File, fileName: string) => {
+  const handleS3Upload = async (
+    file: File,
+    fileName: string,
+    fileCount: number,
+  ) => {
     const params = {
       Bucket: BUCKET_NAME,
       Key: `${FOLDER_NAME}/${fileName}`,
@@ -37,7 +41,7 @@ const useS3 = (
     } catch (error) {
       console.log('에러 발생: ' + error);
     } finally {
-      uploadCallback(`${S3_PATH}${FOLDER_NAME}/${fileName}`);
+      uploadCallback(`${S3_PATH}${FOLDER_NAME}/${fileName}`, fileCount);
     }
   };
 

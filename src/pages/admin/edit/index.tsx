@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { useBeforeunload } from 'react-beforeunload';
 import styled from 'styled-components';
 import ImageEditor from '@/components/admin/ImageEditor';
 import BasicInfoEditor from '@/components/admin/BasicInfoEditor';
@@ -98,13 +99,17 @@ const EditPage = () => {
     setIsLoading(false);
   }, [router.query]);
 
-  const compareData = (oldData: any, newData: any) => {
+  const isEdited = (oldData: any, newData: any) => {
     return JSON.stringify(oldData) !== JSON.stringify(newData);
   };
 
+  useBeforeunload(
+    isEdited(loadedData, currentData) ? (e) => e.preventDefault() : undefined,
+  );
+
   const handlePageChange = (page: number) => {
     if (currentPage === page) return;
-    const dataChanged = compareData(loadedData, currentData);
+    const dataChanged = isEdited(loadedData, currentData);
     if (!dataChanged) return setCurrentPage(page);
     const response = confirm('수정 중인 데이터가 있습니다. 이동할까요?');
     if (response) {
@@ -212,7 +217,7 @@ const EditPage = () => {
           )}
           <button
             onClick={() => {
-              const dataChanged = compareData(loadedData, currentData);
+              const dataChanged = isEdited(loadedData, currentData);
               if (dataChanged) {
                 updateData(JSON.stringify(currentData));
                 setLoadedData(JSON.parse(JSON.stringify(currentData)));

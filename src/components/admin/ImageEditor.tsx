@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction } from 'react';
 import Image from 'next/image';
 import styled from 'styled-components';
+import { RiDeleteBin6Fill } from 'react-icons/ri';
 import ImageUploader from './ImageUploader';
 import ImageList from './ImageList';
 import useS3 from './useS3';
@@ -26,6 +27,7 @@ const ImageEditor = ({
   const uploadImage = (url: string, fileCount: number, key: string) => {
     if (key === 'default') {
       setCurrentData((prev) => ({ ...prev, defaultImage: url }));
+      setLoadedData((prev) => ({ ...prev, defaultImage: url }));
       updateData(JSON.stringify({ defaultImage: url }));
       return;
     }
@@ -53,12 +55,22 @@ const ImageEditor = ({
     });
   };
 
-  const deleteImage = (thumbUrl: string) => {
-    const imageUrl = thumbUrl.replace('thumb_', '');
+  const deleteImage = (url: string, key: string) => {
+    if (key === 'default') {
+      setCurrentData((prev) => ({ ...prev, defaultImage: undefined }));
+      setLoadedData((prev) => {
+        updateData(JSON.stringify({ ...prev, defaultImage: '' }));
+        return { ...prev, defaultImage: undefined };
+      });
+
+      return;
+    }
+
+    const imageUrl = url.replace('thumb_', '');
     setCurrentData((prev) => {
       const images = prev.images!.filter((img) => img !== imageUrl);
       const imageThumbnails = prev.imageThumbnails!.filter(
-        (img) => img !== thumbUrl,
+        (img) => img !== url,
       );
       updateData(JSON.stringify({ images, imageThumbnails }));
       return { ...prev, images, imageThumbnails };
@@ -66,7 +78,7 @@ const ImageEditor = ({
     setLoadedData((prev) => {
       const images = prev.images!.filter((img) => img !== imageUrl);
       const imageThumbnails = prev.imageThumbnails!.filter(
-        (img) => img !== thumbUrl,
+        (img) => img !== url,
       );
       return { ...prev, images, imageThumbnails };
     });
@@ -81,12 +93,19 @@ const ImageEditor = ({
         <div>
           <h3>대표 이미지</h3>
           {defaultImage ? (
-            <Image
-              src={defaultImage}
-              width={462}
-              height={215}
-              alt={defaultImage}
-            />
+            <Styled.Image>
+              <Styled.DeleteButton
+                onClick={() => handleS3Delete(defaultImage, 'default')}
+              >
+                <RiDeleteBin6Fill color="#ffffff" />
+              </Styled.DeleteButton>
+              <Image
+                src={defaultImage}
+                width={462}
+                height={215}
+                alt={defaultImage}
+              />
+            </Styled.Image>
           ) : (
             <ImageUploader dataKey="default" handleS3Upload={handleS3Upload} />
           )}
@@ -138,6 +157,27 @@ const Styled = {
     flex-direction: ${(props) => props.$direction};
     flex-wrap: wrap;
     gap: 20px;
+  `,
+  Image: styled.div`
+    position: relative;
+    border: 1px solid #d0d0d0;
+
+    img {
+      object-fit: cover;
+    }
+  `,
+  DeleteButton: styled.div`
+    position: absolute;
+    z-index: 1;
+    right: 0;
+    top: 0;
+    background: red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
   `,
 };
 

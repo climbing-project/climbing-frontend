@@ -13,7 +13,7 @@ const THUMBNAIL_PREFIX = 'thumb_';
 
 const useS3 = (
   uploadCallback: (url: string, fileCount: number, dataKey: string) => void,
-  deleteCallback: (url: string) => void,
+  deleteCallback: (url: string, dataKey: string) => void,
 ) => {
   // S3 클라이언트 생성
   const client = new S3Client({
@@ -51,7 +51,24 @@ const useS3 = (
   };
 
   // 삭제 함수
-  const handleS3Delete = async (url: string) => {
+  const handleS3Delete = async (url: string, dataKey: string) => {
+    if (dataKey === 'default') {
+      const fileKey = url.replace(S3_PATH, '');
+      const params = {
+        Bucket: BUCKET_NAME,
+        Key: fileKey.replace(THUMBNAIL_PREFIX, ''),
+      };
+
+      try {
+        await client.send(new DeleteObjectCommand(params));
+      } catch (error) {
+        console.log('에러 발생: ' + error);
+      } finally {
+        deleteCallback(url, dataKey);
+      }
+      return;
+    }
+
     const fileKey = url.replace(S3_PATH, '');
     const thumbParams = {
       Bucket: BUCKET_NAME,
@@ -68,7 +85,7 @@ const useS3 = (
     } catch (error) {
       console.log('에러 발생: ' + error);
     } finally {
-      deleteCallback(url);
+      deleteCallback(url, dataKey);
     }
   };
 

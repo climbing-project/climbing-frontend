@@ -114,23 +114,17 @@ const ImageEditor = ({
           <h3>
             추가 이미지
             <br />
-            {thumbnails ? thumbnails.length : 0}/5
+            {thumbnails ? thumbnails.length : 0}/10
           </h3>
           {thumbnails ? (
-            thumbnails.length < 5 ? (
-              <>
-                <ImageUploader
-                  dataKey="display"
-                  handleS3Upload={handleS3Upload}
-                />
-                <ImageList
-                  handleS3Delete={handleS3Delete}
-                  images={thumbnails}
-                />
-              </>
-            ) : (
+            <>
+              <ImageUploader
+                dataKey="display"
+                imageCount={thumbnails.length}
+                handleS3Upload={handleS3Upload}
+              />
               <ImageList handleS3Delete={handleS3Delete} images={thumbnails} />
-            )
+            </>
           ) : (
             <ImageUploader dataKey="display" handleS3Upload={handleS3Upload} />
           )}

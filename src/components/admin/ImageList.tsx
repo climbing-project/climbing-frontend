@@ -27,15 +27,16 @@ const ImageList = ({ images, handleS3Delete }: ImageListProps) => {
 const Styled = {
   Wrapper: styled.div`
     display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    max-width: 600px;
+    gap: 12px;
+    width: 900px;
+    overflow-x: auto;
   `,
   Image: styled.div`
     position: relative;
     border: 1px solid #d0d0d0;
     width: 140px;
     height: 80px;
+    flex-shrink: 0;
 
     img {
       object-fit: cover;

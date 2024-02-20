@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { RiDeleteBin6Fill } from 'react-icons/ri';
 import ImageUploader from './ImageUploader';
 import ImageList from './ImageList';
-import useS3 from './useS3';
+import useS3 from '../../hooks/useS3';
 import { GymData } from '@/pages/admin/edit';
 
 interface ImageEditorProps {

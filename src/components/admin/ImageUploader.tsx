@@ -4,10 +4,12 @@ import styled from 'styled-components';
 import { MdOutlineUploadFile } from 'react-icons/md';
 
 interface ImageUploadProps {
+  dataKey: string;
   handleS3Upload: (
     file: File,
     fileName: string,
     fileCount: number,
+    dataKey: string,
   ) => Promise<void>;
 }
 
@@ -19,7 +21,7 @@ const IMG_FORMAT = 'JPEG';
 const THUMBNAIL_WIDTH = 140;
 const THUMBNAIL_HEIGHT = 140;
 
-const ImageUploader = ({ handleS3Upload }: ImageUploadProps) => {
+const ImageUploader = ({ dataKey, handleS3Upload }: ImageUploadProps) => {
   const handleDrop: DragEventHandler = (e) => {
     e.preventDefault();
     if (e.dataTransfer.files.length === 0) return;
@@ -36,7 +38,7 @@ const ImageUploader = ({ handleS3Upload }: ImageUploadProps) => {
     const uploadFileCount = uploadFiles.length;
     const rejectedFileCount = allFiles.length - uploadFileCount; // 유효한 이미지 형식(jpeg/png)이 아닐 시 이용자에게 알리기 위해 파일 갯수 트랙킹
 
-    uploadFiles.forEach((file, i) => {
+    uploadFiles.forEach((file) => {
       FileResizer.imageFileResizer(
         file,
         MAX_WIDTH,
@@ -50,7 +52,9 @@ const ImageUploader = ({ handleS3Upload }: ImageUploadProps) => {
             resizedImg as File,
             randomizedFileName,
             uploadFileCount,
+            dataKey,
           );
+          if (dataKey === 'default') return;
           FileResizer.imageFileResizer(
             resizedImg as File,
             THUMBNAIL_WIDTH,
@@ -60,7 +64,12 @@ const ImageUploader = ({ handleS3Upload }: ImageUploadProps) => {
             0,
             (thumb) => {
               const thumbFileName = `thumb_${randomizedFileName}`;
-              handleS3Upload(thumb as File, thumbFileName, uploadFileCount);
+              handleS3Upload(
+                thumb as File,
+                thumbFileName,
+                uploadFileCount,
+                dataKey,
+              );
             },
             'file',
           );

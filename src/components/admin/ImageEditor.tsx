@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction } from 'react';
+import Image from 'next/image';
 import styled from 'styled-components';
 import ImageUploader from './ImageUploader';
 import ImageList from './ImageList';
@@ -8,6 +9,7 @@ import { GymData } from '@/pages/admin/edit';
 interface ImageEditorProps {
   loadedImages: string[] | undefined;
   thumbnails: string[] | undefined;
+  defaultImage: string | undefined;
   setCurrentData: Dispatch<SetStateAction<GymData>>;
   setLoadedData: Dispatch<SetStateAction<GymData>>;
   updateData: (data: string) => Promise<void>;
@@ -16,14 +18,20 @@ interface ImageEditorProps {
 const ImageEditor = ({
   loadedImages,
   thumbnails,
+  defaultImage,
   setCurrentData,
   setLoadedData,
   updateData,
 }: ImageEditorProps) => {
-  const uploadImage = (newThumbnail: string, fileCount: number) => {
-    if (!newThumbnail.includes('thumb_')) return;
+  const uploadImage = (url: string, fileCount: number, key: string) => {
+    if (key === 'default') {
+      setCurrentData((prev) => ({ ...prev, defaultImage: url }));
+      updateData(JSON.stringify({ defaultImage: url }));
+      return;
+    }
+    if (!url.includes('thumb_')) return;
 
-    const newImage = newThumbnail.replace('thumb_', '');
+    const originImage = url.replace('thumb_', '');
 
     setCurrentData((current) => {
       const currentThumbnails = current.imageThumbnails || [];
@@ -32,15 +40,15 @@ const ImageEditor = ({
         currentThumbnails.length - (loadedImages ? loadedImages.length : 0) ===
         fileCount - 1
       ) {
-        const images = [...currentImages, newImage];
-        const imageThumbnails = [...currentThumbnails, newThumbnail];
+        const images = [...currentImages, originImage];
+        const imageThumbnails = [...currentThumbnails, url];
         updateData(JSON.stringify({ images, imageThumbnails }));
         setLoadedData((prev) => ({ ...prev, images, imageThumbnails }));
       }
       return {
         ...current,
-        images: [...currentImages, newImage],
-        imageThumbnails: [...currentThumbnails, newThumbnail],
+        images: [...currentImages, originImage],
+        imageThumbnails: [...currentThumbnails, url],
       };
     });
   };
@@ -70,10 +78,44 @@ const ImageEditor = ({
     <Styled.Wrapper>
       <Styled.Header>암장 이미지</Styled.Header>
       <Styled.Content $direction="column">
-        <ImageUploader handleS3Upload={handleS3Upload} />
-        {thumbnails ? (
-          <ImageList handleS3Delete={handleS3Delete} images={thumbnails} />
-        ) : null}
+        <div>
+          <h3>대표 이미지</h3>
+          {defaultImage ? (
+            <Image
+              src={defaultImage}
+              width={462}
+              height={215}
+              alt={defaultImage}
+            />
+          ) : (
+            <ImageUploader dataKey="default" handleS3Upload={handleS3Upload} />
+          )}
+        </div>
+        <div>
+          <h3>
+            추가 이미지
+            <br />
+            {thumbnails ? thumbnails.length : 0}/5
+          </h3>
+          {thumbnails ? (
+            thumbnails.length < 5 ? (
+              <>
+                <ImageUploader
+                  dataKey="display"
+                  handleS3Upload={handleS3Upload}
+                />
+                <ImageList
+                  handleS3Delete={handleS3Delete}
+                  images={thumbnails}
+                />
+              </>
+            ) : (
+              <ImageList handleS3Delete={handleS3Delete} images={thumbnails} />
+            )
+          ) : (
+            <ImageUploader dataKey="display" handleS3Upload={handleS3Upload} />
+          )}
+        </div>
       </Styled.Content>
     </Styled.Wrapper>
   );

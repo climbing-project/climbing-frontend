@@ -51,6 +51,7 @@ export interface GymData {
   homepage?: string;
   images?: Array<string>;
   imageThumbnails?: Array<string>;
+  defaultImage?: string;
   openHours?: Array<{ days: string; openTime: string; closeTime: string }>;
   pricing?: Array<{ item: string; price: string }>;
   tags?: Array<string>;
@@ -171,6 +172,7 @@ const EditPage = () => {
               <ImageEditor
                 loadedImages={loadedData.images}
                 thumbnails={currentData.imageThumbnails}
+                defaultImage={currentData.defaultImage}
                 setCurrentData={setCurrentData}
                 setLoadedData={setLoadedData}
                 updateData={updateData}

@@ -12,7 +12,7 @@ const FOLDER_NAME = 'bubu';
 const THUMBNAIL_PREFIX = 'thumb_';
 
 const useS3 = (
-  uploadCallback: (url: string, fileCount: number) => void,
+  uploadCallback: (url: string, fileCount: number, dataKey: string) => void,
   deleteCallback: (url: string) => void,
 ) => {
   // S3 클라이언트 생성
@@ -29,6 +29,7 @@ const useS3 = (
     file: File,
     fileName: string,
     fileCount: number,
+    dataKey: string,
   ) => {
     const params = {
       Bucket: BUCKET_NAME,
@@ -41,7 +42,11 @@ const useS3 = (
     } catch (error) {
       console.log('에러 발생: ' + error);
     } finally {
-      uploadCallback(`${S3_PATH}${FOLDER_NAME}/${fileName}`, fileCount);
+      uploadCallback(
+        `${S3_PATH}${FOLDER_NAME}/${fileName}`,
+        fileCount,
+        dataKey,
+      );
     }
   };
 

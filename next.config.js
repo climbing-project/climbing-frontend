@@ -3,16 +3,17 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  output: "standalone",
   compiler: {
     styledComponents: true,
   },
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'oruritest.s3.ap-northeast-2.amazonaws.com',
-        port: '',
-        pathname: '/bubu/*',
+        protocol: "https",
+        hostname: "oruritest.s3.ap-northeast-2.amazonaws.com",
+        port: "",
+        pathname: "/bubu/*",
       },
     ],
   },

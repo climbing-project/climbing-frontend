@@ -10,3 +10,7 @@ export interface ContactInfoProps {
   contact: string;
   snsList: SnsList;
 }
+
+export interface GradeBarProps {
+  grades: string[];
+}

@@ -14,3 +14,13 @@ export interface ContactInfoProps {
 export interface GradeBarProps {
   grades: string[];
 }
+
+
+export interface PricingTableItem {
+  item: string;
+  price: string;
+}
+
+export interface PricingTableProps {
+  pricing: Array<PricingTableItem>;
+}

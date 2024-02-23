@@ -158,27 +158,37 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   // 임시 데이터
   const gymData = {
-    images: [],
-    address: '서울시 강남구 테헤란로 123',
+    address: {
+      jibunAddress: '서울시 강남구 테헤란로 123',
+      roadAddress: '서울시 강남구 테헤란로 123',
+      unitAddress: '4층',
+    },
     coordinates: {
       latitude: 37.3595704,
       longitude: 127.1054221,
     },
     name: '클라이밍성지',
     description: `1940년대 프랑스 전문 산악인들의 교육 훈련용으로 시작된 이후, 인공으로 만들어진 암벽 구조물을 손과 발을 사용하여 등반하는 레저스포츠로 발전하였다. '인공암벽등반'이라고도 한다. 유럽과 러시아, 미국으로 전파되어 다양한 국제 대회가 개최되었고, 1987년 국제산악연맹(UIAA)에서 스포츠클라이밍에 관한 규정을 제정하면서 스포츠 경기로서의 규칙을 갖추었다. 한국에는 1988년에 도입되었고, 전국적으로 빠르게 보급되어 사계절 내내 즐길 수 있는 레저 스포츠로서 각광받고 있다. 제32회 올림픽경기대회(도쿄 올림픽)부터 올림픽 정식 종목으로 채택되었다.`,
-    difficulty: 5,
+    grades: ['#FDFDFD', '#A5A5A5'],
+    defaultImage:
+      'https://oruritest.s3.ap-northeast-2.amazonaws.com/bubu/59197312-a099-4c23-8a23-177e03272901.JPEG',
+    images: [
+      'https://oruritest.s3.ap-northeast-2.amazonaws.com/bubu/661f97a9-d19a-4445-9ee1-efaf8ebda07b.JPEG',
+      'https://oruritest.s3.ap-northeast-2.amazonaws.com/bubu/fb7feda3-4540-487e-a0e6-5b1b4fa62bd4.JPEG',
+      'https://oruritest.s3.ap-northeast-2.amazonaws.com/bubu/c41f93dd-f257-4718-b2f4-ce2ca8acc98c.JPEG',
+      'https://oruritest.s3.ap-northeast-2.amazonaws.com/bubu/2c0e71b6-15e5-4f12-ac7b-9aa9ce744851.JPEG',
+      'https://oruritest.s3.ap-northeast-2.amazonaws.com/bubu/85ae553e-7630-4ad4-b394-1952e0176104.JPEG',
+    ],
     openHours: [
       {
-        days: '평일',
-        time: '10:00 - 20:00',
+        days: 'weekdays',
+        openTime: 'AM,12,00',
+        closeTime: 'AM,05,10',
       },
       {
-        days: '주말',
-        time: '13:00 - 22:00',
-      },
-      {
-        days: '공휴일',
-        time: '휴관',
+        days: 'weekends',
+        openTime: 'AM,12,00',
+        closeTime: 'AM,05,10',
       },
     ],
     pricing: [
@@ -195,11 +205,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       '어린이 놀이터',
     ],
     tags: ['암벽', '짱', '운동', '하세요'],
-    contact: [
-      { platform: 'twitter', address: 'sdlfkj' },
-      { platform: 'facebook', address: 'sdlfkj' },
-      { platform: 'instagram', address: 'sdlfkj' },
-      { platform: 'phone', address: '010-1234-5678' },
+    contact: '02-112-4568',
+    sns: [
+      { twitter: 'sdlfkj' },
+      { facebook: 'goje_sdflj' },
+      { instagram: 'oie4rkf2' },
     ],
   };
 

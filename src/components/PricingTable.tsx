@@ -1,10 +1,10 @@
 import styled from 'styled-components';
-import { PricingTableItem, PricingTableProps } from '@/constants/types';
+import { Pricing, PricingTableProps } from '@/constants/types';
 
 const PricingTable = ({ pricing }: PricingTableProps) => {
   return (
     <Styled.Wrapper>
-      {pricing.map(({ item, price }: PricingTableItem, i) => (
+      {pricing.map(({ item, price }: Pricing, i) => (
         <li key={i}>
           <div>{item}</div>
           <Styled.Divider>

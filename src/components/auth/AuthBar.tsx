@@ -1,27 +1,26 @@
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import React, { MouseEventHandler } from "react";
 import { styled } from "styled-components";
 
 interface AuthButtonProps {
-  isLoggedIn: boolean;
-  username: string;
   // onLogin: MouseEventHandler<HTMLButtonElement>; // TODO: 함수 작성 후, type 재정의 필요
   onLogout: MouseEventHandler<HTMLButtonElement>;
   // onSignup: MouseEventHandler<HTMLButtonElement>;
 }
 
 const AuthBar = ({
-  isLoggedIn,
-  username,
   // onLogin,
   onLogout,
 }: // onSignup,
 AuthButtonProps) => {
-  if (isLoggedIn) {
+  const { data: session, status } = useSession();
+
+  if (status === "authenticated") {
     return (
       <div>
         <S.ButtonWrapper>
-          <p>Hello, {username}!</p>
+          <p>Hello, {session.user!.email}님!</p>
         </S.ButtonWrapper>
         <S.ButtonWrapper>
           <button onClick={onLogout}>로그아웃</button>

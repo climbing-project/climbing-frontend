@@ -1,12 +1,5 @@
 import styled from 'styled-components';
-
-interface DetailedListItem {
-  [key: string]: string | number;
-}
-
-interface DetailedListProps {
-  items: Array<DetailedListItem>;
-}
+import { DetailedListProps } from '@/constants/types';
 
 const DetailedList = ({ items }: DetailedListProps) => {
   return (

@@ -52,10 +52,12 @@ const GymInfo = ({
 
   return (
     <S.Wrapper>
-      <ImageCarousel
-        defaultImage={gymData.defaultImage}
-        imageList={gymData.images}
-      />
+      {!gymData.defaultImage && !gymData.images ? null : (
+        <ImageCarousel
+          defaultImage={gymData.defaultImage}
+          imageList={gymData.images}
+        />
+      )}
       <S.InfoContainer>
         <S.Main>
           <div className="sub-header">
@@ -66,35 +68,45 @@ const GymInfo = ({
               <IoHeartOutline /> <IoBookmarkOutline /> <IoShareSocialOutline />
             </div>
           </div>
-          <div className="description">{gymData.description}</div>
+          {gymData.description ? (
+            <div className="description">{gymData.description}</div>
+          ) : null}
           {isLoading ? null : <DynamicMap coordinates={gymData.coordinates} />}
           <div>댓글</div>
         </S.Main>
         <S.Side>
-          <div className="container">
-            <h4>관련 태그</h4>
-            {gymData.tags
-              ? gymData.tags.map((tag: string, i: number) => (
-                  <Tag key={i} prefix="#" text={tag} />
-                ))
-              : null}
-          </div>
-          <div className="container">
-            <h4>이용금액</h4>
-            <PricingTable pricing={gymData.pricing} />
-          </div>
-          <div className="container">
-            <h4>영업시간</h4>
-            <OpenHoursTable openHours={gymData.openHours} />
-          </div>
-          <div className="container">
-            <h4>시설 정보</h4>
-            {gymData.accommodations.join(', ')}
-          </div>
-          <div className="container">
-            <h4>난이도</h4>
-            <GradeBar grades={gymData.grades} />
-          </div>
+          {gymData.tags ? (
+            <div className="container">
+              <h4>관련 태그</h4>
+              {gymData.tags.map((tag: string, i: number) => (
+                <Tag key={i} prefix="#" text={tag} />
+              ))}
+            </div>
+          ) : null}
+          {gymData.pricing ? (
+            <div className="container">
+              <h4>이용금액</h4>
+              <PricingTable pricing={gymData.pricing} />
+            </div>
+          ) : null}
+          {gymData.openHours ? (
+            <div className="container">
+              <h4>영업시간</h4>
+              <OpenHoursTable openHours={gymData.openHours} />
+            </div>
+          ) : null}
+          {gymData.accommodations ? (
+            <div className="container">
+              <h4>시설 정보</h4>
+              {gymData.accommodations.join(', ')}
+            </div>
+          ) : null}
+          {gymData.grades ? (
+            <div className="container">
+              <h4>난이도</h4>
+              <GradeBar grades={gymData.grades} />
+            </div>
+          ) : null}
           <div className="container">
             <ContactInfo contact={gymData.contact} snsList={gymData.sns} />
           </div>
@@ -168,7 +180,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
       name: '클라이밍성지',
       description: `1940년대 프랑스 전문 산악인들의 교육 훈련용으로 시작된 이후, 인공으로 만들어진 암벽 구조물을 손과 발을 사용하여 등반하는 레저스포츠로 발전하였다. '인공암벽등반'이라고도 한다. 유럽과 러시아, 미국으로 전파되어 다양한 국제 대회가 개최되었고, 1987년 국제산악연맹(UIAA)에서 스포츠클라이밍에 관한 규정을 제정하면서 스포츠 경기로서의 규칙을 갖추었다. 한국에는 1988년에 도입되었고, 전국적으로 빠르게 보급되어 사계절 내내 즐길 수 있는 레저 스포츠로서 각광받고 있다. 제32회 올림픽경기대회(도쿄 올림픽)부터 올림픽 정식 종목으로 채택되었다.`,
-      grades: ['#FDFDFD', '#A5A5A5'],
+      grades: ['#FF6355', '#FBA949', '#FAE442', '#8BD448', '#2AA8F2'],
       defaultImage:
         'https://oruritest.s3.ap-northeast-2.amazonaws.com/bubu/59197312-a099-4c23-8a23-177e03272901.JPEG',
       images: [
@@ -191,9 +203,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         },
       ],
       pricing: [
-        { item: '일일 이용권', price: '10,000원' },
-        { item: '주간 멤버십(이용+암벽화+강습)', price: '89,000원' },
-        { item: '월간 멤버십(사우나 포함)', price: '월 100,000원' },
+        { item: '일일 이용권', price: '10,000' },
+        { item: '주간 멤버십(이용+암벽화+강습)', price: '89,000' },
+        { item: '월간 멤버십(사우나 포함)', price: '100,000' },
       ],
       accommodations: [
         '샤워실',

@@ -96,7 +96,6 @@ const GymInfo = ({
             <GradeBar grades={gymData.grades} />
           </div>
           <div className="container">
-            <h4>연락처</h4>
             <ContactInfo contact={gymData.contact} snsList={gymData.sns} />
           </div>
         </S.Side>

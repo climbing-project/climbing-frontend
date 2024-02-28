@@ -16,10 +16,12 @@ export const CONTACT_ICONS = {
 };
 
 const ContactInfo = ({ contact, snsList }: ContactInfoProps) => {
-  const platforms = snsList ? Object.keys(snsList) : [];
+  const platforms = Object.keys(snsList);
   return (
     <S.Wrapper>
-      {CONTACT_ICONS.phone} {contact}
+      <div>
+        {CONTACT_ICONS.phone} {contact}
+      </div>
       {platforms.map((platform, i) => (
         <div key={i}>
           {CONTACT_ICONS[platform as keyof typeof CONTACT_ICONS]}{' '}
@@ -33,13 +35,16 @@ const ContactInfo = ({ contact, snsList }: ContactInfoProps) => {
 const S = {
   Wrapper: styled.div`
     display: flex;
-    gap: 30px;
+    gap: 20px;
     width: 100%;
+    flex-wrap: wrap;
+    justify-content: space-between;
 
     div {
       display: flex;
-      gap: 8px;
+      gap: 6px;
       align-items: center;
+      width: 160px;
     }
   `,
 };

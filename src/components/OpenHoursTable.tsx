@@ -1,6 +1,13 @@
 import styled from 'styled-components';
 import { OpenHours, OpenHoursTableProps } from '@/constants/types';
 
+// 상수
+const DAYS_TEXT = {
+  weekdays: '평일',
+  weekends: '주말',
+  holidays: '공휴일',
+};
+
 const OpenHoursTable = ({ openHours }: OpenHoursTableProps) => {
   const get24HrTime = (data: string) => {
     const [period, hours, minutes] = data.split(',');
@@ -15,11 +22,11 @@ const OpenHoursTable = ({ openHours }: OpenHoursTableProps) => {
     <Styled.Wrapper>
       {openHours.map(({ days, openTime, closeTime }: OpenHours, i) => (
         <li key={i}>
-          <div>{days}</div>
+          <div>{DAYS_TEXT[days as keyof typeof DAYS_TEXT]}</div>
           <Styled.Divider>
             <hr />
           </Styled.Divider>
-          <div>{`${get24HrTime(openTime)}-${get24HrTime(closeTime)}`}</div>
+          <div>{`${get24HrTime(openTime)} - ${get24HrTime(closeTime)}`}</div>
         </li>
       ))}
     </Styled.Wrapper>

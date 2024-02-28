@@ -33,3 +33,8 @@ export interface PricingTableProps {
 export interface OpenHoursTableProps {
   openHours: Array<OpenHours>;
 }
+
+export interface ImageCarouselProps {
+  defaultImage: string;
+  imageList: string[];
+}

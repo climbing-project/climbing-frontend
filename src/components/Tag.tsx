@@ -17,6 +17,7 @@ const Styled = {
     background-color: #dcdcdc;
     color: #666;
     padding: 4px 8px;
+    margin-right: 8px;
   `,
 };
 

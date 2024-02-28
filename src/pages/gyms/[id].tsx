@@ -68,45 +68,45 @@ const GymInfo = ({
               <IoHeartOutline /> <IoBookmarkOutline /> <IoShareSocialOutline />
             </div>
           </div>
-          {gymData.description ? (
+          {gymData.description && (
             <div className="description">{gymData.description}</div>
-          ) : null}
+          )}
           {isLoading ? null : <DynamicMap coordinates={gymData.coordinates} />}
           <div>댓글</div>
         </S.Main>
         <S.Side>
-          {gymData.tags ? (
+          {gymData.tags && (
             <div className="container">
               <h4>관련 태그</h4>
               {gymData.tags.map((tag: string, i: number) => (
                 <Tag key={i} prefix="#" text={tag} />
               ))}
             </div>
-          ) : null}
-          {gymData.pricing ? (
+          )}
+          {gymData.pricing && (
             <div className="container">
               <h4>이용금액</h4>
               <PricingTable pricing={gymData.pricing} />
             </div>
-          ) : null}
-          {gymData.openHours ? (
+          )}
+          {gymData.openHours && (
             <div className="container">
               <h4>영업시간</h4>
               <OpenHoursTable openHours={gymData.openHours} />
             </div>
-          ) : null}
-          {gymData.accommodations ? (
+          )}
+          {gymData.accommodations && (
             <div className="container">
               <h4>시설 정보</h4>
               {gymData.accommodations.join(', ')}
             </div>
-          ) : null}
-          {gymData.grades ? (
+          )}
+          {gymData.grades && (
             <div className="container">
               <h4>난이도</h4>
               <GradeBar grades={gymData.grades} />
             </div>
-          ) : null}
+          )}
           <div className="container">
             <ContactInfo contact={gymData.contact} snsList={gymData.sns} />
           </div>

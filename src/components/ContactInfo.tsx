@@ -22,12 +22,16 @@ const ContactInfo = ({ contact, snsList }: ContactInfoProps) => {
       <div>
         {CONTACT_ICONS.phone} {contact}
       </div>
-      {platforms.map((platform, i) => (
-        <div key={i}>
-          {CONTACT_ICONS[platform as keyof typeof CONTACT_ICONS]}{' '}
-          {snsList[platform as keyof typeof snsList]}
-        </div>
-      ))}
+      {platforms.map((platform, i) => {
+        if (snsList[platform as keyof typeof snsList] !== '') {
+          return (
+            <div key={i}>
+              {CONTACT_ICONS[platform as keyof typeof CONTACT_ICONS]}{' '}
+              {snsList[platform as keyof typeof snsList]}
+            </div>
+          );
+        }
+      })}
     </S.Wrapper>
   );
 };

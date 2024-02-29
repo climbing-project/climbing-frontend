@@ -50,6 +50,8 @@ const GymInfo = ({
     setIsLoading(false);
   };
 
+  console.log(gymData.accommodations)
+
   return (
     <S.Wrapper>
       {!gymData.defaultImage && !gymData.images ? null : (
@@ -75,7 +77,7 @@ const GymInfo = ({
           <div>댓글</div>
         </S.Main>
         <S.Side>
-          {gymData.tags && (
+          {gymData.tags && gymData.tags.length > 0 && (
             <div className="container">
               <h4>관련 태그</h4>
               {gymData.tags.map((tag: string, i: number) => (
@@ -83,25 +85,25 @@ const GymInfo = ({
               ))}
             </div>
           )}
-          {gymData.pricing && (
+          {gymData.pricing && gymData.pricing.length > 0 && (
             <div className="container">
               <h4>이용금액</h4>
               <PricingTable pricing={gymData.pricing} />
             </div>
           )}
-          {gymData.openHours && (
+          {gymData.openHours && gymData.openHours.length > 0 && (
             <div className="container">
               <h4>영업시간</h4>
               <OpenHoursTable openHours={gymData.openHours} />
             </div>
           )}
-          {gymData.accommodations && (
+          {gymData.accommodations && gymData.accommodations.length > 0 && (
             <div className="container">
               <h4>시설 정보</h4>
               {gymData.accommodations.join(', ')}
             </div>
           )}
-          {gymData.grades && (
+          {gymData.grades && gymData.grades.length > 0 && (
             <div className="container">
               <h4>난이도</h4>
               <GradeBar grades={gymData.grades} />

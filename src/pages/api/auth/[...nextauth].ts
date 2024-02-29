@@ -83,4 +83,6 @@ export default NextAuth({
     signIn: "login",
     error: "error",
   },
+
+  secret: process.env.NEXTAUTH_SECRET,
 });

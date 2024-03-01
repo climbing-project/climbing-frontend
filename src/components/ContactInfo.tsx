@@ -38,17 +38,14 @@ const ContactInfo = ({ contact, snsList }: ContactInfoProps) => {
 
 const S = {
   Wrapper: styled.div`
-    display: flex;
-    gap: 20px;
-    width: 100%;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    display: grid;
+    grid: 1fr 1fr / 1fr 1fr;
+    gap: 12px;
 
     div {
       display: flex;
       gap: 6px;
       align-items: center;
-      width: 160px;
     }
   `,
 };

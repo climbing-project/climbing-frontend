@@ -5,6 +5,10 @@ on:
     branches:
       - aws-deploy
 
+permissions:
+  id-token: write
+  contents: read
+
 env: # 사용할 env
   AWS_REGION: ap-northeast-2
   ECR_REPOSITORY: frontend-dev
@@ -35,7 +39,6 @@ jobs:
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         # 아래처럼 docker 커맨드를 실행한다.
-        run:
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
+        run: docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
           echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:latest"

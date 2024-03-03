@@ -1,4 +1,3 @@
-"use client";
 import { styled } from "styled-components";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -21,6 +20,7 @@ const Navbar = () => {
 
   if (!showNavBar) return;
 
+  // 햄버거 바는 기능이 적을시, 닉네임클릭시 나오는 네비와 합칠수도있음. 현재는 그대로 둠
   return (
     <>
       <S.Space></S.Space>

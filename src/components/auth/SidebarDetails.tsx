@@ -27,7 +27,10 @@ const SidebarDetails = ({
         <S.CloseButton onClick={() => setShowSidebar(false)}>
           <IoClose size="20" />
         </S.CloseButton>
-        <S.ProfileContainer>
+        <S.ProfileContainer
+          href={"/settings"}
+          onClick={() => setShowSidebar(false)}
+        >
           <CgProfile size="50" />
           <S.TextWrapper>{account}님!</S.TextWrapper>
           <MdNavigateNext size="30" />
@@ -62,12 +65,15 @@ const S = {
     height: 500px;
     padding: 50px;
   `,
-  ProfileContainer: styled.div`
+  ProfileContainer: styled(Link)`
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     margin-bottom: 50px;
+
+    text-decoration: none;
+    color: inherit;
   `,
   TextWrapper: styled.h3`
     margin-left: 10px;
@@ -82,6 +88,7 @@ const S = {
   `,
   Link: styled(Link)`
     text-decoration: none;
+    color: inherit;
   `,
   ButtonBox: styled.div`
     border-radius: 5px;

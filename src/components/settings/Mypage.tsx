@@ -12,7 +12,7 @@ const Mypage = () => {
   const [isReEnterPasswordValid, setIsReEnterPasswordValid] = useState(false);
   const [reEnterPasswordMessage, setReEnterPasswordMessage] = useState("");
 
-  const [isNicknameValid, setIsNicknameValid] = useState(false);
+  const [isNicknameValid, setIsNicknameValid] = useState(true);
   const [nicknameMessage, setNicknameMessage] = useState("");
 
   const [password, setPassword] = useState("");
@@ -99,14 +99,15 @@ const Mypage = () => {
       body: JSON.stringify(credentials),
     });
 
-    const data = await response.json();
+    // const data = await response.json();
 
-    if (data.ok) {
-      //정상적 업데이트 => 현재페이지 재표시
-      router.reload();
-    } else {
-      return null as any;
-    }
+    router.reload();
+    // if (data.ok) {
+    //   //정상적 업데이트 => 현재페이지 재표시
+    //   router.reload();
+    // } else {
+    //   return null as any;
+    // }
   };
 
   if (status !== "authenticated") {
@@ -154,6 +155,7 @@ const Mypage = () => {
                 type="text"
                 $hasMessage={nicknameMessage !== ""}
                 onChange={handleNicknameChange}
+                defaultValue={"서버로 부터 받은 닉네임"}
               ></S.Input>
               <S.Warning>{nicknameMessage}</S.Warning>
             </td>
@@ -168,7 +170,7 @@ const Mypage = () => {
             : true
         }
       >
-        가입하기
+        저장하기
       </S.ButtonBox>
     </S.TableContainer>
   );

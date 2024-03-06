@@ -120,8 +120,8 @@ const Mypage = () => {
         <thead></thead>
         <tbody>
           <tr>
-            <td>아이디(이메일)</td>
-            <td>{session.user!.email!}</td>
+            <td width="150px">아이디(이메일)</td>
+            <td>서버에서 준 아이디</td>
           </tr>
           <tr>
             <td>비밀번호</td>
@@ -177,11 +177,25 @@ const Mypage = () => {
 };
 
 const S = {
-  TableContainer: styled.form``,
+  TableContainer: styled.form`
+    table {
+      width: 600px;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    td {
+      padding: 5px;
+      border: 1px solid black;
+      height: 40px;
+      padding-left: 10px;
+    }
+  `,
   ButtonBox: styled.button`
     height: 40px;
     background-color: #f9f2f2;
     border: none;
+    margin-top: 10px;
   `,
   Input: styled.input<{ $hasMessage: boolean }>`
     height: 30px;

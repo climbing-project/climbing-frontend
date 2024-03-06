@@ -13,8 +13,8 @@ const Settings = () => {
   return (
     <S.Wrapper>
       <S.Sidebar>
-        <h3>계정 설정</h3>
-        <S.Link onClick={() => handlePageChange(1)}>마이페이지</S.Link>
+        <h3>설정</h3>
+        <S.Link onClick={() => handlePageChange(1)}>내 정보</S.Link>
         <S.Link onClick={() => handlePageChange(2)}>1:1 문의</S.Link>
       </S.Sidebar>
       <S.Main>{currentPage === 1 ? <Mypage /> : <>1:1문의</>}</S.Main>
@@ -43,6 +43,7 @@ const S = {
   `,
   Link: styled.div`
     cursor: pointer;
+    margin: 10px 0;
 
     &:hover {
       color: #1aabff;

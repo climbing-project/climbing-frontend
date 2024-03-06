@@ -1,5 +1,5 @@
 const Mypage = () => {
-  return <>마이페이지</>;
+  return <>내 정보</>;
 };
 
 export default Mypage;

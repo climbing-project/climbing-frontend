@@ -36,6 +36,7 @@ export interface GymData {
   description?: string;
   grades?: Array<string>;
   accommodations?: Array<string>;
+  comments?: Array<{ user: string; date: string; text: string }>;
 }
 
 const EditPage = () => {

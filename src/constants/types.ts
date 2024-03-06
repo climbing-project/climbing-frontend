@@ -25,6 +25,8 @@ export interface SnsList {
   instagram?: string;
 }
 
+export type UserComment = Array<{ user: string; date: string; text: string }>;
+
 // 컴포넌트 props 타입 정의
 export interface ContactInfoProps {
   contact: string;
@@ -59,4 +61,13 @@ export interface PricingTableProps {
 export interface TagProps {
   prefix?: string;
   text: string;
+}
+
+export interface CommentsProps {
+  id: string;
+  comments?: UserComment;
+}
+
+export interface CommentTextareaProps {
+  handleAddComment: (input: string) => void;
 }

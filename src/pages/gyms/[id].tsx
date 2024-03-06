@@ -16,6 +16,7 @@ import DynamicMap from '@/components/DynamicMap';
 import PricingTable from '@/components/PricingTable';
 import OpenHoursTable from '@/components/OpenHoursTable';
 import ImageCarousel from '@/components/ImageCarousel';
+import Comments from '@/components/Comments';
 
 const TEST_ID = '75334254-93a8-4cfb-afec-29e368ac0803';
 
@@ -72,7 +73,7 @@ const GymInfo = ({
             <div className="description">{gymData.description}</div>
           )}
           {isLoading ? null : <DynamicMap coordinates={gymData.coordinates} />}
-          <div>댓글</div>
+          <Comments id={TEST_ID} comments={gymData.comments} />
         </S.Main>
         <S.Side>
           {gymData.tags && gymData.tags.length > 0 && (
@@ -132,6 +133,9 @@ const S = {
     box-sizing: border-box;
     padding: 0px 18px;
     flex: 1 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
   `,
   Side: styled.div`
     display: flex;
@@ -235,7 +239,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         }
       ],
       "homepage": "https://www.naver.com/",
-      "tags": ["판타스틱", "암벽경험", "인생운동", "암장"]
+      "tags": ["판타스틱", "암벽경험", "인생운동", "암장"],
+      "comments": [
+        { "user": "클라이밍", "date": "22.02.18", "text": "여기 너무 좋아요"},
+        { "user": "암장", "date": "22.02.18", "text": "샤워시설이 깨끗하고 좋아요"},
+        { "user": "닉네임", "date": "22.02.18", "text": "난이도가 적절해서 좋았어요"},
+      ]
     };
     return { props: { gymData } };
   }

@@ -96,6 +96,8 @@ const S = {
     border: none;
     padding: 10px;
     text-align: center;
+
+    cursor: pointer;
   `,
   CloseButton: styled.div`
     position: fixed;

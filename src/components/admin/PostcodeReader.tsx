@@ -12,22 +12,22 @@ const PostcodeReader = ({
   handleComplete,
 }: PostcodeReaderProps) => {
   return (
-    <Styled.Wrapper>
-      <Styled.Foreground>
-        <Styled.EmbedContainer>
+    <S.Wrapper>
+      <S.Foreground>
+        <S.EmbedContainer>
           <IoIosCloseCircle
             className="btn__close"
             onClick={() => handleClose()}
           />
           <DaumPostcodeEmbed onComplete={(data) => handleComplete(data)} />
-        </Styled.EmbedContainer>
-      </Styled.Foreground>
-      <Styled.Background />
-    </Styled.Wrapper>
+        </S.EmbedContainer>
+      </S.Foreground>
+      <S.Background />
+    </S.Wrapper>
   );
 };
 
-const Styled = {
+const S = {
   Wrapper: styled.div`
     position: fixed;
     z-index: 5;

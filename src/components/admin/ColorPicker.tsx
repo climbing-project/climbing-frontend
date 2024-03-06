@@ -31,22 +31,22 @@ interface ColorPickerProps {
 
 const ColorPicker = ({ handleColorSelect }: ColorPickerProps) => {
   return (
-    <Styled.Wrapper>
+    <S.Wrapper>
       {GRADE_COLORS.map((color, i) => (
-        <Styled.Palette
+        <S.Palette
           key={i}
           data-hex={color}
           $color={color}
           onClick={(e: BaseSyntheticEvent) =>
             handleColorSelect(e.target.dataset.hex)
           }
-        ></Styled.Palette>
+        ></S.Palette>
       ))}
-    </Styled.Wrapper>
+    </S.Wrapper>
   );
 };
 
-const Styled = {
+const S = {
   Wrapper: styled.div`
     position: absolute;
     bottom: 45px;

@@ -23,11 +23,6 @@ const SettingDayEditor = ({ date, setCurrentData }: SettingDayEditorProps) => {
     return `${CURRENT_CENTURY}${yy} - ${mm} - ${dd}`;
   };
 
-  const convertTextToData = (string: string) => {
-    const data = ``;
-    return data;
-  };
-
   const handleChange = (value: Value) => {
     if (value) {
       const selectedDate = new Date(value.toString());

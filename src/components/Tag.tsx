@@ -3,14 +3,14 @@ import { TagProps } from '@/constants/types';
 
 const Tag = ({ prefix, text }: TagProps) => {
   return (
-    <Styled.Wrapper>
+    <S.Wrapper>
       {prefix}
       {text}
-    </Styled.Wrapper>
+    </S.Wrapper>
   );
 };
 
-const Styled = {
+const S = {
   Wrapper: styled.span`
     display: inline-block;
     line-height: 24px;

@@ -22,10 +22,10 @@ const DynamicMap = ({ coordinates }: MapProps) => {
     getMap(latitude, longitude);
   }, [latitude, longitude]);
 
-  return <Styled.Wrapper id="map" />;
+  return <S.Wrapper id="map" />;
 };
 
-const Styled = {
+const S = {
   Wrapper: styled.div`
     width: 100%;
     height: 400px;

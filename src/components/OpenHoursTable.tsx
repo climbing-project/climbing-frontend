@@ -19,21 +19,21 @@ const OpenHoursTable = ({ openHours }: OpenHoursTableProps) => {
       : `${(Number(hours) + 12).toString()}:${minutes}`;
   };
   return (
-    <Styled.Wrapper>
+    <S.Wrapper>
       {openHours.map(({ days, openTime, closeTime }: OpenHours, i) => (
         <li key={i}>
           <div>{DAYS_TEXT[days as keyof typeof DAYS_TEXT]}</div>
-          <Styled.Divider>
+          <S.Divider>
             <hr />
-          </Styled.Divider>
+          </S.Divider>
           <div>{`${get24HrTime(openTime)} - ${get24HrTime(closeTime)}`}</div>
         </li>
       ))}
-    </Styled.Wrapper>
+    </S.Wrapper>
   );
 };
 
-const Styled = {
+const S = {
   Wrapper: styled.ul`
     margin-block: 0;
     padding: 0;

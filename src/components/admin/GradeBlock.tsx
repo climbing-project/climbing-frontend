@@ -21,8 +21,8 @@ const GradeBlock = ({ index, color, handleColorChange }: GradeBlockProps) => {
   const handleMouseLeave = () => setIsExpanded(false);
 
   return (
-    <Styled.Wrapper>
-      <Styled.Block
+    <S.Wrapper>
+      <S.Block
         $color={blockColor}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
@@ -32,11 +32,11 @@ const GradeBlock = ({ index, color, handleColorChange }: GradeBlockProps) => {
           <ColorPicker handleColorSelect={handleColorSelect} />
         </div>
       ) : null}
-    </Styled.Wrapper>
+    </S.Wrapper>
   );
 };
 
-const Styled = {
+const S = {
   Wrapper: styled.div`
     position: relative;
     flex: 1 0 0;

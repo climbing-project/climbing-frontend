@@ -88,7 +88,7 @@ const ImageUploader = ({
   };
 
   return (
-    <Styled.Wrapper
+    <S.Wrapper
       $width={dataKey === 'default' ? '462px' : ''}
       $height={dataKey === 'default' ? '215px' : ''}
     >
@@ -105,11 +105,11 @@ const ImageUploader = ({
         <MdOutlineUploadFile size="1.4em" />
         사진 업로드
       </div>
-    </Styled.Wrapper>
+    </S.Wrapper>
   );
 };
 
-const Styled = {
+const S = {
   Wrapper: styled.div<{ $width?: string; $height?: string }>`
     position: relative;
     z-index: 2;

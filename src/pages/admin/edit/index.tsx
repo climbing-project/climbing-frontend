@@ -9,6 +9,7 @@ import OpenHoursEditor from '@/components/admin/OpenHoursEditor';
 import AccommodationsEditor from '@/components/admin/AccommodationsEditor';
 import GradeEditor from '@/components/admin/GradeEditor';
 import PricingEditor from '@/components/admin/PricingEditor';
+import SettingDayEditor from '@/components/admin/SettingDayEditor';
 
 export interface GymData {
   id?: string;
@@ -23,7 +24,7 @@ export interface GymData {
     longitude: number;
   };
   contact: string;
-  latestSettingDay: string;
+  latestSettingDay?: string;
   sns?: { twitter?: string; facebook?: string; instagram?: string };
   homepage?: string;
   images?: Array<string>;
@@ -172,6 +173,10 @@ const EditPage = () => {
               />
               <GradeEditor
                 gradesList={currentData.grades}
+                setCurrentData={setCurrentData}
+              />
+              <SettingDayEditor
+                date={currentData.latestSettingDay}
                 setCurrentData={setCurrentData}
               />
             </>

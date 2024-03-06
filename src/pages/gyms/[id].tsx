@@ -17,7 +17,9 @@ import PricingTable from '@/components/PricingTable';
 import OpenHoursTable from '@/components/OpenHoursTable';
 import ImageCarousel from '@/components/ImageCarousel';
 import Comments from '@/components/Comments';
+import Link from 'next/link';
 
+// 임시
 const TEST_ID = '75334254-93a8-4cfb-afec-29e368ac0803';
 
 const GymInfo = ({
@@ -51,6 +53,35 @@ const GymInfo = ({
     setIsLoading(false);
   };
 
+  const handleLike = () => {
+    // 현재 회원 정보에 따라 처리
+    // 좋아요한 상태일 경우 해제
+
+    // 좋아요 추가
+    fetch(`http://localhost:3000/gyms/${TEST_ID}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ likes: (gymData.likes || 0) + 1 }),
+    });
+
+    // 해제일 경우 gyms 데이터에서 숫자 차감하도록 추후 분기 추가
+    // 좋아요 수는 서버 props이기 때문에 새로고침하지 않으면 변동사항이 렌더링되지 않음--상태로 갯수를 따로 저장해둘지 고민
+    // fetch(`http://localhost:3000/gyms/${TEST_ID}`, {
+    //   method: 'PATCH',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({ likes: (gymData.likes || 0) - 1 }),
+    // });
+  };
+
+  const handleBookmark = () => {
+    // 현재 회원 정보에 따라 처리
+    // 북마크한 상태일 경우 해제
+  };
+
   return (
     <S.Wrapper>
       {!gymData.defaultImage && !gymData.images ? null : (
@@ -61,12 +92,28 @@ const GymInfo = ({
       )}
       <S.InfoContainer>
         <S.Main>
-          <div className="sub-header">
-            <FaLocationDot /> {gymData.address.roadAddress}
-            <br />
-            <div className="sub-name">
-              <span>{gymData.name}</span>&nbsp;
-              <IoHeartOutline /> <IoBookmarkOutline /> <IoShareSocialOutline />
+          <div>
+            <div className="address">
+              <FaLocationDot /> {gymData.address.roadAddress}
+            </div>
+            <div className="header">
+              <span className="header__text">{gymData.name}</span>&nbsp;
+              <div className="icons">
+                <S.Icon onClick={handleLike}>
+                  <IoHeartOutline size="1.3rem" />
+                  {gymData.likes || 0}
+                </S.Icon>{' '}
+                <S.Icon onClick={handleBookmark}>
+                  <IoBookmarkOutline size="1.3rem" />
+                </S.Icon>{' '}
+                {gymData.homepage ? (
+                  <S.Icon>
+                    <S.Link href={gymData.homepage} target="_blank">
+                      <IoShareSocialOutline size="1.3rem" />
+                    </S.Link>
+                  </S.Icon>
+                ) : null}
+              </div>
             </div>
           </div>
           {gymData.description && (
@@ -122,6 +169,31 @@ const S = {
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    .address {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: gray;
+      margin-bottom: 18px;
+    }
+
+    .header {
+      display: flex;
+      align-items: flex-end;
+    }
+
+    .header__text {
+      font-weight: 700;
+      font-size: 2.5rem;
+    }
+
+    .icons {
+      position: relative;
+      bottom: 6px;
+      display: flex;
+      gap: 6px;
+    }
   `,
   InfoContainer: styled.div`
     display: flex;
@@ -152,6 +224,19 @@ const S = {
       margin-top: 0;
       margin-bottom: 16px;
     }
+  `,
+  Icon: styled.div`
+    display: flex;
+    align-items: center;
+    /* font-size: 1.3rem; */
+    color: #666666;
+    cursor: pointer;
+  `,
+  Link: styled(Link)`
+    text-decoration: none;
+    color: inherit;
+    line-height: 0.5;
+    height: inherit;
   `,
 };
 

@@ -6,14 +6,12 @@ import Sidebar from "./Sidebar";
 
 interface AuthButtonProps {
   // onLogin: MouseEventHandler<HTMLButtonElement>; // TODO: 함수 작성 후, type 재정의 필요
-  onLogout: MouseEventHandler<HTMLButtonElement>;
+  // onLogout: MouseEventHandler<HTMLButtonElement>;
   // onSignup: MouseEventHandler<HTMLButtonElement>;
 }
 
-const AuthBar = ({
-  // onLogin,
-  onLogout,
-}: // onSignup,
+const AuthBar = ({}: // onLogin,
+// onSignup,
 AuthButtonProps) => {
   const { data: session, status } = useSession();
 

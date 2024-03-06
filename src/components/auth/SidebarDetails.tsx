@@ -4,6 +4,7 @@ import { CgProfile } from "react-icons/cg";
 import { MdNavigateNext } from "react-icons/md";
 import Link from "next/link";
 import { IoClose } from "react-icons/io5";
+import { signOut } from "next-auth/react";
 
 interface SidebarDetailProps {
   showSidebar: boolean;
@@ -16,6 +17,10 @@ const SidebarDetails = ({
   setShowSidebar,
   account,
 }: SidebarDetailProps) => {
+  const handleSignOut = () => {
+    signOut({ callbackUrl: "/" });
+  };
+
   return (
     showSidebar && (
       <S.SidebarWrapper>
@@ -40,7 +45,7 @@ const SidebarDetails = ({
             <S.Link href={"/"}>공지사항</S.Link>
           </S.ItemWrapper>
         </S.CategoryContainer>
-        <S.ButtonBox>로그아웃</S.ButtonBox>
+        <S.ButtonBox onClick={handleSignOut}>로그아웃</S.ButtonBox>
       </S.SidebarWrapper>
     )
   );

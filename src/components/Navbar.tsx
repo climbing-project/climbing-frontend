@@ -3,7 +3,6 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import AuthBar from "./auth/AuthBar";
 import { usePathname } from "next/navigation";
-import { signOut } from "next-auth/react";
 
 // navbar(헤더)를 보여주지 않을 페이지 주소 지정
 const nonNavPage = ["/login", "/join"];
@@ -30,7 +29,7 @@ const Navbar = () => {
             오르리
           </Link>
           <S.MenuContainer>
-            <AuthBar onLogout={() => signOut()} />
+            <AuthBar />
             <S.ButtonWrapper>=</S.ButtonWrapper>
           </S.MenuContainer>
         </S.BarContainer>

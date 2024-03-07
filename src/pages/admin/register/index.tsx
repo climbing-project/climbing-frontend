@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import NewGymForm from '@/components/admin/NewGymForm';
-import { GymData } from '../edit';
+import { GymData } from '@/constants/types';
 
 // 테스트용 상수값
 const testEndpoint = 'http://localhost:3000/gyms/'

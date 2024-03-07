@@ -4,7 +4,7 @@ import 'react-calendar/dist/Calendar.css';
 import styled from 'styled-components';
 import { FaCalendarDay } from 'react-icons/fa';
 import { IoTrash } from 'react-icons/io5';
-import { GymData } from '@/pages/admin/edit';
+import { GymData } from '@/constants/types';
 
 type Range<T> = [T, T];
 type ValuePiece = Date | null;

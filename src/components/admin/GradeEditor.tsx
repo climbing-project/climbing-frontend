@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { FaMinus, FaPlus } from 'react-icons/fa6';
 import { IoTrash } from 'react-icons/io5';
 import GradeBlock from './GradeBlock';
-import { GymData } from '@/pages/admin/edit';
+import { GymData } from '@/constants/types';
 
 interface GradeEditorProps {
   gradesList: string[] | undefined;

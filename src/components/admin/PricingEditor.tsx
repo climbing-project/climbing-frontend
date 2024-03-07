@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import { IoTrash } from 'react-icons/io5';
 import PricingField from './PricingField';
-import { GymData } from '@/pages/admin/edit';
+import { GymData } from '@/constants/types';
 
 interface PricingEditorProps {
   pricingList: Array<{ item: string; price: string }> | undefined;

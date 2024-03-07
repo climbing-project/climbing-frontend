@@ -8,7 +8,7 @@ import {
   BsGlobe2,
 } from 'react-icons/bs';
 import AddressField from './AddressField';
-import { GymData } from '@/pages/admin/edit';
+import { GymData } from '@/constants/types';
 
 interface BasicInfoProps {
   name: string;

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import AddressField from './AddressField';
-import { GymData } from '@/pages/admin/edit';
+import { GymData } from '@/constants/types';
 
 interface NewGymFormProps {
   handleSubmit: (formData: GymData) => void;

@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
-import { GymData } from '@/pages/admin/edit';
+import { GymData } from '@/constants/types';
 
 interface AccommodationsEditorProps {
   accommodationsList: string[] | undefined;

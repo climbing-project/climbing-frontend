@@ -1,4 +1,33 @@
 // 데이터 타입 정의
+export interface GymData {
+  id?: string;
+  name: string;
+  address: {
+    jibunAddress: string;
+    roadAddress: string;
+    unitAddress: string;
+  };
+  coordinates: {
+    latitude: number;
+    longitude: number;
+  };
+  contact: string;
+  latestSettingDay?: string;
+  sns?: { twitter?: string; facebook?: string; instagram?: string };
+  homepage?: string;
+  images?: Array<string>;
+  imageThumbnails?: Array<string>;
+  defaultImage?: string;
+  openHours?: Array<{ days: string; openTime: string; closeTime: string }>;
+  pricing?: Array<{ item: string; price: string }>;
+  tags?: Array<string>;
+  description?: string;
+  grades?: Array<string>;
+  accommodations?: Array<string>;
+  comments?: Array<{ user: string; date: string; text: string }>;
+  likes?: number;
+}
+
 export interface DetailedListItem {
   [key: string]: string | number;
 }

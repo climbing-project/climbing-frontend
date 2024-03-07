@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Address } from 'react-daum-postcode';
 import { IoSearch } from 'react-icons/io5';
 import PostcodeReader from './PostcodeReader';
-import { GymData } from '@/pages/admin/edit';
+import { GymData } from '@/constants/types';
 
 interface AddressFieldProps {
   address: { jibunAddress: string; roadAddress: string; unitAddress: string };

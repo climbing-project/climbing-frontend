@@ -1,7 +1,8 @@
+import { useState } from 'react';
+import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import styled from 'styled-components';
 import CommentTextarea from './CommentTextarea';
-import { useState } from 'react';
 import { CommentsProps, UserComment } from '@/constants/types';
 
 // 임시
@@ -15,7 +16,7 @@ const Comments = ({ id, comments }: CommentsProps) => {
 
   const handleAddComment = (input: string) => {
     const newComment = {
-      user: 'test-user', // 추후 유저 닉네임으로 대체
+      user: session!.user!.name as string,
       date: getCurrentDate(),
       text: input,
     };
@@ -41,8 +42,14 @@ const Comments = ({ id, comments }: CommentsProps) => {
 
   return (
     <S.Wrapper>
-      {/* {session ? <CommentTextarea /> : <div>로그인해서 후기를 남겨주세요!</div>} */}
-      <CommentTextarea handleAddComment={handleAddComment} />
+      {session ? (
+        <CommentTextarea handleAddComment={handleAddComment} />
+      ) : (
+        <div className="login-prompt">
+          로그인해서 후기를 남겨주세요!
+          <S.Link href={'/login'}>로그인하기</S.Link>
+        </div>
+      )}
       {currentComments && currentComments.length > 0
         ? currentComments.map(({ user, date, text }, i) => (
             <S.Comment key={i}>
@@ -62,6 +69,13 @@ const S = {
   Wrapper: styled.div`
     display: flex;
     flex-direction: column;
+
+    .login-prompt {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
+    }
   `,
   Comment: styled.div`
     display: flex;
@@ -77,6 +91,15 @@ const S = {
     .comment__date {
       color: #c3c3c3;
     }
+  `,
+  Link: styled(Link)`
+    background: #307fe5;
+    border-radius: 8px;
+    color: white;
+    width: 120px;
+    text-align: center;
+    padding: 6px 12px;
+    text-decoration: none;
   `,
 };
 

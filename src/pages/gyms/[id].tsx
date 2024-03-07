@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { InferGetServerSidePropsType, GetServerSideProps } from 'next';
+import Link from 'next/link';
 import styled from 'styled-components';
 import {
   IoShareSocialOutline,
@@ -10,14 +11,13 @@ import {
 } from 'react-icons/io5';
 import { FaLocationDot } from 'react-icons/fa6';
 import Tag from '@/components/Tag';
-import GradeBar from '@/components/GradeBar';
-import ContactInfo from '@/components/ContactInfo';
-import DynamicMap from '@/components/DynamicMap';
-import PricingTable from '@/components/PricingTable';
-import OpenHoursTable from '@/components/OpenHoursTable';
-import ImageCarousel from '@/components/ImageCarousel';
-import Comments from '@/components/Comments';
-import Link from 'next/link';
+import GradeBar from '@/components/gyms/GradeBar';
+import ContactInfo from '@/components/gyms/ContactInfo';
+import DynamicMap from '@/components/gyms/DynamicMap';
+import PricingTable from '@/components/gyms/PricingTable';
+import OpenHoursTable from '@/components/gyms/OpenHoursTable';
+import ImageCarousel from '@/components/gyms/ImageCarousel';
+import Comments from '@/components/gyms/Comments';
 
 // 임시
 const TEST_ID = '75334254-93a8-4cfb-afec-29e368ac0803';

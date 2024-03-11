@@ -2,6 +2,7 @@ import { BookmarkProps } from "@/constants/types";
 import { IoBookmarkOutline, IoBookmark } from "react-icons/io5";
 import { useEffect, useState } from "react";
 import { styled } from "styled-components";
+import router from "next/router";
 
 // 로그인 상태 => 북마크 클릭시, 서버 수정 요청
 // 미로그인 상태 => 북마크 클릭시, 로그인 페이지로 이동
@@ -25,21 +26,27 @@ const Bookmark = ({ sessionId, size }: BookmarkProps) => {
         console.error("북마크 GET 에러", error);
       }
     };
-    fetchMarkedFromServer();
+    if (sessionId) {
+      fetchMarkedFromServer();
+    }
   }, [sessionId]);
 
   const handleClick = () => {
     try {
-      //   const response = await fetch("/api/bookmarks/update", {
-      //     method: "POST",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //       Authorization: { sessionId },
-      //     },
-      //     body: JSON.stringify({ isMarked }),
-      //   });
-      //   const data = await response.json();
-      setIsMarked(!isMarked);
+      if (sessionId) {
+        //   const response = await fetch("/api/bookmarks/update", {
+        //     method: "POST",
+        //     headers: {
+        //       "Content-Type": "application/json",
+        //       Authorization: { sessionId },
+        //     },
+        //     body: JSON.stringify({ isMarked }),
+        //   });
+        //   const data = await response.json();
+        setIsMarked(!isMarked);
+      } else {
+        router.push("/login");
+      }
     } catch (error) {
       console.error("북마크 POST 에러", error);
     }

@@ -1,13 +1,7 @@
 import Image from 'next/image';
 import styled from 'styled-components';
 import { RiDeleteBin6Fill } from 'react-icons/ri';
-
-interface ImageListProps {
-  images: string[];
-  handleS3Delete: (url: string, dataKey: string) => void;
-}
-
-const URL_PREFIX = 'https://oruritest.s3.ap-northeast-2.amazonaws.com/bubu/';
+import { ImageListProps } from '@/constants/admin/types';
 
 const ImageList = ({ images, handleS3Delete }: ImageListProps) => {
   return (
@@ -17,7 +11,7 @@ const ImageList = ({ images, handleS3Delete }: ImageListProps) => {
           <S.DeleteButton onClick={() => handleS3Delete(image, 'display')}>
             <RiDeleteBin6Fill color="#ffffff" />
           </S.DeleteButton>
-          <Image src={image} fill alt={image.replace(URL_PREFIX, '')} />
+          <Image src={image} fill alt={image} />
         </S.Image>
       ))}
     </S.Wrapper>

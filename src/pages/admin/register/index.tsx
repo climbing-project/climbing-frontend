@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import NewGymForm from '@/components/admin/NewGymForm';
-import { GymData } from '@/constants/types';
+import { GymData } from '@/constants/gyms/types';
 import { GYM_API } from '@/constants/constants';
 
 const GymRegistration = () => {

@@ -1,33 +1,7 @@
 import { BaseSyntheticEvent } from 'react';
 import styled from 'styled-components';
-
-const GRADE_COLORS = [
-  '#F39897',
-  '#F8CEA6',
-  '#FBF3B3',
-  '#D1EBAC',
-  '#B6D3F1',
-  '#B7ADE9',
-  '#FF6355',
-  '#FBA949',
-  '#FAE442',
-  '#8BD448',
-  '#2AA8F2',
-  '#9C4F96',
-  '#9B4244',
-  '#A66A40',
-  '#B7AA5E',
-  '#569556',
-  '#4C709A',
-  '#664980',
-  '#FDFDFD',
-  '#A5A5A5',
-  '#1E1E1E',
-];
-
-interface ColorPickerProps {
-  handleColorSelect: (color: string) => void;
-}
+import { ColorPickerProps } from '@/constants/admin/types';
+import { GRADE_COLORS } from '@/constants/admin/constants';
 
 const ColorPicker = ({ handleColorSelect }: ColorPickerProps) => {
   return (

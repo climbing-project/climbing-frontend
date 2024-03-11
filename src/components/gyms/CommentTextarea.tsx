@@ -1,6 +1,6 @@
 import { ChangeEventHandler, useState } from 'react';
 import styled from 'styled-components';
-import { CommentTextareaProps } from '@/constants/types';
+import { CommentTextareaProps } from '@/constants/gyms/types';
 
 const CommentTextarea = ({ handleAddComment }: CommentTextareaProps) => {
   const [comment, setComment] = useState('');

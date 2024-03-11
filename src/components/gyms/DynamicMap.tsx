@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import styled from 'styled-components';
-import { MapProps } from '@/constants/types';
+import { MapProps } from '@/constants/gyms/types';
 
 const getMap = (lat: number, lng: number) => {
   const position = new naver.maps.LatLng(lat, lng);

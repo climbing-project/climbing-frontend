@@ -10,7 +10,7 @@ import AccommodationsEditor from '@/components/admin/AccommodationsEditor';
 import GradeEditor from '@/components/admin/GradeEditor';
 import PricingEditor from '@/components/admin/PricingEditor';
 import SettingDayEditor from '@/components/admin/SettingDayEditor';
-import { GymData } from '@/constants/types';
+import { GymData } from '@/constants/gyms/types';
 import { GYM_API } from '@/constants/constants';
 
 const EditPage = () => {

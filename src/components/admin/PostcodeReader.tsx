@@ -1,11 +1,7 @@
 import styled from 'styled-components';
 import DaumPostcodeEmbed from 'react-daum-postcode';
 import { IoIosCloseCircle } from 'react-icons/io';
-
-interface PostcodeReaderProps {
-  handleClose: Function;
-  handleComplete: Function;
-}
+import { PostcodeReaderProps } from '@/constants/admin/types';
 
 const PostcodeReader = ({
   handleClose,

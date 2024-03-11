@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 import CommentTextarea from './CommentTextarea';
-import { CommentsProps, UserComment } from '@/constants/types';
+import { CommentsProps, UserComment } from '@/constants/gyms/types';
 import { GYM_API } from '@/constants/constants';
 
 const Comments = ({ id, comments, session }: CommentsProps) => {

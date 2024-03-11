@@ -1,19 +1,18 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import styled from 'styled-components';
 import { FaCalendarDay } from 'react-icons/fa';
 import { IoTrash } from 'react-icons/io5';
-import { GymData } from '@/constants/types';
+import { SettingDayEditorProps, Value } from '@/constants/admin/types';
+import { CURRENT_CENTURY } from '@/constants/admin/constants';
 
-type Range<T> = [T, T];
-type ValuePiece = Date | null;
-type Value = ValuePiece | Range<ValuePiece>;
-
-interface SettingDayEditorProps {
-  date: string | undefined;
-  setCurrentData: Dispatch<SetStateAction<GymData>>;
-}
+const TODAY = new Date();
+const TODAYS_DATE = {
+  year: TODAY.getFullYear(),
+  month: TODAY.getMonth() + 1,
+  date: TODAY.getDate(),
+};
 
 const SettingDayEditor = ({ date, setCurrentData }: SettingDayEditorProps) => {
   const [isClosed, setIsClosed] = useState(true);
@@ -52,7 +51,7 @@ const SettingDayEditor = ({ date, setCurrentData }: SettingDayEditorProps) => {
   const handleIconClick = () => setIsClosed((prev) => !prev);
 
   const handleDelete = () =>
-    setCurrentData((prev) => ({...prev, latestSettingDay: ""}));
+    setCurrentData((prev) => ({ ...prev, latestSettingDay: '' }));
 
   const handleAddField = () => {
     setCurrentData((prev) => {
@@ -164,14 +163,6 @@ const S = {
     left: 190px;
     width: 450px;
   `,
-};
-
-const CURRENT_CENTURY = '20';
-const TODAY = new Date();
-const TODAYS_DATE = {
-  year: TODAY.getFullYear(),
-  month: TODAY.getMonth() + 1,
-  date: TODAY.getDate(),
 };
 
 export default SettingDayEditor;

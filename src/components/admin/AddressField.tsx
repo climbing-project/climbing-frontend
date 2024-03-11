@@ -1,15 +1,10 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { useState } from 'react';
 import { Address } from 'react-daum-postcode';
 import { IoSearch } from 'react-icons/io5';
 import PostcodeReader from './PostcodeReader';
 import useApi from '@/hooks/useApi';
-import { GymData } from '@/constants/types';
 import { NAVERMAP_GEOCODE_API } from '@/constants/constants';
-
-interface AddressFieldProps {
-  address: { jibunAddress: string; roadAddress: string; unitAddress: string };
-  handleAddressChange: Dispatch<SetStateAction<GymData>>;
-}
+import { AddressFieldProps } from '@/constants/admin/types';
 
 const AddressField = ({ address, handleAddressChange }: AddressFieldProps) => {
   const [isShowing, setIsShowing] = useState(false);

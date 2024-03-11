@@ -1,13 +1,9 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import AddressField from './AddressField';
-import { GymData } from '@/constants/types';
-
-interface NewGymFormProps {
-  handleSubmit: (formData: GymData) => void;
-}
-
-const REGEX_NUMBER = /^[0-9-]*$/;
+import { GymData } from '@/constants/gyms/types';
+import { NewGymFormProps } from '@/constants/admin/types';
+import { PHONE_REGEX } from '@/constants/admin/constants';
 
 const NewGymForm = ({ handleSubmit }: NewGymFormProps) => {
   const [formData, setFormData] = useState<GymData>({
@@ -19,7 +15,7 @@ const NewGymForm = ({ handleSubmit }: NewGymFormProps) => {
 
   const handleInput = (input: string, type: string, key: string) => {
     if (input.length > 20) return;
-    if (type === 'number' && !REGEX_NUMBER.test(input)) return;
+    if (type === 'number' && !PHONE_REGEX.test(input)) return;
     setFormData((prev) => ({ ...prev, [key]: input }));
   };
 

@@ -1,11 +1,6 @@
-import { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
-import { GymData } from '@/constants/types';
-
-interface DescriptionEditorProps {
-  description?: string;
-  setCurrentData: Dispatch<SetStateAction<GymData>>;
-}
+import { GymData } from '@/constants/gyms/types';
+import { DescriptionEditorProps } from '@/constants/admin/types';
 
 const DescriptionEditor = ({
   description,

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { OpenHours, OpenHoursTableProps } from '@/constants/types';
+import { OpenHours, OpenHoursTableProps } from '@/constants/gyms/types';
 
 // 상수
 const DAYS_TEXT = {

@@ -1,3 +1,5 @@
+import { Session } from 'next-auth';
+
 // 데이터 타입 정의
 export interface GymData {
   id?: string;
@@ -95,6 +97,7 @@ export interface TagProps {
 export interface CommentsProps {
   id: string;
   comments?: UserComment;
+  session: Session | null;
 }
 
 export interface CommentTextareaProps {

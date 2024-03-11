@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import Link from 'next/link';
-import { useSession } from 'next-auth/react';
 import styled from 'styled-components';
 import CommentTextarea from './CommentTextarea';
 import { CommentsProps, UserComment } from '@/constants/types';
@@ -8,11 +7,10 @@ import { CommentsProps, UserComment } from '@/constants/types';
 // 임시
 const api = 'http://localhost:3000/gyms/';
 
-const Comments = ({ id, comments }: CommentsProps) => {
+const Comments = ({ id, comments, session }: CommentsProps) => {
   const [currentComments, setCurrentComments] = useState<UserComment>(
     comments || [],
   );
-  const { data: session } = useSession();
 
   const handleAddComment = (input: string) => {
     const newComment = {

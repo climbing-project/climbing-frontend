@@ -11,6 +11,7 @@ import GradeEditor from '@/components/admin/GradeEditor';
 import PricingEditor from '@/components/admin/PricingEditor';
 import SettingDayEditor from '@/components/admin/SettingDayEditor';
 import { GymData } from '@/constants/types';
+import { GYM_API } from '@/constants/constants';
 
 const EditPage = () => {
   const [currentData, setCurrentData] = useState<GymData>(INITIAL_DATA);
@@ -87,7 +88,7 @@ const EditPage = () => {
   };
 
   const updateData = async (data: string) => {
-    await fetch(`${testEndpoint}${currentData!.id}`, {
+    await fetch(`${GYM_API}${currentData!.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -217,8 +218,7 @@ const INITIAL_DATA = {
 
 // 테스트용 상수값
 const testId = '75334254-93a8-4cfb-afec-29e368ac0803';
-const testEndpoint = 'http://localhost:3000/gyms/';
-const testUrl = `${testEndpoint}${testId}`;
+const testUrl = `${GYM_API}${testId}`;
 const sampleData = {
   id: '75334254-93a8-4cfb-afec-29e368ac0803',
   name: '암장 테스트점',

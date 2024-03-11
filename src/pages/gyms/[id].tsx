@@ -20,7 +20,7 @@ import OpenHoursTable from '@/components/gyms/OpenHoursTable';
 import ImageCarousel from '@/components/gyms/ImageCarousel';
 import Comments from '@/components/gyms/Comments';
 import useApi from '@/hooks/useApi';
-import { naverMapApi } from '@/constants/constants';
+import { GYM_API, MEMBER_API, NAVERMAP_API } from '@/constants/constants';
 
 // 임시
 const TEST_ID = '75334254-93a8-4cfb-afec-29e368ac0803';
@@ -32,18 +32,18 @@ const GymInfo = ({
   const [isLiked, setIsLiked] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const { data: session } = useSession();
-  const { isLoading } = useApi(naverMapApi);
+  const { isLoading } = useApi(NAVERMAP_API);
 
   useEffect(() => {
     if (!session || !session.user) return;
 
     fetch(
-      `http://localhost:3000/members/${session.user.email}/like?gym=${gymData.id}`,
+      `${MEMBER_API}${session.user.email}/like?gym=${gymData.id}`,
     )
       .then((res) => (res.ok ? res.json() : false))
       .then((userLiked) => setIsLiked(userLiked));
     fetch(
-      `http://localhost:3000/members/${session.user.email}/bookmark?gym=${gymData.id}`,
+      `${MEMBER_API}${session.user.email}/bookmark?gym=${gymData.id}`,
     )
       .then((res) => (res.ok ? res.json() : false))
       .then((userBookmarked) => setIsBookmarked(userBookmarked));
@@ -56,12 +56,12 @@ const GymInfo = ({
       try {
         // 좋아요 해제: 멤버 데이터에 반영
         const memberRes = await fetch(
-          `http://localhost:3000/members/${session.user.email}/like?gym=${TEST_ID},value=false`,
+          `${MEMBER_API}${session.user.email}/like?gym=${TEST_ID},value=false`,
         );
         if (!memberRes.ok) throw new Error('DB에 반영 실패');
 
         // 좋아요 해제: 암장 데이터에 반영
-        await fetch(`http://localhost:3000/gyms/${TEST_ID}`, {
+        await fetch(`${GYM_API}${TEST_ID}`, {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
@@ -79,12 +79,12 @@ const GymInfo = ({
       try {
         // 좋아요 추가: 멤버 데이터에 반영
         const memberRes = await fetch(
-          `http://localhost:3000/members/${session.user.email}/like?gym=${TEST_ID},value=true`,
+          `${MEMBER_API}${session.user.email}/like?gym=${TEST_ID},value=true`,
         );
         if (!memberRes.ok) throw new Error('DB에 반영 실패');
 
         // 좋아요 추가: 암장 데이터에 반영
-        await fetch(`http://localhost:3000/gyms/${TEST_ID}`, {
+        await fetch(`${GYM_API}${TEST_ID}`, {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
@@ -108,7 +108,7 @@ const GymInfo = ({
       try {
         // 북마크 해제: 멤버 데이터에 반영
         const memberRes = await fetch(
-          `http://localhost:3000/members/${session.user.email}/bookmark?gym=${TEST_ID},value=false`,
+          `${MEMBER_API}${session.user.email}/bookmark?gym=${TEST_ID},value=false`,
         );
         if (!memberRes.ok) throw new Error('DB에 반영 실패');
       } catch (e) {
@@ -121,7 +121,7 @@ const GymInfo = ({
       try {
         // 북마크 추가: 멤버 데이터에 반영
         const memberRes = await fetch(
-          `http://localhost:3000/members/${session.user.email}/bookmark?gym=${TEST_ID},value=true`,
+          `${MEMBER_API}${session.user.email}/bookmark?gym=${TEST_ID},value=true`,
         );
         if (!memberRes.ok) throw new Error('DB에 반영 실패');
       } catch (e) {
@@ -323,7 +323,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   암장 정보를 불러오는 API가 준비될 시 아래 코드로 교체 예정:
   // const gymId = context.query.id;
   // Fetch API data
-  const gymData = await (await fetch(`.../gyms/${gymId}`)).json();
+  const gymData = await (await fetch(`${GYM_API}${gymId}`)).json();
   return { props: { gymData } };
   */
 
@@ -331,7 +331,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
     const gymId = TEST_ID;
     const gymData = await (
-      await fetch(`http://localhost:3000/gyms/${gymId}`)
+      await fetch(`${GYM_API}${gymId}`)
     ).json();
     return { props: { gymData } };
   } catch (e) {

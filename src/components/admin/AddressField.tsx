@@ -4,7 +4,7 @@ import { IoSearch } from 'react-icons/io5';
 import PostcodeReader from './PostcodeReader';
 import useApi from '@/hooks/useApi';
 import { GymData } from '@/constants/types';
-import { naverMapGeocodeApi } from '@/constants/constants';
+import { NAVERMAP_GEOCODE_API } from '@/constants/constants';
 
 interface AddressFieldProps {
   address: { jibunAddress: string; roadAddress: string; unitAddress: string };
@@ -14,7 +14,7 @@ interface AddressFieldProps {
 const AddressField = ({ address, handleAddressChange }: AddressFieldProps) => {
   const [isShowing, setIsShowing] = useState(false);
   const [userDisplay, setUserDisplay] = useState('R');
-  useApi(naverMapGeocodeApi);
+  useApi(NAVERMAP_GEOCODE_API);
 
   const handleOverlay = () => {
     if (isShowing) setIsShowing(false);

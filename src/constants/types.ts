@@ -60,3 +60,8 @@ export interface TagProps {
   prefix?: string;
   text: string;
 }
+
+export interface BookmarkProps{
+  sessionId?:string;
+  size?:string;
+}

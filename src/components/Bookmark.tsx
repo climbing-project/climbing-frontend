@@ -6,13 +6,13 @@ import router from "next/router";
 
 // 로그인 상태 => 북마크 클릭시, 서버 수정 요청
 // 미로그인 상태 => 북마크 클릭시, 로그인 페이지로 이동
-const Bookmark = ({ sessionId, size }: BookmarkProps) => {
+const Bookmark = ({ sessionId, gymId, size }: BookmarkProps) => {
   const [isMarked, setIsMarked] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchMarkedFromServer = async () => {
       try {
-        // const response = await fetch("/api/bookmarks", {
+        // const response = await fetch(`/api/bookmarks/${gymId}`, {
         //   method: "GET",
         //   headers: {
         //     "Content-Type": "application/json",
@@ -34,7 +34,8 @@ const Bookmark = ({ sessionId, size }: BookmarkProps) => {
   const handleClick = () => {
     try {
       if (sessionId) {
-        //   const response = await fetch("/api/bookmarks/update", {
+        //api(승아님) => `${MEMBER_API}${session.user.email}/like?gym=${TEST_ID},value=true`
+        //   const response = await fetch(`/api/bookmarks/update/${gymId}`, {
         //     method: "POST",
         //     headers: {
         //       "Content-Type": "application/json",

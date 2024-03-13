@@ -17,8 +17,10 @@ const ImageEditor = ({
   const uploadImage = (url: string, fileCount: number, key: string) => {
     if (key === 'default') {
       setCurrentData((prev) => ({ ...prev, defaultImage: url }));
-      setLoadedData((prev) => ({ ...prev, defaultImage: url }));
-      updateData(JSON.stringify({ defaultImage: url }));
+      setLoadedData((prev) => {
+        updateData(JSON.stringify({ ...prev, defaultImage: url }));
+        return { ...prev, defaultImage: url };
+      });
       return;
     }
     if (!url.includes('thumb_')) return;
@@ -34,8 +36,10 @@ const ImageEditor = ({
       ) {
         const images = [...currentImages, originImage];
         const imageThumbnails = [...currentThumbnails, url];
-        updateData(JSON.stringify({ images, imageThumbnails }));
-        setLoadedData((prev) => ({ ...prev, images, imageThumbnails }));
+        setLoadedData((prev) => {
+          updateData(JSON.stringify({ ...prev, images, imageThumbnails }));
+          return { ...prev, images, imageThumbnails };
+        });
       }
       return {
         ...current,
@@ -47,10 +51,10 @@ const ImageEditor = ({
 
   const deleteImage = (url: string, key: string) => {
     if (key === 'default') {
-      setCurrentData((prev) => ({ ...prev, defaultImage: undefined }));
+      setCurrentData((prev) => ({ ...prev, defaultImage: '' }));
       setLoadedData((prev) => {
         updateData(JSON.stringify({ ...prev, defaultImage: '' }));
-        return { ...prev, defaultImage: undefined };
+        return { ...prev, defaultImage: '' };
       });
 
       return;
@@ -62,7 +66,7 @@ const ImageEditor = ({
       const imageThumbnails = prev.imageThumbnails!.filter(
         (img) => img !== url,
       );
-      updateData(JSON.stringify({ images, imageThumbnails }));
+      updateData(JSON.stringify({ ...prev, images, imageThumbnails }));
       return { ...prev, images, imageThumbnails };
     });
     setLoadedData((prev) => {

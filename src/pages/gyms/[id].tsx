@@ -15,6 +15,7 @@ import ImageCarousel from "@/components/gyms/ImageCarousel";
 import Comments from "@/components/gyms/Comments";
 import useApi from "@/hooks/useApi";
 import { GYM_API, MEMBER_API, NAVERMAP_API } from "@/constants/constants";
+import Bookmark from "@/components/Bookmark";
 
 // 임시
 const TEST_ID = "75334254-93a8-4cfb-afec-29e368ac0803";

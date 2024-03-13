@@ -6,7 +6,6 @@ import { Dispatch, FormEventHandler, SetStateAction } from "react";
 import router from "next/router";
 import Image from "next/image";
 import img from "../../../public/magnifier.png";
-import Bookmark from "@/components/Bookmark";
 
 const sampleAddress = [
   { id: 1, info: "잠실" },
@@ -60,7 +59,6 @@ const SearchBanner = ({ setGymList }: SearchBannerProps) => {
     <Styled.Wrapper>
       <Styled.SearchContainer>
         <Styled.Title> 주변 암벽장 찾을땐 오르-리</Styled.Title>
-        <Bookmark />
         <Search
           dataList={sampleAddress}
           width="400px"

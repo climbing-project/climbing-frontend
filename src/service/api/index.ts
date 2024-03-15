@@ -9,9 +9,9 @@ export const requestData = async ({
 }: RequestProps) => {
   switch (option) {
     case "GET":
-      return () => getData({ url, sessionId, onSuccess });
+      return getData({ url, sessionId, onSuccess });
     case "POST":
-      return () => postData({ url, data, sessionId, onSuccess });
+      return postData({ url, data, sessionId, onSuccess });
     // POST로 DELETE를 대체가능
     // case "DELETE":
     //   break;

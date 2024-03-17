@@ -1,9 +1,9 @@
-import styled from 'styled-components';
-import { FaMinus, FaPlus } from 'react-icons/fa6';
-import { IoTrash } from 'react-icons/io5';
-import GradeBlock from './GradeBlock';
-import { GradeEditorProps } from '@/constants/admin/types';
-import { DEFAULT_COLOR, NEW_GRADES } from '@/constants/admin/constants';
+import styled from "styled-components";
+import { FaMinus, FaPlus } from "react-icons/fa6";
+import { IoTrash } from "react-icons/io5";
+import GradeBlock from "./GradeBlock";
+import { GradeEditorProps } from "@/constants/admin/types";
+import { DEFAULT_COLOR, NEW_GRADES } from "@/constants/admin/constants";
 
 const GradeEditor = ({ gradesList, setCurrentData }: GradeEditorProps) => {
   const handleCreate = () => {
@@ -21,7 +21,7 @@ const GradeEditor = ({ gradesList, setCurrentData }: GradeEditorProps) => {
   };
 
   const handleCountChange = (operation: string) => {
-    if (operation === 'plus') {
+    if (operation === "plus") {
       if (gradesList!.length === 10) return;
       setCurrentData((prev) => {
         const currentList = [...prev.grades!];
@@ -30,9 +30,7 @@ const GradeEditor = ({ gradesList, setCurrentData }: GradeEditorProps) => {
     } else {
       if (gradesList!.length === 2) return;
       setCurrentData((prev) => {
-        const newList = prev.grades!.filter(
-          (_, i) => i !== prev.grades!.length - 1,
-        );
+        const newList = prev.grades!.filter((_, i) => i !== prev.grades!.length - 1);
         return { ...prev, grades: [...newList] };
       });
     }
@@ -50,16 +48,11 @@ const GradeEditor = ({ gradesList, setCurrentData }: GradeEditorProps) => {
         {gradesList && gradesList.length > 0 ? (
           <>
             <S.Bar>
-              <FaMinus onClick={() => handleCountChange('minus')} />
+              <FaMinus onClick={() => handleCountChange("minus")} />
               {gradesList.map((grade, i) => (
-                <GradeBlock
-                  key={i}
-                  index={i}
-                  color={grade}
-                  handleColorChange={handleColorChange}
-                />
+                <GradeBlock key={i} index={i} color={grade} handleColorChange={handleColorChange} />
               ))}
-              <FaPlus onClick={() => handleCountChange('plus')} />
+              <FaPlus onClick={() => handleCountChange("plus")} />
             </S.Bar>
             <S.Label>
               <span>easy</span>

@@ -1,11 +1,6 @@
-import styled from 'styled-components';
-import {
-  BsTwitterX,
-  BsFacebook,
-  BsInstagram,
-  BsTelephoneFill,
-} from 'react-icons/bs';
-import { ContactInfoProps } from '@/constants/gyms/types';
+import styled from "styled-components";
+import { BsTwitterX, BsFacebook, BsInstagram, BsTelephoneFill } from "react-icons/bs";
+import { ContactInfoProps } from "@/constants/gyms/types";
 
 // 상수
 export const CONTACT_ICONS = {
@@ -23,10 +18,10 @@ const ContactInfo = ({ contact, snsList }: ContactInfoProps) => {
         {CONTACT_ICONS.phone} {contact}
       </div>
       {platforms.map((platform, i) => {
-        if (snsList[platform as keyof typeof snsList] !== '') {
+        if (snsList[platform as keyof typeof snsList] !== "") {
           return (
             <div key={i}>
-              {CONTACT_ICONS[platform as keyof typeof CONTACT_ICONS]}{' '}
+              {CONTACT_ICONS[platform as keyof typeof CONTACT_ICONS]}{" "}
               {snsList[platform as keyof typeof snsList]}
             </div>
           );

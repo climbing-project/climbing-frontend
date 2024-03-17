@@ -1,18 +1,15 @@
-import styled from 'styled-components';
-import { IoTrash } from 'react-icons/io5';
-import OpenHoursField from './OpenHoursField';
-import { OpenHoursEditorProps } from '@/constants/admin/types';
+import styled from "styled-components";
+import { IoTrash } from "react-icons/io5";
+import OpenHoursField from "./OpenHoursField";
+import { OpenHoursEditorProps } from "@/constants/admin/types";
 
-const OpenHoursEditor = ({
-  openHoursList,
-  setCurrentData,
-}: OpenHoursEditorProps) => {
+const OpenHoursEditor = ({ openHoursList, setCurrentData }: OpenHoursEditorProps) => {
   const handleAddField = () => {
     const currentList = openHoursList ? openHoursList : [];
     const newItem = {
-      days: 'weekdays',
-      openTime: 'AM,12,00',
-      closeTime: 'AM,12,00',
+      days: "weekdays",
+      openTime: "AM,12,00",
+      closeTime: "AM,12,00",
     };
     setCurrentData((prev) => ({
       ...prev,

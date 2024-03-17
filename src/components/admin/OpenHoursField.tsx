@@ -1,6 +1,6 @@
-import styled from 'styled-components';
-import { OpenHoursFieldProps } from '@/constants/admin/types';
-import { DAYS_TEXT, HOURS, MINUTES } from '@/constants/admin/constants';
+import styled from "styled-components";
+import { OpenHoursFieldProps } from "@/constants/admin/types";
+import { DAYS_TEXT, HOURS, MINUTES } from "@/constants/admin/constants";
 
 const OpenHoursField = ({
   index,
@@ -9,8 +9,8 @@ const OpenHoursField = ({
   closeTime,
   handleChange,
 }: OpenHoursFieldProps) => {
-  const [openPeriod, openHours, openMinutes] = openTime.split(',');
-  const [closePeriod, closeHours, closeMinutes] = closeTime.split(',');
+  const [openPeriod, openHours, openMinutes] = openTime.split(",");
+  const [closePeriod, closeHours, closeMinutes] = closeTime.split(",");
   return (
     <S.Wrapper>
       <div>
@@ -19,7 +19,7 @@ const OpenHoursField = ({
           <select
             name="days"
             value={days}
-            onChange={(e) => handleChange(e.target.value, index, 'days')}
+            onChange={(e) => handleChange(e.target.value, index, "days")}
           >
             {DAYS_TEXT.map(({ value, text }) => (
               <option key={value} value={value}>
@@ -36,7 +36,7 @@ const OpenHoursField = ({
             value={openPeriod}
             onChange={(e) => {
               const newValue = `${e.target.value},${openHours},${openMinutes}`;
-              handleChange(newValue, index, 'openTime');
+              handleChange(newValue, index, "openTime");
             }}
           >
             <option>AM</option>
@@ -46,7 +46,7 @@ const OpenHoursField = ({
             value={openHours}
             onChange={(e) => {
               const newValue = `${openPeriod},${e.target.value},${openMinutes}`;
-              handleChange(newValue, index, 'openTime');
+              handleChange(newValue, index, "openTime");
             }}
           >
             {HOURS.map((time, i) => (
@@ -60,7 +60,7 @@ const OpenHoursField = ({
             value={openMinutes}
             onChange={(e) => {
               const newValue = `${openPeriod},${openHours},${e.target.value}`;
-              handleChange(newValue, index, 'openTime');
+              handleChange(newValue, index, "openTime");
             }}
           >
             {MINUTES.map((time, i) => (
@@ -78,7 +78,7 @@ const OpenHoursField = ({
             value={closePeriod}
             onChange={(e) => {
               const newValue = `${e.target.value},${closeHours},${closeMinutes}`;
-              handleChange(newValue, index, 'closeTime');
+              handleChange(newValue, index, "closeTime");
             }}
           >
             <option>AM</option>
@@ -88,7 +88,7 @@ const OpenHoursField = ({
             value={closeHours}
             onChange={(e) => {
               const newValue = `${closePeriod},${e.target.value},${closeMinutes}`;
-              handleChange(newValue, index, 'closeTime');
+              handleChange(newValue, index, "closeTime");
             }}
           >
             {HOURS.map((time, i) => (
@@ -102,7 +102,7 @@ const OpenHoursField = ({
             value={closeMinutes}
             onChange={(e) => {
               const newValue = `${closePeriod},${closeHours},${e.target.value}`;
-              handleChange(newValue, index, 'closeTime');
+              handleChange(newValue, index, "closeTime");
             }}
           >
             {MINUTES.map((time, i) => (

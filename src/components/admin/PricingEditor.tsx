@@ -1,14 +1,14 @@
-import styled from 'styled-components';
-import { IoTrash } from 'react-icons/io5';
-import PricingField from './PricingField';
-import { PricingEditorProps } from '@/constants/admin/types';
+import styled from "styled-components";
+import { IoTrash } from "react-icons/io5";
+import PricingField from "./PricingField";
+import { PricingEditorProps } from "@/constants/admin/types";
 
 const PricingEditor = ({ pricingList, setCurrentData }: PricingEditorProps) => {
   const handleAddField = () => {
     const currentList = pricingList ? pricingList : [];
     const newItem = {
-      item: '',
-      price: '',
+      item: "",
+      price: "",
     };
     setCurrentData((prev) => ({
       ...prev,
@@ -38,12 +38,7 @@ const PricingEditor = ({ pricingList, setCurrentData }: PricingEditorProps) => {
       <S.Content $direction="column">
         {pricingList?.map(({ item, price }, i) => (
           <S.Row key={i}>
-            <PricingField
-              index={i}
-              item={item}
-              price={price}
-              handleChange={handleChange}
-            />
+            <PricingField index={i} item={item} price={price} handleChange={handleChange} />
             <S.Icon onClick={() => handleDelete(i)}>
               <IoTrash size="1.3rem" />
             </S.Icon>

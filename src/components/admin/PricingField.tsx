@@ -1,22 +1,17 @@
-import styled from 'styled-components';
-import { PricingFieldProps } from '@/constants/admin/types';
-import { PRICE_REGEX } from '@/constants/admin/constants';
+import styled from "styled-components";
+import { PricingFieldProps } from "@/constants/admin/types";
+import { PRICE_REGEX } from "@/constants/admin/constants";
 
-const PricingField = ({
-  index,
-  item,
-  price,
-  handleChange,
-}: PricingFieldProps) => {
+const PricingField = ({ index, item, price, handleChange }: PricingFieldProps) => {
   const handleTextChange = (input: string) => {
     if (input.length > 20) return;
-    handleChange(input, index, 'item');
+    handleChange(input, index, "item");
   };
 
   const handleNumberChange = (input: string) => {
     if (!PRICE_REGEX.test(input)) return;
     if (input.length > 8) return;
-    handleChange(input, index, 'price');
+    handleChange(input, index, "price");
   };
 
   return (
@@ -24,10 +19,7 @@ const PricingField = ({
       <div>
         <h4>옵션명</h4>
         <S.TextField>
-          <input
-            value={item}
-            onChange={(e) => handleTextChange(e.target.value)}
-          />
+          <input value={item} onChange={(e) => handleTextChange(e.target.value)} />
           {item.length}/20
         </S.TextField>
       </div>

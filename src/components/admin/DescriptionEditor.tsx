@@ -1,11 +1,8 @@
-import styled from 'styled-components';
-import { GymData } from '@/constants/gyms/types';
-import { DescriptionEditorProps } from '@/constants/admin/types';
+import styled from "styled-components";
+import { GymData } from "@/constants/gyms/types";
+import { DescriptionEditorProps } from "@/constants/admin/types";
 
-const DescriptionEditor = ({
-  description,
-  setCurrentData,
-}: DescriptionEditorProps) => {
+const DescriptionEditor = ({ description, setCurrentData }: DescriptionEditorProps) => {
   const handleChange = (input: string) => {
     if (input.length > 300) return;
     setCurrentData((prev) => ({ ...prev, description: input }) as GymData);
@@ -15,10 +12,7 @@ const DescriptionEditor = ({
       <S.Header>설명글</S.Header>
       <S.Content>
         <S.TextField>
-          <textarea
-            value={description}
-            onChange={(e) => handleChange(e.target.value)}
-          />
+          <textarea value={description} onChange={(e) => handleChange(e.target.value)} />
         </S.TextField>
         {description?.length || 0}/300
       </S.Content>

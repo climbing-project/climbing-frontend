@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import { Pricing, PricingTableProps } from '@/constants/gyms/types';
+import styled from "styled-components";
+import { Pricing, PricingTableProps } from "@/constants/gyms/types";
 
 const PricingTable = ({ pricing }: PricingTableProps) => {
   return (
@@ -42,15 +42,15 @@ const S = {
 };
 
 export const insertThousandsComma = (string: string) => {
-  const characters = string.split('');
+  const characters = string.split("");
 
   if (characters.length < 4) return string;
 
   for (let i = -3; Math.abs(i) < characters.length; i -= 4) {
-    characters.splice(i, 0, ',');
+    characters.splice(i, 0, ",");
   }
 
-  return characters.join('');
+  return characters.join("");
 };
 
 export default PricingTable;

@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
-import styled from 'styled-components';
-import { FaCalendarDay } from 'react-icons/fa';
-import { IoTrash } from 'react-icons/io5';
-import { SettingDayEditorProps, Value } from '@/constants/admin/types';
-import { CURRENT_CENTURY } from '@/constants/admin/constants';
+import { useState } from "react";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
+import styled from "styled-components";
+import { FaCalendarDay } from "react-icons/fa";
+import { IoTrash } from "react-icons/io5";
+import { SettingDayEditorProps, Value } from "@/constants/admin/types";
+import { CURRENT_CENTURY } from "@/constants/admin/constants";
 
 const TODAY = new Date();
 const TODAYS_DATE = {
@@ -18,7 +18,7 @@ const SettingDayEditor = ({ date, setCurrentData }: SettingDayEditorProps) => {
   const [isClosed, setIsClosed] = useState(true);
 
   const convertDataToText = (string: string) => {
-    const [yy, mm, dd] = string.split('.');
+    const [yy, mm, dd] = string.split(".");
     return `${CURRENT_CENTURY}${yy} - ${mm} - ${dd}`;
   };
 
@@ -37,11 +37,7 @@ const SettingDayEditor = ({ date, setCurrentData }: SettingDayEditorProps) => {
 
       setCurrentData((prev) => {
         const latestSettingDay =
-          newYear.slice(2) +
-          '.' +
-          newMonth.padStart(2, '0') +
-          '.' +
-          newDate.padStart(2, '0');
+          newYear.slice(2) + "." + newMonth.padStart(2, "0") + "." + newDate.padStart(2, "0");
         return { ...prev, latestSettingDay };
       });
       setIsClosed((prev) => !prev);
@@ -50,17 +46,16 @@ const SettingDayEditor = ({ date, setCurrentData }: SettingDayEditorProps) => {
 
   const handleIconClick = () => setIsClosed((prev) => !prev);
 
-  const handleDelete = () =>
-    setCurrentData((prev) => ({ ...prev, latestSettingDay: '' }));
+  const handleDelete = () => setCurrentData((prev) => ({ ...prev, latestSettingDay: "" }));
 
   const handleAddField = () => {
     setCurrentData((prev) => {
       const latestSettingDay =
         TODAYS_DATE.year.toString().slice(2) +
-        '.' +
-        TODAYS_DATE.month.toString().padStart(2, '0') +
-        '.' +
-        TODAYS_DATE.date.toString().padStart(2, '0');
+        "." +
+        TODAYS_DATE.month.toString().padStart(2, "0") +
+        "." +
+        TODAYS_DATE.date.toString().padStart(2, "0");
       return { ...prev, latestSettingDay };
     });
   };
@@ -69,11 +64,9 @@ const SettingDayEditor = ({ date, setCurrentData }: SettingDayEditorProps) => {
     if (
       year > TODAYS_DATE.year ||
       (year >= TODAYS_DATE.year && month > TODAYS_DATE.month) ||
-      (year >= TODAYS_DATE.year &&
-        month >= TODAYS_DATE.month &&
-        date > TODAYS_DATE.date)
+      (year >= TODAYS_DATE.year && month >= TODAYS_DATE.month && date > TODAYS_DATE.date)
     )
-      throw new Error('최근 세팅일은 미래의 날짜로 설정할 수 없습니다.');
+      throw new Error("최근 세팅일은 미래의 날짜로 설정할 수 없습니다.");
   };
 
   if (date) {
@@ -93,10 +86,7 @@ const SettingDayEditor = ({ date, setCurrentData }: SettingDayEditorProps) => {
               <FaCalendarDay size="1.3rem" />
             </S.Icon>
             <S.CalendarContainer>
-              <Calendar
-                className={isClosed ? 'closed' : null}
-                onChange={handleChange}
-              />
+              <Calendar className={isClosed ? "closed" : null} onChange={handleChange} />
             </S.CalendarContainer>
           </div>
         </S.Content>

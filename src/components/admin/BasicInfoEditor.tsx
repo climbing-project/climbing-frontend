@@ -1,14 +1,8 @@
-import styled from 'styled-components';
-import {
-  BsTwitterX,
-  BsFacebook,
-  BsInstagram,
-  BsTelephoneFill,
-  BsGlobe2,
-} from 'react-icons/bs';
-import AddressField from './AddressField';
-import { BasicInfoProps } from '@/constants/admin/types';
-import { PHONE_REGEX } from '@/constants/admin/constants';
+import styled from "styled-components";
+import { BsTwitterX, BsFacebook, BsInstagram, BsTelephoneFill, BsGlobe2 } from "react-icons/bs";
+import AddressField from "./AddressField";
+import { BasicInfoProps } from "@/constants/admin/types";
+import { PHONE_REGEX } from "@/constants/admin/constants";
 
 const BasicInfoEditor = ({
   name,
@@ -20,15 +14,15 @@ const BasicInfoEditor = ({
 }: BasicInfoProps) => {
   const handleTextChange = (input: string, key: string) => {
     switch (key) {
-      case 'name': {
+      case "name": {
         if (input.length > 20) return;
         break;
       }
-      case 'homepage': {
+      case "homepage": {
         if (input.length > 50) return;
         break;
       }
-      case 'contact': {
+      case "contact": {
         if (!PHONE_REGEX.test(input)) return;
         if (input.length > 15) return;
         break;
@@ -55,20 +49,14 @@ const BasicInfoEditor = ({
           <div>
             <h4>암장 이름</h4>
             <S.TextField $width="380px">
-              <input
-                value={name}
-                onChange={(e) => handleTextChange(e.target.value, 'name')}
-              />
+              <input value={name} onChange={(e) => handleTextChange(e.target.value, "name")} />
               {name.length}/20
             </S.TextField>
           </div>
           <div>
             <h4>주소</h4>
             <S.TextField $width="450px">
-              <AddressField
-                address={address}
-                handleAddressChange={setCurrentData}
-              />
+              <AddressField address={address} handleAddressChange={setCurrentData} />
             </S.TextField>
           </div>
         </div>
@@ -79,7 +67,7 @@ const BasicInfoEditor = ({
               <BsTelephoneFill />
               <input
                 value={contact}
-                onChange={(e) => handleTextChange(e.target.value, 'contact')}
+                onChange={(e) => handleTextChange(e.target.value, "contact")}
               />
               {contact.length}/15
             </S.TextField>
@@ -89,8 +77,8 @@ const BasicInfoEditor = ({
             <S.TextField $width="350px">
               <BsGlobe2 />
               <input
-                value={homepage || ''}
-                onChange={(e) => handleTextChange(e.target.value, 'homepage')}
+                value={homepage || ""}
+                onChange={(e) => handleTextChange(e.target.value, "homepage")}
               />
             </S.TextField>
           </div>
@@ -104,7 +92,7 @@ const BasicInfoEditor = ({
                   {icon}
                   <input
                     name={platform}
-                    value={snsList?.[platform as keyof typeof snsList] || ''}
+                    value={snsList?.[platform as keyof typeof snsList] || ""}
                     onChange={(e) => {
                       handleSnsChange(e.target.value, e.target.name);
                     }}
@@ -152,7 +140,7 @@ const S = {
     border-radius: 8px;
     border: 1px solid #d0d0d0;
     padding: 12px 18px;
-    width: ${({ $width }) => $width || '200px'};
+    width: ${({ $width }) => $width || "200px"};
 
     input {
       border: none;
@@ -174,14 +162,14 @@ const S = {
 
 const SNS_VALUES = [
   {
-    platform: 'twitter',
+    platform: "twitter",
     icon: <BsTwitterX />,
   },
   {
-    platform: 'facebook',
+    platform: "facebook",
     icon: <BsFacebook />,
   },
-  { platform: 'instagram', icon: <BsInstagram /> },
+  { platform: "instagram", icon: <BsInstagram /> },
 ];
 
 export default BasicInfoEditor;

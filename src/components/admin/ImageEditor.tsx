@@ -1,10 +1,10 @@
-import Image from 'next/image';
-import styled from 'styled-components';
-import { RiDeleteBin6Fill } from 'react-icons/ri';
-import ImageUploader from './ImageUploader';
-import ImageList from './ImageList';
-import useS3 from '../../hooks/useS3';
-import { ImageEditorProps } from '@/constants/admin/types';
+import Image from "next/image";
+import styled from "styled-components";
+import { RiDeleteBin6Fill } from "react-icons/ri";
+import ImageUploader from "./ImageUploader";
+import ImageList from "./ImageList";
+import useS3 from "../../hooks/useS3";
+import { ImageEditorProps } from "@/constants/admin/types";
 
 const ImageEditor = ({
   loadedImages,
@@ -15,7 +15,7 @@ const ImageEditor = ({
   updateData,
 }: ImageEditorProps) => {
   const uploadImage = (url: string, fileCount: number, key: string) => {
-    if (key === 'default') {
+    if (key === "default") {
       setCurrentData((prev) => ({ ...prev, defaultImage: url }));
       setLoadedData((prev) => {
         updateData(JSON.stringify({ ...prev, defaultImage: url }));
@@ -23,17 +23,14 @@ const ImageEditor = ({
       });
       return;
     }
-    if (!url.includes('thumb_')) return;
+    if (!url.includes("thumb_")) return;
 
-    const originImage = url.replace('thumb_', '');
+    const originImage = url.replace("thumb_", "");
 
     setCurrentData((current) => {
       const currentThumbnails = current.imageThumbnails || [];
       const currentImages = current.images || [];
-      if (
-        currentThumbnails.length - (loadedImages ? loadedImages.length : 0) ===
-        fileCount - 1
-      ) {
+      if (currentThumbnails.length - (loadedImages ? loadedImages.length : 0) === fileCount - 1) {
         const images = [...currentImages, originImage];
         const imageThumbnails = [...currentThumbnails, url];
         setLoadedData((prev) => {
@@ -50,30 +47,26 @@ const ImageEditor = ({
   };
 
   const deleteImage = (url: string, key: string) => {
-    if (key === 'default') {
-      setCurrentData((prev) => ({ ...prev, defaultImage: '' }));
+    if (key === "default") {
+      setCurrentData((prev) => ({ ...prev, defaultImage: "" }));
       setLoadedData((prev) => {
-        updateData(JSON.stringify({ ...prev, defaultImage: '' }));
-        return { ...prev, defaultImage: '' };
+        updateData(JSON.stringify({ ...prev, defaultImage: "" }));
+        return { ...prev, defaultImage: "" };
       });
 
       return;
     }
 
-    const imageUrl = url.replace('thumb_', '');
+    const imageUrl = url.replace("thumb_", "");
     setCurrentData((prev) => {
       const images = prev.images!.filter((img) => img !== imageUrl);
-      const imageThumbnails = prev.imageThumbnails!.filter(
-        (img) => img !== url,
-      );
+      const imageThumbnails = prev.imageThumbnails!.filter((img) => img !== url);
       updateData(JSON.stringify({ ...prev, images, imageThumbnails }));
       return { ...prev, images, imageThumbnails };
     });
     setLoadedData((prev) => {
       const images = prev.images!.filter((img) => img !== imageUrl);
-      const imageThumbnails = prev.imageThumbnails!.filter(
-        (img) => img !== url,
-      );
+      const imageThumbnails = prev.imageThumbnails!.filter((img) => img !== url);
       return { ...prev, images, imageThumbnails };
     });
   };
@@ -88,17 +81,10 @@ const ImageEditor = ({
           <h3>대표 이미지</h3>
           {defaultImage ? (
             <S.Image>
-              <S.DeleteButton
-                onClick={() => handleS3Delete(defaultImage, 'default')}
-              >
+              <S.DeleteButton onClick={() => handleS3Delete(defaultImage, "default")}>
                 <RiDeleteBin6Fill color="#ffffff" />
               </S.DeleteButton>
-              <Image
-                src={defaultImage}
-                width={462}
-                height={215}
-                alt={defaultImage}
-              />
+              <Image src={defaultImage} width={462} height={215} alt={defaultImage} />
             </S.Image>
           ) : (
             <ImageUploader dataKey="default" handleS3Upload={handleS3Upload} />

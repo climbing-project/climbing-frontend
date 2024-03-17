@@ -6,8 +6,12 @@ const AdminLayout = ({ children }: React.PropsWithChildren<{}>) => {
     <S.Wrapper>
       <S.Menu>
         <h3>암장 정보 관리</h3>
-        <Link href="/admin/edit/1">기본 정보</Link>
-        <Link href="/admin/edit/2">상세 정보</Link>
+        <Link href={{ pathname: "/admin/edit/", query: { page: "1" } }} as="/admin/edit/">
+          기본 정보
+        </Link>
+        <Link href={{ pathname: "/admin/edit/", query: { page: "2" } }} as="/admin/edit/">
+          상세 정보
+        </Link>
         <Link href="/admin/manage">댓글 관리</Link>
       </S.Menu>
       <S.Content>{children}</S.Content>
@@ -30,7 +34,6 @@ const S = {
   `,
   Content: styled.div`
     flex: 1 0 0;
-    background: coral;
   `,
 };
 

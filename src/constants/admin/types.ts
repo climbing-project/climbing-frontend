@@ -1,5 +1,5 @@
-import { Dispatch, SetStateAction } from 'react';
-import { GymData } from '../gyms/types';
+import { Dispatch, SetStateAction } from "react";
+import { GymData } from "../gyms/types";
 
 // 데이터 타입 정의
 type Range<T> = [T, T];
@@ -52,7 +52,7 @@ export interface ImageEditorProps {
   defaultImage: string | undefined;
   setCurrentData: Dispatch<SetStateAction<GymData>>;
   setLoadedData: Dispatch<SetStateAction<GymData>>;
-  updateData: (data: string) => Promise<void>;
+  updateData: (data: string) => Promise<boolean>;
 }
 
 export interface ImageListProps {

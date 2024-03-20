@@ -130,7 +130,7 @@ const Join = () => {
       option: "POST",
       url: "/members/join",
       data: credentials,
-      onSuccess: onSuccess,
+      onSuccess,
     });
 
     // const response = await fetch("http://localhost:3000/members/join", {

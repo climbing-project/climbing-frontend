@@ -1,4 +1,4 @@
-import { GetProps, PostProps, RequestProps } from "@/constants/service/type";
+import { RequestProps, GetProps, PostProps } from "@/constants/service/type";
 
 export const requestData = async ({
   option,
@@ -7,11 +7,13 @@ export const requestData = async ({
   data,
   onSuccess, // 성공 후 처리
 }: RequestProps) => {
+  const absoluteUrl = "http://localhost:3000" + url;
+
   switch (option) {
     case "GET":
-      return getData({ url, sessionId, onSuccess });
+      return getData({ absoluteUrl, sessionId, onSuccess });
     case "POST":
-      return postData({ url, data, sessionId, onSuccess });
+      return postData({ absoluteUrl, data, sessionId, onSuccess });
     // POST로 DELETE를 대체가능
     // case "DELETE":
     //   break;
@@ -20,8 +22,8 @@ export const requestData = async ({
   }
 };
 
-const getData = ({ url, sessionId, onSuccess }: GetProps) => {
-  fetch(url, {
+const getData = ({ absoluteUrl, sessionId, onSuccess }: GetProps) => {
+  fetch(absoluteUrl, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -45,8 +47,8 @@ const getData = ({ url, sessionId, onSuccess }: GetProps) => {
     .catch((error) => console.log(error.message));
 };
 
-const postData = ({ url, data, sessionId, onSuccess }: PostProps) => {
-  fetch(url, {
+const postData = ({ absoluteUrl, data, sessionId, onSuccess }: PostProps) => {
+  fetch(absoluteUrl, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -65,7 +67,7 @@ const postData = ({ url, data, sessionId, onSuccess }: PostProps) => {
       if (onSuccess) {
         return onSuccess(result);
       }
-      return result;
+      return;
     })
     .catch((error) => console.log(error.message));
 };

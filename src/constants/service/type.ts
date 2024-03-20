@@ -16,13 +16,13 @@ export interface RequestProps {
 }
 
 export interface GetProps {
-  url: string;
+  absoluteUrl: string;
   sessionId?: string;
   onSuccess?: (data: any) => void;
 }
 
 export interface PostProps {
-  url: string;
+  absoluteUrl: string;
   data: any;
   sessionId?: string;
   onSuccess?: (data: any) => void;

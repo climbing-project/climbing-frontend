@@ -22,10 +22,12 @@ const S = {
   Wrapper: styled.div`
     display: flex;
     gap: 12px;
-    width: 900px;
+    max-width: 700px;
     overflow-x: auto;
+    scrollbar-width: thin;
   `,
   Image: styled.div`
+    box-sizing: border-box;
     position: relative;
     border: 1px solid #d0d0d0;
     width: 140px;

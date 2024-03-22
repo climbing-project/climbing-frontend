@@ -13,8 +13,8 @@ const OpenHoursField = ({
   const [closePeriod, closeHours, closeMinutes] = closeTime.split(",");
   return (
     <S.Wrapper>
-      <div>
-        <h4>옵션명</h4>
+      <S.Block>
+        <strong>옵션명</strong>
         <S.TextField>
           <select
             name="days"
@@ -28,9 +28,9 @@ const OpenHoursField = ({
             ))}
           </select>
         </S.TextField>
-      </div>
-      <div>
-        <h4>시작 시간</h4>
+      </S.Block>
+      <S.Block>
+        <strong>시작 시간</strong>
         <S.TextField>
           <select
             value={openPeriod}
@@ -70,9 +70,9 @@ const OpenHoursField = ({
             ))}
           </select>
         </S.TextField>
-      </div>
-      <div>
-        <h4>종료 시간</h4>
+      </S.Block>
+      <S.Block>
+        <strong>종료 시간</strong>
         <S.TextField>
           <select
             value={closePeriod}
@@ -112,7 +112,7 @@ const OpenHoursField = ({
             ))}
           </select>
         </S.TextField>
-      </div>
+      </S.Block>
     </S.Wrapper>
   );
 };
@@ -120,7 +120,12 @@ const OpenHoursField = ({
 const S = {
   Wrapper: styled.div`
     display: flex;
-    gap: 6px;
+    gap: 20px;
+  `,
+  Block: styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   `,
   TextField: styled.div`
     box-sizing: border-box;
@@ -134,7 +139,6 @@ const S = {
     select {
       border: none;
       background: transparent;
-      width: 100%;
       padding: 0px;
     }
   `,

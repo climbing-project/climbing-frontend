@@ -111,54 +111,30 @@ const EditPage2 = () => {
     setIsUpdating(false);
   };
 
-  return (
-    <S.Wrapper>
-      {isLoading ? (
-        <div>데이터 로딩중...</div>
-      ) : (
-        <S.Main>
-          <PricingEditor pricingList={currentData.pricing} setCurrentData={setCurrentData} />
-          <OpenHoursEditor openHoursList={currentData.openHours} setCurrentData={setCurrentData} />
-          <AccommodationsEditor
-            accommodationsList={currentData.accommodations}
-            setCurrentData={setCurrentData}
-          />
-          <GradeEditor gradesList={currentData.grades} setCurrentData={setCurrentData} />
-          <SettingDayEditor date={currentData.latestSettingDay} setCurrentData={setCurrentData} />
-          <button onClick={handleSave} disabled={isUpdating ? true : false}>
-            {isUpdating ? "저장중..." : "저장하기"}
-          </button>
-        </S.Main>
-      )}
-    </S.Wrapper>
+  return isLoading ? (
+    <div>데이터 로딩중...</div>
+  ) : (
+    <>
+      <PricingEditor pricingList={currentData.pricing} setCurrentData={setCurrentData} />
+      <OpenHoursEditor openHoursList={currentData.openHours} setCurrentData={setCurrentData} />
+      <AccommodationsEditor
+        accommodationsList={currentData.accommodations}
+        setCurrentData={setCurrentData}
+      />
+      <GradeEditor gradesList={currentData.grades} setCurrentData={setCurrentData} />
+      <SettingDayEditor date={currentData.latestSettingDay} setCurrentData={setCurrentData} />
+      <S.Button>
+        <button className="btn-primary" onClick={handleSave} disabled={isUpdating ? true : false}>
+          {isUpdating ? "저장중..." : "저장하기"}
+        </button>
+      </S.Button>
+    </>
   );
 };
 
 const S = {
-  Wrapper: styled.div`
-    display: flex;
-    justify-content: space-between;
-  `,
-  Sidebar: styled.div`
-    display: flex;
-    flex-direction: column;
-    flex-shrink: 0;
-    width: 20vw;
-  `,
-  Main: styled.div`
-    display: flex;
-    flex-direction: column;
-    flex: 1 0 0;
-    gap: 36px;
-    background: #fafaf8;
-    padding: 36px;
-  `,
-  Link: styled.div`
-    cursor: pointer;
-
-    &:hover {
-      color: #1aabff;
-    }
+  Button: styled.div`
+    align-self: flex-end;
   `,
 };
 

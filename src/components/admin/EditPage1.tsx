@@ -70,7 +70,6 @@ const EditPage1 = () => {
     fetch(`${testUrl}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         setLoadedData(JSON.parse(JSON.stringify(data)));
         setCurrentData(JSON.parse(JSON.stringify(data)));
       })
@@ -111,76 +110,39 @@ const EditPage1 = () => {
     setIsUpdating(false);
   };
 
-  return (
-    <S.Wrapper>
-      {isLoading ? (
-        <div>데이터 로딩 중</div>
-      ) : (
-        <S.Main>
-          <>
-            <ImageEditor
-              loadedImages={loadedData.images}
-              thumbnails={currentData.imageThumbnails}
-              defaultImage={currentData.defaultImage}
-              setCurrentData={setCurrentData}
-              setLoadedData={setLoadedData}
-              updateData={updateData}
-            />
-            <BasicInfoEditor
-              name={currentData.name}
-              address={currentData.address}
-              contact={currentData.contact}
-              snsList={currentData.sns}
-              homepage={currentData.homepage}
-              setCurrentData={setCurrentData}
-            />
-            <DescriptionEditor
-              description={currentData.description}
-              setCurrentData={setCurrentData}
-            />
-          </>
-          <S.Button onClick={handleSave} disabled={isUpdating ? true : false}>
-            {isUpdating ? "저장중..." : "저장하기"}
-          </S.Button>
-        </S.Main>
-      )}
-    </S.Wrapper>
+  return isLoading ? (
+    <div>데이터 로딩 중</div>
+  ) : (
+    <>
+      <ImageEditor
+        loadedImages={loadedData.images}
+        thumbnails={currentData.imageThumbnails}
+        defaultImage={currentData.defaultImage}
+        setCurrentData={setCurrentData}
+        setLoadedData={setLoadedData}
+        updateData={updateData}
+      />
+      <BasicInfoEditor
+        name={currentData.name}
+        address={currentData.address}
+        contact={currentData.contact}
+        snsList={currentData.sns}
+        homepage={currentData.homepage}
+        setCurrentData={setCurrentData}
+      />
+      <DescriptionEditor description={currentData.description} setCurrentData={setCurrentData} />
+      <S.Button>
+        <button className="btn-primary" onClick={handleSave} disabled={isUpdating ? true : false}>
+          {isUpdating ? "저장중..." : "저장하기"}
+        </button>
+      </S.Button>
+    </>
   );
 };
 
 const S = {
-  Wrapper: styled.div`
-    display: flex;
-    justify-content: space-between;
-  `,
-  Sidebar: styled.div`
-    display: flex;
-    flex-direction: column;
-    flex-shrink: 0;
-    width: 20vw;
-  `,
-  Main: styled.div`
-    display: flex;
-    flex-direction: column;
-    flex: 1 0 0;
-    gap: 36px;
-    background: #fafaf8;
-    padding: 36px;
-  `,
-  Button: styled.button`
-    border: none;
-    background: #307fe5;
-    padding: 8px 10px;
-    color: white;
-    border-radius: 8px;
-    cursor: pointer;
-  `,
-  Link: styled.div`
-    cursor: pointer;
-
-    &:hover {
-      color: #1aabff;
-    }
+  Button: styled.div`
+    align-self: flex-end;
   `,
 };
 

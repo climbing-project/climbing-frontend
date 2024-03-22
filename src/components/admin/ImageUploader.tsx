@@ -62,8 +62,8 @@ const ImageUploader = ({ dataKey, imageCount, handleS3Upload }: ImageUploadProps
 
   return (
     <S.Wrapper
-      $width={dataKey === "default" ? "462px" : ""}
-      $height={dataKey === "default" ? "215px" : ""}
+      $width={dataKey === "default" ? "462px" : "140px"}
+      $height={dataKey === "default" ? "215px" : "80px"}
     >
       <input
         type="file"
@@ -84,14 +84,16 @@ const ImageUploader = ({ dataKey, imageCount, handleS3Upload }: ImageUploadProps
 
 const S = {
   Wrapper: styled.div<{ $width?: string; $height?: string }>`
+    box-sizing: border-box;
     position: relative;
     z-index: 2;
     width: ${({ $width }) => $width};
     height: ${({ $height }) => $height};
-    border-radius: 8px;
+    border-radius: 6px;
     border: 2px dashed #cacaca;
     background: #f4f4f4;
     overflow: hidden;
+    flex-shrink: 0;
 
     div {
       box-sizing: border-box;

@@ -14,7 +14,7 @@ const DescriptionEditor = ({ description, setCurrentData }: DescriptionEditorPro
         <S.TextField>
           <textarea value={description} onChange={(e) => handleChange(e.target.value)} />
         </S.TextField>
-        {description?.length || 0}/300
+        <strong>{description?.length || 0}/300</strong>
       </S.Content>
     </S.Wrapper>
   );
@@ -36,6 +36,7 @@ const S = {
     display: flex;
     flex-direction: ${(props) => props.$direction};
     flex-wrap: wrap;
+    justify-content: flex-end;
     gap: 20px;
   `,
   TextField: styled.div`

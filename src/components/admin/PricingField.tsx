@@ -16,15 +16,15 @@ const PricingField = ({ index, item, price, handleChange }: PricingFieldProps) =
 
   return (
     <S.Wrapper>
-      <div>
-        <h4>옵션명</h4>
+      <S.Block>
+        <strong>옵션명</strong>
         <S.TextField>
           <input value={item} onChange={(e) => handleTextChange(e.target.value)} />
           {item.length}/20
         </S.TextField>
-      </div>
-      <div>
-        <h4>가격</h4>
+      </S.Block>
+      <S.Block>
+        <strong>가격</strong>
         <S.TextField>
           <input
             value={price}
@@ -33,7 +33,7 @@ const PricingField = ({ index, item, price, handleChange }: PricingFieldProps) =
           />
           원
         </S.TextField>
-      </div>
+      </S.Block>
     </S.Wrapper>
   );
 };
@@ -41,7 +41,12 @@ const PricingField = ({ index, item, price, handleChange }: PricingFieldProps) =
 const S = {
   Wrapper: styled.div`
     display: flex;
-    gap: 6px;
+    gap: 20px;
+  `,
+  Block: styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   `,
   TextField: styled.div`
     box-sizing: border-box;

@@ -71,19 +71,15 @@ const ManagePage: NextPageWithLayout = () => {
 
   return (
     <S.Wrapper>
-      <S.Main>
-        <S.Box>
-          <S.Header>댓글 관리</S.Header>
-          <S.Content $direction="column">
-            {comments.map(({ user, date, text }, i) => (
-              <S.Row key={i}>
-                <UserComment user={user} date={date} text={text} />
-                <IoTrash onClick={() => handleDelete(i)} />
-              </S.Row>
-            ))}
-          </S.Content>
-        </S.Box>
-      </S.Main>
+      <S.Header>댓글 관리</S.Header>
+      <S.Content $direction="column">
+        {comments.map(({ user, date, text }, i) => (
+          <S.Row key={i}>
+            <UserComment user={user} date={date} text={text} />
+            <IoTrash onClick={() => handleDelete(i)} />
+          </S.Row>
+        ))}
+      </S.Content>
     </S.Wrapper>
   );
 };
@@ -98,24 +94,6 @@ ManagePage.getLayout = (page) => {
 
 const S = {
   Wrapper: styled.div`
-    display: flex;
-    justify-content: space-between;
-  `,
-  Sidebar: styled.div`
-    display: flex;
-    flex-direction: column;
-    flex-shrink: 0;
-    width: 20vw;
-  `,
-  Main: styled.div`
-    display: flex;
-    flex-direction: column;
-    flex: 1 0 0;
-    gap: 36px;
-    background: #fafaf8;
-    padding: 36px;
-  `,
-  Box: styled.div`
     background: white;
     border: 1px solid #d0d0d0;
   `,

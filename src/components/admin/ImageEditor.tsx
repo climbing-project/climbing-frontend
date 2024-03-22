@@ -77,8 +77,8 @@ const ImageEditor = ({
     <S.Wrapper>
       <S.Header>암장 이미지</S.Header>
       <S.Content $direction="column">
-        <div>
-          <h3>대표 이미지</h3>
+        <S.Row>
+          <strong>대표 이미지</strong>
           {defaultImage ? (
             <S.Image>
               <S.DeleteButton onClick={() => handleS3Delete(defaultImage, "default")}>
@@ -89,26 +89,28 @@ const ImageEditor = ({
           ) : (
             <ImageUploader dataKey="default" handleS3Upload={handleS3Upload} />
           )}
-        </div>
-        <div>
-          <h3>
+        </S.Row>
+        <S.Row>
+          <strong>
             추가 이미지
             <br />
             {thumbnails ? thumbnails.length : 0}/10
-          </h3>
+          </strong>
           {thumbnails ? (
             <>
-              <ImageUploader
-                dataKey="display"
-                imageCount={thumbnails.length}
-                handleS3Upload={handleS3Upload}
-              />
+              {thumbnails.length < 10 ? (
+                <ImageUploader
+                  dataKey="display"
+                  imageCount={thumbnails.length}
+                  handleS3Upload={handleS3Upload}
+                />
+              ) : null}
               <ImageList handleS3Delete={handleS3Delete} images={thumbnails} />
             </>
           ) : (
             <ImageUploader dataKey="display" handleS3Upload={handleS3Upload} />
           )}
-        </div>
+        </S.Row>
       </S.Content>
     </S.Wrapper>
   );
@@ -132,12 +134,19 @@ const S = {
     flex-wrap: wrap;
     gap: 20px;
   `,
+  Row: styled.div`
+    display: flex;
+    gap: 12px;
+    strong {
+      flex-shrink: 0;
+      margin-right: 20px;
+    }
+  `,
   Image: styled.div`
     position: relative;
     border: 1px solid #d0d0d0;
     width: 462px;
     height: 215px;
-
     img {
       object-fit: cover;
     }

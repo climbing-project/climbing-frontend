@@ -22,7 +22,7 @@ const S = {
   Wrapper: styled.div`
     position: absolute;
     bottom: 45px;
-    right: 0px;
+    left: 0px;
     display: flex;
     flex-wrap: wrap;
     width: calc(27px * 6 + 6px * 5);

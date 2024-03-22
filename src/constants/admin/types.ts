@@ -76,9 +76,7 @@ export interface NewGymFormProps {
 }
 
 export interface OpenHoursEditorProps {
-  openHoursList:
-    | Array<{ days: string; openTime: string; closeTime: string }>
-    | undefined;
+  openHoursList: Array<{ days: string; openTime: string; closeTime: string }> | undefined;
   setCurrentData: Dispatch<SetStateAction<GymData>>;
 }
 
@@ -115,4 +113,10 @@ export interface SettingDayEditorProps {
 export interface TextFieldProps {
   formName?: string | undefined;
   characterLimit: number;
+}
+
+export interface UserCommentProps {
+  user: string;
+  date: string;
+  text: string;
 }

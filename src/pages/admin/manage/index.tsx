@@ -5,8 +5,8 @@ import AdminLayout from "@/components/admin/AdminLayout";
 import Layout from "@/components/Layout";
 import UserComment from "@/components/admin/UserComment";
 import { GYM_API } from "@/constants/constants";
+import type { NextPageWithLayout } from "@/pages/_app";
 import type { UserComments } from "@/constants/gyms/types";
-import { NextPageWithLayout } from "@/pages/_app";
 
 const ManagePage: NextPageWithLayout = () => {
   const [comments, setComments] = useState<UserComments>([]);
@@ -37,7 +37,8 @@ const ManagePage: NextPageWithLayout = () => {
       .then((response) => response.json())
       .then((data) => {
         const { comments } = data;
-        setComments(comments);
+        // setComments(comments);
+        setComments(sampleData);
       })
       .catch((error) => {
         // 테스트를 위한 임시방편 (추후 에러 핸들링 코드로 교체 필요)
@@ -62,24 +63,32 @@ const ManagePage: NextPageWithLayout = () => {
   };
 
   const handleDelete = (index: number) => {
-    const remainingComments = comments.filter((comment) => index !== comments.indexOf(comment));
+    const response = confirm("삭제한 댓글은 복구할 수 없습니다. 댓글을 삭제하시겠습니까?");
+    if (!response) return;
+    const remainingComments = comments.filter((_, i) => index !== i);
     updateDatabase(remainingComments);
     setComments(remainingComments);
   };
 
-  if (isLoading) return <div>loading</div>;
-
   return (
     <S.Wrapper>
-      <S.Header>댓글 관리</S.Header>
-      <S.Content $direction="column">
-        {comments.map(({ user, date, text }, i) => (
-          <S.Row key={i}>
-            <UserComment user={user} date={date} text={text} />
-            <IoTrash onClick={() => handleDelete(i)} />
-          </S.Row>
-        ))}
-      </S.Content>
+      {isLoading ? null : (
+        <>
+          <S.Header>댓글 관리</S.Header>
+          <S.Content $direction="column">
+            {comments.length > 0 ? (
+              comments.map(({ user, date, text }, i) => (
+                <S.Row key={i}>
+                  <UserComment user={user} date={date} text={text} />
+                  <S.Icon size="1.3rem" onClick={() => handleDelete(i)} />
+                </S.Row>
+              ))
+            ) : (
+              <div>관리할 댓글이 없습니다.</div>
+            )}
+          </S.Content>
+        </>
+      )}
     </S.Wrapper>
   );
 };
@@ -118,9 +127,15 @@ const S = {
     }
   `,
   Row: styled.div`
+    border: 1px solid #d0d0d0;
+    background: #fafaf8;
+    border-radius: 12px;
+    padding: 16px;
     display: flex;
-    align-items: center;
-    gap: 18px;
+    gap: 36px;
+  `,
+  Icon: styled(IoTrash)`
+    cursor: pointer;
   `,
 };
 
@@ -131,6 +146,8 @@ const sampleData: UserComments = [
   { user: "ㅁㄴㅇㄹ", text: "asdlfj", date: "24.01.20" },
   { user: "leop", text: "foliwjd sldkfj sdl", date: "24.01.20" },
   { user: "54f1ef", text: "ㄴ이;라ㅓㅁ짏ㅈㄴㄷㄹ ㄴㅇㄹ", date: "24.02.10" },
+  { user: "2165e4", text: "sdf lasdjf laksjf oajdlfkasdf", date: "24.03.10" },
+  { user: "Star", text: "@#(%*Q(@#$ SDJF AJWEIFMASDf", date: "23.10.22" },
 ];
 
 export default ManagePage;

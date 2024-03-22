@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { AccommodationsEditorProps } from "@/constants/admin/types";
 import { ACCOMMODATIONS_LIST } from "@/constants/admin/constants";
+import type { AccommodationsEditorProps } from "@/constants/admin/types";
 
 const AccommodationsEditor = ({
   accommodationsList,

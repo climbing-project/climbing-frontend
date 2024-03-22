@@ -7,8 +7,8 @@ import AccommodationsEditor from "@/components/admin/AccommodationsEditor";
 import GradeEditor from "@/components/admin/GradeEditor";
 import PricingEditor from "@/components/admin/PricingEditor";
 import SettingDayEditor from "@/components/admin/SettingDayEditor";
-import { GymData } from "@/constants/gyms/types";
 import { GYM_API } from "@/constants/constants";
+import type { GymData } from "@/constants/gyms/types";
 
 const EditPage2 = () => {
   const [currentData, setCurrentData] = useState<GymData>(INITIAL_DATA);

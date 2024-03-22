@@ -4,7 +4,7 @@ import { RiDeleteBin6Fill } from "react-icons/ri";
 import ImageUploader from "./ImageUploader";
 import ImageList from "./ImageList";
 import useS3 from "../../hooks/useS3";
-import { ImageEditorProps } from "@/constants/admin/types";
+import type { ImageEditorProps } from "@/constants/admin/types";
 
 const ImageEditor = ({
   loadedImages,

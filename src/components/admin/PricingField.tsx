@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { PricingFieldProps } from "@/constants/admin/types";
 import { PRICE_REGEX } from "@/constants/admin/constants";
+import type { PricingFieldProps } from "@/constants/admin/types";
 
 const PricingField = ({ index, item, price, handleChange }: PricingFieldProps) => {
   const handleTextChange = (input: string) => {

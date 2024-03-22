@@ -5,7 +5,7 @@ import AdminLayout from "@/components/admin/AdminLayout";
 import Layout from "@/components/Layout";
 import UserComment from "@/components/admin/UserComment";
 import { GYM_API } from "@/constants/constants";
-import { UserComments } from "@/constants/gyms/types";
+import type { UserComments } from "@/constants/gyms/types";
 import { NextPageWithLayout } from "@/pages/_app";
 
 const ManagePage: NextPageWithLayout = () => {

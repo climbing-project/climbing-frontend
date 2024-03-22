@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { IoTrash } from "react-icons/io5";
 import PricingField from "./PricingField";
-import { PricingEditorProps } from "@/constants/admin/types";
+import type { PricingEditorProps } from "@/constants/admin/types";
 
 const PricingEditor = ({ pricingList, setCurrentData }: PricingEditorProps) => {
   const handleAddField = () => {

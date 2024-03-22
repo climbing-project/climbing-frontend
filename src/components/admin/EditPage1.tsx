@@ -5,8 +5,8 @@ import styled from "styled-components";
 import ImageEditor from "@/components/admin/ImageEditor";
 import BasicInfoEditor from "@/components/admin/BasicInfoEditor";
 import DescriptionEditor from "@/components/admin/DescriptionEditor";
-import { GymData } from "@/constants/gyms/types";
 import { GYM_API } from "@/constants/constants";
+import type { GymData } from "@/constants/gyms/types";
 
 const EditPage1 = () => {
   const [currentData, setCurrentData] = useState<GymData>(INITIAL_DATA);

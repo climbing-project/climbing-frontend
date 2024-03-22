@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { GymData } from "@/constants/gyms/types";
 import { DescriptionEditorProps } from "@/constants/admin/types";
+import type { GymData } from "@/constants/gyms/types";
 
 const DescriptionEditor = ({ description, setCurrentData }: DescriptionEditorProps) => {
   const handleChange = (input: string) => {

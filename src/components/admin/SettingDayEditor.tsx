@@ -1,11 +1,11 @@
 import { useState } from "react";
 import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";
 import styled from "styled-components";
 import { FaCalendarDay } from "react-icons/fa";
 import { IoTrash } from "react-icons/io5";
-import { SettingDayEditorProps, Value } from "@/constants/admin/types";
 import { CURRENT_CENTURY } from "@/constants/admin/constants";
+import type { SettingDayEditorProps, Value } from "@/constants/admin/types";
+import "react-calendar/dist/Calendar.css";
 
 const TODAY = new Date();
 const TODAYS_DATE = {

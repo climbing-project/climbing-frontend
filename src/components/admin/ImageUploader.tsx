@@ -1,7 +1,6 @@
 import FileResizer from "react-image-file-resizer";
 import styled from "styled-components";
 import { MdOutlineUploadFile } from "react-icons/md";
-import { ImageUploadProps } from "@/constants/admin/types";
 import {
   ALLOWED_IMG_TYPES,
   IMG_FORMAT,
@@ -11,6 +10,7 @@ import {
   THUMBNAIL_HEIGHT,
   THUMBNAIL_WIDTH,
 } from "@/constants/admin/constants";
+import type { ImageUploadProps } from "@/constants/admin/types";
 
 const ImageUploader = ({ dataKey, imageCount, handleS3Upload }: ImageUploadProps) => {
   const handleFile = (files: FileList | null) => {

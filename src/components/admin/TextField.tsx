@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { TextFieldProps } from "@/constants/admin/types";
+import type { TextFieldProps } from "@/constants/admin/types";
 
 const TextField = ({ formName = undefined, characterLimit }: TextFieldProps) => {
   const [input, setInput] = useState("");

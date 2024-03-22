@@ -1,7 +1,7 @@
 import { BaseSyntheticEvent } from "react";
 import styled from "styled-components";
-import { ColorPickerProps } from "@/constants/admin/types";
 import { GRADE_COLORS } from "@/constants/admin/constants";
+import type { ColorPickerProps } from "@/constants/admin/types";
 
 const ColorPicker = ({ handleColorSelect }: ColorPickerProps) => {
   return (

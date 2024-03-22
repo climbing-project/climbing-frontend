@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { IoTrash } from "react-icons/io5";
 import OpenHoursField from "./OpenHoursField";
-import { OpenHoursEditorProps } from "@/constants/admin/types";
+import type { OpenHoursEditorProps } from "@/constants/admin/types";
 
 const OpenHoursEditor = ({ openHoursList, setCurrentData }: OpenHoursEditorProps) => {
   const handleAddField = () => {

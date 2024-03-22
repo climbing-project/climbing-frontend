@@ -1,9 +1,9 @@
 import { useState } from "react";
 import styled from "styled-components";
 import AddressField from "./AddressField";
-import { GymData } from "@/constants/gyms/types";
-import { NewGymFormProps } from "@/constants/admin/types";
 import { PHONE_REGEX } from "@/constants/admin/constants";
+import type { GymData } from "@/constants/gyms/types";
+import type { NewGymFormProps } from "@/constants/admin/types";
 
 const NewGymForm = ({ handleSubmit }: NewGymFormProps) => {
   const [formData, setFormData] = useState<GymData>({

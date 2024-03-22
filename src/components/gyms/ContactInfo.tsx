@@ -11,7 +11,7 @@ export const CONTACT_ICONS = {
 };
 
 const ContactInfo = ({ contact, snsList }: ContactInfoProps) => {
-  const platforms = Object.keys(snsList);
+  const platforms = snsList ? Object.keys(snsList) : [];
   return (
     <S.Wrapper>
       <div>
@@ -33,14 +33,17 @@ const ContactInfo = ({ contact, snsList }: ContactInfoProps) => {
 
 const S = {
   Wrapper: styled.div`
-    display: grid;
-    grid: 1fr 1fr / 1fr 1fr;
+    display: flex;
+    flex-wrap: wrap;
+    max-width: calc("181px" * 2 + "12px");
     gap: 12px;
 
     div {
       display: flex;
       gap: 6px;
       align-items: center;
+      flex-shrink: 0;
+      width: 181px;
     }
   `,
 };

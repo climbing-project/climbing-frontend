@@ -97,6 +97,12 @@ const Join = () => {
       setNicknameMessage("닉네임은 3자이상이어야 합니다.");
       setIsNicknameValid(false);
     } else {
+      // requestData({
+      //   option: "GET",
+      //   url: "/members/emailCheck",
+      //   data: email,
+      //   // onSuccess,
+      // });
       // const res = await fetch(`http://localhost:3000/members/emailCheck`);
       // const data = await res.json();
 

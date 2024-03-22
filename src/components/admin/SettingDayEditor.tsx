@@ -76,7 +76,7 @@ const SettingDayEditor = ({ date, setCurrentData }: SettingDayEditorProps) => {
         <S.Header>
           <span>최근 세팅일</span>
           <S.Icon onClick={handleDelete}>
-            <IoTrash />
+            <IoTrash size="1.3rem" />
           </S.Icon>
         </S.Header>
         <S.Content>
@@ -97,7 +97,11 @@ const SettingDayEditor = ({ date, setCurrentData }: SettingDayEditorProps) => {
       <S.Wrapper>
         <S.Header>최근 세팅일</S.Header>
         <S.Content>
-          <button onClick={handleAddField}>세팅일 설정</button>
+          <div>
+            <button className="btn-secondary" onClick={handleAddField}>
+              + 세팅일 설정
+            </button>
+          </div>
         </S.Content>
       </S.Wrapper>
     );

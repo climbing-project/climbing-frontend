@@ -41,7 +41,7 @@ const GradeEditor = ({ gradesList, setCurrentData }: GradeEditorProps) => {
       <S.Header>
         <span>난이도</span>
         <S.Icon onClick={handleDelete}>
-          <IoTrash />
+          <IoTrash size="1.3rem" />
         </S.Icon>
       </S.Header>
       <S.Content $direction="column">
@@ -60,7 +60,11 @@ const GradeEditor = ({ gradesList, setCurrentData }: GradeEditorProps) => {
             </S.Label>
           </>
         ) : (
-          <button onClick={handleCreate}>난이도 생성</button>
+          <div>
+            <button className="btn-secondary" onClick={handleCreate}>
+              + 난이도 생성
+            </button>
+          </div>
         )}
       </S.Content>
     </S.Wrapper>

@@ -93,6 +93,10 @@ const S = {
     flex-direction: ${(props) => props.$direction};
     flex-wrap: wrap;
     gap: 6px;
+
+    span {
+      color: #b7b7b7;
+    }
   `,
   Bar: styled.div`
     display: flex;

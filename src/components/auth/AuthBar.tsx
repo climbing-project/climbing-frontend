@@ -23,11 +23,15 @@ AuthButtonProps) => {
   // 로그인되지 않은 상태
   return (
     <div>
-      <S.ButtonWrapper>
-        <Link href={"/login"}>로그인</Link>
+      <S.ButtonWrapper className="btn-plain">
+        <Link className="link-plain" href={"/login"}>
+          로그인
+        </Link>
       </S.ButtonWrapper>
-      <S.ButtonWrapper>
-        <Link href={"/join"}>회원가입</Link>
+      <S.ButtonWrapper className="btn-plain">
+        <Link className="link-plain" href={"/join"}>
+          회원가입
+        </Link>
       </S.ButtonWrapper>
     </div>
   );

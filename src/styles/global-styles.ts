@@ -45,6 +45,11 @@ ${normalize}
     background:transparent;
     cursor: pointer;
   }
+
+  .link-plain{
+    text-decoration:none;
+    &:visited { color:black; }
+  }
 `;
 
 export default GlobalStyle;

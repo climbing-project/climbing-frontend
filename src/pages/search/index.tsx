@@ -83,7 +83,9 @@ export interface GymSampleInfo {
 }
 
 const SearchPage = () => {
-  const searchWord = useRouter().query.q as string;
+  const query = useRouter().query;
+  const searchWord = query.q as string;
+  const sortingType = query.s as string;
 
   const [gymLists, setGymLists] = useState<GymSampleInfo[]>(sampleGyms); //sampleGyms
 
@@ -117,6 +119,7 @@ const SearchPage = () => {
         gymList={gymLists}
         setGymList={setGymLists}
         searchWord={searchWord}
+        sortingType={sortingType}
       />
     </Styled.Wrapper>
   );

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { SetStateAction, useEffect, useState } from "react";
-import GymListBanner from "../../components/GymListBanner";
-import SearchBanner from "./searchBanner";
+import GymListBanner from "../../components/search/GymListBanner";
+import SearchBanner from "../../components/search/searchBanner";
 import { requestData } from "@/service/api";
 
 const sampleGyms: GymSampleInfo[] = [

@@ -1,7 +1,7 @@
-import LazyLoadingItems from "@/components/LazyLoadingItems";
-import PreviewCard from "@/components/PreviewCard";
+import LazyLoadingItems from "@/components/common/LazyLoadingItems";
+import PreviewCard from "@/components/common/PreviewCard";
 import styled from "styled-components";
-import { GymSampleInfo } from "../pages/home";
+import { GymSampleInfo } from "../../pages/home";
 import { Dispatch, MouseEventHandler, SetStateAction } from "react";
 import router from "next/router";
 import { requestData } from "@/service/api";

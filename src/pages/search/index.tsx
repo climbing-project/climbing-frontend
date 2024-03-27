@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import GymListBanner from "../../components/GymListBanner";
+import GymListBanner from "../../components/search/GymListBanner";
 import { IoSearch } from "react-icons/io5";
 import router, { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import Search from "@/components/Search";
+import Search from "@/components/common/Search";
 
 const sampleGyms: GymSampleInfo[] = [
   {

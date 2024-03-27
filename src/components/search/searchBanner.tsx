@@ -1,7 +1,7 @@
-import { Search } from "@/components/Search";
+import { Search } from "@/components/common/Search";
 import { IoSearch } from "react-icons/io5";
 import styled from "styled-components";
-import { GymSampleInfo } from ".";
+import { GymSampleInfo } from "../../pages/home";
 import { Dispatch, FormEventHandler, SetStateAction } from "react";
 import router from "next/router";
 import Image from "next/image";

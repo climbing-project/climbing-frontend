@@ -77,8 +77,10 @@ const S = {
     right: 0;
     z-index: 100;
 
-    padding-left: ${({ $needMargin }) => ($needMargin === true ? "10%" : "0")};
-    padding-right: ${({ $needMargin }) => ($needMargin === true ? "10%" : "0")};
+    padding-left: ${({ $needMargin }) =>
+      $needMargin === true ? "10%" : "30px"};
+    padding-right: ${({ $needMargin }) =>
+      $needMargin === true ? "10%" : "30px"};
   `,
   BarContainer: styled.div`
     display: flex;

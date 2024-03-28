@@ -139,7 +139,7 @@ SearchPage.getLayout = (page: ReactElement) => {
 const Styled = {
   Wrapper: styled.div``,
   SearchWrapper: styled.div`
-    margin-top: 20px;
+    margin-top: 10px;
     top: 0;
     position: fixed;
     z-index: 101;

@@ -48,8 +48,10 @@ const S = {
     margin-top: 20px;
     margin-bottom: 20px;
 
-    padding-left: ${({ $needMargin }) => ($needMargin === true ? "10%" : "0")};
-    padding-right: ${({ $needMargin }) => ($needMargin === true ? "10%" : "0")};
+    padding-left: ${({ $needMargin }) =>
+      $needMargin === true ? "10%" : "30px"};
+    padding-right: ${({ $needMargin }) =>
+      $needMargin === true ? "10%" : "20px"};
   `,
   TitleContainer: styled.a`
     display: flex;

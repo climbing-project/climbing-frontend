@@ -72,6 +72,7 @@ const SearchBanner = ({ setGymList }: SearchBannerProps) => {
           placeholder="주소를 입력하면 실내암벽장을 찾아드려요."
           onSubmit={handleGymList as (unknown: unknown) => unknown}
           useLocation={true}
+          border="2px solid #b1d3ff"
         />
       </Styled.SearchContainer>
       <Styled.ImageWrapper>

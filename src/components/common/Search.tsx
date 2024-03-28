@@ -66,6 +66,7 @@ export const Search = ({
   return (
     <Styled.Wrapper width={width} ref={searchRef}>
       <Styled.Form
+        className={isInputFocus ? "container" : ""}
         onSubmit={onSubmit}
         autoComplete="off"
         border={border}

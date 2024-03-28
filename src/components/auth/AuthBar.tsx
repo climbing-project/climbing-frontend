@@ -23,25 +23,19 @@ AuthButtonProps) => {
   // 로그인되지 않은 상태
   return (
     <div>
-      <S.ButtonWrapper className="btn-plain">
-        <S.Link className="link-plain" href={"/login"}>
-          로그인
-        </S.Link>
-      </S.ButtonWrapper>
-      <S.ButtonWrapper className="btn-plain">
-        <S.Link className="link-plain" href={"/join"}>
-          회원가입
-        </S.Link>
-      </S.ButtonWrapper>
+      <S.Link className="link-plain" href={"/login"}>
+        로그인
+      </S.Link>
+      <S.Link className="link-plain" href={"/join"}>
+        회원가입
+      </S.Link>
     </div>
   );
 };
 
 const S = {
-  ButtonWrapper: styled.button`
-    margin-left: 20px;
-  `,
   Link: styled.a`
+    margin-left: 30px;
     font-weight: bold;
   `,
 };

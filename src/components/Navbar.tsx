@@ -7,9 +7,14 @@ import { usePathname } from "next/navigation";
 // navbar(헤더)를 보여주지 않을 페이지 주소 지정
 const nonNavPage = ["/login", "/join"];
 
+// 마진이 붙어야될 주소 지정
+const marginPage = ["/home", "/search", "/gyms"];
+
 const Navbar = () => {
   const pathName = usePathname();
   const [showNavBar, setShowNavBar] = useState(true);
+  const needMargin = marginPage.some((url) => pathName?.includes(url));
+
   // const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -23,7 +28,7 @@ const Navbar = () => {
   return (
     <>
       <S.Space></S.Space>
-      <S.Wrapper>
+      <S.Wrapper $needMargin={needMargin}>
         <S.BarContainer>
           <Link href={"/"} style={{ textDecoration: "none" }}>
             오르리
@@ -39,16 +44,26 @@ const Navbar = () => {
 };
 
 const S = {
+  Palette: styled.div<{ $color: string }>`
+    height: 27px;
+    width: 27px;
+    border-radius: 4px;
+    background: ${({ $color }) => $color};
+    cursor: pointer;
+  `,
   Space: styled.div`
     height: 80px;
   `,
-  Wrapper: styled.div`
-    background-color: #f9f2f2;
+  Wrapper: styled.div<{ $needMargin: boolean }>`
+    background-color: transparent;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 100;
+
+    margin-left: ${({ $needMargin }) => ($needMargin === true ? "10%" : "0")};
+    margin-right: ${({ $needMargin }) => ($needMargin === true ? "10%" : "0")};
   `,
   BarContainer: styled.div`
     display: flex;

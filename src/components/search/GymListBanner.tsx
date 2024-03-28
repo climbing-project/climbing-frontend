@@ -71,7 +71,7 @@ const GymListBanner = ({
 
   const SortingButtons = sortingTypes.map((type, index) => {
     return (
-      <>
+      <Styled.Container key={index}>
         <Styled.SortButton
           className={
             selectedButton === type ? "btn-plain-clicked" : "btn-plain"
@@ -82,7 +82,7 @@ const GymListBanner = ({
           {type}
         </Styled.SortButton>
         {index !== 2 ? <Styled.Divider>|</Styled.Divider> : null}
-      </>
+      </Styled.Container>
     );
   });
 
@@ -110,7 +110,9 @@ const GymListBanner = ({
 
 const Styled = {
   Wrapper: styled.div``,
-  Container: styled.div``,
+  Container: styled.div`
+    display: flex;
+  `,
   ButtonWrapper: styled.div`
     display: flex;
     justify-content: flex-end;

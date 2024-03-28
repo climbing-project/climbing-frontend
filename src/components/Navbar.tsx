@@ -1,8 +1,8 @@
 import { styled } from "styled-components";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import AuthBar from "./auth/AuthBar";
 import { usePathname } from "next/navigation";
+import { FaRegHandRock } from "react-icons/fa";
 
 // navbar(헤더)를 보여주지 않을 페이지 주소 지정
 const nonNavPage = ["/login", "/join"];
@@ -30,12 +30,13 @@ const Navbar = () => {
       <S.Space></S.Space>
       <S.Wrapper $needMargin={needMargin}>
         <S.BarContainer>
-          <Link href={"/"} style={{ textDecoration: "none" }}>
-            오르리
-          </Link>
+          <S.Link href={"/"}>
+            <FaRegHandRock />
+            <S.Title>오르리</S.Title>
+          </S.Link>
           <S.MenuContainer>
             <AuthBar />
-            <S.ButtonWrapper>=</S.ButtonWrapper>
+            {/* <S.ButtonWrapper>=</S.ButtonWrapper> */}
           </S.MenuContainer>
         </S.BarContainer>
       </S.Wrapper>
@@ -44,6 +45,20 @@ const Navbar = () => {
 };
 
 const S = {
+  Link: styled.a`
+    display: flex;
+    text-decoration: none;
+    font-size: 20px;
+    color: #307fe5;
+    font-weight: bold;
+    &:visited {
+      color: #307fe5;
+    }
+    align-items: center;
+  `,
+  Title: styled.div`
+    margin-left: 3px;
+  `,
   Palette: styled.div<{ $color: string }>`
     height: 27px;
     width: 27px;
@@ -55,7 +70,7 @@ const S = {
     height: 80px;
   `,
   Wrapper: styled.div<{ $needMargin: boolean }>`
-    background-color: #b1d3ff;
+    background: linear-gradient(45deg, white, #b1d3ff);
     position: fixed;
     top: 0;
     left: 0;
@@ -68,7 +83,8 @@ const S = {
   BarContainer: styled.div`
     display: flex;
     justify-content: space-between;
-    margin: 20px;
+    margin-top: 15px;
+    margin-bottom: 15px;
   `,
   MenuContainer: styled.div`
     display: flex;

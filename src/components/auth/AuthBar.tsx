@@ -24,14 +24,14 @@ AuthButtonProps) => {
   return (
     <div>
       <S.ButtonWrapper className="btn-plain">
-        <Link className="link-plain" href={"/login"}>
+        <S.Link className="link-plain" href={"/login"}>
           로그인
-        </Link>
+        </S.Link>
       </S.ButtonWrapper>
       <S.ButtonWrapper className="btn-plain">
-        <Link className="link-plain" href={"/join"}>
+        <S.Link className="link-plain" href={"/join"}>
           회원가입
-        </Link>
+        </S.Link>
       </S.ButtonWrapper>
     </div>
   );
@@ -39,7 +39,10 @@ AuthButtonProps) => {
 
 const S = {
   ButtonWrapper: styled.button`
-    margin-left: 10px;
+    margin-left: 20px;
+  `,
+  Link: styled.a`
+    font-weight: bold;
   `,
 };
 

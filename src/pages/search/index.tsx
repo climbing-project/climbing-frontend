@@ -2,8 +2,11 @@ import styled from "styled-components";
 import GymListBanner from "../../components/search/GymListBanner";
 import { IoSearch } from "react-icons/io5";
 import router, { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import Search from "@/components/common/Search";
+import { NextPageWithLayout } from "../_app";
+import Layout from "@/components/Layout";
+import SearchLayout from "@/components/search/SearchLayout";
 
 const sampleGyms: GymSampleInfo[] = [
   {
@@ -82,7 +85,7 @@ export interface GymSampleInfo {
   likeNumber: number;
 }
 
-const SearchPage = () => {
+const SearchPage: NextPageWithLayout = () => {
   const query = useRouter().query;
   const searchWord = query.q as string;
   const sortingType = query.s as string;
@@ -122,6 +125,14 @@ const SearchPage = () => {
         sortingType={sortingType}
       />
     </Styled.Wrapper>
+  );
+};
+
+SearchPage.getLayout = (page: ReactElement) => {
+  return (
+    <Layout>
+      <SearchLayout>{page}</SearchLayout>
+    </Layout>
   );
 };
 

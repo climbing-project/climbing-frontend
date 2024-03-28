@@ -55,15 +55,15 @@ const S = {
     height: 80px;
   `,
   Wrapper: styled.div<{ $needMargin: boolean }>`
-    background-color: transparent;
+    background-color: #b1d3ff;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 100;
 
-    margin-left: ${({ $needMargin }) => ($needMargin === true ? "10%" : "0")};
-    margin-right: ${({ $needMargin }) => ($needMargin === true ? "10%" : "0")};
+    padding-left: ${({ $needMargin }) => ($needMargin === true ? "10%" : "0")};
+    padding-right: ${({ $needMargin }) => ($needMargin === true ? "10%" : "0")};
   `,
   BarContainer: styled.div`
     display: flex;

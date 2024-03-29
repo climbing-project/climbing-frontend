@@ -1,80 +1,77 @@
-import { Dispatch, SetStateAction } from 'react';
-import styled from 'styled-components';
-import { FaMinus, FaPlus } from 'react-icons/fa6';
-import GradeBlock from './GradeBlock';
-import { GymData } from '@/pages/admin/edit';
-
-interface GradeEditorProps {
-  gradesList: string[] | undefined;
-  setCurrentData: Dispatch<SetStateAction<GymData>>;
-}
-
-const NEW_GRADES = ['#d9d9d9', '#d9d9d9'];
-const DEFAULT_COLOR = '#d9d9d9';
+import styled from "styled-components";
+import { FaMinus, FaPlus } from "react-icons/fa6";
+import { IoTrash } from "react-icons/io5";
+import GradeBlock from "./GradeBlock";
+import { DEFAULT_COLOR, NEW_GRADES } from "@/constants/admin/constants";
+import type { GradeEditorProps } from "@/constants/admin/types";
 
 const GradeEditor = ({ gradesList, setCurrentData }: GradeEditorProps) => {
   const handleCreate = () => {
-    setCurrentData((prev) => ({ ...prev, grades: [...NEW_GRADES] }) as GymData);
+    setCurrentData((prev) => ({ ...prev, grades: [...NEW_GRADES] }));
+  };
+
+  const handleDelete = () => {
+    setCurrentData((prev) => ({ ...prev, grades: [] }));
   };
 
   const handleColorChange = (index: number, color: string) => {
     const currentList = gradesList ? [...gradesList] : [...NEW_GRADES];
     currentList[index] = color;
-    setCurrentData(
-      (prev) => ({ ...prev, grades: [...currentList] }) as GymData,
-    );
+    setCurrentData((prev) => ({ ...prev, grades: [...currentList] }));
   };
 
   const handleCountChange = (operation: string) => {
-    if (operation === 'plus') {
+    if (operation === "plus") {
       if (gradesList!.length === 10) return;
       setCurrentData((prev) => {
         const currentList = [...prev.grades!];
-        return { ...prev, grades: [...currentList, DEFAULT_COLOR] } as GymData;
+        return { ...prev, grades: [...currentList, DEFAULT_COLOR] };
       });
     } else {
       if (gradesList!.length === 2) return;
       setCurrentData((prev) => {
-        const newList = prev.grades!.filter(
-          (_, i) => i !== prev.grades!.length - 1,
-        );
-        return { ...prev, grades: [...newList] } as GymData;
+        const newList = prev.grades!.filter((_, i) => i !== prev.grades!.length - 1);
+        return { ...prev, grades: [...newList] };
       });
     }
   };
 
   return (
-    <Styled.Wrapper>
-      <Styled.Header>난이도</Styled.Header>
-      <Styled.Content $direction="column">
-        {gradesList ? (
+    <S.Wrapper>
+      <S.Header>
+        <span>난이도</span>
+        <S.Icon onClick={handleDelete}>
+          <IoTrash size="1.3rem" />
+        </S.Icon>
+      </S.Header>
+      <S.Content $direction="column">
+        {gradesList && gradesList.length > 0 ? (
           <>
-            <Styled.Bar>
-              <FaMinus onClick={() => handleCountChange('minus')} />
+            <S.Bar>
+              <FaMinus onClick={() => handleCountChange("minus")} />
               {gradesList.map((grade, i) => (
-                <GradeBlock
-                  key={i}
-                  index={i}
-                  color={grade}
-                  handleColorChange={handleColorChange}
-                />
+                <GradeBlock key={i} index={i} color={grade} handleColorChange={handleColorChange} />
               ))}
-              <FaPlus onClick={() => handleCountChange('plus')} />
-            </Styled.Bar>
-            <Styled.Label>
+              <FaPlus onClick={() => handleCountChange("plus")} />
+            </S.Bar>
+            <S.Label>
               <span>easy</span>
               <span>hard</span>
-            </Styled.Label>
+            </S.Label>
           </>
         ) : (
-          <button onClick={handleCreate}>난이도 생성</button>
+          <div>
+            <button className="btn-secondary" onClick={handleCreate}>
+              + 난이도 생성
+            </button>
+          </div>
         )}
-      </Styled.Content>
-    </Styled.Wrapper>
+      </S.Content>
+    </S.Wrapper>
   );
 };
 
-const Styled = {
+const S = {
   Wrapper: styled.div`
     background: white;
     border: 1px solid #d0d0d0;
@@ -84,6 +81,11 @@ const Styled = {
     font-weight: 700;
     font-size: 24px;
     padding: 32px 40px;
+    display: flex;
+    justify-content: space-between;
+  `,
+  Icon: styled.div`
+    cursor: pointer;
   `,
   Content: styled.div<{ $direction?: string }>`
     padding: 32px 40px;
@@ -91,6 +93,10 @@ const Styled = {
     flex-direction: ${(props) => props.$direction};
     flex-wrap: wrap;
     gap: 6px;
+
+    span {
+      color: #b7b7b7;
+    }
   `,
   Bar: styled.div`
     display: flex;

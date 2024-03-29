@@ -1,37 +1,26 @@
-import { Dispatch, SetStateAction } from 'react';
-import styled from 'styled-components';
-import { GymData } from '@/pages/admin/edit';
+import styled from "styled-components";
+import { DescriptionEditorProps } from "@/constants/admin/types";
+import type { GymData } from "@/constants/gyms/types";
 
-interface DescriptionEditorProps {
-  description?: string;
-  setCurrentData: Dispatch<SetStateAction<GymData>>;
-}
-
-const DescriptionEditor = ({
-  description,
-  setCurrentData,
-}: DescriptionEditorProps) => {
+const DescriptionEditor = ({ description, setCurrentData }: DescriptionEditorProps) => {
   const handleChange = (input: string) => {
     if (input.length > 300) return;
     setCurrentData((prev) => ({ ...prev, description: input }) as GymData);
   };
   return (
-    <Styled.Wrapper>
-      <Styled.Header>설명글</Styled.Header>
-      <Styled.Content>
-        <Styled.TextField>
-          <textarea
-            value={description}
-            onChange={(e) => handleChange(e.target.value)}
-          />
-        </Styled.TextField>
-        {description?.length || 0}/300
-      </Styled.Content>
-    </Styled.Wrapper>
+    <S.Wrapper>
+      <S.Header>설명글</S.Header>
+      <S.Content>
+        <S.TextField>
+          <textarea value={description} onChange={(e) => handleChange(e.target.value)} />
+        </S.TextField>
+        <strong>{description?.length || 0}/300</strong>
+      </S.Content>
+    </S.Wrapper>
   );
 };
 
-const Styled = {
+const S = {
   Wrapper: styled.div`
     background: white;
     border: 1px solid #d0d0d0;
@@ -47,6 +36,7 @@ const Styled = {
     display: flex;
     flex-direction: ${(props) => props.$direction};
     flex-wrap: wrap;
+    justify-content: flex-end;
     gap: 20px;
   `,
   TextField: styled.div`

@@ -1,15 +1,16 @@
-import styled from 'styled-components';
-
-interface TagProps {
-  prefix?: string;
-  text: string;
-}
+import styled from "styled-components";
+import { TagProps } from "@/constants/gyms/types";
 
 const Tag = ({ prefix, text }: TagProps) => {
-  return <Styled.Wrapper>{prefix}{text}</Styled.Wrapper>;
+  return (
+    <S.Wrapper>
+      {prefix}
+      {text}
+    </S.Wrapper>
+  );
 };
 
-const Styled = {
+const S = {
   Wrapper: styled.span`
     display: inline-block;
     line-height: 24px;
@@ -17,6 +18,7 @@ const Styled = {
     background-color: #dcdcdc;
     color: #666;
     padding: 4px 8px;
+    margin-right: 8px;
   `,
 };
 

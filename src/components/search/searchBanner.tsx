@@ -1,11 +1,12 @@
-import { Search } from "@/components/Search";
+import { Search } from "@/components/common/Search";
 import { IoSearch } from "react-icons/io5";
 import styled from "styled-components";
-import { GymSampleInfo } from ".";
+import { GymSampleInfo } from "../../pages/home";
 import { Dispatch, FormEventHandler, SetStateAction } from "react";
 import router from "next/router";
 import Image from "next/image";
 import img from "../../../public/magnifier.png";
+import { requestData } from "@/service/api";
 
 const sampleAddress = [
   { id: 1, info: "잠실" },
@@ -31,11 +32,16 @@ interface SearchBannerProps {
 }
 
 const SearchBanner = ({ setGymList }: SearchBannerProps) => {
-  const getData = async (input: string | null) => {
-    const res = await fetch(`http://localhost:3000/search?q={input}`);
-    const data = await res.json();
-    setGymList(data);
-  };
+  requestData({
+    option: "GET",
+    url: `/search?q={input}`,
+    onSuccess: (data) => setGymList(data),
+  });
+  // const getData = async (input: string | null) => {
+  //   const res = await fetch(`http://localhost:3000/search?q={input}`);
+  //   const data = await res.json();
+  //   setGymList(data);
+  // };
 
   const handleGymList = (event: {
     target: any;
@@ -58,7 +64,8 @@ const SearchBanner = ({ setGymList }: SearchBannerProps) => {
   return (
     <Styled.Wrapper>
       <Styled.SearchContainer>
-        <Styled.Title> 주변 암벽장 찾을땐 오르-리</Styled.Title>
+        <Styled.Title1>주변 암벽장 찾을 땐,</Styled.Title1>
+        <Styled.Title2>오르-리</Styled.Title2>
         <Search
           dataList={sampleAddress}
           width="400px"
@@ -66,6 +73,7 @@ const SearchBanner = ({ setGymList }: SearchBannerProps) => {
           placeholder="주소를 입력하면 실내암벽장을 찾아드려요."
           onSubmit={handleGymList as (unknown: unknown) => unknown}
           useLocation={true}
+          border="3px solid #b1d3ff"
         />
       </Styled.SearchContainer>
       <Styled.ImageWrapper>
@@ -81,12 +89,21 @@ const Styled = {
     justify-content: center;
     flex-direction: row;
     margin-top: 50px;
+    margin-bottom: 20px;
   `,
-  Title: styled.div`
-    font-size: 30px;
+  Title1: styled.div`
+    font-size: 40px;
     margin-bottom: 10px;
+    font-weight: bold;
+  `,
+  Title2: styled.div`
+    font-size: 40px;
+    margin-bottom: 30px;
+    font-weight: bold;
+    color: #307fe5;
   `,
   SearchContainer: styled.div`
+    width: 400px;
     display: flex;
     flex-direction: column;
   `,

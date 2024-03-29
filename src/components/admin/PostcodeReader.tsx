@@ -1,35 +1,26 @@
-import styled from 'styled-components';
-import DaumPostcodeEmbed from 'react-daum-postcode';
-import { IoIosCloseCircle } from 'react-icons/io';
+import DaumPostcodeEmbed from "react-daum-postcode";
+import styled from "styled-components";
+import { IoIosCloseCircle } from "react-icons/io";
+import type { PostcodeReaderProps } from "@/constants/admin/types";
 
-interface PostcodeReaderProps {
-  handleClose: Function;
-  handleComplete: Function;
-}
-
-const PostcodeReader = ({
-  handleClose,
-  handleComplete,
-}: PostcodeReaderProps) => {
+const PostcodeReader = ({ handleClose, handleComplete }: PostcodeReaderProps) => {
   return (
-    <Styled.Wrapper>
-      <Styled.Foreground>
-        <Styled.EmbedContainer>
-          <IoIosCloseCircle
-            className="btn__close"
-            onClick={() => handleClose()}
-          />
+    <S.Wrapper>
+      <S.Foreground>
+        <S.EmbedContainer>
+          <IoIosCloseCircle className="btn__close" onClick={() => handleClose()} />
           <DaumPostcodeEmbed onComplete={(data) => handleComplete(data)} />
-        </Styled.EmbedContainer>
-      </Styled.Foreground>
-      <Styled.Background />
-    </Styled.Wrapper>
+        </S.EmbedContainer>
+      </S.Foreground>
+      <S.Background />
+    </S.Wrapper>
   );
 };
 
-const Styled = {
+const S = {
   Wrapper: styled.div`
     position: fixed;
+    z-index: 5;
     top: 0;
     left: 0;
     height: 100%;
@@ -39,7 +30,7 @@ const Styled = {
     position: absolute;
     width: 100%;
     height: 100%;
-    z-index: 1;
+    z-index: 10;
     display: flex;
     justify-content: center;
     align-items: center;

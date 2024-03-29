@@ -1,10 +1,8 @@
-import { useRouter } from 'next/router';
-import styled from 'styled-components';
-import NewGymForm from '@/components/admin/NewGymForm';
-import { GymData } from '../edit';
-
-// 테스트용 상수값
-const testEndpoint = 'http://localhost:3000/gyms/'
+import { useRouter } from "next/router";
+import styled from "styled-components";
+import NewGymForm from "@/components/admin/NewGymForm";
+import { GymData } from "@/constants/gyms/types";
+import { GYM_API } from "@/constants/constants";
 
 const GymRegistration = () => {
   const router = useRouter();
@@ -15,32 +13,26 @@ const GymRegistration = () => {
       formData.id = id;
       router.push(
         {
-          pathname: '/admin/edit',
+          pathname: "/admin/edit",
           query: { newRegister: true, gymData: JSON.stringify(formData) },
         },
-        '/admin/edit',
+        "/admin/edit",
       );
     });
   };
 
   // CRUD: Create
   const createData = async (input: GymData) => {
-    // ↓ Test용 값 세팅
-    const testId = crypto.randomUUID();
-    input.id = testId;
-    // ↑ 백엔드 API로 교체 시 삭제
-
-    const data = await fetch(testEndpoint, {
-      method: 'POST',
+    const res = await fetch(GYM_API, {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
+        "Content-Type": "application/json",
+        Accept: "application/json",
       },
       body: JSON.stringify(input),
     });
-    const result = await data.json(); // 서버로부터 id를 내려받으면 result에 저장
-    // return result;
-    return testId; // 시뮬레이팅을 위한 임의값 (서버 API가 생성되면 삭제!)
+    const newGym = await res.json();
+    return newGym.id; // 추후 서버에서 response로 오는 데이터의 구조에 맞게 수정
   };
 
   return (

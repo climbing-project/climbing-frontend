@@ -1,7 +1,11 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
-import GymListBanner from "../../components/GymListBanner";
-import SearchBanner from "./searchBanner";
+import { ReactElement, SetStateAction, useEffect, useState } from "react";
+import GymListBanner from "../../components/search/GymListBanner";
+import SearchBanner from "../../components/search/searchBanner";
+import { requestData } from "@/service/api";
+import Layout from "@/components/Layout";
+import { NextPageWithLayout } from "../_app";
+import SearchLayout from "@/components/search/SearchLayout";
 
 const sampleGyms: GymSampleInfo[] = [
   {
@@ -71,12 +75,17 @@ export interface GymSampleInfo {
   likeNumber: number;
 }
 
-const Home = () => {
-  const getData = async () => {
-    const res = await fetch("http://localhost:3000/gyms");
-    const data = await res.json();
-    setGymLists(data);
-  };
+const HomePage: NextPageWithLayout = () => {
+  requestData({
+    option: "GET",
+    url: "/gyms",
+    onSuccess: (input) => setGymLists(input),
+  });
+  // const getData = async () => {
+  //   const res = await fetch("http://localhost:3000/gyms");
+  //   const data = await res.json();
+  //   setGymLists(data);
+  // };
   const [gymLists, setGymLists] = useState<GymSampleInfo[]>(sampleGyms); //sampleGyms
 
   // useEffect(() => {
@@ -91,8 +100,16 @@ const Home = () => {
   );
 };
 
+HomePage.getLayout = (page: ReactElement) => {
+  return (
+    <Layout>
+      <SearchLayout>{page}</SearchLayout>
+    </Layout>
+  );
+};
+
 const Styled = {
   Wrapper: styled.div``,
 };
 
-export default Home;
+export default HomePage;

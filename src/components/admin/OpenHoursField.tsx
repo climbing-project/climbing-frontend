@@ -1,12 +1,6 @@
-import styled from 'styled-components';
-
-interface OpenHoursFieldProps {
-  index: number;
-  days: string;
-  openTime: string;
-  closeTime: string;
-  handleChange: (newValue: string, index: number, key: string) => void;
-}
+import styled from "styled-components";
+import { DAYS_TEXT, HOURS, MINUTES } from "@/constants/admin/constants";
+import type { OpenHoursFieldProps } from "@/constants/admin/types";
 
 const OpenHoursField = ({
   index,
@@ -15,17 +9,17 @@ const OpenHoursField = ({
   closeTime,
   handleChange,
 }: OpenHoursFieldProps) => {
-  const [openPeriod, openHours, openMinutes] = openTime.split(',');
-  const [closePeriod, closeHours, closeMinutes] = closeTime.split(',');
+  const [openPeriod, openHours, openMinutes] = openTime.split(",");
+  const [closePeriod, closeHours, closeMinutes] = closeTime.split(",");
   return (
-    <Styled.Wrapper>
-      <div>
-        <h4>옵션명</h4>
-        <Styled.TextField>
+    <S.Wrapper>
+      <S.Block>
+        <strong>옵션명</strong>
+        <S.TextField>
           <select
             name="days"
-            defaultValue={days}
-            onChange={(e) => handleChange(e.target.value, index, 'days')}
+            value={days}
+            onChange={(e) => handleChange(e.target.value, index, "days")}
           >
             {DAYS_TEXT.map(({ value, text }) => (
               <option key={value} value={value}>
@@ -33,26 +27,26 @@ const OpenHoursField = ({
               </option>
             ))}
           </select>
-        </Styled.TextField>
-      </div>
-      <div>
-        <h4>시작 시간</h4>
-        <Styled.TextField>
+        </S.TextField>
+      </S.Block>
+      <S.Block>
+        <strong>시작 시간</strong>
+        <S.TextField>
           <select
-            defaultValue={openPeriod}
+            value={openPeriod}
             onChange={(e) => {
               const newValue = `${e.target.value},${openHours},${openMinutes}`;
-              handleChange(newValue, index, 'openTime');
+              handleChange(newValue, index, "openTime");
             }}
           >
             <option>AM</option>
             <option>PM</option>
           </select>
           <select
-            defaultValue={openHours}
+            value={openHours}
             onChange={(e) => {
               const newValue = `${openPeriod},${e.target.value},${openMinutes}`;
-              handleChange(newValue, index, 'openTime');
+              handleChange(newValue, index, "openTime");
             }}
           >
             {HOURS.map((time, i) => (
@@ -63,10 +57,10 @@ const OpenHoursField = ({
           </select>
           :
           <select
-            defaultValue={openMinutes}
+            value={openMinutes}
             onChange={(e) => {
               const newValue = `${openPeriod},${openHours},${e.target.value}`;
-              handleChange(newValue, index, 'openTime');
+              handleChange(newValue, index, "openTime");
             }}
           >
             {MINUTES.map((time, i) => (
@@ -75,26 +69,26 @@ const OpenHoursField = ({
               </option>
             ))}
           </select>
-        </Styled.TextField>
-      </div>
-      <div>
-        <h4>종료 시간</h4>
-        <Styled.TextField>
+        </S.TextField>
+      </S.Block>
+      <S.Block>
+        <strong>종료 시간</strong>
+        <S.TextField>
           <select
-            defaultValue={closePeriod}
+            value={closePeriod}
             onChange={(e) => {
               const newValue = `${e.target.value},${closeHours},${closeMinutes}`;
-              handleChange(newValue, index, 'closeTime');
+              handleChange(newValue, index, "closeTime");
             }}
           >
             <option>AM</option>
             <option>PM</option>
           </select>
           <select
-            defaultValue={closeHours}
+            value={closeHours}
             onChange={(e) => {
               const newValue = `${closePeriod},${e.target.value},${closeMinutes}`;
-              handleChange(newValue, index, 'closeTime');
+              handleChange(newValue, index, "closeTime");
             }}
           >
             {HOURS.map((time, i) => (
@@ -105,10 +99,10 @@ const OpenHoursField = ({
           </select>
           :
           <select
-            defaultValue={closeMinutes}
+            value={closeMinutes}
             onChange={(e) => {
               const newValue = `${closePeriod},${closeHours},${e.target.value}`;
-              handleChange(newValue, index, 'closeTime');
+              handleChange(newValue, index, "closeTime");
             }}
           >
             {MINUTES.map((time, i) => (
@@ -117,38 +111,21 @@ const OpenHoursField = ({
               </option>
             ))}
           </select>
-        </Styled.TextField>
-      </div>
-    </Styled.Wrapper>
+        </S.TextField>
+      </S.Block>
+    </S.Wrapper>
   );
 };
 
-export const DAYS_TEXT = [
-  { value: 'weekdays', text: '평일' },
-  { value: 'weekends', text: '주말' },
-  { value: 'holidays', text: '공휴일' },
-];
-
-const HOURS = [
-  '01',
-  '02',
-  '03',
-  '04',
-  '05',
-  '06',
-  '07',
-  '08',
-  '09',
-  '10',
-  '11',
-  '12',
-];
-const MINUTES = ['00', '10', '20', '30', '40', '50'];
-
-const Styled = {
+const S = {
   Wrapper: styled.div`
     display: flex;
-    gap: 6px;
+    gap: 20px;
+  `,
+  Block: styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   `,
   TextField: styled.div`
     box-sizing: border-box;
@@ -162,7 +139,6 @@ const Styled = {
     select {
       border: none;
       background: transparent;
-      width: 100%;
       padding: 0px;
     }
   `,

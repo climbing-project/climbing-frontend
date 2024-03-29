@@ -1,67 +1,52 @@
-import { Dispatch, SetStateAction } from 'react';
-import styled from 'styled-components';
-import { GymData } from '@/pages/admin/edit';
-
-interface AccommodationsEditorProps {
-  accommodationsList: string[] | undefined;
-  setCurrentData: Dispatch<SetStateAction<GymData>>;
-}
+import styled from "styled-components";
+import { ACCOMMODATIONS_LIST } from "@/constants/admin/constants";
+import type { AccommodationsEditorProps } from "@/constants/admin/types";
 
 const AccommodationsEditor = ({
   accommodationsList,
   setCurrentData,
 }: AccommodationsEditorProps) => {
-  const handleChange = (
-    target: HTMLInputElement,
-    checkedItem: string,
-    isChecked: boolean,
-  ) => {
+  const handleChange = (target: HTMLInputElement, checkedItem: string, isChecked: boolean) => {
     if (!isChecked) {
       const prevList = accommodationsList ? accommodationsList : [];
-      const newList = [...prevList, checkedItem].sort((a, b) =>
-        a > b ? 1 : -1,
-      );
-      setCurrentData(
-        (prev) => ({ ...prev, accommodations: [...newList] }) as GymData,
-      );
+      const newList = [...prevList, checkedItem].sort((a, b) => a.localeCompare(b));
+      setCurrentData((prev) => ({ ...prev, accommodations: [...newList] }));
       target.checked = !isChecked;
     } else {
-      const filteredList = accommodationsList?.filter(
-        (item) => item !== checkedItem,
-      );
-      setCurrentData(
-        (prev) => ({ ...prev, accommodations: [...filteredList!] }) as GymData,
-      );
+      const filteredList = accommodationsList?.filter((item) => item !== checkedItem);
+      setCurrentData((prev) => ({
+        ...prev,
+        accommodations: [...filteredList!],
+      }));
       target.checked = !isChecked;
     }
   };
   return (
-    <Styled.Wrapper>
-      <Styled.Header>시설 정보</Styled.Header>
-      <Styled.Content>
-        {ACCOMMODATIONS_LIST.map(({ value, text }, i) => (
-          <Styled.TextField
+    <S.Wrapper>
+      <S.Header>시설 정보</S.Header>
+      <S.Content>
+        {ACCOMMODATIONS_LIST.map((text, i) => (
+          <S.TextField
             key={i}
             onClick={(e) => {
-              const input = (e.target as HTMLElement)
-                .firstElementChild as HTMLInputElement;
+              const input = (e.target as HTMLElement).firstElementChild as HTMLInputElement;
               handleChange(input, input.name, input.checked);
             }}
           >
             <input
               type="checkbox"
-              name={value}
-              defaultChecked={accommodationsList?.includes(value)}
+              name={text}
+              defaultChecked={accommodationsList?.includes(text)}
             />
             <span>{text}</span>
-          </Styled.TextField>
+          </S.TextField>
         ))}
-      </Styled.Content>
-    </Styled.Wrapper>
+      </S.Content>
+    </S.Wrapper>
   );
 };
 
-const Styled = {
+const S = {
   Wrapper: styled.div`
     background: white;
     border: 1px solid #d0d0d0;
@@ -106,25 +91,5 @@ const Styled = {
     }
   `,
 };
-
-// 상수
-export const ACCOMMODATIONS_LIST = [
-  {
-    value: 'showers',
-    text: '샤워실',
-  },
-  {
-    value: 'yogamat',
-    text: '요가매트',
-  },
-  {
-    value: 'gymball',
-    text: '짐볼',
-  },
-  {
-    value: 'moonboard',
-    text: '문보드',
-  },
-];
 
 export default AccommodationsEditor;

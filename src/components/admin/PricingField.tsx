@@ -1,62 +1,55 @@
-import styled from 'styled-components';
+import styled from "styled-components";
+import { PRICE_REGEX } from "@/constants/admin/constants";
+import type { PricingFieldProps } from "@/constants/admin/types";
 
-const REGEX = /^[0-9]*$/;
-
-interface PricingFieldProps {
-  index: number;
-  item: string;
-  price: string;
-  handleChange: (newValue: string, index: number, key: string) => void;
-}
-
-const PricingField = ({
-  index,
-  item,
-  price,
-  handleChange,
-}: PricingFieldProps) => {
+const PricingField = ({ index, item, price, handleChange }: PricingFieldProps) => {
   const handleTextChange = (input: string) => {
     if (input.length > 20) return;
-    handleChange(input, index, 'item');
+    handleChange(input, index, "item");
   };
+
   const handleNumberChange = (input: string) => {
-    if (!REGEX.test(input)) return;
-    if (input.length > 8) return;
-    handleChange(input, index, 'price');
+    const inputValue = input.replaceAll(",", "");
+    if (!PRICE_REGEX.test(inputValue)) return;
+    if (inputValue.length > 8) return;
+    handleChange(inputValue, index, "price");
   };
+
   return (
-    <Styled.Wrapper>
-      <div>
-        <h4>옵션명</h4>
-        <Styled.TextField>
-          <input
-            value={item}
-            onChange={(e) => handleTextChange(e.target.value)}
-          />
+    <S.Wrapper>
+      <S.Block>
+        <strong>옵션명</strong>
+        <S.TextField $width={400}>
+          <input value={item} onChange={(e) => handleTextChange(e.target.value)} />
           {item.length}/20
-        </Styled.TextField>
-      </div>
-      <div>
-        <h4>가격</h4>
-        <Styled.TextField>
+        </S.TextField>
+      </S.Block>
+      <S.Block>
+        <strong>가격</strong>
+        <S.TextField $width={140}>
           <input
-            value={price}
+            value={Number(price).toLocaleString()}
             placeholder="0"
             onChange={(e) => handleNumberChange(e.target.value)}
           />
           원
-        </Styled.TextField>
-      </div>
-    </Styled.Wrapper>
+        </S.TextField>
+      </S.Block>
+    </S.Wrapper>
   );
 };
 
-const Styled = {
+const S = {
   Wrapper: styled.div`
     display: flex;
-    gap: 6px;
+    gap: 20px;
   `,
-  TextField: styled.div`
+  Block: styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  `,
+  TextField: styled.div<{ $width?: number }>`
     box-sizing: border-box;
     display: flex;
     align-items: center;
@@ -64,6 +57,8 @@ const Styled = {
     border-radius: 8px;
     border: 1px solid #d0d0d0;
     padding: 12px 18px;
+    width: ${({ $width }) => ($width ? `${$width}px` : "")};
+    gap: 4px;
 
     input {
       border: none;

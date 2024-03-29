@@ -39,3 +39,26 @@ jobs:
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
           echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:latest"
+
+        # 아래-github action 자동배포 명령어 추가
+      - name: Get Github Actions IP
+        id: ip
+        uses: haythem/public-ip@v1.3
+
+      - name: Add Github Actions IP to Security group
+        run: |
+          aws ec2 authorize-security-group-ingress --group-id ${{ secrets.AWS_SG_SSH }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
+
+      - name: SSH Commands
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.AWS_DEPLOY_SSH_HOST }}
+          username: ${{ secrets.AWS_DEPLOY_SSH_USERNAME }}
+          key: ${{ secrets.AWS_DEPLOY_SSH_KEY }}
+          script_stop: true
+          script: |
+            ./docker-run.sh -p "${{ secrets.AWS_EC2_CONTAINER_PORT }}" -t latest
+
+      - name: Remove Github Actions IP From Security Group
+        run: |
+          aws ec2 revoke-security-group-ingress --group-id ${{ secrets.AWS_SG_SSH }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32

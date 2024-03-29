@@ -34,11 +34,12 @@ jobs:
         id: build-image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
         # 아래처럼 docker 커맨드를 실행한다.
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
-          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:latest"
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
         # 아래-github action 자동배포 명령어 추가
       - name: Get Github Actions IP
@@ -51,13 +52,16 @@ jobs:
 
       - name: SSH Commands
         uses: appleboy/ssh-action@v1.0.3
+        env:
+          IMAGE_TAG: ${{ github.sha }}
         with:
           host: ${{ secrets.AWS_DEPLOY_SSH_HOST }}
           username: ${{ secrets.AWS_DEPLOY_SSH_USERNAME }}
           key: ${{ secrets.AWS_DEPLOY_SSH_KEY }}
           script_stop: true
+          envs: IMAGE_TAG
           script: |
-            ./docker-run.sh -p "${{ secrets.AWS_EC2_CONTAINER_PORT }}" -t latest
+            ./docker-run.sh -p "${{ secrets.AWS_EC2_CONTAINER_PORT }}" -t $IMAGE_TAG
 
       - name: Remove Github Actions IP From Security Group
         run: |

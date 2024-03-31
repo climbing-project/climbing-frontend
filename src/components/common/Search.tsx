@@ -69,8 +69,8 @@ export const Search = ({
         className={isInputFocus ? "container" : ""}
         onSubmit={onSubmit}
         autoComplete="off"
-        border={border}
-        inputFocus={isInputFocus}
+        $border={border}
+        $inputFocus={isInputFocus}
       >
         {/* form에 action 요소 추가하여 전송할 주소 설정가능 */}
         <Styled.Input
@@ -136,11 +136,11 @@ const Styled = {
     position: relative;
     ${(props) => props.width && `width: ${props.width};`}
   `,
-  Form: styled.form<{ border?: string; inputFocus?: boolean }>`
+  Form: styled.form<{ $border?: string; $inputFocus?: boolean }>`
     display: flex;
     justify-content: space-between;
     border: ${(props) =>
-      (!props.inputFocus && props.border) || `1px solid black;`};
+      (!props.$inputFocus && props.$border) || `1px solid black;`};
     border-radius: 5px;
     padding: 5px;
     margin-bottom: 5px;

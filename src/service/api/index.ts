@@ -7,7 +7,7 @@ export const requestData = async ({
   data,
   onSuccess, // 성공 후 처리
 }: RequestProps) => {
-  const absoluteUrl = "http://localhost:3000" + url;
+  const absoluteUrl = "http://192.168.135.143:8080" + url;
 
   switch (option) {
     case "GET":

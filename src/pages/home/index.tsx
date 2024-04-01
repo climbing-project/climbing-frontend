@@ -1,30 +1,19 @@
 import styled from "styled-components";
-import { ReactElement, useEffect, useState } from "react";
-import { requestData } from "@/service/api";
+import { ReactElement } from "react";
 import Layout from "@/components/Layout";
 import { NextPageWithLayout } from "../_app";
 import SearchLayout from "@/components/search/SearchLayout";
-import { GymCardInfo } from "@/constants/gyms/types";
 import SearchBanner from "@/components/search/searchBanner";
 import GymListBanner from "@/components/search/GymListBanner";
 import { useRouter } from "next/router";
 
 const HomePage: NextPageWithLayout = () => {
   const router = useRouter();
-  const [gymLists, setGymLists] = useState<GymCardInfo[]>([]);
-
-  useEffect(() => {
-    requestData({
-      option: "GET",
-      url: "/gyms",
-      onSuccess: (data) => setGymLists(data),
-    });
-  }, []);
 
   return (
     <Styled.Wrapper>
-      <SearchBanner setGymList={setGymLists} />
-      <GymListBanner gymList={gymLists} setGymList={setGymLists} />
+      <SearchBanner />
+      <GymListBanner />
       <Styled.ButtonWrapper>
         <Styled.MoreButton onClick={() => router.push("/search")}>
           내 주위 암장 더보기..

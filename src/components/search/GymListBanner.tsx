@@ -1,10 +1,10 @@
 import LazyLoadingItems from "@/components/common/LazyLoadingItems";
 import PreviewCard from "@/components/common/PreviewCard";
 import styled from "styled-components";
-import { GymSampleInfo } from "../../pages/home";
 import { Dispatch, MouseEventHandler, SetStateAction, useState } from "react";
 import router from "next/router";
 import { requestData } from "@/service/api";
+import { GymCardInfo } from "@/constants/gyms/types";
 
 const sampleList = [
   {
@@ -17,8 +17,8 @@ const sampleList = [
 ];
 
 interface GymListBannerProps {
-  gymList: Array<GymSampleInfo>;
-  setGymList: Dispatch<SetStateAction<GymSampleInfo[]>>;
+  gymList: Array<GymCardInfo>;
+  setGymList: Dispatch<SetStateAction<GymCardInfo[]>>;
   searchWord?: string;
   sortingType?: string;
 }

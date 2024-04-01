@@ -103,3 +103,13 @@ export interface CommentsProps {
 export interface CommentTextareaProps {
   handleAddComment: (input: string) => void;
 }
+
+// 썸네일 요약된 gym 정보
+export interface GymCardInfo {
+  id: number;
+  thumbnailSrc: string;
+  address: string;
+  name: string;
+  latestSettingDay: string;
+  likeNumber: number;
+}

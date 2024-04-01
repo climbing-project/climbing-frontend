@@ -17,11 +17,8 @@ const Test = () => {
     // });
   };
 
-  const keyDown = (event: { keyCode: any; preventDefault: () => void }) => {
-    const code = event.keyCode;
-    let charCode = String.fromCharCode(code).toUpperCase();
-
-    if (charCode === "T") {
+  const keyDown = (event: { key: string; preventDefault: () => void }) => {
+    if (event.key === "t") {
       event.preventDefault();
       testFunc();
     }

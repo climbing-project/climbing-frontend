@@ -1,7 +1,7 @@
 "use client";
 
 import { styled } from "styled-components";
-import { FormEventHandler, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import DropDown, { DropItem } from "./DropDown";
 import router from "next/router";
 
@@ -11,7 +11,7 @@ interface SearchProps {
   fontSize?: string;
   placeholder?: string;
   postfixIcon?: JSX.Element; // 검색창에 표시되는 아이콘
-  onSubmit?: (arg: unknown) => unknown; // 엔터 클릭시 발생되는 이벤트
+  onSubmit?: (event: any) => any; // 엔터 클릭시 발생되는 이벤트
   useLocation?: boolean; // 현재 위치로 검색
   searchWord?: string;
   border?: string;
@@ -45,8 +45,6 @@ export const Search = ({
       });
     }
   };
-
-  // const handleMoueOver = () => {};
 
   // 바깥쪽을 클릭했을때 dropdown 숨기기 위해
   useEffect(() => {
@@ -156,6 +154,3 @@ const Styled = {
 };
 
 export default Search;
-function querySelector(arg0: string) {
-  throw new Error("Function not implemented.");
-}

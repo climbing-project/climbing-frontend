@@ -33,19 +33,25 @@ const Join = () => {
       setEmailMessage("이메일의 형식이 올바르지 않습니다.");
       setIsEmailValid(false);
     } else {
-      // const res = await fetch(`http://localhost:3000/members/emailCheck`);
-      // const data = await res.json();
+      // const onSuccess = (canUse: boolean) => {
+      //   if (canUse) {
+      //     setEmailMessage("사용 가능");
+      //     setIsEmailValid(true);
+      //     setEmail(currentEmail);
+      //   } else {
+      //     setEmailMessage("중복된 이메일 입니다.");
+      //     setIsEmailValid(false);
+      //   }
+      // };
 
-      // 서버 없어서 임시 로직 적용(5자 이상일시 valid)
-      if (currentEmail.length < 5) {
-        setEmailMessage("중복된 이메일 입니다.");
-        setIsEmailValid(false);
-      } else {
-        // 중복이 없을때 사용가능
-        setEmailMessage("");
-        setIsEmailValid(true);
-        setEmail(currentEmail);
-      }
+      // requestData({
+      //   option: "GET",
+      //   url: `/members/email-check`,
+      //   onSuccess,
+      // });
+      setEmailMessage("");
+      setIsEmailValid(true);
+      setEmail(currentEmail);
     }
   };
 
@@ -97,21 +103,27 @@ const Join = () => {
       setNicknameMessage("닉네임은 3자이상이어야 합니다.");
       setIsNicknameValid(false);
     } else {
-      // requestData({
-      //   option: "GET",
-      //   url: "/members/emailCheck",
-      //   data: email,
-      //   // onSuccess,
-      // });
-      // const res = await fetch(`http://localhost:3000/members/emailCheck`);
-      // const data = await res.json();
-
       // 서버 없어서 임시 로직 적용(5자 이상일시 valid)
-      if (currentNickname.length < 5) {
-        setNicknameMessage("중복된 닉네임 입니다.");
+      if (currentNickname.length < 3) {
+        setNicknameMessage("닉네임은 세자 이상이어야합니다.");
         setIsNicknameValid(false);
       } else {
-        // 중복이 없을때 사용가능
+        // const onSuccess = (canUse: boolean) => {
+        //   if (canUse) {
+        //     setNicknameMessage("사용 가능");
+        //     setIsNicknameValid(true);
+        //     setNickname(currentEmail);
+        //   } else {
+        //     setNicknameMessage("중복된 닉네임 입니다.");
+        //     setIsNicknameValid(false);
+        //   }
+        // };
+
+        // requestData({
+        //   option: "GET",
+        //   url: `/members/nickname-check`,
+        //   onSuccess,
+        // });
         setNicknameMessage("");
         setIsNicknameValid(true);
         setNickname(currentNickname);

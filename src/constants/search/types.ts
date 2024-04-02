@@ -29,3 +29,7 @@ export interface LazyLoadingItemsProps {
   searchWord?: string;
   sortingType?: string;
 }
+
+export interface SearchBannerProps {
+  searchWord?: string;
+}

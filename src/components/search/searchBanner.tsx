@@ -4,11 +4,7 @@ import styled from "styled-components";
 import router from "next/router";
 import Image from "next/image";
 import img from "../../../public/magnifier.png";
-import { sampleAddress } from "@/constants/search/types";
-
-interface SearchBannerProps {
-  searchWord?: string;
-}
+import { SearchBannerProps, sampleAddress } from "@/constants/search/types";
 
 const SearchBanner = ({ searchWord }: SearchBannerProps) => {
   const handleSubmit = (event: {

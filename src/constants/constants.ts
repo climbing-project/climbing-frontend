@@ -4,4 +4,5 @@ export const NAVERMAP_GEOCODE_API =
   "https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=lm660e08li&submodules=geocoder";
 
 // 서버 주소
-export const SERVER_ADDRESS = "http://192.168.135.143:8080";
+export const SERVER_ADDRESS = "http://3.37.207.190:8080";
+export const SOCKET_ADDRESS = "3.37.207.190:8080";

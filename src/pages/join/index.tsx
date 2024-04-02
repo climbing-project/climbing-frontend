@@ -33,25 +33,25 @@ const Join = () => {
       setEmailMessage("이메일의 형식이 올바르지 않습니다.");
       setIsEmailValid(false);
     } else {
-      // const onSuccess = (canUse: boolean) => {
-      //   if (canUse) {
-      //     setEmailMessage("사용 가능");
-      //     setIsEmailValid(true);
-      //     setEmail(currentEmail);
-      //   } else {
-      //     setEmailMessage("중복된 이메일 입니다.");
-      //     setIsEmailValid(false);
-      //   }
-      // };
+      const onSuccess = (canUse: boolean) => {
+        if (canUse) {
+          setEmailMessage("사용 가능");
+          setIsEmailValid(true);
+          setEmail(currentEmail);
+        } else {
+          setEmailMessage("중복된 이메일 입니다.");
+          setIsEmailValid(false);
+        }
+      };
 
-      // requestData({
-      //   option: "GET",
-      //   url: `/members/email-check`,
-      //   onSuccess,
-      // });
-      setEmailMessage("");
-      setIsEmailValid(true);
-      setEmail(currentEmail);
+      requestData({
+        option: "GET",
+        url: `/members/email-check/${currentEmail}`,
+        onSuccess,
+      });
+      // setEmailMessage("");
+      // setIsEmailValid(true);
+      // setEmail(currentEmail);
     }
   };
 
@@ -108,27 +108,45 @@ const Join = () => {
         setNicknameMessage("닉네임은 세자 이상이어야합니다.");
         setIsNicknameValid(false);
       } else {
-        // const onSuccess = (canUse: boolean) => {
-        //   if (canUse) {
-        //     setNicknameMessage("사용 가능");
-        //     setIsNicknameValid(true);
-        //     setNickname(currentEmail);
-        //   } else {
-        //     setNicknameMessage("중복된 닉네임 입니다.");
-        //     setIsNicknameValid(false);
-        //   }
-        // };
+        const onSuccess = (canUse: boolean) => {
+          if (canUse) {
+            setNicknameMessage("사용 가능");
+            setIsNicknameValid(true);
+            setNickname(currentNickname);
+          } else {
+            setNicknameMessage("중복된 닉네임 입니다.");
+            setIsNicknameValid(false);
+          }
+        };
 
-        // requestData({
-        //   option: "GET",
-        //   url: `/members/nickname-check`,
-        //   onSuccess,
-        // });
-        setNicknameMessage("");
-        setIsNicknameValid(true);
-        setNickname(currentNickname);
+        requestData({
+          option: "GET",
+          url: `/members/nickname-check/${currentNickname}`,
+          onSuccess,
+        });
+        // setNicknameMessage("");
+        // setIsNicknameValid(true);
+        // setNickname(currentNickname);
       }
     }
+  };
+
+  const handleVerificationEmail = () => {
+    const onSuccess = (data: any) => {
+      console.log("emailVerfication 결과");
+      console.log(data);
+    };
+
+    const data = {
+      email: email,
+    };
+
+    requestData({
+      option: "POST",
+      url: `/members/email-auth`,
+      data: data,
+      onSuccess,
+    });
   };
 
   const handleSubmit = async (event: any) => {
@@ -150,25 +168,6 @@ const Join = () => {
       data: credentials,
       onSuccess,
     });
-
-    // const response = await fetch("http://localhost:3000/members/join", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify(credentials),
-    // });
-
-    // const data = await response.json();
-
-    // if (data.ok) {
-    //정상적 회원가입
-    // return {
-    //   name: data.name,
-    //   email: data.email,
-    //   token: data.token,
-    // };
-    // } else {
-    // return null as any;
-    // }
   };
 
   return (
@@ -180,6 +179,12 @@ const Join = () => {
           title="아이디(이메일)"
           onChange={handleEmailChange}
           message={emailMessage}
+        />
+        <InputWithTitle
+          name="verificationEmail"
+          title="본인인증 확인"
+          buttonText="인증번호 받기"
+          onClick={handleVerificationEmail}
         />
         <InputWithTitle
           name="password"

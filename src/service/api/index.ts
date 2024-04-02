@@ -58,12 +58,18 @@ const getData = ({ absoluteUrl, sessionId, onSuccess }: GetProps) => {
 };
 
 const postData = ({ absoluteUrl, data, sessionId, onSuccess }: PostProps) => {
+  const contentType = { "Content-Type": "application/json" };
+  let headers;
+
+  if (sessionId) {
+    headers = { ...contentType, Authorization: `${sessionId}` };
+  } else {
+    headers = { ...contentType };
+  }
+
   fetch(absoluteUrl, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `${sessionId}`,
-    },
+    headers: headers,
     body: JSON.stringify(data),
   })
     .then((response) => {

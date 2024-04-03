@@ -15,6 +15,7 @@ const Socket = () => {
       // connectHeaders: { Authorization: "Bearer " + session?.jwt },
     }),
   );
+  const roomRef = useRef("");
   const [messages, setMessages] = useState<string[]>([]);
 
   useEffect(() => {
@@ -27,14 +28,14 @@ const Socket = () => {
       console.log("구독 시도");
       client.subscribe("/app", (message) => {
         console.log(message); // 서버에서 도착한 메시지 확인
+        // ENTER 타입일 경우 리턴받은 roomId를 ref에 저장
+        // roomRef.current = roomId;
       });
       client.publish({
         destination: "/queue",
         body: JSON.stringify({
           type: "ENTER",
-          roodId: "testId",
-          sender: "test user",
-          message: "유저 test user가 접속했습니다.",
+          sender: "testUser@gmail.com",
         }),
       });
     };
@@ -63,9 +64,18 @@ const Socket = () => {
       console.log("소켓 연결 안됨");
       return;
     }
+    if (roomRef.current === "") {
+      console.log("입장한 방이 없음");
+      return;
+    }
     clientRef.current.publish({
       destination: "/queue",
-      body: JSON.stringify({ type: "TALK", roodId: "testId", sender: "test user", message }),
+      body: JSON.stringify({
+        type: "TALK",
+        roomId: roomRef.current,
+        sender: "testUser@gmail.com",
+        message,
+      }),
     });
     setMessages((prev) => [...prev, message]);
   };

@@ -1,4 +1,4 @@
-import { ReactElement, lazy, useEffect, useRef, useState } from "react";
+import { lazy, useEffect, useRef, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useBeforeunload } from "react-beforeunload";
 import { useRouter } from "next/router";
@@ -9,9 +9,7 @@ import BasicInfoEditor from "@/components/admin/BasicInfoEditor";
 import DescriptionEditor from "@/components/admin/DescriptionEditor";
 import { ErrorFallback } from "@/components/common/ErrorFallback";
 import ImageEditor from "@/components/admin/ImageEditor";
-import Layout from "@/components/Layout";
 import { SERVER_ADDRESS } from "@/constants/constants";
-import type { NextPageWithLayout } from "@/pages/_app";
 import type { GymData } from "@/constants/gyms/types";
 
 const AccommodationsEditor = lazy(() => import("@/components/admin/AccommodationsEditor"));
@@ -20,7 +18,7 @@ const OpenHoursEditor = lazy(() => import("@/components/admin/OpenHoursEditor"))
 const PricingEditor = lazy(() => import("@/components/admin/PricingEditor"));
 const SettingDayEditor = lazy(() => import("@/components/admin/SettingDayEditor"));
 
-const EditPage: NextPageWithLayout = () => {
+const EditPage = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
   const { page } = router.query;
@@ -35,7 +33,8 @@ const EditPage: NextPageWithLayout = () => {
   console.log(status);
 
   useEffect(() => {
-    // if (!session) return;
+    // 테스트 후 복원
+    // if (!session) router.push({ pathname: "/login" });
     const id = "1"; // 테스트 후 사용자 정보를 통해 가져오도록 변경
     let data: GymData;
 
@@ -75,15 +74,17 @@ const EditPage: NextPageWithLayout = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentData]);
 
-  const isEdited = (oldData: any, newData: any) => {
-    return JSON.stringify(oldData) !== JSON.stringify(newData);
-  };
-
   useBeforeunload((e) => {
     if (tracker.current === "edited") {
       return e.preventDefault();
     } else return undefined;
   });
+
+  const isEdited = (oldData: any, newData: any) => {
+    return JSON.stringify(oldData) !== JSON.stringify(newData);
+  };
+
+  // if (!session) return null;
 
   const updateData = async (data: string) => {
     try {
@@ -115,65 +116,75 @@ const EditPage: NextPageWithLayout = () => {
     setIsUpdating(false);
   };
 
-  return isLoading ? (
-    <div>loading</div>
-  ) : page === "1" || !page ? (
-    <>
-      <ImageEditor
-        loadedImages={loadedData.images}
-        thumbnails={currentData.imageThumbnails}
-        defaultImage={currentData.defaultImage}
-        setCurrentData={setCurrentData}
-        setLoadedData={setLoadedData}
-        updateData={updateData}
-      />
-      <BasicInfoEditor
-        name={currentData.name}
-        address={currentData.address}
-        contact={currentData.contact}
-        snsList={currentData.sns}
-        homepage={currentData.homepage}
-        setCurrentData={setCurrentData}
-      />
-      <DescriptionEditor description={currentData.description} setCurrentData={setCurrentData} />
-      <Button>
-        <button className="btn-primary" onClick={handleSave} disabled={isUpdating ? true : false}>
-          {isUpdating ? "저장중..." : "저장하기"}
-        </button>
-      </Button>
-    </>
-  ) : (
-    <>
-      <PricingEditor pricingList={currentData.pricing} setCurrentData={setCurrentData} />
-      <OpenHoursEditor openHoursList={currentData.openHours} setCurrentData={setCurrentData} />
-      <AccommodationsEditor
-        accommodationsList={currentData.accommodations}
-        setCurrentData={setCurrentData}
-      />
-      <GradeEditor gradesList={currentData.grades} setCurrentData={setCurrentData} />
-      <SettingDayEditor date={currentData.latestSettingDay} setCurrentData={setCurrentData} />
-      <Button>
-        <button className="btn-primary" onClick={handleSave} disabled={isUpdating ? true : false}>
-          {isUpdating ? "저장중..." : "저장하기"}
-        </button>
-      </Button>
-    </>
+  return (
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
+      <AdminLayout>
+        {isLoading ? (
+          <div>loading</div>
+        ) : page === "1" || !page ? (
+          <>
+            <ImageEditor
+              loadedImages={loadedData.images}
+              thumbnails={currentData.imageThumbnails}
+              defaultImage={currentData.defaultImage}
+              setCurrentData={setCurrentData}
+              setLoadedData={setLoadedData}
+              updateData={updateData}
+            />
+            <BasicInfoEditor
+              name={currentData.name}
+              address={currentData.address}
+              contact={currentData.contact}
+              snsList={currentData.sns}
+              homepage={currentData.homepage}
+              setCurrentData={setCurrentData}
+            />
+            <DescriptionEditor
+              description={currentData.description}
+              setCurrentData={setCurrentData}
+            />
+            <Button>
+              <button
+                className="btn-primary"
+                onClick={handleSave}
+                disabled={isUpdating ? true : false}
+              >
+                {isUpdating ? "저장중..." : "저장하기"}
+              </button>
+            </Button>
+          </>
+        ) : (
+          <>
+            <PricingEditor pricingList={currentData.pricing} setCurrentData={setCurrentData} />
+            <OpenHoursEditor
+              openHoursList={currentData.openHours}
+              setCurrentData={setCurrentData}
+            />
+            <AccommodationsEditor
+              accommodationsList={currentData.accommodations}
+              setCurrentData={setCurrentData}
+            />
+            <GradeEditor gradesList={currentData.grades} setCurrentData={setCurrentData} />
+            <SettingDayEditor date={currentData.latestSettingDay} setCurrentData={setCurrentData} />
+            <Button>
+              <button
+                className="btn-primary"
+                onClick={handleSave}
+                disabled={isUpdating ? true : false}
+              >
+                {isUpdating ? "저장중..." : "저장하기"}
+              </button>
+            </Button>
+          </>
+        )}
+      </AdminLayout>
+    </ErrorBoundary>
   );
 };
 
 const Button = styled.div`
   align-self: flex-end;
 `;
-
-EditPage.getLayout = (page: ReactElement) => {
-  return (
-    <Layout>
-      <AdminLayout>
-        <ErrorBoundary FallbackComponent={ErrorFallback}>{page}</ErrorBoundary>
-      </AdminLayout>
-    </Layout>
-  );
-};
 
 const INITIAL_DATA = {
   name: "init",

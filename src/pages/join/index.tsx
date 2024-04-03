@@ -20,6 +20,8 @@ const Join = () => {
   const [password, setPassword] = useState("");
   const [nickname, setNickname] = useState("");
 
+  const confirmMessage = "사용 가능";
+
   const handleEmailChange = async (event: {
     target: {
       value: string;
@@ -35,7 +37,7 @@ const Join = () => {
     } else {
       const onSuccess = (canUse: boolean) => {
         if (canUse) {
-          setEmailMessage("사용 가능");
+          setEmailMessage(confirmMessage);
           setIsEmailValid(true);
           setEmail(currentEmail);
         } else {
@@ -97,27 +99,21 @@ const Join = () => {
     };
   }) => {
     const currentNickname = event.target.value;
-    const nicknameRegrex = /^[가-힣A-Za-z0-9_]{3,}$/;
+    const nicknameRegrex = /^[가-힣A-Za-z0-9_]{2,}$/;
 
     if (!nicknameRegrex.test(currentNickname)) {
-      setNicknameMessage("닉네임은 3자이상이어야 합니다.");
+      setNicknameMessage("닉네임의 형식이 올바르지 않습니다.");
       setIsNicknameValid(false);
     } else {
-      // 서버 없어서 임시 로직 적용(5자 이상일시 valid)
-      if (currentNickname.length < 3) {
-        setNicknameMessage("닉네임은 세자 이상이어야합니다.");
-        setIsNicknameValid(false);
-      } else {
-        const onSuccess = (canUse: boolean) => {
-          if (canUse) {
-            setNicknameMessage("사용 가능");
-            setIsNicknameValid(true);
-            setNickname(currentNickname);
-          } else {
-            setNicknameMessage("중복된 닉네임 입니다.");
-            setIsNicknameValid(false);
-          }
-        };
+      const onSuccess = (canUse: boolean) => {
+        if (canUse) {
+          setNicknameMessage(confirmMessage);
+          setIsNicknameValid(true);
+          setNickname(currentNickname);
+        } else {
+          setNicknameMessage("중복된 닉네임 입니다.");
+          setIsNicknameValid(false);
+        }
 
         requestData({
           option: "GET",
@@ -127,7 +123,7 @@ const Join = () => {
         // setNicknameMessage("");
         // setIsNicknameValid(true);
         // setNickname(currentNickname);
-      }
+      };
     }
   };
 
@@ -209,12 +205,12 @@ const Join = () => {
         <S.ButtonBox
           type="submit"
           disabled={
-            isEmailValid &&
-            isNicknameValid &&
-            isPasswordValid &&
-            isReEnterPasswordValid
-              ? false
-              : true
+            !(
+              isEmailValid &&
+              isNicknameValid &&
+              isPasswordValid &&
+              isReEnterPasswordValid
+            )
           }
         >
           가입하기

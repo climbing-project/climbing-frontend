@@ -3,9 +3,9 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { useBeforeunload } from "react-beforeunload";
 import styled from "styled-components";
-import OpenHoursEditor from "@/components/admin/OpenHoursEditor";
 import AccommodationsEditor from "@/components/admin/AccommodationsEditor";
 import GradeEditor from "@/components/admin/GradeEditor";
+import OpenHoursEditor from "@/components/admin/OpenHoursEditor";
 import PricingEditor from "@/components/admin/PricingEditor";
 import SettingDayEditor from "@/components/admin/SettingDayEditor";
 import { SERVER_ADDRESS } from "@/constants/constants";
@@ -60,7 +60,7 @@ const EditPage2 = () => {
 
   const fetchData = () => {
     // if (!session) return;
-    fetch(`${SERVER_ADDRESS}/gyms/1`, {
+    fetch(`${SERVER_ADDRESS}/gyms/2`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -82,7 +82,7 @@ const EditPage2 = () => {
 
   const updateData = async (data: string) => {
     try {
-      await fetch(`${SERVER_ADDRESS}/gyms/${currentData.id}`, {
+      await fetch(`${SERVER_ADDRESS}/gyms/2`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -152,7 +152,7 @@ const INITIAL_DATA = {
 };
 
 // 테스트용 상수값
-const sampleData = {
+export const sampleData = {
   id: "75334254-93a8-4cfb-afec-29e368ac0803",
   name: "암장 테스트점",
   address: {

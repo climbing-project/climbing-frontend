@@ -6,6 +6,7 @@ import KakaoProvider from "next-auth/providers/kakao";
 import NaverProvider from "next-auth/providers/naver";
 
 export default NextAuth({
+  secret: process.env.AUTH_SECRET,
   providers: [
     //자체 로그인
     CredentialsProvider({
@@ -15,9 +16,9 @@ export default NextAuth({
         email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials: any, req: any){
+      async authorize(credentials: any, req: any) {
         return credentials;
-    },
+      },
       // async authorize(credentials) {
       //   const response = await fetch(
       //     "https://http://localhost:3000/api/login",

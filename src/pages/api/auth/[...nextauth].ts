@@ -6,7 +6,6 @@ import KakaoProvider from "next-auth/providers/kakao";
 import NaverProvider from "next-auth/providers/naver";
 
 export default NextAuth({
-  secret: process.env.AUTH_SECRET,
   providers: [
     //자체 로그인
     CredentialsProvider({
@@ -56,6 +55,12 @@ export default NextAuth({
       clientSecret: process.env.NAVER_CLIENT_SECRET!,
     }),
   ],
+  // jwt 설정
+  session: {
+    strategy: "jwt",
+    maxAge: 3 * 24 * 60 * 60, // 로그인 유지 기간 (=3일)
+  },
+
   //  jwt나 세션 쓸때
   callbacks: {
     //   async session(session, token) {
@@ -88,4 +93,5 @@ export default NextAuth({
     signIn: "/login",
     error: "error",
   },
+  secret: process.env.AUTH_SECRET,
 });

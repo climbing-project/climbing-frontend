@@ -268,7 +268,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       new Promise<Response>((_, reject) =>
         setTimeout(
           () =>
-            reject(new Response(null, { status: 503, statusText: "서버가 응답하지 않습니다." })),
+            reject(new Response(null, { status: 503 })),
           3000,
         ),
       ),

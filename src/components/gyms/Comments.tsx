@@ -9,7 +9,7 @@ const Comments = ({ id, comments, session }: CommentsProps) => {
   const [currentComments, setCurrentComments] = useState<UserComments>(comments || []);
 
   const handleAddComment = async (input: string) => {
-    // if (!session || !session.user) return; // 추후 복원
+    // if (!session || !session.user) return "login"; // 추후 복원
     const newComment = {
       user: (session?.user?.name as string) || "익명님",
       // user: session.user.name as string,
@@ -18,17 +18,29 @@ const Comments = ({ id, comments, session }: CommentsProps) => {
     };
 
     try {
-      const res = await fetch(`${SERVER_ADDRESS}/gyms/${id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ comments: [newComment, ...currentComments] }),
-      });
-      if (!res.ok) throw new Error("DB에 반영 실패");
+      const response = await Promise.race([
+        fetch(`${SERVER_ADDRESS}/gyms/${id}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ comments: [newComment, ...currentComments] }),
+        }),
+        new Promise<Response>((_, reject) =>
+          setTimeout(
+            () =>
+              reject(new Response(null, { status: 503 })),
+            3000,
+          ),
+        ),
+      ]);
+      console.log(response);
+      if (!response.ok) throw new Error("DB에 반영 실패");
       setCurrentComments((prev) => [newComment, ...prev]);
+      return "successful";
     } catch (e) {
-      alert("오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
+      // 에러 종류에 따라 핸들링
+      return "server";
     }
   };
 

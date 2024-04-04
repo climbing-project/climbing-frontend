@@ -1,4 +1,5 @@
 import InputWithTitle from "@/components/common/InputWithTitle";
+import EmailVerification from "@/components/login/EmailVerification";
 import { requestData } from "@/service/api";
 import { useState } from "react";
 import styled from "styled-components";
@@ -126,23 +127,25 @@ const Join = () => {
     }
   };
 
-  const handleVerificationEmail = () => {
-    const onSuccess = (data: any) => {
-      console.log("emailVerfication 결과");
-      console.log(data);
-    };
+  // const handleVerificationEmail = () => {
+  //   const onSuccess = (verficationNum: string) => {
+  //     // 타이머 시작(5분)
 
-    const data = {
-      email: email,
-    };
+  //     console.log("emailVerfication 결과");
+  //     console.log(data);
+  //   };
 
-    requestData({
-      option: "POST",
-      url: `/members/email-auth`,
-      data: data,
-      onSuccess,
-    });
-  };
+  //   const data = {
+  //     email: email,
+  //   };
+
+  //   requestData({
+  //     option: "POST",
+  //     url: `/members/email-auth`,
+  //     data: data,
+  //     onSuccess,
+  //   });
+  // };
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
@@ -172,15 +175,17 @@ const Join = () => {
           name="email"
           type="email"
           title="아이디(이메일)"
+          placeholder="사용하실 ID를 입력해주세요.(수신 가능 E-mail)"
           onChange={handleEmailChange}
           message={emailMessage}
         />
-        <InputWithTitle
+        <EmailVerification />
+        {/* <InputWithTitle
           name="verificationEmail"
           title="본인인증 확인"
           buttonText="인증번호 받기"
           onClick={handleVerificationEmail}
-        />
+        /> */}
         <InputWithTitle
           name="password"
           type="password"

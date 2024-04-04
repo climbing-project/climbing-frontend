@@ -5,6 +5,7 @@ const InputWithTitle = ({
   name,
   title,
   type = "text",
+  placeholder,
   onChange,
   message = "",
   buttonText,
@@ -18,6 +19,7 @@ const InputWithTitle = ({
       <Styled.InputContainer>
         <Styled.Input
           $isWarning={message !== "" && message !== confirmMessage}
+          placeholder={placeholder}
           name={name}
           type={type}
           onChange={onChange}

@@ -27,15 +27,11 @@ const Comments = ({ id, comments, session }: CommentsProps) => {
           body: JSON.stringify({ comments: [newComment, ...currentComments] }),
         }),
         new Promise<Response>((_, reject) =>
-          setTimeout(
-            () =>
-              reject(new Response(null, { status: 503 })),
-            3000,
-          ),
+          setTimeout(() => reject(new Response(null, { status: 503 })), 3000),
         ),
       ]);
       console.log(response);
-      if (!response.ok) throw new Error("DB에 반영 실패");
+      if (!response.ok) throw new Error(`${response.status}`);
       setCurrentComments((prev) => [newComment, ...prev]);
       return "successful";
     } catch (e) {

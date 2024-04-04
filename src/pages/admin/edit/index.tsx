@@ -25,6 +25,7 @@ const EditPage = () => {
   const [currentData, setCurrentData] = useState<GymData>(INITIAL_DATA);
   const [loadedData, setLoadedData] = useState<GymData>(INITIAL_DATA);
   const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const tracker = useRef<null | string>(null);
   // const tokenRef = useRef(session?.jwt);
@@ -39,17 +40,30 @@ const EditPage = () => {
     let data: GymData;
 
     const fetchData = async () => {
-      const response = await fetch(`${SERVER_ADDRESS}/gyms/${id}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          // Authorization: session.jwt,
-        },
-      });
-      if (!response.ok) data = sampleData;
-      else data = await response.json();
-      setLoadedData(JSON.parse(JSON.stringify(data)));
-      setCurrentData(JSON.parse(JSON.stringify(data)));
+      try {
+        const response = await Promise.race([
+          fetch(`${SERVER_ADDRESS}/gyms/${id}`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              // Authorization: session.jwt,
+            },
+          }),
+          new Promise<Response>((_, reject) =>
+            setTimeout(() => reject(new Response(null, { status: 503 })), 3000),
+          ),
+        ]);
+        if (!response.ok) throw new Error(`${response.status}`);
+        else {
+          data = await response.json();
+          setLoadedData(JSON.parse(JSON.stringify(data)));
+          setCurrentData(JSON.parse(JSON.stringify(data)));
+        }
+      } catch (e) {
+        // 에러 핸들링
+        console.log(e);
+        setIsError(true);
+      }
       setIsLoading(false);
     };
 
@@ -85,6 +99,12 @@ const EditPage = () => {
   };
 
   // if (!session) return null;
+  if (isError)
+    return (
+      <AdminLayout>
+        <ErrorFallback error={"Server error"} resetErrorBoundary={() => {}} />
+      </AdminLayout>
+    );
 
   const updateData = async (data: string) => {
     try {

@@ -263,7 +263,16 @@ const S = {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const gymId = context.query.id;
   try {
-    const response = await fetch(`${SERVER_ADDRESS}/gyms/${gymId}`);
+    const response = await Promise.race([
+      fetch(`${SERVER_ADDRESS}/gyms/${gymId}`),
+      new Promise<Response>((_, reject) =>
+        setTimeout(
+          () =>
+            reject(new Response(null, { status: 503, statusText: "서버가 응답하지 않습니다." })),
+          3000,
+        ),
+      ),
+    ]);
     if (response.status === 200) {
       const gymData = await response.json();
       return { props: { gymData } };
@@ -276,7 +285,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     // 테스트 완료 시 아래 코드로 교체
     // if (e === 404) return { notFound: true };
-    // if (e === 500) throw new Error("500 에러 발생");
+    // if (e >= 500 && e < 600) throw new Error("서버 에러 발생");
   }
 };
 

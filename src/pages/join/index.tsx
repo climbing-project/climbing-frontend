@@ -114,16 +114,15 @@ const Join = () => {
           setNicknameMessage("중복된 닉네임 입니다.");
           setIsNicknameValid(false);
         }
-
-        requestData({
-          option: "GET",
-          url: `/members/nickname-check/${currentNickname}`,
-          onSuccess,
-        });
-        // setNicknameMessage("");
-        // setIsNicknameValid(true);
-        // setNickname(currentNickname);
       };
+      requestData({
+        option: "GET",
+        url: `/members/nickname-check/${currentNickname}`,
+        onSuccess,
+      });
+      // setNicknameMessage("");
+      // setIsNicknameValid(true);
+      // setNickname(currentNickname);
     }
   };
 

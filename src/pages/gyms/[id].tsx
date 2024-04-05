@@ -10,6 +10,7 @@ import ContactInfo from "@/components/gyms/ContactInfo";
 import DynamicMap from "@/components/gyms/DynamicMap";
 import GradeBar from "@/components/gyms/GradeBar";
 import ImageCarousel from "@/components/gyms/ImageCarousel";
+import NoData from "@/components/gyms/NoData";
 import OpenHoursTable from "@/components/gyms/OpenHoursTable";
 import PricingTable from "@/components/gyms/PricingTable";
 import Tag from "@/components/gyms/Tag";
@@ -144,38 +145,30 @@ const GymInfo = ({ gymData }: InferGetServerSidePropsType<GetServerSideProps>) =
           <Comments id={gymData.id} comments={gymData.comments} session={session} />
         </S.Main>
         <S.Side>
-          {gymData.tags && gymData.tags.length > 0 && (
-            <div className="container">
-              <h4>관련 태그</h4>
-              {gymData.tags.map((tag: string, i: number) => (
-                <Tag key={i} prefix="#" text={tag} />
-              ))}
-            </div>
-          )}
-          {gymData.pricing && gymData.pricing.length > 0 && (
-            <div className="container">
-              <h4>이용금액</h4>
-              <PricingTable pricing={gymData.pricing} />
-            </div>
-          )}
-          {gymData.openHours && gymData.openHours.length > 0 && (
-            <div className="container">
-              <h4>영업시간</h4>
-              <OpenHoursTable openHours={gymData.openHours} />
-            </div>
-          )}
-          {gymData.accommodations && gymData.accommodations.length > 0 && (
-            <div className="container">
-              <h4>시설 정보</h4>
-              {gymData.accommodations.join(", ")}
-            </div>
-          )}
-          {gymData.grades && gymData.grades.length > 0 && (
-            <div className="container">
-              <h4>난이도</h4>
-              <GradeBar grades={gymData.grades} />
-            </div>
-          )}
+          <div className="container">
+            <h4>관련 태그</h4>
+            {!gymData.tags ? (
+              <NoData />
+            ) : (
+              gymData.tags.map((tag: string, i: number) => <Tag key={i} prefix="#" text={tag} />)
+            )}
+          </div>
+          <div className="container">
+            <h4>이용금액</h4>
+            <PricingTable pricing={gymData.pricing} />
+          </div>
+          <div className="container">
+            <h4>영업시간</h4>
+            <OpenHoursTable openHours={gymData.openHours} />
+          </div>
+          <div className="container">
+            <h4>시설 정보</h4>
+            {!gymData.accommodations ? <NoData /> : gymData.accommodations.join(", ")}
+          </div>
+          <div className="container">
+            <h4>난이도</h4>
+            <GradeBar grades={gymData.grades} />
+          </div>
           <div className="container">
             <ContactInfo contact={gymData.contact} snsList={gymData.sns} />
           </div>
@@ -233,7 +226,7 @@ const S = {
   Side: styled.div`
     display: flex;
     flex-direction: column;
-    gap: 26px;
+    gap: 20px;
     width: 430px;
 
     & > div {
@@ -266,11 +259,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const response = await Promise.race([
       fetch(`${SERVER_ADDRESS}/gyms/${gymId}`),
       new Promise<Response>((_, reject) =>
-        setTimeout(
-          () =>
-            reject(new Response(null, { status: 503 })),
-          3000,
-        ),
+        setTimeout(() => reject(new Response(null, { status: 503 })), 3000),
       ),
     ]);
     if (response.status === 200) {

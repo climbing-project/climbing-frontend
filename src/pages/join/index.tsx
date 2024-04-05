@@ -21,6 +21,8 @@ const Join = () => {
   const [password, setPassword] = useState("");
   const [nickname, setNickname] = useState("");
 
+  const [verificationBtnClicked, setVerificationBtnClicked] = useState(false);
+
   const confirmMessage = "사용 가능";
 
   const handleEmailChange = async (event: {
@@ -146,14 +148,15 @@ const Join = () => {
   //     onSuccess,
   //   });
   // };
+  const handleVerificationEmail = () => {};
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
 
     const credentials = {
-      username: { label: email, type: "email" },
-      password: { label: password, type: "password" },
-      nickname: { label: nickname, type: "nickname" },
+      email: email,
+      password: password,
+      nickname: nickname,
     };
 
     const onSuccess = () => {
@@ -179,7 +182,14 @@ const Join = () => {
           onChange={handleEmailChange}
           message={emailMessage}
         />
-        <EmailVerification />
+        {/* <button onClick={handleVerificationEmail}>인증번호 받기</button> */}
+        <InputWithTitle
+          name="verificationNumber"
+          title="본인 인증"
+          placeholder="인증번호"
+          buttonText={verificationBtnClicked ? "재인증하기" : "인증번호 받기"}
+        />
+        <EmailVerification clicked={false} />
         {/* <InputWithTitle
           name="verificationEmail"
           title="본인인증 확인"

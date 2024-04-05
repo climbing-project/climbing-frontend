@@ -1,12 +1,15 @@
 import { requestData } from "@/service/api";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { styled } from "styled-components";
 
-const EmailVerification = () => {
+interface EmailVerificationProps {
+  clicked: boolean;
+}
+const EmailVerification = ({ clicked }: EmailVerificationProps) => {
   const initialTime = 10;
   const [remainingTime, setRemainingTime] = useState(initialTime);
 
-  const startTimer = () => {
+  useEffect(() => {
     const timer = setInterval(() => {
       if (remainingTime > 0) {
         setRemainingTime((prevTime) => prevTime - 1);
@@ -16,7 +19,7 @@ const EmailVerification = () => {
     }, 1000);
 
     return () => clearInterval(timer);
-  };
+  }, [remainingTime]);
 
   const formatTime = (timeInSeconds: number) => {
     const minutes = Math.floor(timeInSeconds / 60);
@@ -27,9 +30,14 @@ const EmailVerification = () => {
     )}`;
   };
 
+  const handleResendClick = () => {
+    // 남은 시간을 초기값으로 설정하여 타이머 재설정.
+    setRemainingTime(initialTime);
+  };
+
   const getVerificationNum = (event: any) => {
     event.preventDefault();
-    startTimer();
+    // startTimer();
     // const onSuccess = (verficationNum: string) => {
     //   // TODO: 유저 입력 아이디 fix
     //   console.log(verficationNum);
@@ -48,12 +56,16 @@ const EmailVerification = () => {
     //   onSuccess,
     // });
   };
+  if (clicked) {
+    return <></>;
+  }
+
   return (
     <S.Container>
-      <h1>
+      <h3>
         인증번호 유효 시간:
         <span style={{ color: "red" }}>{formatTime(remainingTime)}</span>
-      </h1>
+      </h3>
       <button onClick={getVerificationNum}>인증하기</button>
     </S.Container>
   );

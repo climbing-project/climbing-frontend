@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { FormEventHandler } from "react";
 import Link from "next/link";
+import router, { useRouter } from "next/router";
 
 const GeneralLogin = () => {
   const handleSubmit = async (event: any) => {
@@ -13,6 +14,7 @@ const GeneralLogin = () => {
     const result = await signIn("credentials", {
       email,
       password,
+      redirect: true,
       callbackUrl: "/",
     });
 

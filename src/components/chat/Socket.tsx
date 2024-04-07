@@ -47,6 +47,12 @@ const Socket = () => {
 
     const onClientDisconnect = () => {
       console.log("연결 종료");
+      client.publish({
+        destination: "/queue",
+        body: JSON.stringify({
+          type: "LEAVE",
+        }),
+      });
     };
 
     const onClientError = (frame: IFrame) => {

@@ -7,3 +7,25 @@ export const SIDEBAR_HEADERS = {
   accommodations: "시설 정보",
   grades: "난이도",
 };
+export const IMAGE_SIZE = {
+  mobileSmall: {
+    width: 280,
+    height: 133,
+  },
+  mobileLarge: {
+    width: 350,
+    height: 166,
+  },
+  tablet: {
+    width: 560,
+    height: 265,
+  },
+  laptop: {
+    width: 850,
+    height: 402,
+  },
+  desktop: {
+    width: 1200,
+    height: 568,
+  },
+};

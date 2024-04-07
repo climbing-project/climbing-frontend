@@ -17,6 +17,7 @@ import Tag from "@/components/gyms/Tag";
 import useApi from "@/hooks/useApi";
 import { requestData } from "@/service/api";
 import { DEVICE_SIZE } from "@/constants/styles";
+import { IMAGE_SIZE } from "@/constants/gyms/constants";
 import { NAVERMAP_API, SERVER_ADDRESS } from "@/constants/constants";
 import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 
@@ -196,7 +197,7 @@ const S = {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 1200px;
+    width: ${IMAGE_SIZE.desktop.width + "px"};
     .address {
       display: flex;
       align-items: center;
@@ -219,16 +220,16 @@ const S = {
       gap: 6px;
     }
     @media ${DEVICE_SIZE.laptop} {
-      width: 850px;
+      width: ${IMAGE_SIZE.laptop.width + "px"};
     }
     @media ${DEVICE_SIZE.tablet} {
-      width: 560px;
+      width: ${IMAGE_SIZE.tablet.width + "px"};
     }
     @media ${DEVICE_SIZE.mobileLarge} {
-      width: 350px;
+      width: ${IMAGE_SIZE.mobileLarge.width + "px"};
     }
     @media ${DEVICE_SIZE.mobileSmall} {
-      width: 280px;
+      width: ${IMAGE_SIZE.mobileSmall.width + "px"};
     }
   `,
   InfoContainer: styled.div`

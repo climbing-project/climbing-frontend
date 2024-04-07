@@ -3,7 +3,7 @@ import Image from "next/image";
 import styled from "styled-components";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { DEVICE_SIZE } from "@/constants/styles";
-import { MAX_WIDTH } from "@/constants/admin/constants";
+import { IMAGE_SIZE } from "@/constants/gyms/constants";
 import type { ImageCarouselProps } from "@/constants/gyms/types";
 
 const ImageCarousel = ({ defaultImage, imageList }: ImageCarouselProps) => {
@@ -35,7 +35,7 @@ const ImageCarousel = ({ defaultImage, imageList }: ImageCarouselProps) => {
           {currentIndex + 1}/{images.current.length} | 전체사진
         </S.OverlayText>
       </S.Overlay>
-      <S.Container $shift={`-${currentIndex * MAX_WIDTH}px`}>
+      <S.Container $shiftIndex={currentIndex}>
         {images.current.map((image, i) => (
           <S.Image key={i}>
             <Image src={image} alt={`암벽센터 제공 사진 (${(i + 1).toString()})`} fill />
@@ -51,18 +51,18 @@ const S = {
     overflow: hidden;
     border-radius: 8px;
     width: inherit;
-    height: 568px;
+    height: ${IMAGE_SIZE.desktop.height + "px"};
     @media ${DEVICE_SIZE.laptop} {
-      height: 402px;
+      height: ${IMAGE_SIZE.laptop.height + "px"};
     }
     @media ${DEVICE_SIZE.tablet} {
-      height: 265px;
+      height: ${IMAGE_SIZE.tablet.height + "px"};
     }
     @media ${DEVICE_SIZE.mobileLarge} {
-      height: 166px;
+      height: ${IMAGE_SIZE.mobileLarge.height + "px"};
     }
     @media ${DEVICE_SIZE.mobileSmall} {
-      height: 133px;
+      height: ${IMAGE_SIZE.mobileSmall.height + "px"};
     }
   `,
   Overlay: styled.div`
@@ -95,12 +95,24 @@ const S = {
       width: 40px;
     }
   `,
-  Container: styled.div<{ $shift: string }>`
+  Container: styled.div<{ $shiftIndex: number }>`
     display: flex;
     position: relative;
     width: inherit;
     height: inherit;
-    left: ${({ $shift }) => $shift};
+    left: ${({ $shiftIndex }) => -1 * $shiftIndex * IMAGE_SIZE.desktop.width + "px"};
+    @media ${DEVICE_SIZE.laptop} {
+      left: ${({ $shiftIndex }) => -1 * $shiftIndex * IMAGE_SIZE.laptop.width + "px"};
+    }
+    @media ${DEVICE_SIZE.tablet} {
+      left: ${({ $shiftIndex }) => -1 * $shiftIndex * IMAGE_SIZE.tablet.width + "px"};
+    }
+    @media ${DEVICE_SIZE.mobileLarge} {
+      left: ${({ $shiftIndex }) => -1 * $shiftIndex * IMAGE_SIZE.mobileLarge.width + "px"};
+    }
+    @media ${DEVICE_SIZE.mobileSmall} {
+      left: ${({ $shiftIndex }) => -1 * $shiftIndex * IMAGE_SIZE.mobileSmall.width + "px"};
+    }
   `,
   OverlayText: styled.div`
     position: absolute;

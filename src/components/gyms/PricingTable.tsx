@@ -5,7 +5,7 @@ import type { Pricing, PricingTableProps } from "@/constants/gyms/types";
 const PricingTable = ({ pricing }: PricingTableProps) => {
   return (
     <S.Wrapper>
-      {!pricing ? (
+      {!pricing || pricing.length < 1 ? (
         <NoData />
       ) : (
         pricing.map(({ item, price }: Pricing, i) => (

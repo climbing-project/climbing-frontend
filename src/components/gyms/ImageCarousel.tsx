@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import Image from "next/image";
 import styled from "styled-components";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { DEVICE_SIZE } from "@/constants/styles";
 import { MAX_WIDTH } from "@/constants/admin/constants";
 import type { ImageCarouselProps } from "@/constants/gyms/types";
 
@@ -20,14 +21,14 @@ const ImageCarousel = ({ defaultImage, imageList }: ImageCarouselProps) => {
             onClick={() => setCurrentIndex((prev) => prev - 1)}
             disabled={currentIndex === 0}
           >
-            <IoIosArrowBack color="white" size="3rem" />
+            <S.ArrowLeft />
           </S.Button>{" "}
           <S.Button
             $direction="right"
             onClick={() => setCurrentIndex((prev) => prev + 1)}
             disabled={currentIndex === images.current.length - 1}
           >
-            <IoIosArrowForward color="white" size="3rem" />
+            <S.ArrowRight />
           </S.Button>
         </S.OverlayButtons>
         <S.OverlayText>
@@ -48,9 +49,21 @@ const ImageCarousel = ({ defaultImage, imageList }: ImageCarouselProps) => {
 const S = {
   Wrapper: styled.div`
     overflow: hidden;
-    height: 568px;
-    width: 1200px;
     border-radius: 8px;
+    width: inherit;
+    height: 568px;
+    @media ${DEVICE_SIZE.laptop} {
+      height: 402px;
+    }
+    @media ${DEVICE_SIZE.tablet} {
+      height: 265px;
+    }
+    @media ${DEVICE_SIZE.mobileLarge} {
+      height: 166px;
+    }
+    @media ${DEVICE_SIZE.mobileSmall} {
+      height: 133px;
+    }
   `,
   Overlay: styled.div`
     overflow: hidden;
@@ -70,16 +83,23 @@ const S = {
   Button: styled.button<{ $direction: string }>`
     border: none;
     height: 125px;
-    width: 80px;
+    width: 70px;
+    padding: 0;
     background: #7be1ff;
     opacity: 0.7;
     border-radius: ${({ $direction }) =>
-      $direction === "left" ? "0px 8px 8px 0px" : "8px 0px 0px 8px"};
+      $direction === "left" ? "0px 12px 12px 0px" : "12px 0px 0px 12px"};
     cursor: pointer;
+    @media ${DEVICE_SIZE.tablet} {
+      height: 80px;
+      width: 40px;
+    }
   `,
   Container: styled.div<{ $shift: string }>`
     display: flex;
     position: relative;
+    width: inherit;
+    height: inherit;
     left: ${({ $shift }) => $shift};
   `,
   OverlayText: styled.div`
@@ -94,11 +114,31 @@ const S = {
   `,
   Image: styled.div`
     position: relative;
-    width: 1200px;
-    height: 568px;
     flex-shrink: 0;
-    img {
+    width: inherit;
+    height: inherit;
+    & img {
       object-fit: cover;
+    }
+  `,
+  ArrowLeft: styled(IoIosArrowBack)`
+    color: white;
+    font-size: 3rem;
+    @media ${DEVICE_SIZE.tablet} {
+      font-size: 2rem;
+    }
+    @media ${DEVICE_SIZE.mobileSmall} {
+      font-size: 1.4rem;
+    }
+  `,
+  ArrowRight: styled(IoIosArrowForward)`
+    color: white;
+    font-size: 3rem;
+    @media ${DEVICE_SIZE.tablet} {
+      font-size: 2rem;
+    }
+    @media ${DEVICE_SIZE.mobileSmall} {
+      font-size: 1.4rem;
     }
   `,
 };

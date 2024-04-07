@@ -9,6 +9,7 @@ import type { MessageFormat } from "./ChatHistory";
 
 const Socket = () => {
   const { data: session, status } = useSession();
+  console.log("세션");
   console.log(session); // 세션 확인
   const clientRef = useRef(
     new Client({
@@ -110,7 +111,6 @@ const S = {
     padding: 20px;
     border: 1px solid #cacaca;
     box-shadow: 0 3px 7px #cacaca;
-    /* background: #fafafa; */
     width: 370px;
     height: 500px;
   `,

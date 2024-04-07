@@ -16,6 +16,7 @@ import PricingTable from "@/components/gyms/PricingTable";
 import Tag from "@/components/gyms/Tag";
 import useApi from "@/hooks/useApi";
 import { requestData } from "@/service/api";
+import { DEVICE_SIZE } from "@/constants/styles";
 import { NAVERMAP_API, SERVER_ADDRESS } from "@/constants/constants";
 import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 
@@ -90,100 +91,112 @@ const GymInfo = ({ gymData }: InferGetServerSidePropsType<GetServerSideProps>) =
   };
 
   return (
-    <S.Wrapper>
-      {!gymData.defaultImage && !gymData.images ? null : (
-        <ImageCarousel defaultImage={gymData.defaultImage} imageList={gymData.images} />
-      )}
-      <S.InfoContainer>
-        <S.Main>
-          <div>
-            <div className="address">
-              <FaLocationDot /> {gymData.address.roadAddress}
+    <S.Page>
+      <S.Wrapper>
+        {!gymData.defaultImage && !gymData.images ? null : (
+          <ImageCarousel defaultImage={gymData.defaultImage} imageList={gymData.images} />
+        )}
+        <S.InfoContainer>
+          <S.Main>
+            <div>
+              <div className="address">
+                <FaLocationDot /> {gymData.address.roadAddress}
+              </div>
+              <div className="header">
+                <span className="header__text">{gymData.name}</span>&nbsp;
+                {session ? (
+                  <div className="icons">
+                    <S.Icon $clickable={true} onClick={handleLike}>
+                      {isLiked ? <IoHeart size="1.3rem" /> : <IoHeartOutline size="1.3rem" />}
+                      {currentLikes}
+                    </S.Icon>{" "}
+                    <S.Icon $clickable={true}>
+                      <Bookmark
+                        sessionId={session.user?.email as string}
+                        gymId={gymData.id}
+                        size="1.3rem"
+                      />
+                    </S.Icon>{" "}
+                    {gymData.homepage ? (
+                      <S.Icon $clickable={true}>
+                        <S.Link href={gymData.homepage} target="_blank">
+                          <IoShareSocialOutline size="1.3rem" />
+                        </S.Link>
+                      </S.Icon>
+                    ) : null}
+                  </div>
+                ) : (
+                  <div className="icons">
+                    <S.Icon $clickable={false}>
+                      <IoHeartOutline size="1.3rem" />
+                      {currentLikes}
+                    </S.Icon>{" "}
+                    {gymData.homepage ? (
+                      <S.Icon $clickable={true}>
+                        <S.Link href={gymData.homepage} target="_blank">
+                          <IoShareSocialOutline size="1.3rem" />
+                        </S.Link>
+                      </S.Icon>
+                    ) : null}
+                  </div>
+                )}
+              </div>
             </div>
-            <div className="header">
-              <span className="header__text">{gymData.name}</span>&nbsp;
-              {session ? (
-                <div className="icons">
-                  <S.Icon $clickable={true} onClick={handleLike}>
-                    {isLiked ? <IoHeart size="1.3rem" /> : <IoHeartOutline size="1.3rem" />}
-                    {currentLikes}
-                  </S.Icon>{" "}
-                  <S.Icon $clickable={true}>
-                    <Bookmark
-                      sessionId={session.user?.email as string}
-                      gymId={gymData.id}
-                      size="1.3rem"
-                    />
-                  </S.Icon>{" "}
-                  {gymData.homepage ? (
-                    <S.Icon $clickable={true}>
-                      <S.Link href={gymData.homepage} target="_blank">
-                        <IoShareSocialOutline size="1.3rem" />
-                      </S.Link>
-                    </S.Icon>
-                  ) : null}
-                </div>
+            {gymData.description && <div className="description">{gymData.description}</div>}
+            {isLoading ? null : <DynamicMap coordinates={gymData.coordinates} />}
+          </S.Main>
+          <S.Side>
+            <div className="container">
+              <h4>관련 태그</h4>
+              {!gymData.tags ? (
+                <NoData />
               ) : (
-                <div className="icons">
-                  <S.Icon $clickable={false}>
-                    <IoHeartOutline size="1.3rem" />
-                    {currentLikes}
-                  </S.Icon>{" "}
-                  {gymData.homepage ? (
-                    <S.Icon $clickable={true}>
-                      <S.Link href={gymData.homepage} target="_blank">
-                        <IoShareSocialOutline size="1.3rem" />
-                      </S.Link>
-                    </S.Icon>
-                  ) : null}
-                </div>
+                <S.TagList>
+                  {gymData.tags.map((tag: string, i: number) => (
+                    <Tag key={i} prefix="#" text={tag} />
+                  ))}
+                </S.TagList>
               )}
             </div>
-          </div>
-          {gymData.description && <div className="description">{gymData.description}</div>}
-          {isLoading ? null : <DynamicMap coordinates={gymData.coordinates} />}
+            <div className="container">
+              <h4>이용금액</h4>
+              <PricingTable pricing={gymData.pricing} />
+            </div>
+            <div className="container">
+              <h4>영업시간</h4>
+              <OpenHoursTable openHours={gymData.openHours} />
+            </div>
+            <div className="container">
+              <h4>시설 정보</h4>
+              {!gymData.accommodations ? <NoData /> : gymData.accommodations.join(", ")}
+            </div>
+            <div className="container">
+              <h4>난이도</h4>
+              <GradeBar grades={gymData.grades} />
+            </div>
+            <div className="container">
+              <ContactInfo contact={gymData.contact} snsList={gymData.sns} />
+            </div>
+          </S.Side>
+        </S.InfoContainer>
+        <S.CommentContainer>
           <Comments id={gymData.id} comments={gymData.comments} session={session} />
-        </S.Main>
-        <S.Side>
-          <div className="container">
-            <h4>관련 태그</h4>
-            {!gymData.tags ? (
-              <NoData />
-            ) : (
-              gymData.tags.map((tag: string, i: number) => <Tag key={i} prefix="#" text={tag} />)
-            )}
-          </div>
-          <div className="container">
-            <h4>이용금액</h4>
-            <PricingTable pricing={gymData.pricing} />
-          </div>
-          <div className="container">
-            <h4>영업시간</h4>
-            <OpenHoursTable openHours={gymData.openHours} />
-          </div>
-          <div className="container">
-            <h4>시설 정보</h4>
-            {!gymData.accommodations ? <NoData /> : gymData.accommodations.join(", ")}
-          </div>
-          <div className="container">
-            <h4>난이도</h4>
-            <GradeBar grades={gymData.grades} />
-          </div>
-          <div className="container">
-            <ContactInfo contact={gymData.contact} snsList={gymData.sns} />
-          </div>
-        </S.Side>
-      </S.InfoContainer>
-    </S.Wrapper>
+        </S.CommentContainer>
+      </S.Wrapper>
+    </S.Page>
   );
 };
 
 const S = {
+  Page: styled.div`
+    display: grid;
+    place-content: center;
+  `,
   Wrapper: styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-
+    width: 1200px;
     .address {
       display: flex;
       align-items: center;
@@ -191,29 +204,53 @@ const S = {
       color: gray;
       margin-bottom: 18px;
     }
-
     .header {
       display: flex;
       align-items: flex-end;
     }
-
     .header__text {
       font-weight: 700;
       font-size: 2.5rem;
     }
-
     .icons {
       position: relative;
       bottom: 6px;
       display: flex;
       gap: 6px;
     }
+    @media ${DEVICE_SIZE.laptop} {
+      width: 850px;
+    }
+    @media ${DEVICE_SIZE.tablet} {
+      width: 560px;
+    }
+    @media ${DEVICE_SIZE.mobileLarge} {
+      width: 350px;
+    }
+    @media ${DEVICE_SIZE.mobileSmall} {
+      width: 280px;
+    }
   `,
   InfoContainer: styled.div`
     display: flex;
-    width: 1200px;
     gap: 18px;
     margin-top: 40px;
+    flex-direction: row;
+    @media ${DEVICE_SIZE.laptop} {
+      flex-direction: column;
+    }
+  `,
+  CommentContainer: styled.div`
+    box-sizing: border-box;
+    align-self: flex-start;
+    padding: 0 18px;
+    @media ${DEVICE_SIZE.desktop} {
+      width: calc(1200px - 430px - 18px);
+    }
+    @media ${DEVICE_SIZE.laptop} {
+      margin-top: 40px;
+      width: inherit;
+    }
   `,
   Main: styled.div`
     box-sizing: border-box;
@@ -227,16 +264,20 @@ const S = {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    width: 430px;
-
     & > div {
       box-sizing: border-box;
       padding: 24px 28px;
     }
-
     h4 {
       margin-top: 0;
       margin-bottom: 16px;
+    }
+    @media ${DEVICE_SIZE.desktop} {
+      width: 430px;
+    }
+    @media ${DEVICE_SIZE.laptop} {
+      margin-top: 40px;
+      width: inherit;
     }
   `,
   Icon: styled.div<{ $clickable: boolean }>`
@@ -250,6 +291,11 @@ const S = {
     color: inherit;
     line-height: 0.5;
     height: inherit;
+  `,
+  TagList: styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
   `,
 };
 

@@ -18,7 +18,7 @@ const OpenHoursTable = ({ openHours }: OpenHoursTableProps) => {
   };
   return (
     <S.Wrapper>
-      {!openHours ? (
+      {!openHours || openHours.length < 1 ? (
         <NoData />
       ) : (
         openHours.map(({ days, openTime, closeTime }: OpenHours, i) => (

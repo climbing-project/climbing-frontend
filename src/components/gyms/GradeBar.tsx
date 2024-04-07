@@ -5,7 +5,7 @@ import type { GradeBarProps } from "@/constants/gyms/types";
 const GradeBar = ({ grades }: GradeBarProps) => {
   return (
     <S.Wrapper>
-      {!grades ? (
+      {!grades || grades.length < 1 ? (
         <NoData />
       ) : (
         <>

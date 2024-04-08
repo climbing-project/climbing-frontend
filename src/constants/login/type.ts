@@ -7,4 +7,5 @@ export interface InputProps {
   message?: string;
   buttonText?: string;
   onClick?: any;
+  onDisabled?: any;
 }

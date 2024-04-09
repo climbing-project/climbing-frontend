@@ -25,6 +25,7 @@ const Join = () => {
   const [isSendDisabled, setIsSendDisabled] = useState(false);
   const [verificationNumber, setVerificationNumber] = useState("");
   const [isCodeValid, setIsCodeValid] = useState(false);
+
   const confirmMessage = "사용 가능";
 
   const handleEmailChange = async (event: {
@@ -131,7 +132,17 @@ const Join = () => {
     }
   };
 
-  const handleSendClick = (event: any) => {
+  const handleSendClick = (event: {
+    target: {
+      parentElement: {
+        querySelector: (arg0: string) => {
+          (): any;
+          new (): any;
+          disabled: boolean;
+        };
+      };
+    };
+  }) => {
     //임시
     // setVerificationNumber("00000");
     // event.target.parentElement.querySelector('input[name="email"]').disabled =
@@ -160,7 +171,7 @@ const Join = () => {
     });
   };
 
-  const handleSubmit = async (event: any) => {
+  const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
 
     const credentials = {

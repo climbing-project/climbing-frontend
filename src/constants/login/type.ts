@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from "react";
+
 export interface InputProps {
   name: string;
   title: string;
@@ -8,4 +10,14 @@ export interface InputProps {
   buttonText?: string;
   onClick?: any;
   onDisabled?: any;
+}
+
+export interface EmailVerificationProps {
+  remainingTime: number;
+  setTime: Dispatch<SetStateAction<number>>;
+  isBtnDisabled: boolean;
+  setBtnDisabled: Dispatch<SetStateAction<boolean>>;
+  verificationNum: string;
+  isCodeValid: boolean;
+  setIsCodeValid: Dispatch<SetStateAction<boolean>>;
 }

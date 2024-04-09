@@ -1,16 +1,7 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useEffect } from "react";
 import { styled } from "styled-components";
 import InputWithTitle from "../common/InputWithTitle";
-
-interface EmailVerificationProps {
-  remainingTime: number;
-  setTime: Dispatch<SetStateAction<number>>;
-  isBtnDisabled: boolean;
-  setBtnDisabled: Dispatch<SetStateAction<boolean>>;
-  verificationNum: string;
-  isCodeValid: boolean;
-  setIsCodeValid: Dispatch<SetStateAction<boolean>>;
-}
+import { EmailVerificationProps } from "@/constants/login/type";
 
 const EmailVerification = ({
   remainingTime,
@@ -25,7 +16,7 @@ const EmailVerification = ({
     let timer;
     if (remainingTime > 0) {
       timer = setTimeout(() => {
-        setTime((prevTime) => prevTime - 1); // 1초마다 유효시간을 감소
+        setTime((prevTime: number) => prevTime - 1); // 1초마다 유효시간을 감소
       }, 1000);
     } else {
       setBtnDisabled(false);
@@ -44,7 +35,9 @@ const EmailVerification = ({
 
   const message = "인증코드 유효시간 : " + formatTime(remainingTime);
 
-  const handleBtnClick = (event: any) => {
+  const handleBtnClick = (event: {
+    target: { parentElement: { querySelector: (arg0: string) => any } };
+  }) => {
     const inputTag = event.target.parentElement.querySelector(
       'input[name="verificationNumber"]'
     );
@@ -69,10 +62,7 @@ const EmailVerification = ({
 };
 
 const S = {
-  Container: styled.div`
-    background: white;
-    border: 1px solid #d0d0d0;
-  `,
+  Container: styled.div``,
 };
 
 export default EmailVerification;

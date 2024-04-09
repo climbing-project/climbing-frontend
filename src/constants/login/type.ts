@@ -1,5 +1,15 @@
 import { Dispatch, SetStateAction } from "react";
 
+declare module "next-auth" {
+  interface Session {
+    user: {
+      email: string;
+      nickname: string;
+      token: string;
+    };
+  }
+}
+
 export interface InputProps {
   name: string;
   title: string;

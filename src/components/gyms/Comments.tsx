@@ -7,13 +7,13 @@ import { SERVER_ADDRESS } from "@/constants/constants";
 
 const Comments = ({ id, comments, session }: CommentsProps) => {
   const [currentComments, setCurrentComments] = useState<UserComments>(
-    comments || [],
+    comments || []
   );
 
   const handleAddComment = (input: string) => {
     if (!session) return;
     const newComment = {
-      user: session.user!.name as string,
+      user: session.user!.nickname as string,
       date: getCurrentDate(),
       text: input,
     };

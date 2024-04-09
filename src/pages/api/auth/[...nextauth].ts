@@ -30,7 +30,8 @@ export default NextAuth({
             token = data.token;
           },
         });
-        return { email, nickname, token } as any;
+        const user = { email, nickname, token };
+        return user as any;
       },
     }),
     // 다른 경로로 로그인 => 콜백으로 토큰받아서 서버에 넘겨줘야..
@@ -55,10 +56,11 @@ export default NextAuth({
 
   //  jwt나 세션 쓸때
   callbacks: {
-    async jwt({ token, user, account }) {
-      return token;
+    async jwt({ token, user }) {
+      return { ...token, ...user };
     },
-    async session({ session, token, user }) {
+    async session({ session, token }) {
+      session.user = token as any;
       return session;
     },
   },

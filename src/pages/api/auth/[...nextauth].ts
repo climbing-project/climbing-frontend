@@ -56,9 +56,11 @@ export default NextAuth({
 
   //  jwt나 세션 쓸때
   callbacks: {
+    // 로그인 시 return한 값이 user로 들어옴
     async jwt({ token, user }) {
       return { ...token, ...user };
     },
+    // jwt에서 return한 값이 token으로 들어옴
     async session({ session, token }) {
       session.user = token as any;
       return session;

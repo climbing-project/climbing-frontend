@@ -13,7 +13,7 @@ const GeneralLogin = () => {
       email,
       password,
       redirect: true,
-      // callbackUrl: "/",
+      callbackUrl: "/",
     });
 
     if (result?.error) {

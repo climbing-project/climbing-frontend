@@ -3,90 +3,60 @@ import styled from "styled-components";
 import { RiDeleteBin6Fill } from "react-icons/ri";
 import ImageList from "./ImageList";
 import ImageUploader from "./ImageUploader";
-import useS3, { FOLDER_NAME, S3_PATH, THUMBNAIL_PREFIX } from "../../hooks/useS3";
+import useS3, { FOLDER_NAME, THUMBNAIL_PREFIX } from "../../hooks/useS3";
 import type { ImageEditorProps } from "@/constants/admin/types";
 
 const ImageEditor = ({
-  allThumbnails,
+  images,
   defaultImage,
   setCurrentData,
   setLoadedData,
   updateData,
 }: ImageEditorProps) => {
   const thumbnails =
-    allThumbnails?.filter((image) => {
-      if (!defaultImage || defaultImage === "") return image;
-      const defaultImageFile = defaultImage.replace(`${S3_PATH}${FOLDER_NAME}/`, "");
-      return !image.includes(defaultImageFile);
-    }) || [];
+    images?.map((image) =>
+      image.replace(`${FOLDER_NAME}/`, `${FOLDER_NAME}/${THUMBNAIL_PREFIX}`),
+    ) || [];
 
   const uploadImage = (url: string, key: string) => {
-    if (key === "default" && !url.includes(`${THUMBNAIL_PREFIX}`)) {
-      setCurrentData((prev) => ({ ...prev, defaultImage: url }));
-      setLoadedData((prev) => {
-        updateData(JSON.stringify({ ...prev, defaultImage: url }));
-        return { ...prev, defaultImage: url };
-      });
-    }
-    if (!url.includes(`${THUMBNAIL_PREFIX}`)) return;
-
+    // 썸네일 이미지가 아닌 URL만 DB 및 상태에 반영
+    if (url.includes(`${THUMBNAIL_PREFIX}`)) return;
     setCurrentData((current) => {
-      const originImage = url.replace(`${THUMBNAIL_PREFIX}`, "");
-      const currentThumbnails = current.imageThumbnails || [];
-      const imageThumbnails = [...currentThumbnails, url];
-
       if (key === "default") {
         setLoadedData((prev) => {
-          updateData(JSON.stringify({ ...prev, imageThumbnails }));
-          return { ...prev, imageThumbnails };
+          updateData(JSON.stringify({ ...prev, defaultImage: url }));
+          return { ...prev, defaultImage: url };
         });
-        return {
-          ...current,
-          imageThumbnails,
-        };
+        return { ...current, defaultImage: url };
       } else {
         const currentImages = current.images || [];
-        const images = [...currentImages, originImage];
-        const imageThumbnails = [...currentThumbnails, url];
+        const images = [...currentImages, url];
         setLoadedData((prev) => {
-          updateData(JSON.stringify({ ...prev, images, imageThumbnails }));
-          return { ...prev, images, imageThumbnails };
+          updateData(JSON.stringify({ ...prev, images }));
+          return { ...prev, images };
         });
-        return {
-          ...current,
-          images,
-          imageThumbnails,
-        };
+        return { ...current, images };
       }
     });
   };
 
   const deleteImage = (url: string, key: string) => {
-    if (key === "default") {
-      const thumbnailUrl = url.replace(`${FOLDER_NAME}/`, `${FOLDER_NAME}/thumb_`);
-      setCurrentData((prev) => {
-        const imageThumbnails = prev.imageThumbnails!.filter((img) => img !== thumbnailUrl);
-        return { ...prev, defaultImage: "", imageThumbnails };
-      });
-      setLoadedData((prev) => {
-        const imageThumbnails = prev.imageThumbnails!.filter((img) => img !== thumbnailUrl);
-        updateData(JSON.stringify({ ...prev, defaultImage: "", imageThumbnails }));
-        return { ...prev, defaultImage: "", imageThumbnails };
-      });
-      return;
-    }
-
-    const imageUrl = url.replace(`${THUMBNAIL_PREFIX}`, "");
-    setCurrentData((prev) => {
-      const images = prev.images!.filter((img) => img !== imageUrl);
-      const imageThumbnails = prev.imageThumbnails!.filter((img) => img !== url);
-      updateData(JSON.stringify({ ...prev, images, imageThumbnails }));
-      return { ...prev, images, imageThumbnails };
-    });
-    setLoadedData((prev) => {
-      const images = prev.images!.filter((img) => img !== imageUrl);
-      const imageThumbnails = prev.imageThumbnails!.filter((img) => img !== url);
-      return { ...prev, images, imageThumbnails };
+    setCurrentData((current) => {
+      if (key === "default") {
+        setLoadedData((prev) => {
+          updateData(JSON.stringify({ ...prev, defaultImage: "" }));
+          return { ...prev, defaultImage: "" };
+        });
+        return { ...current, defaultImage: "" };
+      } else {
+        const originUrl = url.replace(`${THUMBNAIL_PREFIX}`, "");
+        const images = current.images!.filter((img) => img !== originUrl);
+        setLoadedData((prev) => {
+          updateData(JSON.stringify({ ...prev, images }));
+          return { ...prev, images };
+        });
+        return { ...current, images };
+      }
     });
   };
 

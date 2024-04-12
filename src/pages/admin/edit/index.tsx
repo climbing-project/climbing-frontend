@@ -63,8 +63,8 @@ const EditPage = () => {
         // 테스트전용
         const res = await fetch(`http://localhost:8000/gyms/${id}`);
         data = await res.json();
-        setLoadedData(JSON.parse(JSON.stringify(data)));
         setCurrentData(JSON.parse(JSON.stringify(data)));
+        setLoadedData(JSON.parse(JSON.stringify(data)));
 
         // 테스트 후 복원
         // 에러 핸들링
@@ -169,7 +169,7 @@ const EditPage = () => {
         ) : page === "1" || !page ? (
           <>
             <ImageEditor
-              allThumbnails={currentData.imageThumbnails}
+              images={currentData.images}
               defaultImage={currentData.defaultImage}
               setCurrentData={setCurrentData}
               setLoadedData={setLoadedData}

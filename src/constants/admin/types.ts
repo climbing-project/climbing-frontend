@@ -48,7 +48,7 @@ export interface GradeEditorProps {
 }
 
 export interface ImageEditorProps {
-  allThumbnails: string[] | undefined;
+  images: string[] | undefined;
   defaultImage: string | undefined;
   setCurrentData: Dispatch<SetStateAction<GymData>>;
   setLoadedData: Dispatch<SetStateAction<GymData>>;

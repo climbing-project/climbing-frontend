@@ -4,6 +4,7 @@ import Link from "next/link";
 import styled from "styled-components";
 import AdminLayout from "@/components/admin/AdminLayout";
 import Overview from "@/components/admin/Overview";
+import { COLOR } from "@/styles/global-color";
 
 const AdminHome = () => {
   const { data: session, status } = useSession();
@@ -15,7 +16,9 @@ const AdminHome = () => {
     <AdminLayout>
       <Overview />
       <HR />
-      <Text>현재 관리하고 있는 암장이 없습니다. 내 암장을 사이트에 등록해 보아요!</Text>
+      <Text>
+        현재 관리하고 있는 암장이 없습니다. 내 암장을 사이트에 등록해 보아요!
+      </Text>
       <Link href={"/admin/register"}>
         <Btn>암장 등록하기</Btn>
       </Link>
@@ -44,7 +47,7 @@ const Text = styled.div`
 `;
 
 const Btn = styled.div`
-  background: #307fe5;
+  background: ${COLOR.MAIN};
   color: white;
   padding: 24px;
   border-radius: 12px;

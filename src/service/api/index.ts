@@ -63,12 +63,10 @@ const getData = ({ absoluteUrl, sessionId, onSuccess, onError }: GetProps) => {
         throw new Error(`${response.status} 에러`);
       }
 
-      return response;
+      return response.json();
     })
-    .then((result) => {
+    .then((data) => {
       clearTimeout(timeout);
-
-      const data = result.json();
 
       if (onSuccess) {
         return onSuccess(data);
@@ -121,13 +119,11 @@ const postData = ({
         // 404, 500...등의 에러
         throw new Error(`${response.status} 에러`);
       }
+      if (hasBody) return response.json();
       return response;
     })
-    .then((result) => {
+    .then((data) => {
       clearTimeout(timeout);
-      let data = null;
-
-      if (hasBody) data = result.json();
 
       if (onSuccess) {
         return onSuccess(data);

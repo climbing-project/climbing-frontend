@@ -25,10 +25,12 @@ export default NextAuth({
           url: `/members/login`,
           data: { email: credentials.email, password: credentials.password },
           onSuccess: (data: any) => {
-            email = data.email;
-            nickname = data.nickname;
+            console.log(data.headers.get("Authorization"));
+            email = data.headers.get("Authorization");
+            nickname = data.headers.get("Authorization-refresh");
             token = data.token;
           },
+          hasBody: false,
         });
         const user = { email, nickname, token };
         return user as any;

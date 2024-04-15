@@ -25,6 +25,9 @@ import Link from "next/link";
 //     </>
 //   );
 // };
+const handleKakaoLogin = () => {
+  signIn("kakao", { callbackUrl: "/api/auth/callback/kakao" });
+};
 
 // 백엔드에서 세션 처리시 사용할 코드
 const OtherLogin = () => {
@@ -38,9 +41,17 @@ const OtherLogin = () => {
         <Link href={"/oauth2/authorization/google"}>
           <Image src={GoogleIcon} alt="구글 아이콘" height={30} />
         </Link>
-        <Link href={"/oauth2/authorization/kakao"}>
-          <Image src={KakaoIcon} alt="카카오 아이콘" height={30} />
-        </Link>
+        {/* <Link
+          href={`https://kauth.kakao.com/oauth/authorize?client_id=${kakaoClientId}\
+&redirect_uri=${kakaoRedirectUri}&response_type=code`}
+        > */}
+        <Image
+          src={KakaoIcon}
+          alt="카카오 아이콘"
+          height={30}
+          onClick={handleKakaoLogin}
+        />
+        {/* </Link> */}
       </S.IconContainer>
     </S.Wrapper>
   );

@@ -11,10 +11,11 @@ const Socket = () => {
   const { data: session, status } = useSession();
   console.log("세션");
   console.log(session); // 세션 확인
+
   const clientRef = useRef(
     new Client({
       brokerURL: `ws://${SOCKET_ADDRESS}/ws/chat`,
-      // connectHeaders: { Authorization: "Bearer " + session?.jwt },
+      connectHeaders: { Authorization: "Bearer " + session?.user.token },
     }),
   );
   const roomRef = useRef("");

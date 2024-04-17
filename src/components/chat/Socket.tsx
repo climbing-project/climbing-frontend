@@ -118,6 +118,7 @@ const S = {
     padding: 20px;
     border: 1px solid #cacaca;
     box-shadow: 0 3px 7px #cacaca;
+    background: white;
     width: 370px;
     height: 500px;
   `,

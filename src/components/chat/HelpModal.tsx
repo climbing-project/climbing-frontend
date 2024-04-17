@@ -29,6 +29,7 @@ const HelpModal = () => {
 const S = {
   Wrapper: styled.div`
     position: fixed;
+    z-index: 100;
     bottom: 70px;
     right: 70px;
   `,

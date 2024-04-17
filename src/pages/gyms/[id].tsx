@@ -1,95 +1,23 @@
-import { useEffect, useState } from "react";
-import Link from "next/link";
+import { useState } from "react";
 import { useSession } from "next-auth/react";
 import styled from "styled-components";
-import { IoShareSocialOutline, IoHeart, IoHeartOutline } from "react-icons/io5";
-import { FaLocationDot } from "react-icons/fa6";
-import Bookmark from "@/components/common/Bookmark";
 import Comments from "@/components/gyms/Comments";
-import ContactInfo from "@/components/gyms/ContactInfo";
 import DynamicMap from "@/components/gyms/DynamicMap";
-import GradeBar from "@/components/gyms/GradeBar";
 import ImageCarousel from "@/components/gyms/ImageCarousel";
-import NoData from "@/components/gyms/NoData";
-import OpenHoursTable from "@/components/gyms/OpenHoursTable";
-import PricingTable from "@/components/gyms/PricingTable";
-import Tag from "@/components/gyms/Tag";
+import MainContent from "@/components/gyms/MainContent";
+import SideContent from "@/components/gyms/SideContent";
 import useApi from "@/hooks/useApi";
-import { requestData } from "@/service/api";
 import { DEVICE_SIZE } from "@/constants/styles";
 import { IMAGE_SIZE } from "@/constants/gyms/constants";
 import { NAVERMAP_API, SERVER_ADDRESS } from "@/constants/constants";
 import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import type { MessageFormat } from "@/components/chat/ChatHistory";
+import HelpModal from "@/components/chat/HelpModal";
 
 const GymInfo = ({ gymData }: InferGetServerSidePropsType<GetServerSideProps>) => {
+  const [chatHistory, setChatHistory] = useState<MessageFormat[]>([]);
   const { data: session } = useSession();
   const { isLoading } = useApi(NAVERMAP_API);
-  const [currentLikes, setCurrentLikes] = useState<number>(gymData.likeNumber || 0);
-  const [isLiked, setIsLiked] = useState(false);
-  console.log(gymData);
-
-  useEffect(() => {
-    if (!session || !session.user) return;
-    requestData({
-      option: "GET",
-      url: `/${session.user.email}/like?gym=${gymData.id}`,
-      onSuccess: (data) => setIsLiked(data),
-    });
-  }, [gymData.id, session]);
-
-  const handleLike = async () => {
-    if (!session || !session.user) return;
-
-    if (isLiked) {
-      try {
-        // 좋아요 해제: 멤버 데이터에 반영
-        const memberRes = await fetch(
-          `${SERVER_ADDRESS}/members/${session.user.email}/like?gym=${gymData.id},value=false`,
-        );
-        if (!memberRes.ok) throw new Error("DB에 반영 실패");
-
-        // 좋아요 해제: 암장 데이터에 반영
-        await fetch(`${SERVER_ADDRESS}/gyms/${gymData.id}`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ likeNumber: (gymData.likeNumber || 0) - 1 }),
-        });
-      } catch (e) {
-        // 에러 핸들링
-        console.log(e);
-        return;
-      }
-      // 좋아요 해제: 현재 렌더링에 반영
-      setCurrentLikes((prev) => prev - 1);
-      setIsLiked(false);
-    } else {
-      try {
-        // 좋아요 추가: 멤버 데이터에 반영
-        const memberRes = await fetch(
-          `${SERVER_ADDRESS}/members/${session.user.email}/like?gym=${gymData.id},value=true`,
-        );
-        if (!memberRes.ok) throw new Error("DB에 반영 실패");
-
-        // 좋아요 추가: 암장 데이터에 반영
-        await fetch(`${SERVER_ADDRESS}/gyms/${gymData.id}`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ likeNumber: (gymData.likeNumber || 0) + 1 }),
-        });
-      } catch (e) {
-        // 에러 핸들링
-        console.log(e);
-        return;
-      }
-      // 좋아요 추가: 현재 렌더링에 반영
-      setCurrentLikes((prev) => prev + 1);
-      setIsLiked(true);
-    }
-  };
 
   return (
     <S.Page>
@@ -99,91 +27,14 @@ const GymInfo = ({ gymData }: InferGetServerSidePropsType<GetServerSideProps>) =
         )}
         <S.InfoContainer>
           <S.Main>
-            <div>
-              <div className="address">
-                <FaLocationDot /> {gymData.address.roadAddress}
-              </div>
-              <div className="header">
-                <span className="header__text">{gymData.name}</span>&nbsp;
-                {session ? (
-                  <div className="icons">
-                    <S.Icon $clickable={true} onClick={handleLike}>
-                      {isLiked ? <IoHeart size="1.3rem" /> : <IoHeartOutline size="1.3rem" />}
-                      {currentLikes}
-                    </S.Icon>{" "}
-                    <S.Icon $clickable={true}>
-                      <Bookmark
-                        sessionId={session.user?.email as string}
-                        gymId={gymData.id}
-                        size="1.3rem"
-                      />
-                    </S.Icon>{" "}
-                    {gymData.homepage ? (
-                      <S.Icon $clickable={true}>
-                        <S.Link href={gymData.homepage} target="_blank">
-                          <IoShareSocialOutline size="1.3rem" />
-                        </S.Link>
-                      </S.Icon>
-                    ) : null}
-                  </div>
-                ) : (
-                  <div className="icons">
-                    <S.Icon $clickable={false}>
-                      <IoHeartOutline size="1.3rem" />
-                      {currentLikes}
-                    </S.Icon>{" "}
-                    {gymData.homepage ? (
-                      <S.Icon $clickable={true}>
-                        <S.Link href={gymData.homepage} target="_blank">
-                          <IoShareSocialOutline size="1.3rem" />
-                        </S.Link>
-                      </S.Icon>
-                    ) : null}
-                  </div>
-                )}
-              </div>
-            </div>
-            {gymData.description && <div className="description">{gymData.description}</div>}
+            <MainContent gymData={gymData} />
             {isLoading ? null : <DynamicMap coordinates={gymData.coordinates} />}
           </S.Main>
-          <S.Side>
-            <div className="container">
-              <h4>관련 태그</h4>
-              {!gymData.tags ? (
-                <NoData />
-              ) : (
-                <S.TagList>
-                  {gymData.tags.map((tag: string, i: number) => (
-                    <Tag key={i} prefix="#" text={tag} />
-                  ))}
-                </S.TagList>
-              )}
-            </div>
-            <div className="container">
-              <h4>이용금액</h4>
-              <PricingTable pricing={gymData.pricing} />
-            </div>
-            <div className="container">
-              <h4>영업시간</h4>
-              <OpenHoursTable openHours={gymData.openHours} />
-            </div>
-            <div className="container">
-              <h4>시설 정보</h4>
-              {!gymData.accommodations ? <NoData /> : gymData.accommodations.join(", ")}
-            </div>
-            <div className="container">
-              <h4>난이도</h4>
-              <GradeBar grades={gymData.grades} />
-            </div>
-            <div className="container">
-              <ContactInfo contact={gymData.contact} snsList={gymData.sns} />
-            </div>
-          </S.Side>
+          <SideContent gymData={gymData} />
         </S.InfoContainer>
-        <S.CommentContainer>
-          <Comments id={gymData.id} comments={gymData.comments} session={session} />
-        </S.CommentContainer>
+        <Comments id={gymData.id} comments={gymData.comments} session={session} />
       </S.Wrapper>
+      <HelpModal />
     </S.Page>
   );
 };
@@ -241,18 +92,6 @@ const S = {
       flex-direction: column;
     }
   `,
-  CommentContainer: styled.div`
-    box-sizing: border-box;
-    align-self: flex-start;
-    padding: 0 18px;
-    @media ${DEVICE_SIZE.desktop} {
-      width: calc(1200px - 430px - 18px);
-    }
-    @media ${DEVICE_SIZE.laptop} {
-      margin-top: 40px;
-      width: inherit;
-    }
-  `,
   Main: styled.div`
     box-sizing: border-box;
     padding: 0px 18px;
@@ -260,43 +99,6 @@ const S = {
     display: flex;
     flex-direction: column;
     gap: 36px;
-  `,
-  Side: styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    & > div {
-      box-sizing: border-box;
-      padding: 24px 28px;
-    }
-    h4 {
-      margin-top: 0;
-      margin-bottom: 16px;
-    }
-    @media ${DEVICE_SIZE.desktop} {
-      width: 430px;
-    }
-    @media ${DEVICE_SIZE.laptop} {
-      margin-top: 40px;
-      width: inherit;
-    }
-  `,
-  Icon: styled.div<{ $clickable: boolean }>`
-    display: flex;
-    align-items: center;
-    color: #666666;
-    cursor: ${({ $clickable }) => ($clickable ? "pointer" : "default")};
-  `,
-  Link: styled(Link)`
-    text-decoration: none;
-    color: inherit;
-    line-height: 0.5;
-    height: inherit;
-  `,
-  TagList: styled.div`
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
   `,
 };
 

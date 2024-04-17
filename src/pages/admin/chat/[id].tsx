@@ -1,25 +1,30 @@
-import { useEffect, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
-import { Client, IFrame } from "@stomp/stompjs";
+import { useEffect, useRef, useState, type ReactElement } from "react";
+import { Client, type IFrame } from "@stomp/stompjs";
 import styled from "styled-components";
-import ChatForm from "./ChatForm";
-import ChatHistory from "./ChatHistory";
+import { requestData } from "@/service/api";
 import { SOCKET_ADDRESS } from "@/constants/constants";
-import type { MessageFormat } from "./ChatHistory";
+import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import type { NextPageWithLayout } from "@/pages/_app";
+import type { MessageFormat } from "@/components/chat/ChatHistory";
+import GlobalStyle from "@/styles/global-styles";
+import ChatHistory from "@/components/chat/ChatHistory";
+import ChatForm from "@/components/chat/ChatForm";
 
-const Socket = () => {
-  const { data: session, status } = useSession();
-  console.log("세션");
-  console.log(session); // 세션 확인
-
+const ChatPopup: NextPageWithLayout = ({
+  roomId,
+}: InferGetServerSidePropsType<GetServerSideProps>) => {
+  const { data: session } = useSession();
+  const [roomName, setRoomName] = useState("()");
   const clientRef = useRef(
     new Client({
       brokerURL: `ws://${SOCKET_ADDRESS}/ws/chat`,
       connectHeaders: { Authorization: "Bearer " + session?.user.token },
     }),
   );
-  const roomRef = useRef("");
   const [messages, setMessages] = useState<MessageFormat[]>(sampleData);
+
+  console.log(session);
 
   useEffect(() => {
     const client = clientRef.current;
@@ -30,9 +35,7 @@ const Socket = () => {
       console.log("연결 성공");
       console.log("구독 시도");
       client.subscribe("/app", (message) => {
-        console.log(message); // 서버에서 도착한 메시지 확인
-        // ENTER 타입일 경우 리턴받은 roomId를 ref에 저장
-        // roomRef.current = roomId;
+        console.log(message);
 
         // TALK 타입일 경우 리턴받은 message를 현재 상태에 추가
         // setMessages((prev) => [...prev, message]);
@@ -65,44 +68,39 @@ const Socket = () => {
     client.onDisconnect = onClientDisconnect;
     client.onStompError = onClientError;
     client.activate();
+    requestData({
+      option: "GET",
+      url: `/room/${roomId}`,
+      onSuccess: (roomData) => setRoomName(roomData.roomName),
+    });
 
     return () => {
       client.deactivate();
     };
-  }, []);
+  }, [roomId]);
 
   const handleSend = (message: string) => {
     if (!clientRef.current.connected) {
       console.log("소켓 연결 안됨");
       return;
     }
-    if (roomRef.current === "") {
-      console.log("입장한 방이 없음");
-      return;
-    }
     clientRef.current.publish({
       destination: "/queue",
       body: JSON.stringify({
         type: "TALK",
-        roomId: roomRef.current,
+        roomId,
         sender: "testUser@gmail.com",
         message,
       }),
     });
-
-    // 렌더링 확인용 (테스트 후 삭제)
-    // const pickRandomUser = () => {
-    //   const rand = Math.random() * 100;
-    //   return rand > 50 ? "customer" : "admin";
-    // };
-    // setMessages((prev) => [...prev, { userType: pickRandomUser(), message, time: Date.now() }]);
   };
 
   return (
     <S.Wrapper>
+      <S.Header>{roomName}님과의 채팅방</S.Header>
       <S.Container>
-        <ChatHistory speaker="customer" history={messages} />
-        <ChatForm placeholder="문의를 남겨주세요 :)" handleSend={handleSend} />
+        <ChatHistory speaker="admin" history={messages} />
+        <ChatForm placeholder="답변하기" handleSend={handleSend} />
       </S.Container>
     </S.Wrapper>
   );
@@ -110,24 +108,36 @@ const Socket = () => {
 
 const S = {
   Wrapper: styled.div`
-    box-sizing: border-box;
-    position: absolute;
-    bottom: 70px;
-    right: 70px;
-    border-radius: 16px;
-    padding: 20px;
-    border: 1px solid #cacaca;
-    box-shadow: 0 3px 7px #cacaca;
-    width: 370px;
-    height: 500px;
+    height: 100vh;
+  `,
+  Header: styled.div`
+    display: grid;
+    place-content: center start;
+    padding: 12px 8px;
+    box-shadow: 0 1px 5px #d0d0d0;
+    font-weight: 700;
   `,
   Container: styled.div`
     display: flex;
     flex-direction: column;
-    height: 100%;
-    width: 100%;
+    padding: 12px;
+    height: calc(100% - 70px);
   `,
 };
+
+ChatPopup.getLayout = (page: ReactElement) => (
+  <>
+    <GlobalStyle />
+    {page}
+  </>
+);
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const roomId = context.query.id;
+  return { props: { roomId } };
+};
+
+export default ChatPopup;
 
 const sampleData = [
   {
@@ -162,6 +172,14 @@ const sampleData = [
       "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Veritatis nesciunt maxime nam vel accusantium fugiat enim recusandae cumque est eligendi?",
     time: 1712237622981,
   },
+  {
+    userType: "customer",
+    message: "asdf1",
+    time: 1713365096453,
+  },
+  {
+    userType: "customer",
+    message: "asdf2 fljgdlf kfjd lksjdlkfjlskdfj lsdkj fsldkjf kdjfsd8f sd8fj sdlfkj fff1321",
+    time: 1713365099453,
+  },
 ];
-
-export default Socket;

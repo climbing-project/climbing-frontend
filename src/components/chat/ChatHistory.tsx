@@ -15,9 +15,15 @@ type SortedMessageList = {
 
 interface ChatHistoryProps {
   history: MessageFormat[];
+  speaker: string;
 }
 
-const ChatHistory = ({ history }: ChatHistoryProps) => {
+const OPPOSITE_SPEAKER = {
+  customer: "관리자",
+  admin: "이용자",
+};
+
+const ChatHistory = ({ history, speaker }: ChatHistoryProps) => {
   useEffect(() => {
     document.querySelector(".tracker")?.scrollIntoView();
   }, [history]);
@@ -57,21 +63,21 @@ const ChatHistory = ({ history }: ChatHistoryProps) => {
           <div className="divider">{batch.date}</div>
           {batch.messages.map(({ userType, message, time }, i) => (
             <M.Wrapper key={i}>
-              {userType === "admin" && batch.messages[i - 1]?.userType !== userType
-                ? "관리자"
+              {userType !== speaker && batch.messages[i - 1]?.userType !== userType
+                ? OPPOSITE_SPEAKER[speaker as keyof typeof OPPOSITE_SPEAKER]
                 : null}
               <M.Message
-                $userType={userType}
+                $speaker={userType === speaker}
                 className={batch.messages[i + 1]?.userType !== userType ? "lastMessage" : ""}
               >
-                {userType === "admin" ||
+                {userType !== speaker ||
                 (batch.messages[i + 1]?.userType === userType &&
                   batch.messages[i + 1] &&
                   getTime(batch.messages[i + 1].time) === getTime(time)) ? null : (
                   <span>{getTime(time)}</span>
                 )}
                 <div>{message}</div>
-                {userType === "customer" ||
+                {userType === speaker ||
                 (batch.messages[i + 1]?.userType === userType &&
                   batch.messages[i + 1] &&
                   getTime(batch.messages[i + 1].time) === getTime(time)) ? null : (
@@ -124,12 +130,12 @@ const M = {
   Name: styled.div`
     font-weight: 700;
   `,
-  Message: styled.div<{ $userType: string }>`
+  Message: styled.div<{ $speaker: boolean }>`
     display: flex;
     align-items: flex-end;
     gap: 4px;
     max-width: 90%;
-    align-self: ${({ $userType }) => ($userType === "admin" ? "flex-start" : "flex-end")};
+    align-self: ${({ $speaker }) => ($speaker ? "flex-end" : "flex-start")};
 
     &.lastMessage {
       margin-bottom: 18px;
@@ -145,7 +151,7 @@ const M = {
       border-radius: 6px;
       border: 1px solid #cacaca;
       padding: 8px;
-      background: ${({ $userType }) => ($userType === "admin" ? "#cacaca" : null)};
+      background: ${({ $speaker }) => ($speaker ? null : "#cacaca")};
     }
   `,
 };

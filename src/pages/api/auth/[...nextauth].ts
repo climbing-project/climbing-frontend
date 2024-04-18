@@ -99,5 +99,7 @@ export default NextAuth({
     signIn: "/login",
     error: "error",
   },
+  redirect: async (url: any, baseUrl: any) =>
+    url.startsWith(baseUrl) ? Promise.resolve(url) : Promise.resolve(baseUrl),
   secret: process.env.AUTH_SECRET,
 });

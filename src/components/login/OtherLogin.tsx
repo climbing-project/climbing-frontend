@@ -26,7 +26,10 @@ import Link from "next/link";
 //   );
 // };
 const handleKakaoLogin = () => {
-  signIn("kakao", { callbackUrl: "/api/auth/callback/kakao" });
+  signIn("kakao", {
+    // redirect: false,
+    redirect: "http://3.37.207.190:8080/login/oauth2/code/kakao",
+  });
 };
 
 // 백엔드에서 세션 처리시 사용할 코드

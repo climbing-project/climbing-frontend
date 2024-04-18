@@ -1,3 +1,4 @@
+import { SERVER_ADDRESS } from "@/constants/constants";
 import { requestData } from "@/service/api";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -93,13 +94,29 @@ export default NextAuth({
       }
       return session;
     },
+    // async redirect({ url, baseUrl }) {
+    //   console.log("url", url);
+    //   console.log("baseUrl", baseUrl);
+
+    //   return url.startsWith(SERVER_ADDRESS) ? url : baseUrl;
+    // },
+    async redirect({ url, baseUrl }) {
+      // if (url.startsWith(SERVER_ADDRESS)) {
+      //   console.log("이상하네");
+      //   return "http://3.37.207.190:8080/login/oauth2/code/kakao";
+      // }
+
+      // Allows relative callback URLs
+      if (url.startsWith("/")) return `${baseUrl}${url}`;
+      // Allows callback URLs on the same origin
+      else if (new URL(url).origin === baseUrl) return url;
+      return baseUrl;
+    },
   },
 
   pages: {
     signIn: "/login",
     error: "error",
   },
-  redirect: async (url: any, baseUrl: any) =>
-    url.startsWith(baseUrl) ? Promise.resolve(url) : Promise.resolve(baseUrl),
-  secret: process.env.AUTH_SECRET,
+  // async redirect({ url, baseUrl }) { const redirectUrl = url.startsWith('/') ? new URL(url, baseUrl).toString() : url console.log([next-auth] Redirecting to "${redirectUrl}" (resolved from url "${url}" and baseUrl "${baseUrl}")) return '/start' },
 });

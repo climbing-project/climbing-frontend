@@ -1,3 +1,4 @@
+import { SERVER_ADDRESS } from "@/constants/constants";
 import { RequestProps, GetProps, PostProps } from "@/constants/service/type";
 
 //20초 후 abort
@@ -12,7 +13,7 @@ export const requestData = async ({
   onError,
   hasBody,
 }: RequestProps) => {
-  const absoluteUrl = "http://3.37.207.190:8080" + url;
+  const absoluteUrl = SERVER_ADDRESS + url;
 
   switch (option) {
     case "GET":

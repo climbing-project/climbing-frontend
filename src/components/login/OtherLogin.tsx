@@ -5,6 +5,7 @@ import NaverIcon from "../../../public/naver_rec.png";
 import GoogleIcon from "../../../public/google_rec.png";
 import KakaoIcon from "../../../public/kakao_rec.png";
 import Link from "next/link";
+import { SERVER_ADDRESS } from "@/constants/constants";
 
 // 세션 사용시의 코드
 // const OtherLogin = () => {
@@ -27,8 +28,7 @@ import Link from "next/link";
 // };
 const handleKakaoLogin = () => {
   signIn("kakao", {
-    // redirect: false,
-    redirect: "http://3.37.207.190:8080/login/oauth2/code/kakao",
+    callbackUrl: "/members/oauth2/join",
   });
 };
 

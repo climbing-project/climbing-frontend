@@ -1,3 +1,4 @@
+import React from "react";
 import router, { useRouter } from "next/router";
 import styled from "styled-components";
 import { FaCircleCheck } from "react-icons/fa6";

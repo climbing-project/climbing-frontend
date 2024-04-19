@@ -51,6 +51,10 @@ ${normalize}
     text-decoration:none;
     &:visited { color:black; }
   }
+
+  ::placeholder {
+    color: #979797;
+  }
 `;
 
 export default GlobalStyle;

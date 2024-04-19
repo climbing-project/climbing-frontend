@@ -100,18 +100,21 @@ export default NextAuth({
 
     //   return url.startsWith(SERVER_ADDRESS) ? url : baseUrl;
     // },
-    async redirect({ url, baseUrl }) {
-      // if (url.startsWith(SERVER_ADDRESS)) {
-      //   console.log("이상하네");
-      //   return "http://3.37.207.190:8080/login/oauth2/code/kakao";
-      // }
+    // async redirect({ url, baseUrl }) {
+    // if (url.startsWith(SERVER_ADDRESS)) {
+    //   console.log("이상하네");
+    //   return Promise.resolve(
+    //     "http://3.37.207.190:8080/login/oauth2/code/kakao"
+    //   );
+    //   return;
+    // }
 
-      // Allows relative callback URLs
-      if (url.startsWith("/")) return `${baseUrl}${url}`;
-      // Allows callback URLs on the same origin
-      else if (new URL(url).origin === baseUrl) return url;
-      return baseUrl;
-    },
+    // Allows relative callback URLs
+    //   if (url.startsWith("/")) return `${baseUrl}${url}`;
+    //   // Allows callback URLs on the same origin
+    //   else if (new URL(url).origin === baseUrl) return url;
+    //   return baseUrl;
+    // },
   },
 
   pages: {

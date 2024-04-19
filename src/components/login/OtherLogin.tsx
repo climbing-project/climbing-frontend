@@ -27,9 +27,9 @@ import { SERVER_ADDRESS } from "@/constants/constants";
 //   );
 // };
 const handleKakaoLogin = () => {
-  signIn("kakao", {
-    callbackUrl: "/members/oauth2/join",
-  });
+  // signIn("kakao", {
+  //   // callbackUrl: "/login/oauth2/code/kakao",
+  // });
 };
 
 // 백엔드에서 세션 처리시 사용할 코드
@@ -44,17 +44,21 @@ const OtherLogin = () => {
         <Link href={"/oauth2/authorization/google"}>
           <Image src={GoogleIcon} alt="구글 아이콘" height={30} />
         </Link>
-        {/* <Link
-          href={`https://kauth.kakao.com/oauth/authorize?client_id=${kakaoClientId}\
-&redirect_uri=${kakaoRedirectUri}&response_type=code`}
-        > */}
-        <Image
-          src={KakaoIcon}
-          alt="카카오 아이콘"
-          height={30}
-          onClick={handleKakaoLogin}
-        />
-        {/* </Link> */}
+        <Link
+          href={`https://kauth.kakao.com/oauth/authorize?client_id=${
+            process.env.KAKAO_CLIENT_ID
+          }\
+&redirect_uri=${
+            SERVER_ADDRESS + "/login/oauth2/code/kakao"
+          }&response_type=code`}
+        >
+          <Image
+            src={KakaoIcon}
+            alt="카카오 아이콘"
+            height={30}
+            // onClick={handleKakaoLogin}
+          />
+        </Link>
       </S.IconContainer>
     </S.Wrapper>
   );

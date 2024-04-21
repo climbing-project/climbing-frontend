@@ -50,7 +50,7 @@ const OtherLogin = () => {
           }\
 &redirect_uri=${
             SERVER_ADDRESS + "/login/oauth2/code/kakao"
-          }&response_type=code`}
+          }&response_type=code&scope=account_email`}
         >
           <Image
             src={KakaoIcon}

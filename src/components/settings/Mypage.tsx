@@ -4,6 +4,7 @@ import { styled } from "styled-components";
 import { useRouter } from "next/router";
 import React from "react";
 import { requestData } from "@/service/api";
+import { CONFIRM_MESSAGE } from "@/constants/login/constants";
 
 const Mypage = () => {
   // 현재는 세션이 있을때 메이페이지가 보이지만 추후 백엔드 요청시 정보가 있을때만 표시
@@ -19,8 +20,6 @@ const Mypage = () => {
 
   const [password, setPassword] = useState("");
   const [nickname, setNickname] = useState("");
-
-  const confirmMessage = "사용 가능";
 
   const router = useRouter();
 
@@ -74,7 +73,7 @@ const Mypage = () => {
     } else {
       const onSuccess = (canUse: boolean) => {
         if (canUse) {
-          setNicknameMessage(confirmMessage);
+          setNicknameMessage(CONFIRM_MESSAGE);
           setIsNicknameValid(true);
           setNickname(currentNickname);
         } else {

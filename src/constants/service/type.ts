@@ -2,6 +2,7 @@ const requestOptions = {
   GET: "GET",
   POST: "POST",
   DELETE: "DELETE",
+  PUT: "PUT",
 } as const;
 
 type Option = (typeof requestOptions)[keyof typeof requestOptions];
@@ -25,6 +26,7 @@ export interface GetProps {
 }
 
 export interface PostProps {
+  option: Option;
   absoluteUrl: string;
   data: any;
   sessionId?: string;

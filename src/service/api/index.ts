@@ -18,8 +18,12 @@ export const requestData = async ({
   switch (option) {
     case "GET":
       return getData({ absoluteUrl, sessionId, onSuccess, onError });
+
     case "POST":
+    case "PUT":
+    case "DELETE":
       return postData({
+        option,
         absoluteUrl,
         data,
         sessionId,
@@ -27,9 +31,7 @@ export const requestData = async ({
         onError,
         hasBody,
       });
-    // POST로 DELETE를 대체가능
-    // case "DELETE":
-    //   break;
+
     default:
       console.log("잘못된 옵션 설정");
   }
@@ -85,6 +87,7 @@ const getData = ({ absoluteUrl, sessionId, onSuccess, onError }: GetProps) => {
 };
 
 const postData = ({
+  option,
   absoluteUrl,
   data,
   sessionId,
@@ -110,7 +113,7 @@ const postData = ({
   }, timeLimit);
 
   fetch(absoluteUrl, {
-    method: "POST",
+    method: option,
     headers: headers,
     body: JSON.stringify(data),
     signal,

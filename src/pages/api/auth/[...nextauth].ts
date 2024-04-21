@@ -1,4 +1,3 @@
-import { SERVER_ADDRESS } from "@/constants/constants";
 import { requestData } from "@/service/api";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -21,11 +20,15 @@ export default NextAuth({
         let nickname = "tempNickname";
         let jwt = { accessToken: "tempAccess", refreshToken: "tempRefresh" };
 
-        requestData({
+        const data = await requestData({
           option: "POST",
           url: `/members/login`,
-          data: { email: credentials.email, password: credentials.password },
-          onSuccess: (response: any) => {
+          data: {
+            email: credentials.email,
+            password: credentials.password,
+          },
+          onSuccess: async (response: any) => {
+            console.log(credentials.email);
             const responseHeaders = response.headers;
             const responseAccessToken = responseHeaders.get("Authorization");
             const responseRefreshToken = responseHeaders.get(
@@ -44,13 +47,21 @@ export default NextAuth({
             };
 
             // 받은 유저정보
-            // const data = response.json();
-            // email = data.email;
-            // nickname = data.nickname;
+            const body = await response;
+            const produce = body.body.json();
+            console.log(produce);
+            // email = body.email;
+            // nickname = body.nickname;
+
+            return { user: { email, nickname }, jwt };
           },
           hasBody: false,
         });
-        return { user: { email, nickname }, jwt } as any;
+
+        // console.log("B");
+        // return { user: { email, nickname }, jwt } as any;
+
+        return data as any;
       },
     }),
     // 다른 경로로 로그인 => 콜백으로 토큰받아서 서버에 넘겨줘야..

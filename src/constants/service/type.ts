@@ -12,7 +12,7 @@ export interface RequestProps {
   url: string;
   sessionId?: string;
   data?: any;
-  onSuccess?: (data: any) => void;
+  onSuccess?: (data: any) => void | any;
   onError?: () => void;
   hasBody?: boolean; // response의 body 여부
 }
@@ -20,7 +20,7 @@ export interface RequestProps {
 export interface GetProps {
   absoluteUrl: string;
   sessionId?: string;
-  onSuccess?: (data: any) => void;
+  onSuccess?: (data: any) => void | any;
   onError?: () => void;
 }
 
@@ -28,7 +28,7 @@ export interface PostProps {
   absoluteUrl: string;
   data: any;
   sessionId?: string;
-  onSuccess?: (data: any) => void;
+  onSuccess?: (data: any) => void | any;
   onError?: () => void;
   hasBody?: boolean;
 }

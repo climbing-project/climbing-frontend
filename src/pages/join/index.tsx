@@ -205,7 +205,7 @@ const Join = () => {
           message={emailMessage}
           buttonText="인증번호 받기"
           onClick={handleSendClick}
-          onDisabled={isSendDisabled || isCodeValid}
+          onDisabled={isSendDisabled || isCodeValid || !isEmailValid}
         />
         <EmailVerification
           remainingTime={remainingTime}

@@ -38,19 +38,23 @@ const OtherLogin = () => {
     <S.Wrapper>
       <div>간편로그인</div>
       <S.IconContainer>
-        <Link href={"/oauth2/authorization/naver"}>
+        <Link
+          href={`https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${process.env.NAVER_CLIENT_ID}&redirect_uri=${process.env.NAVER_REDIRECT_URI}&state=${process.env.NAVER_STATE}`}
+        >
           <Image src={NaverIcon} alt="네이버 아이콘" height={30} />
         </Link>
-        <Link href={"/oauth2/authorization/google"}>
+        <Link
+          href={`https://accounts.google.com/o/oauth2/v2/auth?
+		client_id=${process.env.GOOGLE_CLIENT_ID}
+		&redirect_uri=${process.env.GOOGLE_REDIRECT_URI}
+		&response_type=code
+		&scope=email profile`}
+        >
           <Image src={GoogleIcon} alt="구글 아이콘" height={30} />
         </Link>
         <Link
-          href={`https://kauth.kakao.com/oauth/authorize?client_id=${
-            process.env.KAKAO_CLIENT_ID
-          }\
-&redirect_uri=${
-            SERVER_ADDRESS + "/login/oauth2/code/kakao"
-          }&response_type=code&scope=account_email`}
+          href={`https://kauth.kakao.com/oauth/authorize?client_id=${process.env.KAKAO_CLIENT_ID}\
+&redirect_uri=${process.env.KAKAO_REDIRECT_URI}&response_type=code&scope=account_email`}
         >
           <Image
             src={KakaoIcon}

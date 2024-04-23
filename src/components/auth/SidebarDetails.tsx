@@ -5,6 +5,7 @@ import { MdNavigateNext } from "react-icons/md";
 import Link from "next/link";
 import { IoClose } from "react-icons/io5";
 import { signOut } from "next-auth/react";
+import { requestData } from "@/service/api";
 
 interface SidebarDetailProps {
   showSidebar: boolean;
@@ -18,6 +19,11 @@ const SidebarDetails = ({
   account,
 }: SidebarDetailProps) => {
   const handleSignOut = () => {
+    // requestData({
+    //   option: "GET",
+    //   url: "/members/logout",
+    //   onSuccess: () => console.log("logout"),
+    // });
     signOut({ callbackUrl: "/" });
   };
 

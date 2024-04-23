@@ -5,6 +5,7 @@ import styled from "styled-components";
 import ChatHistory from "@/components/chat/ChatHistory";
 import ChatForm from "@/components/chat/ChatForm";
 import GlobalStyle from "@/styles/global-styles";
+import LoginPrompt from "@/components/common/LoginPrompt";
 import { requestData } from "@/service/api";
 import { SOCKET_ADDRESS } from "@/constants/constants";
 import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
@@ -15,17 +16,15 @@ import type { Chatroom } from "@/constants/admin/types";
 const ChatPopup: NextPageWithLayout = ({
   roomId,
 }: InferGetServerSidePropsType<GetServerSideProps>) => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const [roomName, setRoomName] = useState("()");
+  const [messages, setMessages] = useState<MessageFormat[] | undefined>(undefined);
   const clientRef = useRef(
     new Client({
       brokerURL: `ws://${SOCKET_ADDRESS}/ws/chat`,
       connectHeaders: { Authorization: "Bearer " + session?.user.token },
     }),
   );
-  const [messages, setMessages] = useState<MessageFormat[]>(sampleData);
-
-  console.log(session);
 
   useEffect(() => {
     const client = clientRef.current;
@@ -81,6 +80,7 @@ const ChatPopup: NextPageWithLayout = ({
   }, [roomId]);
 
   const handleSend = (message: string) => {
+    if (message === "") return;
     if (!clientRef.current.connected) {
       console.log("소켓 연결 안됨");
       return;
@@ -94,15 +94,28 @@ const ChatPopup: NextPageWithLayout = ({
         message,
       }),
     });
+    const newMessage = { userType: "admin", message, time: Date.now() };
+    // 인메모리 db에도 반영?
+    setMessages((prev) => {
+      if (prev) return [...prev, newMessage];
+      else return [newMessage];
+    });
   };
 
+  if (status === "loading") return null;
   return (
     <S.Wrapper>
-      <S.Header>{roomName}님의 문의</S.Header>
-      <S.Container>
-        <ChatHistory speaker="admin" history={messages} />
-        <ChatForm placeholder="답변하기" handleSend={handleSend} />
-      </S.Container>
+      {session ? (
+        <>
+          <S.Header>{roomName}님의 문의</S.Header>
+          <S.Container>
+            <ChatHistory speaker="admin" history={messages} />
+            <ChatForm placeholder="답변하기" handleSend={handleSend} />
+          </S.Container>
+        </>
+      ) : (
+        <LoginPrompt />
+      )}
     </S.Wrapper>
   );
 };
@@ -135,6 +148,7 @@ ChatPopup.getLayout = (page: ReactElement) => (
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const roomId = context.query.id;
+  // 채팅기록 fetch해서 props로 전달, 컴포넌트 내에 상태를 갖고 초기값을 fetch한 기록으로 설정
   return { props: { roomId } };
 };
 

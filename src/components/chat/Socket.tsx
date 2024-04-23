@@ -5,6 +5,7 @@ import { Client, type IFrame } from "@stomp/stompjs";
 import styled from "styled-components";
 import ChatForm from "./ChatForm";
 import ChatHistory from "./ChatHistory";
+import LoginPrompt from "../common/LoginPrompt";
 import { type ChatHistoryProps, ChatHistoryContext, testinit } from "@/ChatHistoryContext";
 import { SERVER_ADDRESS, SOCKET_ADDRESS } from "@/constants/constants";
 
@@ -91,6 +92,7 @@ const Socket = ({ gymName }: { gymName: string }) => {
   }, [updateHistory]);
 
   const handleSend = (message: string) => {
+    if (message === "") return;
     // if (!clientRef.current.connected) {
     //   console.log("소켓 연결 안됨");
     //   return;
@@ -132,12 +134,7 @@ const Socket = ({ gymName }: { gymName: string }) => {
             <ChatForm placeholder="문의를 남겨주세요 :)" handleSend={handleSend} />
           </>
         ) : (
-          <S.LoginPrompt>
-            <span>1:1 문의는 로그인한 후에 이용해 주세요.</span>
-            <button className="btn-primary" onClick={() => router.push("/login")}>
-              로그인
-            </button>
-          </S.LoginPrompt>
+          <LoginPrompt />
         )} */}
         <ChatHistory speaker="customer" history={history?.[roomRef.current]} />
         <ChatForm placeholder="문의를 남겨주세요 :)" handleSend={handleSend} />
@@ -174,12 +171,6 @@ const S = {
     -webkit-box-shadow: 0 3px 7px -7px #cacaca;
     -moz-box-shadow: 0 3px 7px -7px #cacaca;
     box-shadow: 0 3px 7px -7px #cacaca;
-  `,
-  LoginPrompt: styled.div`
-    display: grid;
-    height: 100%;
-    place-content: center center;
-    gap: 12px;
   `,
 };
 

@@ -58,8 +58,14 @@ const ChatHistory = ({ history, speaker }: ChatHistoryProps) => {
     <Wrapper>
       {sortedMessages.length < 1 ? (
         <M.Placeholder>
-          <BiSolidHelpCircle size="2rem" />
-          <p>문의를 남겨주시면 신속하게 도와드리겠습니다.</p>
+          {speaker === "customer" ? (
+            <>
+              <BiSolidHelpCircle size="2rem" />
+              <p>문의를 남겨주시면 신속하게 도와드리겠습니다.</p>
+            </>
+          ) : (
+            <p>문의 내용이 없습니다.</p>
+          )}
         </M.Placeholder>
       ) : (
         sortedMessages.map((batch, i) => (

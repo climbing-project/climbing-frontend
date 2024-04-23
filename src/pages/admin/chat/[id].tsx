@@ -10,6 +10,7 @@ import type { MessageFormat } from "@/components/chat/ChatHistory";
 import GlobalStyle from "@/styles/global-styles";
 import ChatHistory from "@/components/chat/ChatHistory";
 import ChatForm from "@/components/chat/ChatForm";
+import { Chatroom } from "@/constants/admin/types";
 
 const ChatPopup: NextPageWithLayout = ({
   roomId,
@@ -71,7 +72,7 @@ const ChatPopup: NextPageWithLayout = ({
     requestData({
       option: "GET",
       url: `/room/${roomId}`,
-      onSuccess: (roomData) => setRoomName(roomData.roomName),
+      onSuccess: (roomData: Chatroom) => setRoomName(roomData.roomName),
     });
 
     return () => {

@@ -1,17 +1,14 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { useSession } from "next-auth/react";
-import { Client, IFrame } from "@stomp/stompjs";
+import { Client, type IFrame } from "@stomp/stompjs";
 import styled from "styled-components";
 import ChatForm from "./ChatForm";
 import ChatHistory from "./ChatHistory";
-import { SOCKET_ADDRESS } from "@/constants/constants";
-import type { MessageFormat } from "./ChatHistory";
+import { type ChatHistoryProps, ChatHistoryContext, testinit } from "@/ChatHistoryContext";
+import { SERVER_ADDRESS, SOCKET_ADDRESS } from "@/constants/constants";
 
-const Socket = () => {
+const Socket = ({ gymName }: { gymName: string }) => {
   const { data: session, status } = useSession();
-  console.log("세션");
-  console.log(session); // 세션 확인
-
   const clientRef = useRef(
     new Client({
       brokerURL: `ws://${SOCKET_ADDRESS}/ws/chat`,
@@ -19,28 +16,47 @@ const Socket = () => {
     }),
   );
   const roomRef = useRef("");
-  const [messages, setMessages] = useState<MessageFormat[]>(sampleData);
+  const { history, updateHistory } = useContext(ChatHistoryContext); // 이거 마무리하기 - history 읽는거랑 update하는 기능
 
   useEffect(() => {
     const client = clientRef.current;
-    console.log("STOMP 클라이언트:"); // 클라이언트 생성 확인
-    console.log(client);
+
+    // room 생성
+    // roomId fetch
+    const testurl = `${SERVER_ADDRESS}/chat/room`;
+    // fetch(testurl, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "text/plain",
+    //     Authorization: session?.user.token!,
+    //   },
+    //   body: "test@gmail.com",
+    // }).then((res) => {
+    //   console.log(res);
+    //   console.log(res.json());
+    // });
+
+    roomRef.current = "tet"; // 임시, 실제 roomId가 fetch되면 여기에 저장
+    const loadedHistory: ChatHistoryProps = {};
+
+    // 해당 room의 이전 채팅기록 fetch하고 context에 업데이트
+    // fetch()
+    // loadedHistory[roomRef.current as keyof typeof loadedHistory] = testinit; // 임시(테스트값)
+    // updateHistory((prev) => ({ ...prev, ...loadedHistory }));
 
     const onClientConnect = () => {
       console.log("연결 성공");
       console.log("구독 시도");
-      client.subscribe("/app", (message) => {
+      client.subscribe(`/queue/chat/room/${roomRef.current}`, (message) => {
         console.log(message); // 서버에서 도착한 메시지 확인
-        // ENTER 타입일 경우 리턴받은 roomId를 ref에 저장
-        // roomRef.current = roomId;
-
         // TALK 타입일 경우 리턴받은 message를 현재 상태에 추가
         // setMessages((prev) => [...prev, message]);
       });
       client.publish({
-        destination: "/queue",
+        destination: "/app/chat/message",
         body: JSON.stringify({
           type: "ENTER",
+          roomId: roomRef.current,
           sender: "testUser@gmail.com",
         }),
       });
@@ -49,9 +65,10 @@ const Socket = () => {
     const onClientDisconnect = () => {
       console.log("연결 종료");
       client.publish({
-        destination: "/queue",
+        destination: "/app/chat/message",
         body: JSON.stringify({
           type: "LEAVE",
+          roomId: roomRef.current,
         }),
       });
     };
@@ -69,39 +86,45 @@ const Socket = () => {
     return () => {
       client.deactivate();
     };
-  }, []);
+  }, [updateHistory]);
 
   const handleSend = (message: string) => {
-    if (!clientRef.current.connected) {
-      console.log("소켓 연결 안됨");
-      return;
-    }
-    if (roomRef.current === "") {
-      console.log("입장한 방이 없음");
-      return;
-    }
-    clientRef.current.publish({
-      destination: "/queue",
-      body: JSON.stringify({
-        type: "TALK",
-        roomId: roomRef.current,
-        sender: "testUser@gmail.com",
-        message,
-      }),
-    });
+    // if (!clientRef.current.connected) {
+    //   console.log("소켓 연결 안됨");
+    //   return;
+    // }
+    // if (roomRef.current === "") {
+    //   console.log("입장한 방이 없음");
+    //   return;
+    // }
+    // clientRef.current.publish({
+    //   destination: "/app/chat/message",
+    //   body: JSON.stringify({
+    //     type: "TALK",
+    //     roomId: roomRef.current,
+    //     sender: "testUser@gmail.com",
+    //     message,
+    //   }),
+    // });
 
-    // 렌더링 확인용 (테스트 후 삭제)
-    // const pickRandomUser = () => {
-    //   const rand = Math.random() * 100;
-    //   return rand > 50 ? "customer" : "admin";
-    // };
-    // setMessages((prev) => [...prev, { userType: pickRandomUser(), message, time: Date.now() }]);
+    const newMessage = { userType: "customer", message, time: Date.now() };
+    const newHistory: ChatHistoryProps = { ...history };
+    if (history?.[roomRef.current as keyof typeof history]) {
+      newHistory[roomRef.current as keyof typeof newHistory] = [
+        ...history[roomRef.current as keyof typeof history],
+        newMessage,
+      ];
+    } else {
+      newHistory[roomRef.current as keyof typeof newHistory] = [newMessage];
+    }
+    updateHistory((prev) => ({ ...prev, ...newHistory }));
   };
 
   return (
     <S.Wrapper>
       <S.Container>
-        <ChatHistory speaker="customer" history={messages} />
+        {gymName}
+        <ChatHistory speaker="customer" history={history?.[roomRef.current]} />
         <ChatForm placeholder="문의를 남겨주세요 :)" handleSend={handleSend} />
       </S.Container>
     </S.Wrapper>
@@ -129,40 +152,5 @@ const S = {
     width: 100%;
   `,
 };
-
-const sampleData = [
-  {
-    userType: "customer",
-    message: "dflkajsdf",
-    time: 1711215412079,
-  },
-  {
-    userType: "admin",
-    message: "dflkajsdf",
-    time: 1711225692079,
-  },
-  {
-    userType: "admin",
-    message: "dflkajsdf",
-    time: 1712226312579,
-  },
-  {
-    userType: "customer",
-    message:
-      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Veritatis nesciunt maxime nam vel accusantium fugiat enim recusandae cumque est eligendi?",
-    time: 1712226412091,
-  },
-  {
-    userType: "admin",
-    message: "dflkajsdf",
-    time: 1712237512879,
-  },
-  {
-    userType: "admin",
-    message:
-      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Veritatis nesciunt maxime nam vel accusantium fugiat enim recusandae cumque est eligendi?",
-    time: 1712237622981,
-  },
-];
 
 export default Socket;

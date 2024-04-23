@@ -14,7 +14,7 @@ type SortedMessageList = {
 }[];
 
 interface ChatHistoryProps {
-  history: MessageFormat[];
+  history: MessageFormat[] | undefined;
   speaker: string;
 }
 
@@ -51,10 +51,7 @@ const ChatHistory = ({ history, speaker }: ChatHistoryProps) => {
     return new Date(epoch).toLocaleTimeString("ko-KR").slice(0, -3);
   };
 
-  // const sortedMessages: SortedMessageList = sortMessages(history);
-  const sortedMessages: SortedMessageList = sortMessages(history); // 임시
-
-  console.log(sortedMessages);
+  const sortedMessages: SortedMessageList = history ? sortMessages(history) : [];
 
   return (
     <Wrapper>
@@ -88,12 +85,6 @@ const ChatHistory = ({ history, speaker }: ChatHistoryProps) => {
           ))}
         </div>
       ))}
-      {/* {messages.map(({ user, message }, i) => (
-        <M.Wrapper $direction={user === "관리자" ? "flex-start" : "flex-end"} key={i}>
-          {user === "관리자" ? <M.Name>{user}</M.Name> : null}
-          <M.Message>{message}</M.Message>
-        </M.Wrapper>
-      ))} */}
       <div className="tracker"></div>
     </Wrapper>
   );

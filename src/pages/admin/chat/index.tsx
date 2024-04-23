@@ -23,7 +23,7 @@ const ChatPage: NextPageWithLayout = () => {
       requestData({
         option: "GET",
         url: "/chat/room",
-        onSuccess: (chatrooms) => setChatrooms(chatrooms),
+        onSuccess: (chatrooms: Chatroom[]) => setChatrooms(chatrooms),
         onError: () => setChatrooms(sampleData), // 임시
       });
       setIsLoading(false);

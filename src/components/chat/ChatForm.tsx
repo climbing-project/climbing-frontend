@@ -1,3 +1,4 @@
+import { COLOR } from "@/styles/global-color";
 import { ChangeEventHandler, FormEventHandler, useState } from "react";
 import styled from "styled-components";
 
@@ -45,7 +46,7 @@ const Wrapper = styled.form`
 
   & > button {
     border: none;
-    background: #307fe5;
+    background: ${COLOR.MAIN};
     color: white;
     border-radius: 6px;
     padding: 0 12px;

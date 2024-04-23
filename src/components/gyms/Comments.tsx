@@ -5,6 +5,7 @@ import CommentTextarea from "./CommentTextarea";
 import { SERVER_ADDRESS } from "@/constants/constants";
 import { DEVICE_SIZE } from "@/constants/styles";
 import type { CommentsProps, UserComments } from "@/constants/gyms/types";
+import { COLOR } from "@/styles/global-color";
 
 const Comments = ({ id, comments, session }: CommentsProps) => {
   const [currentComments, setCurrentComments] = useState<UserComments>(comments || []);
@@ -117,7 +118,7 @@ const S = {
     }
   `,
   Link: styled(Link)`
-    background: #307fe5;
+    background: ${COLOR.MAIN};
     border-radius: 8px;
     color: white;
     width: 120px;

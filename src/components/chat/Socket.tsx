@@ -1,4 +1,5 @@
 import { useContext, useEffect, useRef } from "react";
+import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { Client, type IFrame } from "@stomp/stompjs";
 import styled from "styled-components";
@@ -8,7 +9,8 @@ import { type ChatHistoryProps, ChatHistoryContext, testinit } from "@/ChatHisto
 import { SERVER_ADDRESS, SOCKET_ADDRESS } from "@/constants/constants";
 
 const Socket = ({ gymName }: { gymName: string }) => {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
+  const router = useRouter();
   const clientRef = useRef(
     new Client({
       brokerURL: `ws://${SOCKET_ADDRESS}/ws/chat`,
@@ -16,7 +18,7 @@ const Socket = ({ gymName }: { gymName: string }) => {
     }),
   );
   const roomRef = useRef("");
-  const { history, updateHistory } = useContext(ChatHistoryContext); // 이거 마무리하기 - history 읽는거랑 update하는 기능
+  const { history, updateHistory } = useContext(ChatHistoryContext);
 
   useEffect(() => {
     const client = clientRef.current;
@@ -123,7 +125,20 @@ const Socket = ({ gymName }: { gymName: string }) => {
   return (
     <S.Wrapper>
       <S.Container>
-        {gymName}
+        <S.Header>{gymName}</S.Header>
+        {/* {session ? (
+          <>
+            <ChatHistory speaker="customer" history={history?.[roomRef.current]} />
+            <ChatForm placeholder="문의를 남겨주세요 :)" handleSend={handleSend} />
+          </>
+        ) : (
+          <S.LoginPrompt>
+            <span>1:1 문의는 로그인한 후에 이용해 주세요.</span>
+            <button className="btn-primary" onClick={() => router.push("/login")}>
+              로그인
+            </button>
+          </S.LoginPrompt>
+        )} */}
         <ChatHistory speaker="customer" history={history?.[roomRef.current]} />
         <ChatForm placeholder="문의를 남겨주세요 :)" handleSend={handleSend} />
       </S.Container>
@@ -135,8 +150,8 @@ const S = {
   Wrapper: styled.div`
     box-sizing: border-box;
     position: absolute;
-    bottom: 70px;
-    right: 70px;
+    bottom: 75px;
+    right: 0;
     border-radius: 16px;
     padding: 20px;
     border: 1px solid #cacaca;
@@ -150,6 +165,21 @@ const S = {
     flex-direction: column;
     height: 100%;
     width: 100%;
+  `,
+  Header: styled.div`
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 700;
+    padding-bottom: 8px;
+    -webkit-box-shadow: 0 3px 7px -7px #cacaca;
+    -moz-box-shadow: 0 3px 7px -7px #cacaca;
+    box-shadow: 0 3px 7px -7px #cacaca;
+  `,
+  LoginPrompt: styled.div`
+    display: grid;
+    height: 100%;
+    place-content: center center;
+    gap: 12px;
   `,
 };
 

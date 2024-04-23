@@ -35,8 +35,8 @@ const S = {
   Wrapper: styled.div`
     position: fixed;
     z-index: 100;
-    bottom: 70px;
-    right: 70px;
+    bottom: 40px;
+    right: 40px;
   `,
   Modal: styled.div`
     display: flex;

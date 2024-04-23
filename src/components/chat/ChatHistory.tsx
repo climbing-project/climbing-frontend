@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import styled from "styled-components";
+import { BiSolidHelpCircle } from "react-icons/bi";
 
 // 소켓 동작 확인 후에 적용
 export type MessageFormat = {
@@ -55,36 +56,43 @@ const ChatHistory = ({ history, speaker }: ChatHistoryProps) => {
 
   return (
     <Wrapper>
-      {sortedMessages.map((batch, i) => (
-        <div className="batch" key={i}>
-          <div className="divider">{batch.date}</div>
-          {batch.messages.map(({ userType, message, time }, i) => (
-            <M.Wrapper key={i}>
-              {userType !== speaker && batch.messages[i - 1]?.userType !== userType
-                ? OPPOSITE_SPEAKER[speaker as keyof typeof OPPOSITE_SPEAKER]
-                : null}
-              <M.Message
-                $speaker={userType === speaker}
-                className={batch.messages[i + 1]?.userType !== userType ? "lastMessage" : ""}
-              >
-                {userType !== speaker ||
-                (batch.messages[i + 1]?.userType === userType &&
-                  batch.messages[i + 1] &&
-                  getTime(batch.messages[i + 1].time) === getTime(time)) ? null : (
-                  <span>{getTime(time)}</span>
-                )}
-                <div>{message}</div>
-                {userType === speaker ||
-                (batch.messages[i + 1]?.userType === userType &&
-                  batch.messages[i + 1] &&
-                  getTime(batch.messages[i + 1].time) === getTime(time)) ? null : (
-                  <span>{getTime(time)}</span>
-                )}
-              </M.Message>
-            </M.Wrapper>
-          ))}
-        </div>
-      ))}
+      {sortedMessages.length < 1 ? (
+        <M.Placeholder>
+          <BiSolidHelpCircle size="2rem" />
+          <p>문의를 남겨주시면 신속하게 도와드리겠습니다.</p>
+        </M.Placeholder>
+      ) : (
+        sortedMessages.map((batch, i) => (
+          <div className="batch" key={i}>
+            <div className="divider">{batch.date}</div>
+            {batch.messages.map(({ userType, message, time }, i) => (
+              <M.Wrapper key={i}>
+                {userType !== speaker && batch.messages[i - 1]?.userType !== userType
+                  ? OPPOSITE_SPEAKER[speaker as keyof typeof OPPOSITE_SPEAKER]
+                  : null}
+                <M.Message
+                  $speaker={userType === speaker}
+                  className={batch.messages[i + 1]?.userType !== userType ? "lastMessage" : ""}
+                >
+                  {userType !== speaker ||
+                  (batch.messages[i + 1]?.userType === userType &&
+                    batch.messages[i + 1] &&
+                    getTime(batch.messages[i + 1].time) === getTime(time)) ? null : (
+                    <span>{getTime(time)}</span>
+                  )}
+                  <div>{message}</div>
+                  {userType === speaker ||
+                  (batch.messages[i + 1]?.userType === userType &&
+                    batch.messages[i + 1] &&
+                    getTime(batch.messages[i + 1].time) === getTime(time)) ? null : (
+                    <span>{getTime(time)}</span>
+                  )}
+                </M.Message>
+              </M.Wrapper>
+            ))}
+          </div>
+        ))
+      )}
       <div className="tracker"></div>
     </Wrapper>
   );
@@ -144,6 +152,10 @@ const M = {
       padding: 8px;
       background: ${({ $speaker }) => ($speaker ? null : "#cacaca")};
     }
+  `,
+  Placeholder: styled.div`
+    margin-top: 26px;
+    text-align: center;
   `,
 };
 

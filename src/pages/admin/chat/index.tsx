@@ -54,12 +54,12 @@ const ChatPage: NextPageWithLayout = () => {
         <S.Wrapper>
           {isLoading ? null : (
             <>
-              <S.Header>1:1 채팅</S.Header>
+              <S.Header>1:1 문의</S.Header>
               <S.Content $direction="column">
                 {chatrooms.length > 0 ? (
                   chatrooms.map(({ roomId, roomName }) => (
                     <S.Row key={roomId} onClick={() => handleChatroomClick(roomId)}>
-                      {roomName}님과의 채팅
+                      {roomName}님의 문의
                     </S.Row>
                   ))
                 ) : (

@@ -1,16 +1,16 @@
-import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState, type ReactElement } from "react";
+import { useSession } from "next-auth/react";
 import { Client, type IFrame } from "@stomp/stompjs";
 import styled from "styled-components";
+import ChatHistory from "@/components/chat/ChatHistory";
+import ChatForm from "@/components/chat/ChatForm";
+import GlobalStyle from "@/styles/global-styles";
 import { requestData } from "@/service/api";
 import { SOCKET_ADDRESS } from "@/constants/constants";
 import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import type { NextPageWithLayout } from "@/pages/_app";
 import type { MessageFormat } from "@/components/chat/ChatHistory";
-import GlobalStyle from "@/styles/global-styles";
-import ChatHistory from "@/components/chat/ChatHistory";
-import ChatForm from "@/components/chat/ChatForm";
-import { Chatroom } from "@/constants/admin/types";
+import type { Chatroom } from "@/constants/admin/types";
 
 const ChatPopup: NextPageWithLayout = ({
   roomId,
@@ -98,7 +98,7 @@ const ChatPopup: NextPageWithLayout = ({
 
   return (
     <S.Wrapper>
-      <S.Header>{roomName}님과의 채팅방</S.Header>
+      <S.Header>{roomName}님의 문의</S.Header>
       <S.Container>
         <ChatHistory speaker="admin" history={messages} />
         <ChatForm placeholder="답변하기" handleSend={handleSend} />

@@ -38,7 +38,7 @@ const AdminLayout = ({ children }: React.PropsWithChildren<{}>) => {
         <S.Header>
           <HiOutlineChat size="1.3rem" />
           <Link href="/admin/chat">
-            <strong>1:1 채팅</strong>
+            <strong>1:1 문의</strong>
           </Link>
         </S.Header>
       </S.Menu>

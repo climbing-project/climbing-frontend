@@ -15,6 +15,44 @@ const Test = () => {
     //   data: "test",
     //   onSuccess: (data: any) => console.log(data),
     // });
+    requestData({
+      option: "POST",
+      url: `/members/login`,
+      data: { email: "dmswl6310@naver.com", password: "hello1234!" },
+      onSuccess: async (response: any) => {
+        const responseHeaders = await response.headers;
+        const body = await response.body;
+        console.log(body);
+        const chunks = [];
+        for await (let chunk of body) {
+          chunks.push(chunk);
+        }
+        console.log(Buffer.concat(chunks));
+        // const responseRefreshToken = responseHeaders.get(
+        //   "Authorization-refresh"
+        // );
+        // if (!(responseHeaders && responseAccessToken && responseRefreshToken)) {
+        //   throw Error("missing header or token");
+        // }
+
+        // // 받은 토큰
+        // const jwt = {
+        //   accessToken: responseHeaders.get("Authorization"),
+        //   refreshToken: responseHeaders.get("Authorization-refresh"),
+        // };
+
+        // const data = JSON.parse(Buffer.from(response).toString("utf8"));
+        // console.log(body);
+        // console.log(body.json());
+        // const data = await response.text();
+        // 받은 유저정보
+        // console.log(data);
+        // console.log(responseHeaders.get("body").email);
+        // email = data.email;
+        // nickname = data.nickname;
+      },
+      hasBody: false,
+    });
   };
 
   const keyDown = (event: { key: string; preventDefault: () => void }) => {

@@ -19,12 +19,12 @@ const SidebarDetails = ({
   account,
 }: SidebarDetailProps) => {
   const handleSignOut = () => {
-    // requestData({
-    //   option: "GET",
-    //   url: "/members/logout",
-    //   onSuccess: () => console.log("logout"),
-    // });
-    signOut({ callbackUrl: "/" });
+    requestData({
+      option: "GET",
+      url: "/members/logout",
+      onSuccess: () => signOut({ callbackUrl: "/" }),
+      hasBody: false,
+    });
   };
 
   return (

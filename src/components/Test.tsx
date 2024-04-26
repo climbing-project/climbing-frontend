@@ -11,9 +11,8 @@ const Test = () => {
   const testFunc = () => {
     alert("테스트 키 입력됨");
 
-    console.log(session);
     console.log(status);
-    console.log(session!.user);
+    console.log(session);
   };
 
   const keyDown = (event: { key: string; preventDefault: () => void }) => {

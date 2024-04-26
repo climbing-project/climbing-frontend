@@ -11,13 +11,13 @@ export const requestData = async ({
   data,
   onSuccess, // 성공 후 처리
   onError,
-  hasBody,
+  hasBody, // json화하지않고 통째로 response받을때 false로 하면됨
 }: RequestProps) => {
   const absoluteUrl = SERVER_ADDRESS + url;
 
   switch (option) {
     case "GET":
-      return getData({ absoluteUrl, sessionId, onSuccess, onError });
+      return getData({ absoluteUrl, sessionId, onSuccess, onError, hasBody });
 
     case "POST":
     case "PUT":
@@ -37,7 +37,13 @@ export const requestData = async ({
   }
 };
 
-const getData = ({ absoluteUrl, sessionId, onSuccess, onError }: GetProps) => {
+const getData = ({
+  absoluteUrl,
+  sessionId,
+  onSuccess,
+  onError,
+  hasBody = false,
+}: GetProps) => {
   const controller = new AbortController();
   const signal = controller.signal;
   const contentType = { "Content-Type": "application/json" };
@@ -65,8 +71,8 @@ const getData = ({ absoluteUrl, sessionId, onSuccess, onError }: GetProps) => {
         // 404, 500...등의 에러
         throw new Error(`${response.status} 에러`);
       }
-
-      return response.json();
+      if (hasBody) return response.json();
+      return response;
     })
     .then((data) => {
       clearTimeout(timeout);

@@ -23,6 +23,7 @@ export interface GetProps {
   sessionId?: string;
   onSuccess?: (data: any) => void | any;
   onError?: () => void;
+  hasBody?: boolean;
 }
 
 export interface PostProps {

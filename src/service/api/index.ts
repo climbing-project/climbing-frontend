@@ -55,7 +55,7 @@ const getData = ({ absoluteUrl, sessionId, onSuccess, onError }: GetProps) => {
     controller.abort();
   }, timeLimit);
 
-  fetch(absoluteUrl, {
+  return fetch(absoluteUrl, {
     method: "GET",
     headers: headers,
     signal,
@@ -112,7 +112,7 @@ const postData = ({
     controller.abort();
   }, timeLimit);
 
-  fetch(absoluteUrl, {
+  return fetch(absoluteUrl, {
     method: option,
     headers: headers,
     body: JSON.stringify(data),

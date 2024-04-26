@@ -16,10 +16,6 @@ export default NextAuth({
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials: any) {
-        let email = "tempEmail";
-        let nickname = "tempNickname";
-        let jwt = { accessToken: "tempAccess", refreshToken: "tempRefresh" };
-
         const data = await requestData({
           option: "POST",
           url: `/members/login`,
@@ -27,8 +23,7 @@ export default NextAuth({
             email: credentials.email,
             password: credentials.password,
           },
-          onSuccess: async (response: any) => {
-            console.log(credentials.email);
+          onSuccess: async (response: Response) => {
             const responseHeaders = response.headers;
             const responseAccessToken = responseHeaders.get("Authorization");
             const responseRefreshToken = responseHeaders.get(
@@ -41,43 +36,38 @@ export default NextAuth({
             }
 
             // 받은 토큰
-            jwt = {
-              accessToken: responseHeaders.get("Authorization"),
-              refreshToken: responseHeaders.get("Authorization-refresh"),
+            const jwt = {
+              accessToken: responseAccessToken || "tempAccess",
+              refreshToken: responseRefreshToken || "tempRefresh",
             };
 
             // 받은 유저정보
-            const body = await response;
-            const produce = body.body.json();
-            console.log(produce);
-            // email = body.email;
-            // nickname = body.nickname;
+            const body = await response.json();
+            const email = body.email || "tempEmail";
+            const nickname = body.nickname || "tempNickname";
 
             return { user: { email, nickname }, jwt };
           },
           hasBody: false,
         });
-
-        // console.log("B");
-        // return { user: { email, nickname }, jwt } as any;
-
         return data as any;
       },
     }),
     // 다른 경로로 로그인 => 콜백으로 토큰받아서 서버에 넘겨줘야..
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-    }),
+    // GoogleProvider({
+    //   clientId: process.env.GOOGLE_CLIENT_ID!,
+    //   clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    // }),
     // KakaoProvider({
     //   clientId: process.env.KAKAO_CLIENT_ID!,
     //   clientSecret: process.env.KAKAO_CLIENT_SECRET!,
     // }),
-    NaverProvider({
-      clientId: process.env.NAVER_CLIENT_ID!,
-      clientSecret: process.env.NAVER_CLIENT_SECRET!,
-    }),
+    // NaverProvider({
+    //   clientId: process.env.NAVER_CLIENT_ID!,
+    //   clientSecret: process.env.NAVER_CLIENT_SECRET!,
+    // }),
   ],
+
   // jwt 설정
   session: {
     strategy: "jwt",
@@ -97,6 +87,7 @@ export default NextAuth({
       }
       return token;
     },
+
     // jwt에서 return한 값이 token으로 들어옴
     async session({ session, token }) {
       if (token) {
@@ -105,32 +96,10 @@ export default NextAuth({
       }
       return session;
     },
-    // async redirect({ url, baseUrl }) {
-    //   console.log("url", url);
-    //   console.log("baseUrl", baseUrl);
-
-    //   return url.startsWith(SERVER_ADDRESS) ? url : baseUrl;
-    // },
-    // async redirect({ url, baseUrl }) {
-    // if (url.startsWith(SERVER_ADDRESS)) {
-    //   console.log("이상하네");
-    //   return Promise.resolve(
-    //     "http://3.37.207.190:8080/login/oauth2/code/kakao"
-    //   );
-    //   return;
-    // }
-
-    // Allows relative callback URLs
-    //   if (url.startsWith("/")) return `${baseUrl}${url}`;
-    //   // Allows callback URLs on the same origin
-    //   else if (new URL(url).origin === baseUrl) return url;
-    //   return baseUrl;
-    // },
   },
 
   pages: {
     signIn: "/login",
     error: "error",
   },
-  // async redirect({ url, baseUrl }) { const redirectUrl = url.startsWith('/') ? new URL(url, baseUrl).toString() : url console.log([next-auth] Redirecting to "${redirectUrl}" (resolved from url "${url}" and baseUrl "${baseUrl}")) return '/start' },
 });

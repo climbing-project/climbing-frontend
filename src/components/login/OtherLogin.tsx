@@ -4,40 +4,50 @@ import NaverIcon from "../../../public/naver_rec.png";
 import GoogleIcon from "../../../public/google_rec.png";
 import KakaoIcon from "../../../public/kakao_rec.png";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { RiRouterLine } from "react-icons/ri";
 
 // 백엔드로 리다이렉트(백엔드에서 인가코드->토큰받고 프론트로 보내줌)
 const OtherLogin = () => {
+  const router = useRouter();
+
+  const handleNaverLogin = () => {
+    router.push(`https://nid.naver.com/oauth2.0/authorize?
+response_type=code
+&client_id=${process.env.NEXT_PUBLIC_NAVER_CLIENT_ID}
+&redirect_uri=${process.env.NEXT_PUBLIC_NAVER_REDIRECT_URI}
+&state=${process.env.NEXT_PUBLIC_NAVER_STATE}`);
+  };
+
+  const handleGoogleLogin = () => {
+    router.push(`https://accounts.google.com/o/oauth2/v2/auth?
+client_id=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}
+&redirect_uri=${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}
+&response_type=code
+&scope=email profile`);
+  };
+
+  const handleKakaoLogin = () => {
+    router.push(`https://kauth.kakao.com/oauth/authorize?
+client_id=${process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID}
+&redirect_uri=${process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI}
+&response_type=code
+&scope=account_email`);
+  };
+
   return (
     <S.Wrapper>
       <div>간편로그인</div>
       <S.IconContainer>
-        <Link
-          href={`https://nid.naver.com/oauth2.0/authorize?
-          response_type=code
-          &client_id=${process.env.NAVER_CLIENT_ID}
-          &redirect_uri=${process.env.NAVER_REDIRECT_URI}
-          &state=${process.env.NAVER_STATE}`}
-        >
+        <button className="btn-plain" onClick={handleNaverLogin}>
           <Image src={NaverIcon} alt="네이버 아이콘" height={30} />
-        </Link>
-        <Link
-          href={`https://accounts.google.com/o/oauth2/v2/auth?
-          client_id=${process.env.GOOGLE_CLIENT_ID}
-		      &redirect_uri=${process.env.GOOGLE_REDIRECT_URI}
-		      &response_type=code
-		      &scope=email profile`}
-        >
+        </button>
+        <button className="btn-plain" onClick={handleGoogleLogin}>
           <Image src={GoogleIcon} alt="구글 아이콘" height={30} />
-        </Link>
-        <Link
-          href={`https://kauth.kakao.com/oauth/authorize?
-          client_id=${process.env.KAKAO_CLIENT_ID}
-          &redirect_uri=${process.env.KAKAO_REDIRECT_URI}
-          &response_type=code
-          &scope=account_email`}
-        >
+        </button>
+        <button className="btn-plain" onClick={handleKakaoLogin}>
           <Image src={KakaoIcon} alt="카카오 아이콘" height={30} />
-        </Link>
+        </button>
       </S.IconContainer>
     </S.Wrapper>
   );

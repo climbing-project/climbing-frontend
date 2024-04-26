@@ -31,11 +31,11 @@ const Mypage = () => {
     const onSuccess = (data: any) => {
       setInfoFromServer({ email: data.email, nickname: data.nickname });
     };
-    // requestData({
-    //   option: "GET",
-    //   url: "/members/myInfo",
-    //   onSuccess,
-    // });
+    requestData({
+      option: "GET",
+      url: "/members/myInfo",
+      onSuccess,
+    });
   });
   const handlePasswordChange = (event: {
     target: {

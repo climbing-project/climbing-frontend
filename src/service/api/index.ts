@@ -7,7 +7,7 @@ const timeLimit = 20000;
 export const requestData = async ({
   option,
   url,
-  sessionId,
+  token,
   data,
   onSuccess, // 성공 후 처리
   onError,
@@ -17,7 +17,7 @@ export const requestData = async ({
 
   switch (option) {
     case "GET":
-      return getData({ absoluteUrl, sessionId, onSuccess, onError, hasBody });
+      return getData({ absoluteUrl, token, onSuccess, onError, hasBody });
 
     case "POST":
     case "PUT":
@@ -26,7 +26,7 @@ export const requestData = async ({
         option,
         absoluteUrl,
         data,
-        sessionId,
+        token,
         onSuccess,
         onError,
         hasBody,
@@ -39,7 +39,7 @@ export const requestData = async ({
 
 const getData = ({
   absoluteUrl,
-  sessionId,
+  token,
   onSuccess,
   onError,
   hasBody = false,
@@ -49,8 +49,8 @@ const getData = ({
   const contentType = { "Content-Type": "application/json" };
   let headers;
 
-  if (sessionId) {
-    headers = { ...contentType, Authorization: `${sessionId}` };
+  if (token) {
+    headers = { ...contentType, Authorization: `Bearer ${token}` };
   } else {
     headers = { ...contentType };
   }
@@ -96,7 +96,7 @@ const postData = ({
   option,
   absoluteUrl,
   data,
-  sessionId,
+  token,
   onSuccess,
   onError,
   hasBody = true,
@@ -106,8 +106,8 @@ const postData = ({
   const contentType = { "Content-Type": "application/json" };
   let headers;
 
-  if (sessionId) {
-    headers = { ...contentType, Authorization: `${sessionId}` };
+  if (token) {
+    headers = { ...contentType, Authorization: `${token}` };
   } else {
     headers = { ...contentType };
   }

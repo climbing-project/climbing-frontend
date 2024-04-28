@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import Error from "next/error";
 import styled from "styled-components";
 import Comments from "@/components/gyms/Comments";
 import DynamicMap from "@/components/gyms/DynamicMap";
+import HelpModal from "@/components/chat/HelpModal";
 import ImageCarousel from "@/components/gyms/ImageCarousel";
 import MainContent from "@/components/gyms/MainContent";
 import SideContent from "@/components/gyms/SideContent";
@@ -11,14 +14,29 @@ import { DEVICE_SIZE } from "@/constants/styles";
 import { IMAGE_SIZE } from "@/constants/gyms/constants";
 import { NAVERMAP_API, SERVER_ADDRESS } from "@/constants/constants";
 import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import type { MessageFormat } from "@/components/chat/ChatHistory";
-import HelpModal from "@/components/chat/HelpModal";
 
-const GymInfo = ({ gymData }: InferGetServerSidePropsType<GetServerSideProps>) => {
-  const [chatHistory, setChatHistory] = useState<MessageFormat[]>([]);
+const GymInfo = ({
+  gymData,
+  error,
+  statusCode,
+}: InferGetServerSidePropsType<GetServerSideProps>) => {
   const { data: session } = useSession();
+  const router = useRouter();
   const { isLoading } = useApi(NAVERMAP_API);
+  const [isOpen, setIsOpen] = useState(false);
 
+  const toggleModal = () => setIsOpen((prev) => !prev);
+
+  const handlePageLeave = () => {
+    if (isOpen) setIsOpen(false);
+  };
+
+  useEffect(() => {
+    router.events.on("routeChangeStart", handlePageLeave);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  if (error) return <Error statusCode={statusCode} />;
   return (
     <S.Page>
       <S.Wrapper>
@@ -34,7 +52,12 @@ const GymInfo = ({ gymData }: InferGetServerSidePropsType<GetServerSideProps>) =
         </S.InfoContainer>
         <Comments id={gymData.id} comments={gymData.comments} session={session} />
       </S.Wrapper>
-      <HelpModal />
+      <HelpModal
+        gymId={gymData.id}
+        gymName={gymData.name}
+        isOpen={isOpen}
+        setIsOpen={toggleModal}
+      />
     </S.Page>
   );
 };
@@ -94,11 +117,28 @@ const S = {
   `,
   Main: styled.div`
     box-sizing: border-box;
-    padding: 0px 18px;
     flex: 1 0 0;
     display: flex;
     flex-direction: column;
     gap: 36px;
+    @media (min-width: 1281px) {
+      padding: 0px 18px;
+    }
+    @media ${DEVICE_SIZE.desktop} {
+      width: 752px;
+    }
+    @media ${DEVICE_SIZE.laptop} {
+      width: ${IMAGE_SIZE.laptop.width + "px"};
+    }
+    @media ${DEVICE_SIZE.tablet} {
+      width: ${IMAGE_SIZE.tablet.width + "px"};
+    }
+    @media ${DEVICE_SIZE.mobileLarge} {
+      width: ${IMAGE_SIZE.mobileLarge.width + "px"};
+    }
+    @media ${DEVICE_SIZE.mobileSmall} {
+      width: ${IMAGE_SIZE.mobileSmall.width + "px"};
+    }
   `,
 };
 
@@ -115,15 +155,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       const gymData = await response.json();
       return { props: { gymData } };
     } else throw response.status;
-  } catch (e) {
+  } catch (statusCode) {
     // 404에러 시에도 데이터를 채우기 위한 임시방편
     console.log("*****Server fetch failed. Fetching from local json-server instead*****");
     const gymData = await (await fetch(`http://localhost:8000/gyms/${gymId}`)).json();
     return { props: { gymData } };
 
     // 테스트 완료 시 아래 코드로 교체
-    // if (e === 404) return { notFound: true };
-    // if (e >= 500 && e < 600) throw new Error("서버 에러 발생");
+    return { props: { error: true, statusCode } };
   }
 };
 

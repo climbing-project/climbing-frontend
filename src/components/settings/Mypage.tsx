@@ -34,6 +34,7 @@ const Mypage = () => {
     requestData({
       option: "GET",
       url: "/members/myInfo",
+      token: `${session?.jwt.accessToken}`,
       onSuccess,
     });
   });

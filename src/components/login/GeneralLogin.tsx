@@ -61,6 +61,10 @@ const GeneralLogin = () => {
         <S.Option className="link-plain" href={"/find/password"}>
           비밀번호 찾기
         </S.Option>
+        <S.Divider>|</S.Divider>
+        <S.Option className="link-plain" href={"/join"}>
+          회원가입
+        </S.Option>
       </S.OptionContainer>
     </S.Wrapper>
   );

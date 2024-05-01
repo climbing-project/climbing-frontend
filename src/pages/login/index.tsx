@@ -32,7 +32,7 @@ const S = {
     display: flex;
   `,
   Divider: styled.hr`
-    margin: 30px 0;
+    margin-top: 40px;
     width: 100%;
     border: none;
     border-top: 1px solid lightgray;

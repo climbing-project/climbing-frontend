@@ -17,19 +17,20 @@ const ChatPage: NextPageWithLayout = () => {
   const [openWindows, setOpenWindows] = useState<ChatroomRef[]>([]);
 
   useEffect(() => {
-    // if (!session) router.push({ pathname: "/login" });
+    if (!session) router.push({ pathname: "/login" });
 
     const fetchRooms = async () => {
       requestData({
         option: "GET",
         url: "/chat/room",
+        token: session?.jwt.accessToken,
         onSuccess: (chatrooms: Chatroom[]) => setChatrooms(chatrooms),
-        onError: () => setChatrooms(sampleData), // 임시
       });
       setIsLoading(false);
     };
 
     fetchRooms();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleChatroomClick = (id: number | string) => {
@@ -103,13 +104,5 @@ const S = {
     user-select: none;
   `,
 };
-
-// 테스트용 상수값
-const sampleData = [
-  { roomId: 1, roomName: "asdlkf@naver.com" },
-  { roomId: 2, roomName: "a3k3k3@naver.com" },
-  { roomId: 3, roomName: "sd00owo@naver.com" },
-  { roomId: 4, roomName: "qqq__sdf@naver.com" },
-];
 
 export default ChatPage;

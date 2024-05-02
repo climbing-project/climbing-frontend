@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState, type ReactElement } from "react";
 import { useSession } from "next-auth/react";
-import { Client, type IFrame } from "@stomp/stompjs";
+import { Client, Message, type IFrame } from "@stomp/stompjs";
 import styled from "styled-components";
-import ChatHistory from "@/components/chat/ChatHistory";
+import ChatHistory, { type MessageFormat } from "@/components/chat/ChatHistory";
 import ChatForm from "@/components/chat/ChatForm";
 import GlobalStyle from "@/styles/global-styles";
 import LoginPrompt from "@/components/common/LoginPrompt";
@@ -10,51 +10,56 @@ import { requestData } from "@/service/api";
 import { SOCKET_ADDRESS } from "@/constants/constants";
 import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import type { NextPageWithLayout } from "@/pages/_app";
-import type { MessageFormat } from "@/components/chat/ChatHistory";
 import type { Chatroom } from "@/constants/admin/types";
 
 const ChatPopup: NextPageWithLayout = ({
   roomId,
 }: InferGetServerSidePropsType<GetServerSideProps>) => {
   const { data: session, status } = useSession();
-  const [roomName, setRoomName] = useState("()");
+  const [roomName, setRoomName] = useState<null | string>(null);
   const [messages, setMessages] = useState<MessageFormat[] | undefined>(undefined);
-  const clientRef = useRef(
-    new Client({
-      brokerURL: `ws://${SOCKET_ADDRESS}/ws/chat`,
-      connectHeaders: { Authorization: "Bearer " + session?.user.token },
-    }),
-  );
+  const clientRef = useRef<Client | null>(null);
+
+  const onServerMessage = (res: Message) => {
+    if (!session) return;
+    const messageBody = JSON.parse(res.body);
+    const { type, message, sender } = messageBody;
+    console.log(messageBody);
+
+    if (type === "TALK") {
+      const newMessage = {
+        userType: sender === session.user.email ? "admin" : "customer",
+        message,
+        time: Date.now(),
+      };
+      setMessages((prev) => [...(prev ?? []), newMessage]);
+    }
+  };
 
   useEffect(() => {
+    if (!session || clientRef.current) return;
+
+    clientRef.current = new Client({
+      brokerURL: `ws://${SOCKET_ADDRESS}/ws/chat`,
+      connectHeaders: { Authorization: "Bearer " + session.jwt.accessToken },
+    });
     const client = clientRef.current;
-    console.log("STOMP 클라이언트:"); // 클라이언트 생성 확인
-    console.log(client);
+
+    requestData({
+      option: "GET",
+      url: `/chat/room/${roomId}`,
+      token: session.jwt.accessToken,
+      onSuccess: (roomData: Chatroom) => setRoomName(roomData.roomName),
+    });
 
     const onClientConnect = () => {
-      console.log("연결 성공");
-      console.log("구독 시도");
-      client.subscribe("/app", (message) => {
-        console.log(message);
-
-        // TALK 타입일 경우 리턴받은 message를 현재 상태에 추가
-        // setMessages((prev) => [...prev, message]);
-      });
+      client.subscribe(`/queue/chat/room/${roomId}`, onServerMessage);
       client.publish({
-        destination: "/queue",
+        destination: "/app/chat/message",
         body: JSON.stringify({
           type: "ENTER",
-          sender: "testUser@gmail.com",
-        }),
-      });
-    };
-
-    const onClientDisconnect = () => {
-      console.log("연결 종료");
-      client.publish({
-        destination: "/queue",
-        body: JSON.stringify({
-          type: "LEAVE",
+          roomId,
+          sender: session.user.email,
         }),
       });
     };
@@ -65,40 +70,36 @@ const ChatPopup: NextPageWithLayout = ({
     };
 
     client.onConnect = onClientConnect;
-    client.onDisconnect = onClientDisconnect;
     client.onStompError = onClientError;
     client.activate();
-    requestData({
-      option: "GET",
-      url: `/room/${roomId}`,
-      onSuccess: (roomData: Chatroom) => setRoomName(roomData.roomName),
-    });
 
     return () => {
+      client.publish({
+        destination: "/app/chat/message",
+        body: JSON.stringify({
+          type: "LEAVE",
+          roomId,
+        }),
+      });
       client.deactivate();
     };
-  }, [roomId]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session]);
 
   const handleSend = (message: string) => {
-    if (message === "") return;
+    if (message === "" || !clientRef.current) return;
     if (!clientRef.current.connected) {
       console.log("소켓 연결 안됨");
       return;
     }
     clientRef.current.publish({
-      destination: "/queue",
+      destination: "/app/chat/message",
       body: JSON.stringify({
         type: "TALK",
         roomId,
-        sender: "testUser@gmail.com",
+        sender: session?.user.email,
         message,
       }),
-    });
-    const newMessage = { userType: "admin", message, time: Date.now() };
-    // 인메모리 db에도 반영?
-    setMessages((prev) => {
-      if (prev) return [...prev, newMessage];
-      else return [newMessage];
     });
   };
 
@@ -107,7 +108,7 @@ const ChatPopup: NextPageWithLayout = ({
     <S.Wrapper>
       {session ? (
         <>
-          <S.Header>{roomName}님의 문의</S.Header>
+          <S.Header>{roomName && `${roomName}님의 문의`}</S.Header>
           <S.Container>
             <ChatHistory speaker="admin" history={messages} />
             <ChatForm placeholder="답변하기" handleSend={handleSend} />
@@ -153,48 +154,3 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 export default ChatPopup;
-
-const sampleData = [
-  {
-    userType: "customer",
-    message: "dflkajsdf",
-    time: 1711215412079,
-  },
-  {
-    userType: "admin",
-    message: "dflkajsdf",
-    time: 1711225692079,
-  },
-  {
-    userType: "admin",
-    message: "dflkajsdf",
-    time: 1712226312579,
-  },
-  {
-    userType: "customer",
-    message:
-      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Veritatis nesciunt maxime nam vel accusantium fugiat enim recusandae cumque est eligendi?",
-    time: 1712226412091,
-  },
-  {
-    userType: "admin",
-    message: "dflkajsdf",
-    time: 1712237512879,
-  },
-  {
-    userType: "admin",
-    message:
-      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Veritatis nesciunt maxime nam vel accusantium fugiat enim recusandae cumque est eligendi?",
-    time: 1712237622981,
-  },
-  {
-    userType: "customer",
-    message: "asdf1",
-    time: 1713365096453,
-  },
-  {
-    userType: "customer",
-    message: "asdf2 fljgdlf kfjd lksjdlkfjlskdfj lsdkj fsldkjf kdjfsd8f sd8fj sdlfkj fff1321",
-    time: 1713365099453,
-  },
-];

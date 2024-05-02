@@ -19,11 +19,6 @@ interface ChatHistoryProps {
   speaker: string;
 }
 
-const OPPOSITE_SPEAKER = {
-  customer: "관리자",
-  admin: "이용자",
-};
-
 const ChatHistory = ({ history, speaker }: ChatHistoryProps) => {
   useEffect(() => {
     document.querySelector(".tracker")?.scrollIntoView();
@@ -73,9 +68,6 @@ const ChatHistory = ({ history, speaker }: ChatHistoryProps) => {
             <div className="divider">{batch.date}</div>
             {batch.messages.map(({ userType, message, time }, i) => (
               <M.Wrapper key={i}>
-                {userType !== speaker && batch.messages[i - 1]?.userType !== userType
-                  ? OPPOSITE_SPEAKER[speaker as keyof typeof OPPOSITE_SPEAKER]
-                  : null}
                 <M.Message
                   $speaker={userType === speaker}
                   className={batch.messages[i + 1]?.userType !== userType ? "lastMessage" : ""}

@@ -1,72 +1,103 @@
-import { useContext, useEffect, useRef } from "react";
-import { useRouter } from "next/router";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
-import { Client, type IFrame } from "@stomp/stompjs";
+import { Client, Message, type IFrame } from "@stomp/stompjs";
 import styled from "styled-components";
 import ChatForm from "./ChatForm";
 import ChatHistory from "./ChatHistory";
 import LoginPrompt from "../common/LoginPrompt";
-import { type ChatHistoryProps, ChatHistoryContext, testinit } from "@/ChatHistoryContext";
+import { type ChatHistoryProps, ChatHistoryContext } from "@/ChatHistoryContext";
 import { SERVER_ADDRESS, SOCKET_ADDRESS } from "@/constants/constants";
 
-const Socket = ({ gymName }: { gymName: string }) => {
+const Socket = ({ gymName, gymId }: { gymName: string; gymId: string }) => {
   const { data: session } = useSession();
-  const router = useRouter();
-  const clientRef = useRef(
-    new Client({
-      brokerURL: `ws://${SOCKET_ADDRESS}/ws/chat`,
-      connectHeaders: { Authorization: "Bearer " + session?.jwt.accessToken },
-    })
-  );
-  const roomRef = useRef("");
+  const [isLoading, setIsLoading] = useState(true);
+  const clientRef = useRef<null | Client>(null);
+  const roomRef = useRef(null);
   const { history, updateHistory } = useContext(ChatHistoryContext);
+  const currentHistory = useRef(history);
+
+  const onServerMessage = (res: Message) => {
+    if (!session || !roomRef.current) return;
+    const messageBody = JSON.parse(res.body);
+    const { type, message, sender } = messageBody;
+    console.log(messageBody);
+
+    if (type === "TALK") {
+      const newMessage = {
+        userType: sender === session.user.email ? "customer" : "admin",
+        message,
+        time: Date.now(),
+      };
+      const newHistory: ChatHistoryProps = { ...currentHistory.current };
+      newHistory[roomRef.current as keyof typeof newHistory] = [
+        ...(currentHistory.current?.[roomRef.current as keyof typeof currentHistory.current] || []),
+        newMessage,
+      ];
+      currentHistory.current = { ...currentHistory.current, ...newHistory };
+      updateHistory((prev) => ({ ...prev, ...newHistory }));
+    }
+  };
 
   useEffect(() => {
+    if (!session) return setIsLoading(false);
+
+    clientRef.current = new Client({
+      brokerURL: `ws://${SOCKET_ADDRESS}/ws/chat`,
+      connectHeaders: { Authorization: "Bearer " + session.jwt.accessToken },
+    });
     const client = clientRef.current;
 
-    // room 생성
-    // roomId fetch
-    const testurl = `${SERVER_ADDRESS}/chat/room`;
-    // fetch(testurl, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "text/plain",
-    //     Authorization: session?.user.token!,
-    //   },
-    //   body: "test@gmail.com",
-    // }).then((res) => {
-    //   console.log(res);
-    //   console.log(res.json());
-    // });
+    const connectClient = async () => {
+      try {
+        await getRoomId();
+      } catch (e) {
+        console.log(e);
+        return;
+      }
 
-    roomRef.current = "tet"; // 임시, 실제 roomId가 fetch되면 여기에 저장
+      client.onConnect = () => {
+        console.log("roomId: " + roomRef.current);
+        client.subscribe(`/queue/chat/room/${roomRef.current}`, onServerMessage);
+        client.publish({
+          destination: "/app/chat/message",
+          body: JSON.stringify({
+            type: "ENTER",
+            roomId: roomRef.current,
+            sender: session.user.email,
+          }),
+        });
+      };
+
+      client.onStompError = (frame: IFrame) => {
+        console.log("에러 발생");
+        console.log(frame); // 에러 확인
+      };
+
+      client.activate();
+      setIsLoading(false);
+    };
+
+    const getRoomId = async () => {
+      const res = await fetch(`${SERVER_ADDRESS}/chat/room`, {
+        method: "POST",
+        headers: { Authorization: "Bearer " + session.jwt.accessToken },
+      });
+      if (res.redirected) throw new Error("로그인이 필요한 서비스입니다.");
+      const { roomId } = await res.json();
+      roomRef.current = roomId;
+    };
+
     const loadedHistory: ChatHistoryProps = {};
 
     // 해당 room의 이전 채팅기록 fetch하고 context에 업데이트
     // fetch()
-    // loadedHistory[roomRef.current as keyof typeof loadedHistory] = testinit; // 임시(테스트값)
+    // loadedHistory[roomRef.current as keyof typeof loadedHistory] = "fetch한 값"
     // updateHistory((prev) => ({ ...prev, ...loadedHistory }));
+    // currentHistory.current = {...loadedHistory}
 
-    const onClientConnect = () => {
-      console.log("연결 성공");
-      console.log("구독 시도");
-      client.subscribe(`/queue/chat/room/${roomRef.current}`, (message) => {
-        console.log(message); // 서버에서 도착한 메시지 확인
-        // TALK 타입일 경우 리턴받은 message를 현재 상태에 추가
-        // setMessages((prev) => [...prev, message]);
-      });
-      client.publish({
-        destination: "/app/chat/message",
-        body: JSON.stringify({
-          type: "ENTER",
-          roomId: roomRef.current,
-          sender: "testUser@gmail.com",
-        }),
-      });
-    };
+    connectClient();
 
-    const onClientDisconnect = () => {
-      console.log("연결 종료");
+    return () => {
       client.publish({
         destination: "/app/chat/message",
         body: JSON.stringify({
@@ -74,70 +105,47 @@ const Socket = ({ gymName }: { gymName: string }) => {
           roomId: roomRef.current,
         }),
       });
-    };
-
-    const onClientError = (frame: IFrame) => {
-      console.log("에러 발생");
-      console.log(frame); // 에러 확인
-    };
-
-    client.onConnect = onClientConnect;
-    client.onDisconnect = onClientDisconnect;
-    client.onStompError = onClientError;
-    client.activate();
-
-    return () => {
       client.deactivate();
     };
-  }, [updateHistory]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleSend = (message: string) => {
     if (message === "") return;
-    // if (!clientRef.current.connected) {
-    //   console.log("소켓 연결 안됨");
-    //   return;
-    // }
-    // if (roomRef.current === "") {
-    //   console.log("입장한 방이 없음");
-    //   return;
-    // }
-    // clientRef.current.publish({
-    //   destination: "/app/chat/message",
-    //   body: JSON.stringify({
-    //     type: "TALK",
-    //     roomId: roomRef.current,
-    //     sender: "testUser@gmail.com",
-    //     message,
-    //   }),
-    // });
-
-    const newMessage = { userType: "customer", message, time: Date.now() };
-    const newHistory: ChatHistoryProps = { ...history };
-    if (history?.[roomRef.current as keyof typeof history]) {
-      newHistory[roomRef.current as keyof typeof newHistory] = [
-        ...history[roomRef.current as keyof typeof history],
-        newMessage,
-      ];
-    } else {
-      newHistory[roomRef.current as keyof typeof newHistory] = [newMessage];
+    if (!clientRef.current || !clientRef.current.connected) {
+      console.log("소켓 연결 안됨");
+      return;
     }
-    updateHistory((prev) => ({ ...prev, ...newHistory }));
+    if (roomRef.current === "") {
+      console.log("입장한 방이 없음");
+      return;
+    }
+    clientRef.current.publish({
+      destination: "/app/chat/message",
+      body: JSON.stringify({
+        type: "TALK",
+        roomId: roomRef.current,
+        sender: session?.user.email,
+        message,
+      }),
+    });
   };
 
   return (
     <S.Wrapper>
       <S.Container>
         <S.Header>{gymName}</S.Header>
-        {/* {session ? (
+        {isLoading ? null : session ? (
           <>
-            <ChatHistory speaker="customer" history={history?.[roomRef.current]} />
+            <ChatHistory
+              speaker="customer"
+              history={currentHistory.current?.[roomRef.current ?? ""]}
+            />
             <ChatForm placeholder="문의를 남겨주세요 :)" handleSend={handleSend} />
           </>
         ) : (
           <LoginPrompt />
-        )} */}
-        <ChatHistory speaker="customer" history={history?.[roomRef.current]} />
-        <ChatForm placeholder="문의를 남겨주세요 :)" handleSend={handleSend} />
+        )}
       </S.Container>
     </S.Wrapper>
   );

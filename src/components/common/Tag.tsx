@@ -11,13 +11,14 @@ const Tag = ({ prefix, text }: TagProps) => {
 };
 
 const S = {
-  Wrapper: styled.span`
+  Wrapper: styled.div`
     display: inline-block;
-    line-height: 24px;
-    border-radius: 8px;
+    line-height: 1.5rem;
+    border-radius: 0.5rem;
     background-color: #dcdcdc;
     color: #666;
     padding: 4px 8px;
+    user-select: none;
   `,
 };
 

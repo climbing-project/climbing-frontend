@@ -93,7 +93,7 @@ const MainContent = ({ gymData }: { gymData: GymData }) => {
               </StyledIcon>{" "}
               <StyledIcon $clickable={true}>
                 <Bookmark
-                  sessionId={session.user?.email as string}
+                  token={session.jwt.accessToken}
                   gymId={gymData.id as string}
                   size="1.3rem"
                 />

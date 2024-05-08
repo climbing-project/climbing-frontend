@@ -14,13 +14,14 @@ import type { UserComments } from "@/constants/gyms/types";
 const ManagePage: NextPageWithLayout = () => {
   const { data: session } = useSession();
   const router = useRouter();
+  const { id } = router.query;
   const [comments, setComments] = useState<UserComments>([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  console.log(router);
+
   useEffect(() => {
-    // 테스트 후 복원
     // if (!session) router.push({ pathname: "/login" });
-    const id = "1"; // 테스트 후 사용자 정보를 통해 가져오도록 변경
     let comments: UserComments;
 
     const fetchData = async () => {
@@ -28,7 +29,7 @@ const ManagePage: NextPageWithLayout = () => {
         const response = await Promise.race([
           fetch(`${testUrl}`),
           new Promise<Response>((_, reject) =>
-            setTimeout(() => reject(new Response(null, { status: 503 })), 3000)
+            setTimeout(() => reject(new Response(null, { status: 503 })), 3000),
           ),
         ]);
         if (!response.ok) comments = sampleData;
@@ -46,12 +47,13 @@ const ManagePage: NextPageWithLayout = () => {
     };
 
     fetchData();
-  }, [router, session]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const updateDatabase = async (comments: UserComments) => {
     try {
       const response = await Promise.race([
-        fetch(`${SERVER_ADDRESS}/gyms/1`, {
+        fetch(`${SERVER_ADDRESS}/gyms/${id}`, {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
@@ -59,7 +61,7 @@ const ManagePage: NextPageWithLayout = () => {
           body: JSON.stringify({ comments }),
         }),
         new Promise<Response>((_, reject) =>
-          setTimeout(() => reject(new Response(null, { status: 503 })), 3000)
+          setTimeout(() => reject(new Response(null, { status: 503 })), 3000),
         ),
       ]);
       if (!response.ok) throw new Error(`${response.status}`);
@@ -71,9 +73,7 @@ const ManagePage: NextPageWithLayout = () => {
   };
 
   const handleDelete = (index: number) => {
-    const response = confirm(
-      "삭제한 댓글은 복구할 수 없습니다. 댓글을 삭제하시겠습니까?"
-    );
+    const response = confirm("삭제한 댓글은 복구할 수 없습니다. 댓글을 삭제하시겠습니까?");
     if (!response) return;
     const remainingComments = comments.filter((_, i) => index !== i);
     updateDatabase(remainingComments);

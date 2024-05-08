@@ -1,4 +1,4 @@
-import { lazy, useEffect, useRef, useState } from "react";
+import { lazy, useContext, useEffect, useRef, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useBeforeunload } from "react-beforeunload";
 import { useRouter } from "next/router";
@@ -9,6 +9,7 @@ import BasicInfoEditor from "@/components/admin/BasicInfoEditor";
 import DescriptionEditor from "@/components/admin/DescriptionEditor";
 import { ErrorFallback } from "@/components/common/ErrorFallback";
 import ImageEditor from "@/components/admin/ImageEditor";
+import { AdminContext, type AdminStateProps } from "@/AdminContext";
 import { SERVER_ADDRESS } from "@/constants/constants";
 import type { GymData, GymDataObject } from "@/constants/gyms/types";
 
@@ -21,13 +22,14 @@ const SettingDayEditor = lazy(() => import("@/components/admin/SettingDayEditor"
 const EditPage = () => {
   const { data: session } = useSession();
   const router = useRouter();
-  const { gym, page } = router.query;
+  const { id, p } = router.query;
   const [currentData, setCurrentData] = useState<GymData | null>(null);
   const [loadedData, setLoadedData] = useState<GymData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const tracker = useRef<null | string>(null);
+  const { selectedGymId } = useContext(AdminContext) as AdminStateProps;
 
   useEffect(() => {
     // if (!session) router.push({ pathname: "/login" });
@@ -37,7 +39,7 @@ const EditPage = () => {
     const fetchData = async () => {
       // if (!session) return;
       try {
-        const response = await fetch(`http://localhost:8000/gyms/${gym}`, {
+        const response = await fetch(`http://localhost:8000/gyms/${id}`, {
           method: "GET",
         });
         if (!response.ok) throw new Error(`${response.status}`);
@@ -109,6 +111,13 @@ const EditPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentData]);
 
+  useEffect(() => {
+    if (selectedGymId !== null && selectedGymId !== id) {
+      router.push(`/admin/edit/${selectedGymId}?p=${p}`);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedGymId]);
+
   useBeforeunload((e) => {
     if (tracker.current === "edited") {
       return e.preventDefault();
@@ -163,7 +172,7 @@ const EditPage = () => {
 
   const updateData = async (data: string) => {
     try {
-      const response = await fetch(`http://localhost:8000/gyms/${loadedData!.id}`, {
+      const response = await fetch(`http://localhost:8000/gyms/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -204,7 +213,7 @@ const EditPage = () => {
       <AdminLayout>
         {isLoading ? (
           <div>loading</div>
-        ) : page === "1" || !page ? (
+        ) : p === "1" || !p ? (
           <>
             <ImageEditor
               images={currentData?.images}
@@ -228,7 +237,7 @@ const EditPage = () => {
               </button>
             </Button>
           </>
-        ) : (
+        ) : p === "2" ? (
           <>
             <PricingEditor pricingList={currentData?.pricing} setNewData={setNewData} />
             <OpenHoursEditor openHoursList={currentData?.openHours} setNewData={setNewData} />
@@ -244,10 +253,14 @@ const EditPage = () => {
               </button>
             </Button>
           </>
-        )}
+        ) : null}
       </AdminLayout>
     </ErrorBoundary>
   );
+};
+
+export const getServerSideProps = async () => {
+  return { props: {} };
 };
 
 const Button = styled.div`

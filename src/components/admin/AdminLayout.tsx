@@ -1,12 +1,47 @@
+import { ChangeEvent, useContext, useEffect } from "react";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import styled from "styled-components";
 import { HiOutlineChat, HiOutlineCog, HiOutlineHome } from "react-icons/hi";
 import { MdOutlineComment } from "react-icons/md";
+import { requestData } from "@/service/api";
+import { AdminContext, type AdminStateProps } from "@/AdminContext";
 
 const AdminLayout = ({ children }: React.PropsWithChildren<{}>) => {
+  const router = useRouter();
+  const { gymList, setGymList, selectedGymId, setSelectedGymId } = useContext(
+    AdminContext,
+  ) as AdminStateProps;
+
+  useEffect(() => {
+    // requestData();
+    fetch("http://localhost:8000/gymids?user=hop")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.length < 1) return setGymList([]);
+        setGymList(data[0].gyms);
+      })
+      .catch((e) => console.log(e));
+    setSelectedGymId(router.query.id as string);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setSelectedGymId(e.target.value);
+  };
+
   return (
     <S.Wrapper>
       <S.Menu>
+        <S.Header>
+          <select value={selectedGymId ?? ""} onChange={handleSelectChange}>
+            {gymList?.map(({ id, name }, i) => (
+              <option key={i} value={id}>
+                {name}
+              </option>
+            ))}
+          </select>
+        </S.Header>
         <S.Header>
           <HiOutlineHome size="1.3rem" />
           <Link href="/admin">
@@ -19,21 +54,25 @@ const AdminLayout = ({ children }: React.PropsWithChildren<{}>) => {
         </S.Header>
         <S.Links>
           <li>
-            <Link href={{ pathname: "/admin/edit/", query: { page: "1" } }}>기본 정보</Link>
+            <Link href={{ pathname: `/admin/edit/${selectedGymId}`, query: { p: "1" } }}>
+              기본 정보
+            </Link>
           </li>
           <li>
-            <Link href={{ pathname: "/admin/edit/", query: { page: "2" } }}>상세 정보</Link>
+            <Link href={{ pathname: `/admin/edit/${selectedGymId}`, query: { p: "2" } }}>
+              상세 정보
+            </Link>
           </li>
         </S.Links>
         <S.Header>
           <MdOutlineComment size="1.3rem" />
-          <Link href="/admin/manage">
+          <Link href={`/admin/manage/${selectedGymId}`}>
             <strong>댓글 관리</strong>
           </Link>
         </S.Header>
         <S.Header>
           <HiOutlineChat size="1.3rem" />
-          <Link href="/admin/chat">
+          <Link href={`/admin/chat/${selectedGymId}`}>
             <strong>1:1 문의</strong>
           </Link>
         </S.Header>

@@ -1,156 +1,109 @@
-import { useEffect, useRef, useState, type ReactElement } from "react";
+import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import { Client, Message, type IFrame } from "@stomp/stompjs";
+import { useRouter } from "next/router";
+import { ErrorBoundary } from "react-error-boundary";
 import styled from "styled-components";
-import ChatHistory, { type MessageFormat } from "@/components/chat/ChatHistory";
-import ChatForm from "@/components/chat/ChatForm";
-import GlobalStyle from "@/styles/global-styles";
-import LoginPrompt from "@/components/common/LoginPrompt";
+import AdminLayout from "@/components/admin/AdminLayout";
+import { ErrorFallback } from "@/components/common/ErrorFallback";
 import { requestData } from "@/service/api";
-import { SOCKET_ADDRESS } from "@/constants/constants";
-import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import type { NextPageWithLayout } from "@/pages/_app";
-import type { Chatroom } from "@/constants/admin/types";
+import type { Chatroom, ChatroomRef } from "@/constants/admin/types";
 
-const ChatPopup: NextPageWithLayout = ({
-  roomId,
-}: InferGetServerSidePropsType<GetServerSideProps>) => {
-  const { data: session, status } = useSession();
-  const [roomName, setRoomName] = useState<null | string>(null);
-  const [messages, setMessages] = useState<MessageFormat[] | undefined>(undefined);
-  const clientRef = useRef<Client | null>(null);
-
-  const onServerMessage = (res: Message) => {
-    if (!session) return;
-    const messageBody = JSON.parse(res.body);
-    const { type, message, sender } = messageBody;
-    console.log(messageBody);
-
-    if (type === "TALK") {
-      const newMessage = {
-        userType: sender === session.user.email ? "admin" : "customer",
-        message,
-        time: Date.now(),
-      };
-      setMessages((prev) => [...(prev ?? []), newMessage]);
-    }
-  };
+const ChatPage: NextPageWithLayout = () => {
+  const { data: session } = useSession();
+  const router = useRouter();
+  const { id } = router.query;
+  const [chatrooms, setChatrooms] = useState<Chatroom[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [openWindows, setOpenWindows] = useState<ChatroomRef[]>([]);
 
   useEffect(() => {
-    if (!session || clientRef.current) return;
+    // if (!session) router.push({ pathname: "/login" });
 
-    clientRef.current = new Client({
-      brokerURL: `ws://${SOCKET_ADDRESS}/ws/chat`,
-      connectHeaders: { Authorization: "Bearer " + session.jwt.accessToken },
-    });
-    const client = clientRef.current;
-
-    requestData({
-      option: "GET",
-      url: `/chat/room/${roomId}`,
-      token: session.jwt.accessToken,
-      onSuccess: (roomData: Chatroom) => setRoomName(roomData.roomName),
-    });
-
-    const onClientConnect = () => {
-      client.subscribe(`/queue/chat/room/${roomId}`, onServerMessage);
-      client.publish({
-        destination: "/app/chat/message",
-        body: JSON.stringify({
-          type: "ENTER",
-          roomId,
-          sender: session.user.email,
-        }),
+    const fetchRooms = async () => {
+      requestData({
+        option: "GET",
+        url: "/chat/room",
+        token: session?.jwt.accessToken,
+        onSuccess: (chatrooms: Chatroom[]) => setChatrooms(chatrooms),
       });
+      setIsLoading(false);
     };
 
-    const onClientError = (frame: IFrame) => {
-      console.log("에러 발생");
-      console.log(frame); // 에러 확인
-    };
-
-    client.onConnect = onClientConnect;
-    client.onStompError = onClientError;
-    client.activate();
-
-    return () => {
-      client.publish({
-        destination: "/app/chat/message",
-        body: JSON.stringify({
-          type: "LEAVE",
-          roomId,
-        }),
-      });
-      client.deactivate();
-    };
+    fetchRooms();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [session]);
+  }, []);
 
-  const handleSend = (message: string) => {
-    if (message === "" || !clientRef.current) return;
-    if (!clientRef.current.connected) {
-      console.log("소켓 연결 안됨");
-      return;
-    }
-    clientRef.current.publish({
-      destination: "/app/chat/message",
-      body: JSON.stringify({
-        type: "TALK",
-        roomId,
-        sender: session?.user.email,
-        message,
-      }),
-    });
+  const handleChatroomClick = (roomId: number | string) => {
+    const url = "/admin/chat/r/" + roomId;
+    const existingWindow = openWindows.find((window) => window.url === url);
+    if (!existingWindow) return openNewWindow(url);
+    if (existingWindow.windowRef.closed) {
+      setOpenWindows((prev) => prev.filter((room) => room.url !== url));
+      openNewWindow(url);
+    } else existingWindow.windowRef.focus();
   };
 
-  if (status === "loading") return null;
+  const openNewWindow = (url: string) => {
+    const newWindow = window.open(url, "_blank", "popup=true,left=50,top=50,width=370,height=550");
+    setOpenWindows((prev) => [...prev, { url, windowRef: newWindow as Window }]);
+    return;
+  };
+
   return (
-    <S.Wrapper>
-      {session ? (
-        <>
-          <S.Header>{roomName && `${roomName}님의 문의`}</S.Header>
-          <S.Container>
-            <ChatHistory speaker="admin" history={messages} />
-            <ChatForm placeholder="답변하기" handleSend={handleSend} />
-          </S.Container>
-        </>
-      ) : (
-        <LoginPrompt />
-      )}
-    </S.Wrapper>
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
+      <AdminLayout>
+        <S.Wrapper>
+          {isLoading ? null : (
+            <>
+              <S.Header>1:1 문의</S.Header>
+              <S.Content $direction="column">
+                {chatrooms.length > 0 ? (
+                  chatrooms.map(({ roomId, roomName }) => (
+                    <S.Row key={roomId} onClick={() => handleChatroomClick(roomId)}>
+                      {roomName}님의 문의
+                    </S.Row>
+                  ))
+                ) : (
+                  <div>현재 진행 중인 채팅이 없습니다.</div>
+                )}
+              </S.Content>
+            </>
+          )}
+        </S.Wrapper>
+      </AdminLayout>
+    </ErrorBoundary>
   );
 };
 
 const S = {
   Wrapper: styled.div`
-    height: 100vh;
+    background: white;
+    border: 1px solid #d0d0d0;
   `,
   Header: styled.div`
-    display: grid;
-    place-content: center start;
-    padding: 12px 8px;
-    box-shadow: 0 1px 5px #d0d0d0;
+    border-bottom: 1px solid #d0d0d0;
     font-weight: 700;
+    font-size: 24px;
+    padding: 32px 40px;
   `,
-  Container: styled.div`
+  Content: styled.div<{ $direction?: string }>`
+    padding: 32px 40px;
     display: flex;
-    flex-direction: column;
-    padding: 12px;
-    height: calc(100% - 70px);
+    flex-direction: ${(props) => props.$direction};
+    flex-wrap: wrap;
+    gap: 20px;
+  `,
+  Row: styled.div`
+    border: 1px solid #d0d0d0;
+    background: #fafaf8;
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+    user-select: none;
   `,
 };
 
-ChatPopup.getLayout = (page: ReactElement) => (
-  <>
-    <GlobalStyle />
-    {page}
-  </>
-);
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const roomId = context.query.id;
-  // 채팅기록 fetch해서 props로 전달, 컴포넌트 내에 상태를 갖고 초기값을 fetch한 기록으로 설정
-  return { props: { roomId } };
-};
-
-export default ChatPopup;
+export default ChatPage;

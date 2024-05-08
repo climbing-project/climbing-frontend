@@ -1,9 +1,11 @@
-import { Dispatch, SetStateAction } from "react";
-import { GymData } from "../gyms/types";
+import type { Dispatch, SetStateAction } from "react";
+import type { BaseGymData, GymData, GymDataObject } from "../gyms/types";
 
 // 데이터 타입 정의
 type Range<T> = [T, T];
 type ValuePiece = Date | null;
+type GymDataStateAction = Dispatch<SetStateAction<GymData | null>>;
+type SetNewData = (obj: GymDataObject) => void;
 export type Value = ValuePiece | Range<ValuePiece>;
 export type Chatroom = { roomId: number; roomName: string };
 export type ChatroomRef = {
@@ -13,28 +15,28 @@ export type ChatroomRef = {
 
 // 컴포넌트 props 타입 정의
 export interface DescriptionEditorProps {
-  description?: string;
-  setCurrentData: Dispatch<SetStateAction<GymData>>;
+  description: string | null | undefined;
+  setNewData: SetNewData;
 }
 
 export interface AccommodationsEditorProps {
-  accommodationsList: string[] | undefined;
-  setCurrentData: Dispatch<SetStateAction<GymData>>;
+  accommodationsList: string[] | null | undefined;
+  setNewData: SetNewData;
 }
 
 export interface AddressFieldProps {
-  address: { jibunAddress: string; roadAddress: string; unitAddress: string };
-  handleAddressChange: Dispatch<SetStateAction<GymData>>;
+  address: { jibunAddress: string; roadAddress: string; unitAddress: string } | undefined;
+  handleAddressChange: SetNewData;
   handleFocus?: (key: string) => void;
 }
 
 export interface BasicInfoProps {
-  name: string;
-  address: { jibunAddress: string; roadAddress: string; unitAddress: string };
-  contact: string;
-  snsList?: { twitter?: string; facebook?: string; instagram?: string };
-  homepage?: string;
-  setCurrentData: Dispatch<SetStateAction<GymData>>;
+  name: string | undefined;
+  address: { jibunAddress: string; roadAddress: string; unitAddress: string } | undefined;
+  contact: string | undefined;
+  snsList: { twitter?: string; facebook?: string; instagram?: string } | null | undefined;
+  homepage: string | null | undefined;
+  setNewData: SetNewData;
 }
 
 export interface ColorPickerProps {
@@ -48,15 +50,15 @@ export interface GradeBlockProps {
 }
 
 export interface GradeEditorProps {
-  gradesList: string[] | undefined;
-  setCurrentData: Dispatch<SetStateAction<GymData>>;
+  gradesList: string[] | null | undefined;
+  setNewData: SetNewData;
 }
 
 export interface ImageEditorProps {
-  images: string[] | undefined;
-  defaultImage: string | undefined;
-  setCurrentData: Dispatch<SetStateAction<GymData>>;
-  setLoadedData: Dispatch<SetStateAction<GymData>>;
+  images: string[] | null | undefined;
+  defaultImage: string | null | undefined;
+  setCurrentData: GymDataStateAction;
+  setLoadedData: GymDataStateAction;
   updateData: (data: string) => Promise<boolean>;
 }
 
@@ -72,13 +74,13 @@ export interface ImageUploadProps {
 }
 
 export interface NewGymFormProps {
-  handleSubmit: (formData: GymData) => void;
+  handleSubmit: (formData: BaseGymData) => void;
   disableForm: boolean;
 }
 
 export interface OpenHoursEditorProps {
-  openHoursList: Array<{ days: string; openTime: string; closeTime: string }> | undefined;
-  setCurrentData: Dispatch<SetStateAction<GymData>>;
+  openHoursList: Array<{ days: string; openTime: string; closeTime: string }> | null | undefined;
+  setNewData: SetNewData;
 }
 
 export interface OpenHoursFieldProps {
@@ -95,8 +97,8 @@ export interface PostcodeReaderProps {
 }
 
 export interface PricingEditorProps {
-  pricingList: Array<{ item: string; price: string }> | undefined;
-  setCurrentData: Dispatch<SetStateAction<GymData>>;
+  pricingList: Array<{ item: string; price: string }> | null | undefined;
+  setNewData: SetNewData;
 }
 
 export interface PricingFieldProps {
@@ -107,8 +109,8 @@ export interface PricingFieldProps {
 }
 
 export interface SettingDayEditorProps {
-  date: string | undefined;
-  setCurrentData: Dispatch<SetStateAction<GymData>>;
+  date: string | null | undefined;
+  setNewData: SetNewData;
 }
 
 export interface TextFieldProps {

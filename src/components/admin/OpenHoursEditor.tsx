@@ -3,7 +3,7 @@ import { IoTrash } from "react-icons/io5";
 import OpenHoursField from "./OpenHoursField";
 import type { OpenHoursEditorProps } from "@/constants/admin/types";
 
-const OpenHoursEditor = ({ openHoursList, setCurrentData }: OpenHoursEditorProps) => {
+const OpenHoursEditor = ({ openHoursList, setNewData }: OpenHoursEditorProps) => {
   const handleAddField = () => {
     const currentList = openHoursList ? openHoursList : [];
     const newItem = {
@@ -11,26 +11,19 @@ const OpenHoursEditor = ({ openHoursList, setCurrentData }: OpenHoursEditorProps
       openTime: "AM,12,00",
       closeTime: "AM,12,00",
     };
-    setCurrentData((prev) => ({
-      ...prev,
-      openHours: [...currentList, newItem],
-    }));
+    setNewData({ openHours: [...currentList, newItem] });
   };
 
   const handleChange = (newValue: string, index: number, key: string) => {
-    setCurrentData((prev) => {
-      const newList = [...openHoursList!];
-      const targetItem = newList[index];
-      targetItem[key as keyof typeof targetItem] = newValue;
-      return { ...prev, openHours: [...newList] };
-    });
+    const newList = [...openHoursList!];
+    const targetItem = newList[index];
+    targetItem[key as keyof typeof targetItem] = newValue;
+    setNewData({ openHours: [...newList] });
   };
 
   const handleDelete = (index: number) => {
-    setCurrentData((prev) => {
-      const openHours = openHoursList!.filter((_, i) => i !== index);
-      return { ...prev, openHours };
-    });
+    const openHours = openHoursList!.filter((_, i) => i !== index);
+    setNewData({ openHours });
   };
 
   return (

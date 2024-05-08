@@ -2,22 +2,27 @@ import { useState } from "react";
 import styled from "styled-components";
 import AddressField from "./AddressField";
 import { PHONE_REGEX } from "@/constants/admin/constants";
-import type { GymData } from "@/constants/gyms/types";
+import type { BaseGymData } from "@/constants/gyms/types";
 import type { NewGymFormProps } from "@/constants/admin/types";
 
 const NewGymForm = ({ handleSubmit, disableForm }: NewGymFormProps) => {
   const [focusedElem, setFocusedElem] = useState<string>("");
-  const [formData, setFormData] = useState<GymData>({
+  const [formData, setFormData] = useState<BaseGymData>({
     name: "",
     address: { jibunAddress: "", roadAddress: "", unitAddress: "" },
     coordinates: { latitude: 0, longitude: 0 },
     contact: "",
   });
 
-  const handleInput = (input: string, type: string, key: string) => {
+  const handleNameInput = (input: string) => {
     if (input.length > 20) return;
-    if (type === "number" && !PHONE_REGEX.test(input)) return;
-    setFormData((prev) => ({ ...prev, [key]: input }));
+    setFormData((prev) => ({ ...prev, name: input }));
+  };
+
+  const handleContactInput = (input: string) => {
+    if (input.length > 15) return;
+    if (!PHONE_REGEX.test(input)) return;
+    setFormData((prev) => ({ ...prev, contact: input }));
   };
 
   const handleFocus = (key: string) => {
@@ -39,7 +44,7 @@ const NewGymForm = ({ handleSubmit, disableForm }: NewGymFormProps) => {
           <S.TextField $focused={focusedElem === "name"}>
             <input
               value={formData.name}
-              onChange={(e) => handleInput(e.target.value, "string", "name")}
+              onChange={(e) => handleNameInput(e.target.value)}
               onFocus={() => handleFocus("name")}
               onBlur={() => handleFocus("")}
               required
@@ -61,7 +66,7 @@ const NewGymForm = ({ handleSubmit, disableForm }: NewGymFormProps) => {
           <S.TextField $focused={focusedElem === "contact"}>
             <input
               value={formData.contact}
-              onChange={(e) => handleInput(e.target.value, "number", "contact")}
+              onChange={(e) => handleContactInput(e.target.value)}
               placeholder="전화번호 입력"
               onFocus={() => handleFocus("contact")}
               onBlur={() => handleFocus("")}

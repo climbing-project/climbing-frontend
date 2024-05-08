@@ -22,8 +22,10 @@ const ImageEditor = ({
     // 썸네일 이미지가 아닌 URL만 DB 및 상태에 반영
     if (url.includes(`${THUMBNAIL_PREFIX}`)) return;
     setCurrentData((current) => {
+      if (!current) return null;
       if (key === "default") {
         setLoadedData((prev) => {
+          if (!prev) return null;
           updateData(JSON.stringify({ ...prev, defaultImage: url }));
           return { ...prev, defaultImage: url };
         });
@@ -32,6 +34,7 @@ const ImageEditor = ({
         const currentImages = current.images || [];
         const images = [...currentImages, url];
         setLoadedData((prev) => {
+          if (!prev) return null;
           updateData(JSON.stringify({ ...prev, images }));
           return { ...prev, images };
         });
@@ -42,8 +45,10 @@ const ImageEditor = ({
 
   const deleteImage = (url: string, key: string) => {
     setCurrentData((current) => {
+      if (!current) return null;
       if (key === "default") {
         setLoadedData((prev) => {
+          if (!prev) return null;
           updateData(JSON.stringify({ ...prev, defaultImage: "" }));
           return { ...prev, defaultImage: "" };
         });
@@ -52,6 +57,7 @@ const ImageEditor = ({
         const originUrl = url.replace(`${THUMBNAIL_PREFIX}`, "");
         const images = current.images!.filter((img) => img !== originUrl);
         setLoadedData((prev) => {
+          if (!prev) return null;
           updateData(JSON.stringify({ ...prev, images }));
           return { ...prev, images };
         });

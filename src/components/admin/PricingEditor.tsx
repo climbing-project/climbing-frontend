@@ -3,33 +3,26 @@ import { IoTrash } from "react-icons/io5";
 import PricingField from "./PricingField";
 import type { PricingEditorProps } from "@/constants/admin/types";
 
-const PricingEditor = ({ pricingList, setCurrentData }: PricingEditorProps) => {
+const PricingEditor = ({ pricingList, setNewData }: PricingEditorProps) => {
   const handleAddField = () => {
     const currentList = pricingList ? pricingList : [];
     const newItem = {
       item: "",
       price: "",
     };
-    setCurrentData((prev) => ({
-      ...prev,
-      pricing: [...currentList, newItem],
-    }));
+    setNewData({ pricing: [...currentList, newItem] });
   };
 
   const handleChange = (newValue: string, index: number, key: string) => {
-    setCurrentData((prev) => {
-      const newList = [...pricingList!];
-      const targetItem = newList[index];
-      targetItem[key as keyof typeof targetItem] = newValue;
-      return { ...prev, pricing: [...newList] };
-    });
+    const newList = [...pricingList!];
+    const targetItem = newList[index];
+    targetItem[key as keyof typeof targetItem] = newValue;
+    setNewData({ pricing: [...newList] });
   };
 
   const handleDelete = (index: number) => {
-    setCurrentData((prev) => {
-      const pricing = pricingList!.filter((_, i) => i !== index);
-      return { ...prev, pricing };
-    });
+    const pricing = pricingList!.filter((_, i) => i !== index);
+    setNewData({ pricing });
   };
 
   return (

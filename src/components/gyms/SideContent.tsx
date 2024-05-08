@@ -40,7 +40,7 @@ const SideContent = ({ gymData }: { gymData: GymData }) => {
         <GradeBar grades={gymData.grades || null} />
       </div>
       <div className="container">
-        <ContactInfo contact={gymData.contact} snsList={gymData.sns || null} />
+        <ContactInfo contact={gymData.contact} snsList={gymData.sns} />
       </div>
     </Wrapper>
   );

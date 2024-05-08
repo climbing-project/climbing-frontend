@@ -19,14 +19,10 @@ const AdminLayout = ({ children }: React.PropsWithChildren<{}>) => {
         </S.Header>
         <S.Links>
           <li>
-            <Link href={{ pathname: "/admin/edit/", query: { page: "1" } }} as="/admin/edit/">
-              기본 정보
-            </Link>
+            <Link href={{ pathname: "/admin/edit/", query: { page: "1" } }}>기본 정보</Link>
           </li>
           <li>
-            <Link href={{ pathname: "/admin/edit/", query: { page: "2" } }} as="/admin/edit/">
-              상세 정보
-            </Link>
+            <Link href={{ pathname: "/admin/edit/", query: { page: "2" } }}>상세 정보</Link>
           </li>
         </S.Links>
         <S.Header>

@@ -1,36 +1,51 @@
-import { Session } from "next-auth";
+import type { Session } from "next-auth";
 
 // 데이터 타입 정의
-export interface GymData {
-  id?: string;
+export type BaseGymData = {
   name: string;
-  address: {
-    jibunAddress: string;
-    roadAddress: string;
-    unitAddress: string;
-  };
-  coordinates: {
-    latitude: number;
-    longitude: number;
-  };
+  address: GymAddress;
+  coordinates: MapCoordinates;
   contact: string;
-  latestSettingDay?: string;
-  sns?: { twitter?: string; facebook?: string; instagram?: string };
-  homepage?: string;
-  images?: Array<string>;
-  defaultImage?: string;
-  openHours?: Array<{ days: string; openTime: string; closeTime: string }>;
-  pricing?: Array<{ item: string; price: string }>;
-  tags?: Array<string>;
-  description?: string;
-  grades?: Array<string>;
-  accommodations?: Array<string>;
-  comments?: Array<{ user: string; date: string; text: string }>;
-  likeNumber?: number;
-}
+};
 
 export type DetailedListItem = {
   [key: string]: string | number;
+};
+
+export type GymAddress = {
+  jibunAddress: string;
+  roadAddress: string;
+  unitAddress: string;
+};
+
+export type GymData = BaseGymData & {
+  id?: string;
+  latestSettingDay: string | null;
+  sns: SnsList | null;
+  homepage: string | null;
+  images: string[] | null;
+  defaultImage: string | null;
+  openHours: OpenHours[] | null;
+  pricing: Pricing[] | null;
+  tags: string[] | null;
+  description: string | null;
+  grades: string[] | null;
+  accommodations: string[] | null;
+  comments: UserComments | null;
+  likeNumber: number | null;
+};
+
+export type GymDataObject = {
+  [key: string]:
+    | string
+    | string[]
+    | SnsList
+    | OpenHours[]
+    | Pricing[]
+    | UserComments
+    | number
+    | MapCoordinates
+    | GymAddress;
 };
 
 export type MapCoordinates = {
@@ -53,7 +68,7 @@ export type SnsList = {
   twitter?: string;
   facebook?: string;
   instagram?: string;
-} | null;
+};
 
 export type UserComments = Array<{ user: string; date: string; text: string }>;
 
@@ -70,7 +85,7 @@ export interface CommentTextareaProps {
 
 export interface ContactInfoProps {
   contact: string;
-  snsList: SnsList;
+  snsList: SnsList | null;
 }
 
 export interface DetailedListProps {

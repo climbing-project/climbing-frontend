@@ -2,22 +2,16 @@ import styled from "styled-components";
 import { ACCOMMODATIONS_LIST } from "@/constants/admin/constants";
 import type { AccommodationsEditorProps } from "@/constants/admin/types";
 
-const AccommodationsEditor = ({
-  accommodationsList,
-  setCurrentData,
-}: AccommodationsEditorProps) => {
+const AccommodationsEditor = ({ accommodationsList, setNewData }: AccommodationsEditorProps) => {
   const handleChange = (target: HTMLInputElement, checkedItem: string, isChecked: boolean) => {
     if (!isChecked) {
       const prevList = accommodationsList ? accommodationsList : [];
       const newList = [...prevList, checkedItem].sort((a, b) => a.localeCompare(b));
-      setCurrentData((prev) => ({ ...prev, accommodations: [...newList] }));
+      setNewData({ accommodations: [...newList] });
       target.checked = !isChecked;
     } else {
       const filteredList = accommodationsList?.filter((item) => item !== checkedItem);
-      setCurrentData((prev) => ({
-        ...prev,
-        accommodations: [...filteredList!],
-      }));
+      setNewData({ accommodations: [...filteredList!] });
       target.checked = !isChecked;
     }
   };

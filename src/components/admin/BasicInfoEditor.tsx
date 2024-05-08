@@ -10,7 +10,7 @@ const BasicInfoEditor = ({
   contact,
   snsList,
   homepage,
-  setCurrentData,
+  setNewData,
 }: BasicInfoProps) => {
   const handleTextChange = (input: string, key: string) => {
     switch (key) {
@@ -19,7 +19,7 @@ const BasicInfoEditor = ({
         break;
       }
       case "homepage": {
-        if (input.length > 50) return;
+        if (input.includes(" ") || input.length > 50) return;
         break;
       }
       case "contact": {
@@ -28,17 +28,14 @@ const BasicInfoEditor = ({
         break;
       }
     }
-
-    setCurrentData((prev) => ({ ...prev, [key]: input }));
+    setNewData({ [key]: input });
   };
 
   const handleSnsChange = (input: string, key: string) => {
-    if (input.length > 20) return;
-    setCurrentData((prev) => {
-      const newObject = prev ? { ...prev.sns } : {};
-      newObject[key as keyof typeof newObject] = input;
-      return { ...prev, sns: newObject };
-    });
+    if (input.includes(" ") || input.length > 30) return;
+    const newList = snsList ? { ...snsList } : {};
+    newList[key as keyof typeof newList] = input;
+    setNewData({ sns: { ...newList } });
   };
 
   return (
@@ -50,13 +47,13 @@ const BasicInfoEditor = ({
             <strong>암장 이름</strong>
             <S.TextField $width="355px">
               <input value={name} onChange={(e) => handleTextChange(e.target.value, "name")} />
-              {name.length}/20
+              {name?.length ?? 0}/20
             </S.TextField>
           </S.Block>
           <S.Block>
             <strong>주소</strong>
             <S.TextField $width="520px">
-              <AddressField address={address} handleAddressChange={setCurrentData} />
+              <AddressField address={address} handleAddressChange={setNewData} />
             </S.TextField>
           </S.Block>
         </div>
@@ -69,7 +66,7 @@ const BasicInfoEditor = ({
                 value={contact}
                 onChange={(e) => handleTextChange(e.target.value, "contact")}
               />
-              {contact.length}/15
+              {contact?.length ?? 0}/15
             </S.TextField>
           </S.Block>
           <S.Block>
@@ -77,7 +74,7 @@ const BasicInfoEditor = ({
             <S.TextField $width="355px">
               <BsGlobe2 />
               <input
-                value={homepage || ""}
+                value={homepage ?? ""}
                 onChange={(e) => handleTextChange(e.target.value, "homepage")}
               />
             </S.TextField>
@@ -92,7 +89,7 @@ const BasicInfoEditor = ({
                   {icon}
                   <input
                     name={platform}
-                    value={snsList?.[platform as keyof typeof snsList] || ""}
+                    value={snsList?.[platform as keyof typeof snsList] ?? ""}
                     onChange={(e) => {
                       handleSnsChange(e.target.value, e.target.name);
                     }}

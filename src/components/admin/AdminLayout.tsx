@@ -20,9 +20,13 @@ const AdminLayout = ({ children }: React.PropsWithChildren<{}>) => {
       .then((data) => {
         if (data.length < 1) return setGymList([]);
         setGymList(data[0].gyms);
+        if (router.query.id) {
+          setSelectedGymId(router.query.id as string);
+        } else {
+          setSelectedGymId(data[0].gyms[0].id);
+        }
       })
       .catch((e) => console.log(e));
-    setSelectedGymId(router.query.id as string);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

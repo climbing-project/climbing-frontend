@@ -187,7 +187,6 @@ const EditPage = () => {
   };
 
   const setNewData = (obj: GymDataObject) => {
-    console.log(obj);
     setCurrentData((prev) => {
       if (!prev) return null;
       return { ...prev, ...obj };

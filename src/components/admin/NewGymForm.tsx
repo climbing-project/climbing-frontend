@@ -2,7 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import AddressField from "./AddressField";
 import { PHONE_REGEX } from "@/constants/admin/constants";
-import type { BaseGymData } from "@/constants/gyms/types";
+import type { BaseGymData, GymDataObject } from "@/constants/gyms/types";
 import type { NewGymFormProps } from "@/constants/admin/types";
 
 const NewGymForm = ({ handleSubmit, disableForm }: NewGymFormProps) => {
@@ -23,6 +23,10 @@ const NewGymForm = ({ handleSubmit, disableForm }: NewGymFormProps) => {
     if (input.length > 15) return;
     if (!PHONE_REGEX.test(input)) return;
     setFormData((prev) => ({ ...prev, contact: input }));
+  };
+
+  const handleAddressInput = (obj: GymDataObject) => {
+    setFormData((prev) => ({ ...prev, ...obj }));
   };
 
   const handleFocus = (key: string) => {
@@ -56,7 +60,7 @@ const NewGymForm = ({ handleSubmit, disableForm }: NewGymFormProps) => {
           <S.TextField $width="450px" $focused={focusedElem === "address"}>
             <AddressField
               address={formData.address}
-              handleAddressChange={setFormData}
+              handleAddressChange={handleAddressInput}
               handleFocus={handleFocus}
             />
           </S.TextField>

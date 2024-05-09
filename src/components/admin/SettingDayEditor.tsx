@@ -14,7 +14,7 @@ const TODAYS_DATE = {
   date: TODAY.getDate(),
 };
 
-const SettingDayEditor = ({ date, setCurrentData }: SettingDayEditorProps) => {
+const SettingDayEditor = ({ date, setNewData }: SettingDayEditorProps) => {
   const [isClosed, setIsClosed] = useState(true);
 
   const convertDataToText = (string: string) => {
@@ -35,10 +35,9 @@ const SettingDayEditor = ({ date, setCurrentData }: SettingDayEditorProps) => {
         return alert(e);
       }
 
-      setCurrentData((prev) => {
-        const latestSettingDay =
-          newYear.slice(2) + "." + newMonth.padStart(2, "0") + "." + newDate.padStart(2, "0");
-        return { ...prev, latestSettingDay };
+      setNewData({
+        latestSettingDay:
+          newYear.slice(2) + "." + newMonth.padStart(2, "0") + "." + newDate.padStart(2, "0"),
       });
       setIsClosed((prev) => !prev);
     }
@@ -46,17 +45,16 @@ const SettingDayEditor = ({ date, setCurrentData }: SettingDayEditorProps) => {
 
   const handleIconClick = () => setIsClosed((prev) => !prev);
 
-  const handleDelete = () => setCurrentData((prev) => ({ ...prev, latestSettingDay: "" }));
+  const handleDelete = () => setNewData({ latestSettingDay: "" });
 
   const handleAddField = () => {
-    setCurrentData((prev) => {
-      const latestSettingDay =
+    setNewData({
+      latestSettingDay:
         TODAYS_DATE.year.toString().slice(2) +
         "." +
         TODAYS_DATE.month.toString().padStart(2, "0") +
         "." +
-        TODAYS_DATE.date.toString().padStart(2, "0");
-      return { ...prev, latestSettingDay };
+        TODAYS_DATE.date.toString().padStart(2, "0"),
     });
   };
 

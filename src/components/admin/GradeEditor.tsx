@@ -5,34 +5,27 @@ import GradeBlock from "./GradeBlock";
 import { DEFAULT_COLOR, NEW_GRADES } from "@/constants/admin/constants";
 import type { GradeEditorProps } from "@/constants/admin/types";
 
-const GradeEditor = ({ gradesList, setCurrentData }: GradeEditorProps) => {
-  const handleCreate = () => {
-    setCurrentData((prev) => ({ ...prev, grades: [...NEW_GRADES] }));
-  };
+const GradeEditor = ({ gradesList, setNewData }: GradeEditorProps) => {
+  const handleCreate = () => setNewData({ grades: [...NEW_GRADES] });
 
-  const handleDelete = () => {
-    setCurrentData((prev) => ({ ...prev, grades: [] }));
-  };
+  const handleDelete = () => setNewData({ grades: [] });
 
   const handleColorChange = (index: number, color: string) => {
     const currentList = gradesList ? [...gradesList] : [...NEW_GRADES];
     currentList[index] = color;
-    setCurrentData((prev) => ({ ...prev, grades: [...currentList] }));
+    setNewData({ grades: [...currentList] });
   };
 
   const handleCountChange = (operation: string) => {
+    const currentList = gradesList ? gradesList : [];
     if (operation === "plus") {
       if (gradesList!.length === 10) return;
-      setCurrentData((prev) => {
-        const currentList = [...prev.grades!];
-        return { ...prev, grades: [...currentList, DEFAULT_COLOR] };
-      });
-    } else {
+      setNewData({ grades: [...currentList, DEFAULT_COLOR] });
+    }
+    if (operation === "minus") {
       if (gradesList!.length === 2) return;
-      setCurrentData((prev) => {
-        const newList = prev.grades!.filter((_, i) => i !== prev.grades!.length - 1);
-        return { ...prev, grades: [...newList] };
-      });
+      const filteredList = currentList.filter((_, i) => i !== currentList.length - 1);
+      setNewData({ grades: [...filteredList] });
     }
   };
 

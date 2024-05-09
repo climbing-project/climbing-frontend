@@ -8,10 +8,6 @@ export type BaseGymData = {
   contact: string;
 };
 
-export type DetailedListItem = {
-  [key: string]: string | number;
-};
-
 export type GymAddress = {
   jibunAddress: string;
   roadAddress: string;
@@ -86,10 +82,6 @@ export interface CommentTextareaProps {
 export interface ContactInfoProps {
   contact: string;
   snsList: SnsList | null;
-}
-
-export interface DetailedListProps {
-  items: Array<DetailedListItem> | null;
 }
 
 export interface GradeBarProps {

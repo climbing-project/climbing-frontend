@@ -29,7 +29,7 @@ const EditPage = () => {
   const [isError, setIsError] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const tracker = useRef<null | string>(null);
-  const { selectedGymId } = useContext(AdminContext) as AdminStateProps;
+  const { selectedGymId, setSelectedGymId } = useContext(AdminContext) as AdminStateProps;
 
   useEffect(() => {
     // if (!session) router.push({ pathname: "/login" });
@@ -91,13 +91,14 @@ const EditPage = () => {
 
     const handlePageLeave = () => {
       const dataChanged = tracker.current === "edited" ? true : false;
-      if (!dataChanged) return;
+      if (!dataChanged) return setIsLoading(true);
       const response = confirm("수정 중인 데이터가 있습니다. 이동할까요?");
       if (!response) {
+        setSelectedGymId(id as string);
         throw "Routing reborted in response to the user's request. Please ignore this error message.";
       }
       tracker.current = null;
-      setCurrentData(JSON.parse(JSON.stringify(data)));
+      setIsLoading(true);
     };
 
     fetchData();

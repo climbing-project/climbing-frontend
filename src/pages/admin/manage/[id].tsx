@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { ErrorBoundary } from "react-error-boundary";
@@ -7,6 +7,7 @@ import { IoTrash } from "react-icons/io5";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { ErrorFallback } from "@/components/common/ErrorFallback";
 import UserComment from "@/components/admin/UserComment";
+import { AdminContext, type AdminStateProps } from "@/AdminContext";
 import { SERVER_ADDRESS } from "@/constants/constants";
 import type { NextPageWithLayout } from "@/pages/_app";
 import type { UserComments } from "@/constants/gyms/types";
@@ -17,8 +18,7 @@ const ManagePage: NextPageWithLayout = () => {
   const { id } = router.query;
   const [comments, setComments] = useState<UserComments>([]);
   const [isLoading, setIsLoading] = useState(true);
-
-  console.log(router);
+  const { selectedGymId } = useContext(AdminContext) as AdminStateProps;
 
   useEffect(() => {
     // if (!session) router.push({ pathname: "/login" });
@@ -42,13 +42,23 @@ const ManagePage: NextPageWithLayout = () => {
       } catch (e) {
         // 에러 핸들링
         console.log(e);
+        comments = sampleData;
+        setComments(comments);
       }
       setIsLoading(false);
     };
 
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [router]);
+
+  useEffect(() => {
+    if (selectedGymId !== null && selectedGymId !== id) {
+      setIsLoading(true);
+      router.push(`/admin/manage/${selectedGymId}`);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedGymId]);
 
   const updateDatabase = async (comments: UserComments) => {
     try {

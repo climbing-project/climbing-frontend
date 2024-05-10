@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { ErrorBoundary } from "react-error-boundary";
@@ -8,6 +8,7 @@ import { ErrorFallback } from "@/components/common/ErrorFallback";
 import { requestData } from "@/service/api";
 import type { NextPageWithLayout } from "@/pages/_app";
 import type { Chatroom, ChatroomRef } from "@/constants/admin/types";
+import { AdminContext, type AdminStateProps } from "@/AdminContext";
 
 const ChatPage: NextPageWithLayout = () => {
   const { data: session } = useSession();
@@ -16,6 +17,7 @@ const ChatPage: NextPageWithLayout = () => {
   const [chatrooms, setChatrooms] = useState<Chatroom[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [openWindows, setOpenWindows] = useState<ChatroomRef[]>([]);
+  const { selectedGymId } = useContext(AdminContext) as AdminStateProps;
 
   useEffect(() => {
     // if (!session) router.push({ pathname: "/login" });
@@ -32,7 +34,15 @@ const ChatPage: NextPageWithLayout = () => {
 
     fetchRooms();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [router]);
+
+  useEffect(() => {
+    if (selectedGymId !== null && selectedGymId !== id) {
+      setIsLoading(true);
+      router.push(`/admin/chat/${selectedGymId}`);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedGymId]);
 
   const handleChatroomClick = (roomId: number | string) => {
     const url = "/admin/chat/r/" + roomId;

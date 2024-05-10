@@ -20,13 +20,11 @@ const MyApp: NextComponentType<AppContext, AppInitialProps, AppPropsWithLayout> 
 }) => {
   const getLayout = Component.getLayout ?? ((page: any) => <Layout>{page}</Layout>);
   return (
-    <AdminContextProvider>
-      <ChatHistoryProvider>
-        <SessionProvider session={session}>
-          {getLayout(<Component {...pageProps} />)}
-        </SessionProvider>
-      </ChatHistoryProvider>
-    </AdminContextProvider>
+    <SessionProvider session={session}>
+      <AdminContextProvider>
+        <ChatHistoryProvider>{getLayout(<Component {...pageProps} />)}</ChatHistoryProvider>
+      </AdminContextProvider>
+    </SessionProvider>
   );
 };
 

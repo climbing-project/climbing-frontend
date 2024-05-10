@@ -37,7 +37,7 @@ const EditPage = () => {
     let data: GymData;
 
     const fetchData = async () => {
-      // if (!session) return;
+      // if (!session || !isLoading) return;
       try {
         const response = await fetch(`http://localhost:8000/gyms/${id}`, {
           method: "GET",
@@ -55,7 +55,7 @@ const EditPage = () => {
     };
 
     // const fetchData = async () => {
-    //   // if (!session) return;
+    //   // if (!session || !isLoading) return;
     //   try {
     //     const response = await Promise.race([
     //       fetch(`${SERVER_ADDRESS}/gyms/${id}`, {

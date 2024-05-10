@@ -9,6 +9,7 @@ import { requestData } from "@/service/api";
 import type { NextPageWithLayout } from "@/pages/_app";
 import type { Chatroom, ChatroomRef } from "@/constants/admin/types";
 import { AdminContext, type AdminStateProps } from "@/AdminContext";
+import { TEST_ADDRESS } from "@/constants/constants";
 
 const ChatPage: NextPageWithLayout = () => {
   const { data: session } = useSession();
@@ -23,14 +24,21 @@ const ChatPage: NextPageWithLayout = () => {
     // if (!session) router.push({ pathname: "/login" });
 
     const fetchRooms = async () => {
-      requestData({
-        option: "GET",
-        url: "/chat/room",
-        token: session?.jwt.accessToken,
-        onSuccess: (chatrooms: Chatroom[]) => setChatrooms(chatrooms),
-      });
+      if (!id) return;
+      const data = await (await fetch(`${TEST_ADDRESS}/chatrooms/${id}`)).json();
+      setChatrooms(data.rooms);
       setIsLoading(false);
     };
+
+    // const fetchRooms = async () => {
+    //   requestData({
+    //     option: "GET",
+    //     url: "/chat/room",
+    //     token: session?.jwt.accessToken,
+    //     onSuccess: (chatrooms: Chatroom[]) => setChatrooms(chatrooms),
+    //   });
+    //   setIsLoading(false);
+    // };
 
     fetchRooms();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -84,6 +92,10 @@ const ChatPage: NextPageWithLayout = () => {
       </AdminLayout>
     </ErrorBoundary>
   );
+};
+
+export const getServerSideProps = async () => {
+  return { props: {} };
 };
 
 const S = {

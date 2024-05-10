@@ -8,7 +8,7 @@ import AdminLayout from "@/components/admin/AdminLayout";
 import { ErrorFallback } from "@/components/common/ErrorFallback";
 import UserComment from "@/components/admin/UserComment";
 import { AdminContext, type AdminStateProps } from "@/AdminContext";
-import { SERVER_ADDRESS } from "@/constants/constants";
+import { SERVER_ADDRESS, TEST_ADDRESS } from "@/constants/constants";
 import type { NextPageWithLayout } from "@/pages/_app";
 import type { UserComments } from "@/constants/gyms/types";
 
@@ -27,22 +27,21 @@ const ManagePage: NextPageWithLayout = () => {
     const fetchData = async () => {
       try {
         const response = await Promise.race([
-          fetch(`${testUrl}`),
+          fetch(`${TEST_ADDRESS}/gyms/${id}`),
           new Promise<Response>((_, reject) =>
             setTimeout(() => reject(new Response(null, { status: 503 })), 3000),
           ),
         ]);
-        if (!response.ok) comments = sampleData;
-        // if (!response.ok) throw new Error(`${response.status}`);
+        if (!response.ok) throw new Error(`${response.status}`);
         else {
           const data = await response.json();
-          comments = data.comments;
+          comments = data.comments ?? [];
         }
         setComments(comments);
       } catch (e) {
         // 에러 핸들링
         console.log(e);
-        comments = sampleData;
+        comments = [];
         setComments(comments);
       }
       setIsLoading(false);
@@ -53,6 +52,8 @@ const ManagePage: NextPageWithLayout = () => {
   }, [router]);
 
   useEffect(() => {
+    // console.log("???")
+    // console.log(selectedGymId)
     if (selectedGymId !== null && selectedGymId !== id) {
       setIsLoading(true);
       router.push(`/admin/manage/${selectedGymId}`);
@@ -116,6 +117,10 @@ const ManagePage: NextPageWithLayout = () => {
   );
 };
 
+export const getServerSideProps = async () => {
+  return { props: {} };
+};
+
 const S = {
   Wrapper: styled.div`
     background: white;
@@ -153,15 +158,5 @@ const S = {
     cursor: pointer;
   `,
 };
-
-// 테스트용 상수값
-const testUrl = `${SERVER_ADDRESS}/gyms/1`;
-const sampleData: UserComments = [
-  { user: "ㅁㄴㅇㄹ", text: "asdlfj", date: "24.01.20" },
-  { user: "leop", text: "foliwjd sldkfj sdl", date: "24.01.20" },
-  { user: "54f1ef", text: "ㄴ이;라ㅓㅁ짏ㅈㄴㄷㄹ ㄴㅇㄹ", date: "24.02.10" },
-  { user: "2165e4", text: "sdf lasdjf laksjf oajdlfkasdf", date: "24.03.10" },
-  { user: "Star", text: "@#(%*Q(@#$ SDJF AJWEIFMASDf", date: "23.10.22" },
-];
 
 export default ManagePage;

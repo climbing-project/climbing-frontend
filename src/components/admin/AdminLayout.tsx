@@ -14,8 +14,23 @@ const AdminLayout = ({ children }: React.PropsWithChildren<{}>) => {
   ) as AdminStateProps;
 
   useEffect(() => {
-    // requestData();
-    fetch("http://localhost:8000/gymids?user=hop")
+    // const onSuccess = (data: any) => {
+    //   if (data.length < 1) return setGymList([]);
+    //   setGymList(data[0].gyms);
+    //   if (router.query.id) {
+    //     setSelectedGymId(router.query.id as string);
+    //   } else {
+    //     setSelectedGymId(data[0].gyms[0].id);
+    //   }
+    // };
+    // const onError = (e: Error) => {};
+    // requestData({
+    //   option: "GET",
+    //   url: `/gymids?user=${"userid"}`,
+    //   onSuccess,
+    //   onError,
+    // });
+    fetch("http://localhost:8000/gymids?user=hopp")
       .then((res) => res.json())
       .then((data) => {
         if (data.length < 1) return setGymList([]);
@@ -90,9 +105,9 @@ const S = {
   Wrapper: styled.div`
     display: flex;
     width: 100%;
+    min-height: calc(100vh - 82px);
     border-top: 1px solid #d0d0d0;
     border-bottom: 1px solid #d0d0d0;
-
     a {
       text-decoration: none;
     }

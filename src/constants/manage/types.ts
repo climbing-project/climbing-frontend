@@ -108,6 +108,10 @@ export interface PricingFieldProps {
   handleChange: (newValue: string, index: number, key: string) => void;
 }
 
+export interface SettingDayCalendarProps {
+  setNewData: SetNewData;
+}
+
 export interface SettingDayEditorProps {
   date: string | null | undefined;
   setNewData: SetNewData;

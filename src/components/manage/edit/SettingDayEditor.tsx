@@ -1,119 +1,66 @@
-import { useState } from "react";
-import Calendar from "react-calendar";
 import styled from "styled-components";
-import { FaCalendarDay } from "react-icons/fa";
 import { IoTrash } from "react-icons/io5";
+import SettingDayCalendar from "./SettingDayCalendar";
 import { CURRENT_CENTURY } from "@/constants/manage/constants";
-import type { SettingDayEditorProps, Value } from "@/constants/manage/types";
+import type { SettingDayEditorProps } from "@/constants/manage/types";
 import "react-calendar/dist/Calendar.css";
 
-const TODAY = new Date();
-const TODAYS_DATE = {
-  year: TODAY.getFullYear(),
-  month: TODAY.getMonth() + 1,
-  date: TODAY.getDate(),
+export const getDateObject = (date: Date) => {
+  return { year: date.getFullYear(), month: date.getMonth() + 1, date: date.getDate() };
 };
 
 const SettingDayEditor = ({ date, setNewData }: SettingDayEditorProps) => {
-  const [isClosed, setIsClosed] = useState(true);
-
   const convertDataToText = (string: string) => {
     const [yy, mm, dd] = string.split(".");
     return `${CURRENT_CENTURY}${yy} - ${mm} - ${dd}`;
   };
 
-  const handleChange = (value: Value) => {
-    if (value) {
-      const selectedDate = new Date(value.toString());
-      const newYear = selectedDate.getFullYear().toString();
-      const newMonth = (selectedDate.getMonth() + 1).toString();
-      const newDate = selectedDate.getDate().toString();
-
-      try {
-        validateDate(Number(newYear), Number(newMonth), Number(newDate));
-      } catch (e) {
-        return alert(e);
-      }
-
-      setNewData({
-        latestSettingDay:
-          newYear.slice(2) + "." + newMonth.padStart(2, "0") + "." + newDate.padStart(2, "0"),
-      });
-      setIsClosed((prev) => !prev);
-    }
-  };
-
-  const handleIconClick = () => setIsClosed((prev) => !prev);
-
   const handleDelete = () => setNewData({ latestSettingDay: "" });
 
   const handleAddField = () => {
+    const date = getDateObject(new Date());
     setNewData({
       latestSettingDay:
-        TODAYS_DATE.year.toString().slice(2) +
+        date.year.toString().slice(2) +
         "." +
-        TODAYS_DATE.month.toString().padStart(2, "0") +
+        date.month.toString().padStart(2, "0") +
         "." +
-        TODAYS_DATE.date.toString().padStart(2, "0"),
+        date.date.toString().padStart(2, "0"),
     });
   };
 
-  const validateDate = (year: number, month: number, date: number) => {
-    if (
-      year > TODAYS_DATE.year ||
-      (year >= TODAYS_DATE.year && month > TODAYS_DATE.month) ||
-      (year >= TODAYS_DATE.year && month >= TODAYS_DATE.month && date > TODAYS_DATE.date)
-    )
-      throw new Error("최근 세팅일은 미래의 날짜로 설정할 수 없습니다.");
-  };
-
-  if (date) {
-    const dateString = convertDataToText(date);
-    return (
-      <S.Wrapper>
-        <S.Header>
-          <span>최근 세팅일</span>
+  return (
+    <S.Wrapper>
+      <S.Header>
+        최근 세팅일
+        {date ? (
           <S.Icon onClick={handleDelete}>
             <IoTrash size="1.3rem" />
           </S.Icon>
-        </S.Header>
-        <S.Content>
-          <S.TextField>{dateString}</S.TextField>
-          <div>
-            <S.Icon onClick={handleIconClick}>
-              <FaCalendarDay size="1.3rem" />
-            </S.Icon>
-            <S.CalendarContainer>
-              <Calendar className={isClosed ? "closed" : null} onChange={handleChange} />
-            </S.CalendarContainer>
-          </div>
-        </S.Content>
-      </S.Wrapper>
-    );
-  } else {
-    return (
-      <S.Wrapper>
-        <S.Header>최근 세팅일</S.Header>
-        <S.Content>
+        ) : null}
+      </S.Header>
+      <S.Content>
+        {date ? (
+          <>
+            <S.TextField>{convertDataToText(date)}</S.TextField>
+            <SettingDayCalendar setNewData={setNewData} />
+          </>
+        ) : (
           <div>
             <button className="btn-secondary" onClick={handleAddField}>
               + 세팅일 설정
             </button>
           </div>
-        </S.Content>
-      </S.Wrapper>
-    );
-  }
+        )}
+      </S.Content>
+    </S.Wrapper>
+  );
 };
 
 const S = {
   Wrapper: styled.div`
     background: white;
     border: 1px solid #d0d0d0;
-
-    .closed {
-      display: none;
-    }
   `,
   Header: styled.div`
     border-bottom: 1px solid #d0d0d0;
@@ -132,7 +79,6 @@ const S = {
     flex-wrap: wrap;
     align-items: center;
     gap: 20px;
-
     button {
       flex: 1 0 0;
     }
@@ -148,12 +94,7 @@ const S = {
     border-radius: 8px;
     border: 1px solid #d0d0d0;
     padding: 12px 18px;
-  `,
-  CalendarContainer: styled.div`
-    position: absolute;
-    bottom: 85px;
-    left: 190px;
-    width: 450px;
+    user-select: none;
   `,
 };
 

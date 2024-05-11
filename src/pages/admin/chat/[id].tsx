@@ -4,11 +4,11 @@ import { useRouter } from "next/router";
 import { ErrorBoundary } from "react-error-boundary";
 import styled from "styled-components";
 import AdminLayout from "@/components/admin/AdminLayout";
-import { ErrorFallback } from "@/components/common/ErrorFallback";
+import ErrorFallback from "@/components/common/ErrorFallback";
 import { requestData } from "@/service/api";
+import { AdminContext, type AdminStateProps } from "@/AdminContext";
 import type { NextPageWithLayout } from "@/pages/_app";
 import type { Chatroom, ChatroomRef } from "@/constants/admin/types";
-import { AdminContext, type AdminStateProps } from "@/AdminContext";
 import { TEST_ADDRESS } from "@/constants/constants";
 
 const ChatPage: NextPageWithLayout = () => {

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { BsTwitterX, BsFacebook, BsInstagram, BsTelephoneFill, BsGlobe2 } from "react-icons/bs";
-import AddressField from "./AddressField";
+import AddressField from "../AddressField";
 import { PHONE_REGEX } from "@/constants/admin/constants";
 import type { BasicInfoProps } from "@/constants/admin/types";
 

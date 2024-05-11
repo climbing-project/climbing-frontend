@@ -5,19 +5,19 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import styled from "styled-components";
 import AdminLayout from "@/components/admin/AdminLayout";
-import BasicInfoEditor from "@/components/admin/BasicInfoEditor";
-import DescriptionEditor from "@/components/admin/DescriptionEditor";
-import { ErrorFallback } from "@/components/common/ErrorFallback";
-import ImageEditor from "@/components/admin/ImageEditor";
+import BasicInfoEditor from "@/components/admin/edit/BasicInfoEditor";
+import DescriptionEditor from "@/components/admin/edit/DescriptionEditor";
+import ErrorFallback from "@/components/common/ErrorFallback";
+import ImageEditor from "@/components/admin/edit/ImageEditor";
 import { AdminContext, type AdminStateProps } from "@/AdminContext";
 import { SERVER_ADDRESS } from "@/constants/constants";
 import type { GymData, GymDataObject } from "@/constants/gyms/types";
 
-const AccommodationsEditor = lazy(() => import("@/components/admin/AccommodationsEditor"));
-const GradeEditor = lazy(() => import("@/components/admin/GradeEditor"));
-const OpenHoursEditor = lazy(() => import("@/components/admin/OpenHoursEditor"));
-const PricingEditor = lazy(() => import("@/components/admin/PricingEditor"));
-const SettingDayEditor = lazy(() => import("@/components/admin/SettingDayEditor"));
+const AccommodationsEditor = lazy(() => import("@/components/admin/edit/AccommodationsEditor"));
+const GradeEditor = lazy(() => import("@/components/admin/edit/GradeEditor"));
+const OpenHoursEditor = lazy(() => import("@/components/admin/edit/OpenHoursEditor"));
+const PricingEditor = lazy(() => import("@/components/admin/edit/PricingEditor"));
+const SettingDayEditor = lazy(() => import("@/components/admin/edit/SettingDayEditor"));
 
 const EditPage = () => {
   const { data: session } = useSession();

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { RiDeleteBin6Fill } from "react-icons/ri";
 import ImageList from "./ImageList";
 import ImageUploader from "./ImageUploader";
-import useS3, { FOLDER_NAME, THUMBNAIL_PREFIX } from "../../hooks/useS3";
+import useS3, { FOLDER_NAME, THUMBNAIL_PREFIX } from "../../../hooks/useS3";
 import type { ImageEditorProps } from "@/constants/admin/types";
 
 const ImageEditor = ({

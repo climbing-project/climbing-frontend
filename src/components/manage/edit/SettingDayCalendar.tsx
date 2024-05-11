@@ -58,7 +58,12 @@ const SettingDayCalendar = ({ setNewData }: SettingDayCalendarProps) => {
         </Icon>
       </div>
       <CalendarContainer>
-        <Calendar className={isClosed ? "closed" : null} onChange={handleChange} />
+        <Calendar
+          className={isClosed ? "closed" : null}
+          onChange={handleChange}
+          locale="ko-KR"
+          formatDay={(_, date) => date.getDate().toString()}
+        />
       </CalendarContainer>
     </>
   );
@@ -82,6 +87,8 @@ const CalendarContainer = styled.div`
 `;
 
 const Icon = styled.div`
+  position: relative;
+  z-index: 10;
   display: flex;
   align-items: center;
   cursor: pointer;

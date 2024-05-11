@@ -88,7 +88,7 @@ const getData = ({
       console.log("\n주소 : " + absoluteUrl);
       console.log("옵션 : GET");
       console.log(error.stack + "\n");
-      if (onError) onError();
+      if (onError) onError(error);
     });
 };
 
@@ -107,7 +107,7 @@ const postData = ({
   let headers;
 
   if (token) {
-    headers = { ...contentType, Authorization: `${token}` };
+    headers = { ...contentType, Authorization: `Bearer ${token}` };
   } else {
     headers = { ...contentType };
   }
@@ -145,6 +145,6 @@ const postData = ({
       console.log("\n주소 : " + absoluteUrl);
       console.log("옵션 : POST");
       console.log(error.stack + "\n");
-      if (onError) onError();
+      if (onError) onError(error);
     });
 };

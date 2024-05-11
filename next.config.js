@@ -13,6 +13,21 @@ const nextConfig = {
         destination: "/home",
         permanent: true,
       },
+      {
+        source: "/admin/edit",
+        destination: "/admin",
+        permanent: true,
+      },
+      {
+        source: "/admin/manage",
+        destination: "/admin",
+        permanent: true,
+      },
+      {
+        source: "/admin/chat",
+        destination: "/admin",
+        permanent: true,
+      },
     ];
   },
   images: {

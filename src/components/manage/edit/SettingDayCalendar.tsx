@@ -3,7 +3,9 @@ import Calendar from "react-calendar";
 import styled from "styled-components";
 import { FaCalendarDay } from "react-icons/fa";
 import { getDateObject } from "./SettingDayEditor";
+import { COLOR } from "@/styles/global-color";
 import type { SettingDayCalendarProps, Value } from "@/constants/manage/types";
+import "react-calendar/dist/Calendar.css";
 
 const SettingDayCalendar = ({ setNewData }: SettingDayCalendarProps) => {
   const [isClosed, setIsClosed] = useState(true);
@@ -83,6 +85,18 @@ const CalendarContainer = styled.div`
   left: 190px;
   .closed {
     display: none;
+  }
+  .react-calendar {
+    border-radius: 0.5rem;
+    border: none;
+    box-shadow: 0 0 10px #d0d0d0;
+    overflow: hidden;
+  }
+  .react-calendar__tile--now {
+    background: ${COLOR.LIGHT_MAIN};
+    &:hover {
+      background: #c8dfff;
+    }
   }
 `;
 

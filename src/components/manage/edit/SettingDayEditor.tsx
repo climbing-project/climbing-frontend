@@ -3,7 +3,6 @@ import { IoTrash } from "react-icons/io5";
 import SettingDayCalendar from "./SettingDayCalendar";
 import { CURRENT_CENTURY } from "@/constants/manage/constants";
 import type { SettingDayEditorProps } from "@/constants/manage/types";
-import "react-calendar/dist/Calendar.css";
 
 export const getDateObject = (date: Date) => {
   return { year: date.getFullYear(), month: date.getMonth() + 1, date: date.getDate() };

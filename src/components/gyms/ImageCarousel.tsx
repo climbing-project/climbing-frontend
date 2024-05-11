@@ -8,7 +8,7 @@ import type { ImageCarouselProps } from "@/constants/gyms/types";
 
 const ImageCarousel = ({ defaultImage, imageList }: ImageCarouselProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  if (!defaultImage && !imageList || !defaultImage && imageList.length < 1) return null;
+  if ((!defaultImage && !imageList) || (!defaultImage && imageList.length < 1)) return null;
   const images = defaultImage && defaultImage !== "" ? [defaultImage, ...imageList] : imageList;
   return (
     <S.Wrapper>
@@ -36,7 +36,12 @@ const ImageCarousel = ({ defaultImage, imageList }: ImageCarouselProps) => {
       <S.Container $shiftIndex={currentIndex}>
         {images.map((image, i) => (
           <S.Image key={image}>
-            <Image src={image} alt={`암벽센터 제공 사진 (${(i + 1).toString()})`} fill />
+            <Image
+              src={image}
+              alt={`암벽센터 제공 사진 (${(i + 1).toString()})`}
+              fill
+              priority={i === 0}
+            />
           </S.Image>
         ))}
       </S.Container>

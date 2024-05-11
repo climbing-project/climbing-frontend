@@ -52,37 +52,39 @@ const AdminLayout = ({ children }: React.PropsWithChildren<{}>) => {
   return (
     <S.Wrapper>
       <S.Menu>
-        <S.Header>
+        {!gymList || gymList.length < 1 ? null : (
           <select value={selectedGymId ?? ""} onChange={handleSelectChange}>
-            {gymList?.map(({ id, name }, i) => (
+            {gymList.map(({ id, name }, i) => (
               <option key={i} value={id}>
                 {name}
               </option>
             ))}
           </select>
-        </S.Header>
+        )}
         <S.Header>
           <HiOutlineHome size="1.3rem" />
           <Link href="/manage">
             <strong>메인 화면</strong>
           </Link>
         </S.Header>
-        <S.Header>
-          <HiOutlineCog size="1.3rem" />
-          <strong>암장 정보 관리</strong>
-        </S.Header>
-        <S.Links>
-          <li>
-            <Link href={{ pathname: `/manage/edit/${selectedGymId}`, query: { p: "1" } }}>
-              기본 정보
-            </Link>
-          </li>
-          <li>
-            <Link href={{ pathname: `/manage/edit/${selectedGymId}`, query: { p: "2" } }}>
-              상세 정보
-            </Link>
-          </li>
-        </S.Links>
+        <div>
+          <S.Header>
+            <HiOutlineCog size="1.3rem" />
+            <strong>암장 정보 관리</strong>
+          </S.Header>
+          <S.Links>
+            <li>
+              <Link href={{ pathname: `/manage/edit/${selectedGymId}`, query: { p: "1" } }}>
+                기본 정보
+              </Link>
+            </li>
+            <li>
+              <Link href={{ pathname: `/manage/edit/${selectedGymId}`, query: { p: "2" } }}>
+                상세 정보
+              </Link>
+            </li>
+          </S.Links>
+        </div>
         <S.Header>
           <MdOutlineComment size="1.3rem" />
           <Link href={`/manage/comments/${selectedGymId}`}>
@@ -111,6 +113,16 @@ const S = {
     a {
       text-decoration: none;
     }
+    select {
+      border-radius: 0.4rem;
+      padding: 0 0.4rem;
+      width: 100%;
+      text-overflow: ellipsis;
+      cursor: pointer;
+      &:focus {
+        outline: none;
+      }
+    }
   `,
   Menu: styled.div`
     box-sizing: border-box;
@@ -118,9 +130,9 @@ const S = {
     flex-direction: column;
     align-items: flex-start;
     padding: 36px 42px;
-    width: 320px;
-    flex-shrink: 0;
-    gap: 12px;
+    min-width: 230px;
+    max-width: 280px;
+    gap: 1.3rem;
     border-right: 1px solid #d0d0d0;
   `,
   Header: styled.div`
@@ -143,6 +155,7 @@ const S = {
   `,
   Links: styled.ul`
     margin: 0;
+    margin-top: 0.8rem;
     list-style-type: circle;
     & li {
       margin-bottom: 10px;

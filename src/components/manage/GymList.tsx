@@ -11,9 +11,9 @@ const GymList = ({ name, id }: GymListProps) => {
   const router = useRouter();
   return (
     <Wrapper>
-      {name}:<Link href={`/admin/edit/${id}?p=1`}>기본 정보 수정하기</Link> |
-      <Link href={`/admin/edit/${id}?p=2`}>상세 정보 수정하기</Link> |
-      <Link href={`/admin/manage/${id}`}>댓글 관리하기</Link>
+      {name}:<Link href={`/manage/edit/${id}?p=1`}>기본 정보 수정하기</Link> |
+      <Link href={`/manage/edit/${id}?p=2`}>상세 정보 수정하기</Link> |
+      <Link href={`/manage/comments/${id}`}>댓글 관리하기</Link>
     </Wrapper>
   );
 };

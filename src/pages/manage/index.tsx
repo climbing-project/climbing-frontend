@@ -15,7 +15,7 @@ type GymListItem = {
   id: string;
 };
 
-const AdminHome = () => {
+const ManageHome = () => {
   const { data: session } = useSession();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
@@ -72,7 +72,7 @@ const AdminHome = () => {
       ) : (
         <>
           <Text>현재 관리하고 있는 암장이 없습니다.</Text>
-          <Link href={"/admin/register"}>
+          <Link href={"/manage/register"}>
             <Btn>암장 등록하기</Btn>
           </Link>
         </>
@@ -97,4 +97,4 @@ const Btn = styled.div`
   margin-right: auto;
 `;
 
-export default AdminHome;
+export default ManageHome;

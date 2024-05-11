@@ -63,7 +63,7 @@ const AdminLayout = ({ children }: React.PropsWithChildren<{}>) => {
         </S.Header>
         <S.Header>
           <HiOutlineHome size="1.3rem" />
-          <Link href="/admin">
+          <Link href="/manage">
             <strong>메인 화면</strong>
           </Link>
         </S.Header>
@@ -73,25 +73,25 @@ const AdminLayout = ({ children }: React.PropsWithChildren<{}>) => {
         </S.Header>
         <S.Links>
           <li>
-            <Link href={{ pathname: `/admin/edit/${selectedGymId}`, query: { p: "1" } }}>
+            <Link href={{ pathname: `/manage/edit/${selectedGymId}`, query: { p: "1" } }}>
               기본 정보
             </Link>
           </li>
           <li>
-            <Link href={{ pathname: `/admin/edit/${selectedGymId}`, query: { p: "2" } }}>
+            <Link href={{ pathname: `/manage/edit/${selectedGymId}`, query: { p: "2" } }}>
               상세 정보
             </Link>
           </li>
         </S.Links>
         <S.Header>
           <MdOutlineComment size="1.3rem" />
-          <Link href={`/admin/manage/${selectedGymId}`}>
+          <Link href={`/manage/comments/${selectedGymId}`}>
             <strong>댓글 관리</strong>
           </Link>
         </S.Header>
         <S.Header>
           <HiOutlineChat size="1.3rem" />
-          <Link href={`/admin/chat/${selectedGymId}`}>
+          <Link href={`/manage/chat/${selectedGymId}`}>
             <strong>1:1 문의</strong>
           </Link>
         </S.Header>

@@ -114,7 +114,7 @@ const EditPage = () => {
 
   useEffect(() => {
     if (selectedGymId !== null && selectedGymId !== id) {
-      router.push(`/admin/edit/${selectedGymId}?p=${p}`);
+      router.push(`/manage/edit/${selectedGymId}?p=${p}`);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedGymId]);

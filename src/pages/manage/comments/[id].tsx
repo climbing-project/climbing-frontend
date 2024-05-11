@@ -12,7 +12,7 @@ import { SERVER_ADDRESS, TEST_ADDRESS } from "@/constants/constants";
 import type { NextPageWithLayout } from "@/pages/_app";
 import type { UserComments } from "@/constants/gyms/types";
 
-const ManagePage: NextPageWithLayout = () => {
+const CommentsPage: NextPageWithLayout = () => {
   const { data: session } = useSession();
   const router = useRouter();
   const { id } = router.query;
@@ -56,7 +56,7 @@ const ManagePage: NextPageWithLayout = () => {
     // console.log(selectedGymId)
     if (selectedGymId !== null && selectedGymId !== id) {
       setIsLoading(true);
-      router.push(`/admin/manage/${selectedGymId}`);
+      router.push(`/manage/comments/${selectedGymId}`);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedGymId]);
@@ -159,4 +159,4 @@ const S = {
   `,
 };
 
-export default ManagePage;
+export default CommentsPage;

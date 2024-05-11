@@ -26,7 +26,7 @@ const GymRegistration = () => {
       const id = await createData(formData);
       setIsRegistered(true);
       setIsLoading(false);
-      router.push(`/admin/register?id=${id}`);
+      router.push(`/manage/register?id=${id}`);
     } catch (e) {
       // 필요 시 응답 유형에 따른 에러 핸들링
       setIsLoading(false);
@@ -58,7 +58,7 @@ const GymRegistration = () => {
       </div>
       <S.Container>
         <S.Button>
-          <Link href={`/admin`} replace>
+          <Link href={`/manage`} replace>
             홈으로 돌아가기
           </Link>
         </S.Button>

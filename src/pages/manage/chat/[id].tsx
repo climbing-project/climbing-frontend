@@ -47,13 +47,13 @@ const ChatPage: NextPageWithLayout = () => {
   useEffect(() => {
     if (selectedGymId !== null && selectedGymId !== id) {
       setIsLoading(true);
-      router.push(`/admin/chat/${selectedGymId}`);
+      router.push(`/manage/chat/${selectedGymId}`);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedGymId]);
 
   const handleChatroomClick = (roomId: number | string) => {
-    const url = "/admin/chat/r/" + roomId;
+    const url = "/manage/chat/r/" + roomId;
     const existingWindow = openWindows.find((window) => window.url === url);
     if (!existingWindow) return openNewWindow(url);
     if (existingWindow.windowRef.closed) {

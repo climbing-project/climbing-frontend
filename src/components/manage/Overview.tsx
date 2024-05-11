@@ -7,13 +7,13 @@ const Overview = () => {
     <>
       <h2>내 암장 관리하기</h2>
       <Wrapper>
-        <Link href={{ pathname: "/admin/edit/", query: { page: "1" } }} as="/admin/edit/">
+        <Link href={{ pathname: "/manage/edit/", query: { page: "1" } }} as="/manage/edit/">
           <Container>기본 정보 수정하기</Container>
         </Link>
-        <Link href={{ pathname: "/admin/edit/", query: { page: "2" } }} as="/admin/edit/">
+        <Link href={{ pathname: "/manage/edit/", query: { page: "2" } }} as="/manage/edit/">
           <Container>상세 정보 수정하기</Container>
         </Link>
-        <Link href={"/admin/manage"}>
+        <Link href={"/manage/comments"}>
           <Container>댓글 관리하기</Container>
         </Link>
       </Wrapper>

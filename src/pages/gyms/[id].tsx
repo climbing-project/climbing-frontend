@@ -50,7 +50,9 @@ const GymInfo = ({
         <S.InfoContainer>
           <S.Main>
             <MainContent gymData={gymData} />
-            {isLoading ? null : <DynamicMap coordinates={gymData.coordinates} />}
+            {isLoading ? null : (
+              <DynamicMap name={gymData.name} coordinates={gymData.coordinates} />
+            )}
           </S.Main>
           <SideContent gymData={gymData} />
         </S.InfoContainer>

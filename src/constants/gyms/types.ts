@@ -94,6 +94,7 @@ export interface ImageCarouselProps {
 }
 
 export interface MapProps {
+  name: string;
   coordinates: MapCoordinates;
 }
 

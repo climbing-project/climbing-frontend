@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import styled from "styled-components";
 import { FaBuildingCircleCheck } from "react-icons/fa6";
-import NewGymForm from "@/components/admin/NewGymForm";
+import NewGymForm from "@/components/manage/NewGymForm";
 import { SERVER_ADDRESS } from "@/constants/constants";
 import { COLOR } from "@/styles/global-color";
 import type { BaseGymData } from "@/constants/gyms/types";

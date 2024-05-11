@@ -1,37 +1,44 @@
 import styled from "styled-components";
 import { IoTrash } from "react-icons/io5";
-import PricingField from "./PricingField";
-import type { PricingEditorProps } from "@/constants/admin/types";
+import OpenHoursField from "./OpenHoursField";
+import type { OpenHoursEditorProps } from "@/constants/manage/types";
 
-const PricingEditor = ({ pricingList, setNewData }: PricingEditorProps) => {
+const OpenHoursEditor = ({ openHoursList, setNewData }: OpenHoursEditorProps) => {
   const handleAddField = () => {
-    const currentList = pricingList ? pricingList : [];
+    const currentList = openHoursList ? openHoursList : [];
     const newItem = {
-      item: "",
-      price: "",
+      days: "weekdays",
+      openTime: "AM,12,00",
+      closeTime: "AM,12,00",
     };
-    setNewData({ pricing: [...currentList, newItem] });
+    setNewData({ openHours: [...currentList, newItem] });
   };
 
   const handleChange = (newValue: string, index: number, key: string) => {
-    const newList = [...pricingList!];
+    const newList = [...openHoursList!];
     const targetItem = newList[index];
     targetItem[key as keyof typeof targetItem] = newValue;
-    setNewData({ pricing: [...newList] });
+    setNewData({ openHours: [...newList] });
   };
 
   const handleDelete = (index: number) => {
-    const pricing = pricingList!.filter((_, i) => i !== index);
-    setNewData({ pricing });
+    const openHours = openHoursList!.filter((_, i) => i !== index);
+    setNewData({ openHours });
   };
 
   return (
     <S.Wrapper>
-      <S.Header>이용 금액</S.Header>
+      <S.Header>영업 시간</S.Header>
       <S.Content $direction="column">
-        {pricingList?.map(({ item, price }, i) => (
+        {openHoursList?.map(({ days, openTime, closeTime }, i) => (
           <S.Row key={i}>
-            <PricingField index={i} item={item} price={price} handleChange={handleChange} />
+            <OpenHoursField
+              index={i}
+              days={days}
+              openTime={openTime}
+              closeTime={closeTime}
+              handleChange={handleChange}
+            />
             <S.Icon onClick={() => handleDelete(i)}>
               <IoTrash size="1.3rem" />
             </S.Icon>
@@ -77,4 +84,4 @@ const S = {
   `,
 };
 
-export default PricingEditor;
+export default OpenHoursEditor;

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { DescriptionEditorProps } from "@/constants/admin/types";
+import type { DescriptionEditorProps } from "@/constants/manage/types";
 
 const DescriptionEditor = ({ description, setNewData }: DescriptionEditorProps) => {
   const handleChange = (input: string) => {

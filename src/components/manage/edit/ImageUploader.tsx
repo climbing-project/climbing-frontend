@@ -9,8 +9,8 @@ import {
   MAX_WIDTH,
   THUMBNAIL_HEIGHT,
   THUMBNAIL_WIDTH,
-} from "@/constants/admin/constants";
-import type { ImageUploadProps } from "@/constants/admin/types";
+} from "@/constants/manage/constants";
+import type { ImageUploadProps } from "@/constants/manage/types";
 
 const ImageUploader = ({ dataKey, imageCount, handleS3Upload }: ImageUploadProps) => {
   const handleFile = (files: FileList | null) => {

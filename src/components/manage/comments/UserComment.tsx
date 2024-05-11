@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { MdAccessTime, MdPerson } from "react-icons/md";
-import type { UserCommentProps } from "@/constants/admin/types";
+import type { UserCommentProps } from "@/constants/manage/types";
 
 const UserComment = ({ user, date, text }: UserCommentProps) => {
   return (

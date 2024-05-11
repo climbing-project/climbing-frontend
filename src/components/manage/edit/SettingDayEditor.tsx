@@ -3,8 +3,8 @@ import Calendar from "react-calendar";
 import styled from "styled-components";
 import { FaCalendarDay } from "react-icons/fa";
 import { IoTrash } from "react-icons/io5";
-import { CURRENT_CENTURY } from "@/constants/admin/constants";
-import type { SettingDayEditorProps, Value } from "@/constants/admin/types";
+import { CURRENT_CENTURY } from "@/constants/manage/constants";
+import type { SettingDayEditorProps, Value } from "@/constants/manage/types";
 import "react-calendar/dist/Calendar.css";
 
 const TODAY = new Date();

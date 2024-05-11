@@ -1,7 +1,7 @@
 import Image from "next/image";
 import styled from "styled-components";
 import { RiDeleteBin6Fill } from "react-icons/ri";
-import type { ImageListProps } from "@/constants/admin/types";
+import type { ImageListProps } from "@/constants/manage/types";
 
 const ImageList = ({ images, handleS3Delete }: ImageListProps) => {
   return (

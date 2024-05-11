@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { ACCOMMODATIONS_LIST } from "@/constants/admin/constants";
-import type { AccommodationsEditorProps } from "@/constants/admin/types";
+import { ACCOMMODATIONS_LIST } from "@/constants/manage/constants";
+import type { AccommodationsEditorProps } from "@/constants/manage/types";
 
 const AccommodationsEditor = ({ accommodationsList, setNewData }: AccommodationsEditorProps) => {
   const handleChange = (target: HTMLInputElement, checkedItem: string, isChecked: boolean) => {

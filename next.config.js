@@ -14,18 +14,18 @@ const nextConfig = {
         permanent: true,
       },
       {
-        source: "/admin/edit",
-        destination: "/admin",
+        source: "/manage/edit",
+        destination: "/manage",
         permanent: true,
       },
       {
-        source: "/admin/manage",
-        destination: "/admin",
+        source: "/manage/comments",
+        destination: "/manage",
         permanent: true,
       },
       {
-        source: "/admin/chat",
-        destination: "/admin",
+        source: "/manage/chat",
+        destination: "/manage",
         permanent: true,
       },
     ];

@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { DAYS_TEXT, HOURS, MINUTES } from "@/constants/admin/constants";
-import type { OpenHoursFieldProps } from "@/constants/admin/types";
+import { DAYS_TEXT, HOURS, MINUTES } from "@/constants/manage/constants";
+import type { OpenHoursFieldProps } from "@/constants/manage/types";
 
 const OpenHoursField = ({
   index,

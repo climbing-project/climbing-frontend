@@ -3,12 +3,12 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import styled from "styled-components";
-import AdminLayout from "@/components/admin/AdminLayout";
-import { ErrorFallback } from "@/components/common/ErrorFallback";
-import Overview from "@/components/admin/Overview";
+import AdminLayout from "@/components/manage/AdminLayout";
+import ErrorFallback from "@/components/common/ErrorFallback";
+import Overview from "@/components/manage/Overview";
 import { requestData } from "@/service/api";
 import { COLOR } from "@/styles/global-color";
-import GymList from "@/components/admin/GymList";
+import GymList from "@/components/manage/GymList";
 
 type GymListItem = {
   name: string;
@@ -38,7 +38,7 @@ const AdminHome = () => {
       setIsError(true);
     };
 
-    fetch("http://localhost:8000/gymids?user=hop")
+    fetch("http://localhost:8000/gymids?user=hopp")
       .then((res) => res.json())
       .then((data) => {
         console.log(data);

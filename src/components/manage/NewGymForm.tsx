@@ -1,9 +1,9 @@
 import { useState } from "react";
 import styled from "styled-components";
 import AddressField from "./AddressField";
-import { PHONE_REGEX } from "@/constants/admin/constants";
+import { PHONE_REGEX } from "@/constants/manage/constants";
 import type { BaseGymData, GymDataObject } from "@/constants/gyms/types";
-import type { NewGymFormProps } from "@/constants/admin/types";
+import type { NewGymFormProps } from "@/constants/manage/types";
 
 const NewGymForm = ({ handleSubmit, disableForm }: NewGymFormProps) => {
   const [focusedElem, setFocusedElem] = useState<string>("");

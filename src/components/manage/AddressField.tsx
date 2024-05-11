@@ -4,7 +4,7 @@ import { IoSearch } from "react-icons/io5";
 import PostcodeReader from "./PostcodeReader";
 import useApi from "@/hooks/useApi";
 import { NAVERMAP_GEOCODE_API } from "@/constants/constants";
-import type { AddressFieldProps } from "@/constants/admin/types";
+import type { AddressFieldProps } from "@/constants/manage/types";
 
 const AddressField = ({ address, handleAddressChange, handleFocus }: AddressFieldProps) => {
   const [isShowing, setIsShowing] = useState(false);

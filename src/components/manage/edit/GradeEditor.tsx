@@ -2,8 +2,8 @@ import styled from "styled-components";
 import { FaMinus, FaPlus } from "react-icons/fa6";
 import { IoTrash } from "react-icons/io5";
 import GradeBlock from "./GradeBlock";
-import { DEFAULT_COLOR, NEW_GRADES } from "@/constants/admin/constants";
-import type { GradeEditorProps } from "@/constants/admin/types";
+import { DEFAULT_COLOR, NEW_GRADES } from "@/constants/manage/constants";
+import type { GradeEditorProps } from "@/constants/manage/types";
 
 const GradeEditor = ({ gradesList, setNewData }: GradeEditorProps) => {
   const handleCreate = () => setNewData({ grades: [...NEW_GRADES] });

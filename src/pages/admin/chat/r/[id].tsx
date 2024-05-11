@@ -10,7 +10,7 @@ import { requestData } from "@/service/api";
 import { SOCKET_ADDRESS } from "@/constants/constants";
 import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import type { NextPageWithLayout } from "@/pages/_app";
-import type { Chatroom } from "@/constants/admin/types";
+import type { Chatroom } from "@/constants/manage/types";
 
 const ChatPopup: NextPageWithLayout = ({
   roomId,

@@ -67,15 +67,17 @@ const ManageHome = () => {
   return (
     <AdminLayout>
       <Wrapper>
-        <h1>내 암장 관리하기</h1>
+        <Header>내 암장 목록</Header>
         {gymList && gymList.length >= 1 ? (
-          <>{gymList?.map((gym) => <GymList key={gym.id} id={gym.id} name={gym.name} />)}</>
+          <>
+            {gymList?.map((gym) => <GymList key={gym.id} id={gym.id} name={gym.name} />)}
+            <br />
+            <Btn onClick={() => router.push("/manage/register")}>+ 암장 등록</Btn>
+          </>
         ) : (
           <>
-            <Text>현재 관리하고 있는 암장이 없습니다.</Text>
-            <Link href={"/manage/register"}>
-              <Btn>암장 등록하기</Btn>
-            </Link>
+            <Message>현재 관리하고 있는 암장이 없습니다.</Message>
+            <Btn onClick={() => router.push("/manage/register")}>+ 암장 등록</Btn>
           </>
         )}
       </Wrapper>
@@ -89,20 +91,28 @@ const Wrapper = styled.div`
   padding: 32px 40px;
 `;
 
-const Text = styled.div`
+const Header = styled.div`
+  font-weight: 700;
+  font-size: 24px;
+  margin-bottom: 2rem;
+`;
+
+const Message = styled.div`
   text-align: center;
+  margin-bottom: 2rem;
 `;
 
 const Btn = styled.div`
   background: ${COLOR.MAIN};
   color: white;
-  padding: 24px;
+  padding: 1rem;
   border-radius: 12px;
   display: grid;
   width: 160px;
   place-content: center center;
   margin-left: auto;
   margin-right: auto;
+  cursor: pointer;
 `;
 
 export default ManageHome;

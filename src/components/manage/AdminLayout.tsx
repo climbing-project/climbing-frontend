@@ -30,18 +30,20 @@ const AdminLayout = ({ children }: React.PropsWithChildren<{}>) => {
     //   onSuccess,
     //   onError,
     // });
-    fetch("http://localhost:8000/gymids?user=hopp")
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.length < 1) return setGymList([]);
-        setGymList(data[0].gyms);
-        if (router.query.id) {
-          setSelectedGymId(router.query.id as string);
-        } else {
-          setSelectedGymId(data[0].gyms[0].id);
-        }
-      })
-      .catch((e) => console.log(e));
+    if (!selectedGymId) {
+      // 백엔드 준비되면 수정 
+      const onFetch = (data: any) => {
+        const init = data[0].gyms ?? [];
+        setGymList(init);
+        if (router.query.id) setSelectedGymId(router.query.id as string);
+        else if (!selectedGymId) setSelectedGymId(selectedGymId);
+        else setSelectedGymId(data[0].gyms[0].id);
+      };
+      fetch("http://localhost:8000/gymids?user=hopp")
+        .then((res) => res.json())
+        .then(onFetch)
+        .catch((e) => console.log(e));
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

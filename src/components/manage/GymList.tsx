@@ -1,6 +1,8 @@
-import Link from "next/link";
+import { useContext } from "react";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 import { FaBuilding } from "react-icons/fa6";
+import { AdminContext, type AdminStateProps } from "@/AdminContext";
 
 type GymListProps = {
   name: string;
@@ -8,21 +10,21 @@ type GymListProps = {
 };
 
 const GymList = ({ name, id }: GymListProps) => {
+  const router = useRouter();
+  const { selectedGymId, setSelectedGymId } = useContext(AdminContext) as AdminStateProps;
+  const handleClick = (path: string) => {
+    if (selectedGymId !== id) setSelectedGymId(id);
+    router.push(path);
+  };
   return (
     <Wrapper>
       <Icon>
         <FaBuilding size="1.3rem" />
       </Icon>
       <span className="strong">{name}</span>
-      <Link href={`/manage/edit/${id}?p=1`}>
-        <Btn>정보 수정</Btn>
-      </Link>
-      <Link href={`/manage/comments/${id}`}>
-        <Btn>댓글 관리</Btn>
-      </Link>
-      <Link href={`/manage/chat/${id}`}>
-        <Btn>1:1 문의</Btn>
-      </Link>
+      <Btn onClick={() => handleClick(`/manage/edit/${id}?p=1`)}>정보 수정</Btn>
+      <Btn onClick={() => handleClick(`/manage/comments/${id}`)}>댓글 관리</Btn>
+      <Btn onClick={() => handleClick(`/manage/chat/${id}`)}>1:1 문의</Btn>
     </Wrapper>
   );
 };
@@ -50,6 +52,7 @@ const Btn = styled.div`
   &:hover {
     color: #bababa;
   }
+  cursor: pointer;
 `;
 
 const Icon = styled.div`

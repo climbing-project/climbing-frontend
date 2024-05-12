@@ -28,6 +28,7 @@ const PricingField = ({ index, item, price, handleChange }: PricingFieldProps) =
         <strong>가격</strong>
         <S.TextField $width={140}>
           <input
+            className="currency"
             value={Number(price).toLocaleString()}
             placeholder="0"
             onChange={(e) => handleNumberChange(e.target.value)}
@@ -59,7 +60,9 @@ const S = {
     padding: 12px 18px;
     width: ${({ $width }) => ($width ? `${$width}px` : "")};
     gap: 4px;
-
+    .currency {
+      text-align: right;
+    }
     input {
       border: none;
       background: transparent;

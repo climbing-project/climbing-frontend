@@ -113,16 +113,6 @@ const S = {
     a {
       text-decoration: none;
     }
-    select {
-      border-radius: 0.4rem;
-      padding: 0 0.4rem;
-      width: 100%;
-      text-overflow: ellipsis;
-      cursor: pointer;
-      &:focus {
-        outline: none;
-      }
-    }
   `,
   Menu: styled.div`
     box-sizing: border-box;
@@ -134,6 +124,16 @@ const S = {
     max-width: 280px;
     gap: 1.3rem;
     border-right: 1px solid #d0d0d0;
+    select {
+      border-radius: 0.4rem;
+      padding: 0 0.4rem;
+      width: 100%;
+      text-overflow: ellipsis;
+      cursor: pointer;
+      &:focus {
+        outline: none;
+      }
+    }
   `,
   Header: styled.div`
     display: flex;

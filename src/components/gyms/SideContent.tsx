@@ -47,8 +47,8 @@ const SideContent = ({ gymData }: { gymData: GymData }) => {
 };
 
 const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(1fr);
   gap: 20px;
   & > div {
     box-sizing: border-box;

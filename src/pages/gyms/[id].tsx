@@ -93,16 +93,22 @@ const S = {
     .header {
       display: flex;
       align-items: flex-end;
+      align-content: flex-end;
+      flex-wrap: wrap;
+      gap: 0.5rem;
     }
     .header__text {
       font-weight: 700;
-      font-size: 2.5rem;
+      font-size: 2.3rem;
     }
     .icons {
       position: relative;
       bottom: 6px;
       display: flex;
       gap: 6px;
+    }
+    .description {
+      white-space: break-spaces;
     }
     @media ${DEVICE_SIZE.laptop} {
       width: ${IMAGE_SIZE.laptop.width + "px"};
@@ -112,9 +118,18 @@ const S = {
     }
     @media ${DEVICE_SIZE.mobileLarge} {
       width: ${IMAGE_SIZE.mobileLarge.width + "px"};
+      .header__text {
+        font-size: 1.7rem;
+      }
     }
     @media ${DEVICE_SIZE.mobileSmall} {
       width: ${IMAGE_SIZE.mobileSmall.width + "px"};
+      .header {
+        line-height: 2.3rem;
+      }
+      .header__text {
+        font-size: 1.5rem;
+      }
     }
   `,
   InfoContainer: styled.div`

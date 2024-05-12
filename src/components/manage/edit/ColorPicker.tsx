@@ -30,6 +30,7 @@ const S = {
     background: #f1f0f0;
     border-radius: 8px;
     padding: 20px;
+    box-shadow: 0 0 10px #d0d0d0;
   `,
   Palette: styled.div<{ $color: string }>`
     height: 27px;

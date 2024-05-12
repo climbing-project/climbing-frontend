@@ -66,20 +66,28 @@ const ManageHome = () => {
     );
   return (
     <AdminLayout>
-      <h1>내 암장 관리하기</h1>
-      {gymList && gymList.length >= 1 ? (
-        <>{gymList?.map((gym) => <GymList key={gym.id} id={gym.id} name={gym.name} />)}</>
-      ) : (
-        <>
-          <Text>현재 관리하고 있는 암장이 없습니다.</Text>
-          <Link href={"/manage/register"}>
-            <Btn>암장 등록하기</Btn>
-          </Link>
-        </>
-      )}
+      <Wrapper>
+        <h1>내 암장 관리하기</h1>
+        {gymList && gymList.length >= 1 ? (
+          <>{gymList?.map((gym) => <GymList key={gym.id} id={gym.id} name={gym.name} />)}</>
+        ) : (
+          <>
+            <Text>현재 관리하고 있는 암장이 없습니다.</Text>
+            <Link href={"/manage/register"}>
+              <Btn>암장 등록하기</Btn>
+            </Link>
+          </>
+        )}
+      </Wrapper>
     </AdminLayout>
   );
 };
+
+const Wrapper = styled.div`
+  background: white;
+  border: 1px solid #d0d0d0;
+  padding: 32px 40px;
+`;
 
 const Text = styled.div`
   text-align: center;

@@ -30,6 +30,7 @@
     "styled-normalize": "^8.1.0"
   },
   "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.6",
     "@types/navermaps": "^3.7.4",
     "@types/node": "^20",
     "@types/react": "^18",

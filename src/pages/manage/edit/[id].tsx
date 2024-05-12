@@ -4,11 +4,13 @@ import { useBeforeunload } from "react-beforeunload";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import styled from "styled-components";
+import { BarLoader } from "react-spinners";
 import AdminLayout from "@/components/manage/AdminLayout";
 import BasicInfoEditor from "@/components/manage/edit/BasicInfoEditor";
 import DescriptionEditor from "@/components/manage/edit/DescriptionEditor";
 import ErrorFallback from "@/components/common/ErrorFallback";
 import ImageEditor from "@/components/manage/edit/ImageEditor";
+import LoadContainer from "@/components/manage/LoadContainer";
 import { AdminContext, type AdminStateProps } from "@/AdminContext";
 import { SERVER_ADDRESS } from "@/constants/constants";
 import type { GymData, GymDataObject } from "@/constants/gyms/types";
@@ -212,7 +214,9 @@ const EditPage = () => {
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <AdminLayout>
         {isLoading ? (
-          <div>loading</div>
+          <LoadContainer>
+            <BarLoader />
+          </LoadContainer>
         ) : p === "1" || !p ? (
           <>
             <ImageEditor

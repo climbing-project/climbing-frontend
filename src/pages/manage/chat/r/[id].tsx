@@ -2,9 +2,11 @@ import { useEffect, useRef, useState, type ReactElement } from "react";
 import { useSession } from "next-auth/react";
 import { Client, Message, type IFrame } from "@stomp/stompjs";
 import styled from "styled-components";
+import { BarLoader } from "react-spinners";
 import ChatHistory, { type MessageFormat } from "@/components/chat/ChatHistory";
 import ChatForm from "@/components/chat/ChatForm";
 import GlobalStyle from "@/styles/global-styles";
+import LoadContainer from "@/components/manage/LoadContainer";
 import LoginPrompt from "@/components/common/LoginPrompt";
 import { requestData } from "@/service/api";
 import { SOCKET_ADDRESS } from "@/constants/constants";
@@ -103,7 +105,12 @@ const ChatPopup: NextPageWithLayout = ({
     });
   };
 
-  if (status === "loading") return null;
+  if (status === "loading")
+    return (
+      <LoadContainer>
+        <BarLoader />
+      </LoadContainer>
+    );
   return (
     <S.Wrapper>
       {session ? (

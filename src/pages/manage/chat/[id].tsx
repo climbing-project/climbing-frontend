@@ -3,8 +3,10 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { ErrorBoundary } from "react-error-boundary";
 import styled from "styled-components";
+import { BarLoader } from "react-spinners";
 import AdminLayout from "@/components/manage/AdminLayout";
 import ErrorFallback from "@/components/common/ErrorFallback";
+import LoadContainer from "@/components/manage/LoadContainer";
 import { requestData } from "@/service/api";
 import { AdminContext, type AdminStateProps } from "@/AdminContext";
 import type { NextPageWithLayout } from "@/pages/_app";
@@ -72,7 +74,11 @@ const ChatPage: NextPageWithLayout = () => {
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <AdminLayout>
         <S.Wrapper>
-          {isLoading ? null : (
+          {isLoading ? (
+            <LoadContainer>
+              <BarLoader />
+            </LoadContainer>
+          ) : (
             <>
               <S.Header>1:1 문의</S.Header>
               <S.Content $direction="column">

@@ -2,25 +2,25 @@ import { type Dispatch, type ReactNode, type SetStateAction, createContext, useS
 
 type GymListProps = Array<{ id: string; name: string }> | null;
 
-type AdminContextProps = AdminStateProps | null;
+type NavContextProps = NavStateProps | null;
 
-export type AdminStateProps = {
+export type NavStateProps = {
   gymList: GymListProps;
   setGymList: Dispatch<SetStateAction<GymListProps | null>>;
   selectedGymId: string | null;
   setSelectedGymId: Dispatch<SetStateAction<string | null>>;
 };
 
-const AdminContext = createContext<AdminContextProps>(null);
+const NavContext = createContext<NavContextProps>(null);
 
-const AdminContextProvider = ({ children }: { children: ReactNode }) => {
+const NavContextProvider = ({ children }: { children: ReactNode }) => {
   const [gymList, setGymList] = useState<GymListProps>(null);
   const [selectedGymId, setSelectedGymId] = useState<null | string>(null);
   return (
-    <AdminContext.Provider value={{ gymList, setGymList, selectedGymId, setSelectedGymId }}>
+    <NavContext.Provider value={{ gymList, setGymList, selectedGymId, setSelectedGymId }}>
       {children}
-    </AdminContext.Provider>
+    </NavContext.Provider>
   );
 };
 
-export { AdminContext, AdminContextProvider };
+export { NavContext, NavContextProvider };

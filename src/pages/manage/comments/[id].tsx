@@ -4,10 +4,10 @@ import { useRouter } from "next/router";
 import { ErrorBoundary } from "react-error-boundary";
 import styled from "styled-components";
 import { IoTrash } from "react-icons/io5";
-import AdminLayout from "@/components/manage/AdminLayout";
+import ManageLayout from "@/components/manage/ManageLayout";
 import ErrorFallback from "@/components/common/ErrorFallback";
 import UserComment from "@/components/manage/comments/UserComment";
-import { AdminContext, type AdminStateProps } from "@/AdminContext";
+import { NavContext, type NavStateProps } from "@/NavContext";
 import { SERVER_ADDRESS, TEST_ADDRESS } from "@/constants/constants";
 import type { NextPageWithLayout } from "@/pages/_app";
 import type { UserComments } from "@/constants/gyms/types";
@@ -18,7 +18,7 @@ const CommentsPage: NextPageWithLayout = () => {
   const { id } = router.query;
   const [comments, setComments] = useState<UserComments>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { selectedGymId } = useContext(AdminContext) as AdminStateProps;
+  const { selectedGymId } = useContext(NavContext) as NavStateProps;
 
   useEffect(() => {
     // if (!session) router.push({ pathname: "/login" });
@@ -92,7 +92,7 @@ const CommentsPage: NextPageWithLayout = () => {
 
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
-      <AdminLayout>
+      <ManageLayout>
         <S.Wrapper>
           {isLoading ? null : (
             <>
@@ -112,7 +112,7 @@ const CommentsPage: NextPageWithLayout = () => {
             </>
           )}
         </S.Wrapper>
-      </AdminLayout>
+      </ManageLayout>
     </ErrorBoundary>
   );
 };

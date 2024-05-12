@@ -4,11 +4,11 @@ import { useRouter } from "next/router";
 import { ErrorBoundary } from "react-error-boundary";
 import styled from "styled-components";
 import { BarLoader } from "react-spinners";
-import AdminLayout from "@/components/manage/AdminLayout";
+import ManageLayout from "@/components/manage/ManageLayout";
 import ErrorFallback from "@/components/common/ErrorFallback";
 import LoadContainer from "@/components/manage/LoadContainer";
 import { requestData } from "@/service/api";
-import { AdminContext, type AdminStateProps } from "@/AdminContext";
+import { NavContext, type NavStateProps } from "@/NavContext";
 import type { NextPageWithLayout } from "@/pages/_app";
 import type { Chatroom, ChatroomRef } from "@/constants/manage/types";
 import { TEST_ADDRESS } from "@/constants/constants";
@@ -20,7 +20,7 @@ const ChatPage: NextPageWithLayout = () => {
   const [chatrooms, setChatrooms] = useState<Chatroom[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [openWindows, setOpenWindows] = useState<ChatroomRef[]>([]);
-  const { selectedGymId } = useContext(AdminContext) as AdminStateProps;
+  const { selectedGymId } = useContext(NavContext) as NavStateProps;
 
   useEffect(() => {
     // if (!session) router.push({ pathname: "/login" });
@@ -72,7 +72,7 @@ const ChatPage: NextPageWithLayout = () => {
 
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
-      <AdminLayout>
+      <ManageLayout>
         <S.Wrapper>
           {isLoading ? (
             <LoadContainer>
@@ -95,7 +95,7 @@ const ChatPage: NextPageWithLayout = () => {
             </>
           )}
         </S.Wrapper>
-      </AdminLayout>
+      </ManageLayout>
     </ErrorBoundary>
   );
 };

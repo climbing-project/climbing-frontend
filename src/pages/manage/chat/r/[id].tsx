@@ -30,7 +30,7 @@ const ChatPopup: NextPageWithLayout = ({
 
     if (type === "TALK") {
       const newMessage = {
-        userType: sender === session.user.email ? "admin" : "customer",
+        userType: sender === session.user.email ? "manager" : "customer",
         message,
         time: Date.now(),
       };
@@ -117,7 +117,7 @@ const ChatPopup: NextPageWithLayout = ({
         <>
           <S.Header>{roomName && `${roomName}님의 문의`}</S.Header>
           <S.Container>
-            <ChatHistory speaker="admin" history={messages} />
+            <ChatHistory speaker="manager" history={messages} />
             <ChatForm placeholder="답변하기" handleSend={handleSend} />
           </S.Container>
         </>

@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import styled from "styled-components";
-import AdminLayout from "@/components/manage/AdminLayout";
+import ManageLayout from "@/components/manage/ManageLayout";
 import ErrorFallback from "@/components/common/ErrorFallback";
 import Overview from "@/components/manage/Overview";
 import { requestData } from "@/service/api";
@@ -60,12 +60,12 @@ const ManageHome = () => {
   if (isLoading) return null;
   if (isError)
     return (
-      <AdminLayout>
+      <ManageLayout>
         <ErrorFallback error={"Server error"} resetErrorBoundary={() => {}} />
-      </AdminLayout>
+      </ManageLayout>
     );
   return (
-    <AdminLayout>
+    <ManageLayout>
       <Wrapper>
         <Header>내 암장 목록</Header>
         {gymList && gymList.length >= 1 ? (
@@ -81,7 +81,7 @@ const ManageHome = () => {
           </>
         )}
       </Wrapper>
-    </AdminLayout>
+    </ManageLayout>
   );
 };
 

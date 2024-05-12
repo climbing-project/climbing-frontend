@@ -5,13 +5,13 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import styled from "styled-components";
 import { BarLoader } from "react-spinners";
-import AdminLayout from "@/components/manage/AdminLayout";
+import ManageLayout from "@/components/manage/ManageLayout";
 import BasicInfoEditor from "@/components/manage/edit/BasicInfoEditor";
 import DescriptionEditor from "@/components/manage/edit/DescriptionEditor";
 import ErrorFallback from "@/components/common/ErrorFallback";
 import ImageEditor from "@/components/manage/edit/ImageEditor";
 import LoadContainer from "@/components/manage/LoadContainer";
-import { AdminContext, type AdminStateProps } from "@/AdminContext";
+import { NavContext, type NavStateProps } from "@/NavContext";
 import { SERVER_ADDRESS } from "@/constants/constants";
 import type { GymData, GymDataObject } from "@/constants/gyms/types";
 
@@ -31,7 +31,7 @@ const EditPage = () => {
   const [isError, setIsError] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const tracker = useRef<null | string>(null);
-  const { selectedGymId, setSelectedGymId } = useContext(AdminContext) as AdminStateProps;
+  const { selectedGymId, setSelectedGymId } = useContext(NavContext) as NavStateProps;
 
   useEffect(() => {
     // if (!session) router.push({ pathname: "/login" });
@@ -134,9 +134,9 @@ const EditPage = () => {
   // if (!session) return null;
   if (isError)
     return (
-      <AdminLayout>
+      <ManageLayout>
         <ErrorFallback error={"Server error"} resetErrorBoundary={() => {}} />
-      </AdminLayout>
+      </ManageLayout>
     );
 
   // const updateData = async (data: string) => {
@@ -212,7 +212,7 @@ const EditPage = () => {
 
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
-      <AdminLayout>
+      <ManageLayout>
         {isLoading ? (
           <LoadContainer>
             <BarLoader />
@@ -258,7 +258,7 @@ const EditPage = () => {
             </Button>
           </>
         ) : null}
-      </AdminLayout>
+      </ManageLayout>
     </ErrorBoundary>
   );
 };

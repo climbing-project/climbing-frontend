@@ -5,13 +5,13 @@ import styled from "styled-components";
 import { HiOutlineChat, HiOutlineCog, HiOutlineHome } from "react-icons/hi";
 import { MdOutlineComment } from "react-icons/md";
 import { requestData } from "@/service/api";
-import { AdminContext, type AdminStateProps } from "@/AdminContext";
+import { NavContext, type NavStateProps } from "@/NavContext";
 
-const AdminLayout = ({ children }: React.PropsWithChildren<{}>) => {
+const ManageLayout = ({ children }: React.PropsWithChildren<{}>) => {
   const router = useRouter();
   const { gymList, setGymList, selectedGymId, setSelectedGymId } = useContext(
-    AdminContext,
-  ) as AdminStateProps;
+    NavContext,
+  ) as NavStateProps;
 
   useEffect(() => {
     // const onSuccess = (data: any) => {
@@ -31,7 +31,7 @@ const AdminLayout = ({ children }: React.PropsWithChildren<{}>) => {
     //   onError,
     // });
     if (!selectedGymId) {
-      // 백엔드 준비되면 수정 
+      // 백엔드 준비되면 수정
       const onFetch = (data: any) => {
         const init = data[0].gyms ?? [];
         setGymList(init);
@@ -165,4 +165,4 @@ const S = {
   `,
 };
 
-export default AdminLayout;
+export default ManageLayout;

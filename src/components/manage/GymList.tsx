@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import { FaBuilding } from "react-icons/fa6";
-import { AdminContext, type AdminStateProps } from "@/AdminContext";
+import { NavContext, type NavStateProps } from "@/NavContext";
 
 type GymListProps = {
   name: string;
@@ -11,7 +11,7 @@ type GymListProps = {
 
 const GymList = ({ name, id }: GymListProps) => {
   const router = useRouter();
-  const { selectedGymId, setSelectedGymId } = useContext(AdminContext) as AdminStateProps;
+  const { selectedGymId, setSelectedGymId } = useContext(NavContext) as NavStateProps;
   const handleClick = (path: string) => {
     if (selectedGymId !== id) setSelectedGymId(id);
     router.push(path);

@@ -10,6 +10,7 @@ import {
   NICKNAME_REGREX,
   PASSWORD_REGREX,
 } from "@/constants/login/constants";
+import { EmailCheckResponse } from "@/constants/login/type";
 
 const Join = () => {
   const [isEmailValid, setIsEmailValid] = useState(false);
@@ -43,13 +44,13 @@ const Join = () => {
       setEmailMessage("이메일의 형식이 올바르지 않습니다.");
       setIsEmailValid(false);
     } else {
-      const onSuccess = (canUse: boolean) => {
-        if (canUse) {
+      const onSuccess = ({ check, socialType }: EmailCheckResponse) => {
+        if (check) {
           setEmailMessage(CONFIRM_MESSAGE);
           setIsEmailValid(true);
           setEmail(currentEmail);
         } else {
-          setEmailMessage("중복된 이메일 입니다.");
+          setEmailMessage(`이미 ${socialType}로 가입된 메일입니다.`);
           setIsEmailValid(false);
         }
       };

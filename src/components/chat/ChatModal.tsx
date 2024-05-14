@@ -1,22 +1,92 @@
+import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
+import { Client, type IFrame } from "@stomp/stompjs";
 import styled from "styled-components";
 import { MdOutlineClose, MdOutlineSupportAgent } from "react-icons/md";
 import Socket from "./Socket";
+import { SERVER_ADDRESS, SOCKET_ADDRESS } from "@/constants/constants";
 
-interface HelpModalProps {
-  gymId: string; // HelpModal 컴포넌트에서 gymId를 쓸일 없으면 context를 통해서 Socket 컴포넌트가 읽도록 하는 방향 고려
+interface ChatModalProps {
+  gymId: string;
   gymName: string;
-  isOpen: boolean;
-  setIsOpen: () => void;
 }
 
-const HelpModal = ({ gymId, gymName, isOpen, setIsOpen }: HelpModalProps) => {
+const ChatModal = ({ gymId, gymName }: ChatModalProps) => {
+  const { data: session } = useSession();
+  const [isOpen, setIsOpen] = useState(false);
+  const [client, setClient] = useState<null | Client>(null);
+  const [roomId, setRoomId] = useState<null | string>(null);
+
+  useEffect(() => {
+    if (!session || client) return;
+
+    const clientInstance = new Client({
+      brokerURL: `ws://${SOCKET_ADDRESS}/ws/chat`,
+      connectHeaders: { Authorization: "Bearer " + session.jwt.accessToken },
+    });
+
+    // 추후 fetchRoom 로직 추가 (성공 시 fetch한 roomId 사용, 실패 시 신규 생성)
+
+    const createRoom = async () => {
+      const res = await fetch(`${SERVER_ADDRESS}/chat/room/${gymId}`, {
+        method: "POST",
+        headers: { Authorization: "Bearer " + session.jwt.accessToken },
+      });
+      if (res.redirected) throw new Error("로그인이 필요한 서비스입니다.");
+      const { roomId } = await res.json();
+      setRoomId(roomId);
+    };
+
+    clientInstance.onStompError = (frame: IFrame) => {
+      console.log("에러 발생");
+      console.log(frame); // 에러 확인
+    };
+
+    try {
+      clientInstance.activate();
+      createRoom();
+      setClient(clientInstance);
+    } catch (e) {
+      // 클라이언트를 activate할 수 없는 경우
+      console.log(e);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session]);
+
+  const toggleModal = () => {
+    if (isOpen) {
+      setIsOpen(false);
+      if (client && client.connected) {
+        client.publish({
+          destination: "/app/chat/message",
+          body: JSON.stringify({
+            type: "LEAVE",
+            roomId: roomId,
+          }),
+        });
+      }
+    } else if (!isOpen) {
+      setIsOpen(true);
+      if (client && client.connected) {
+        client.publish({
+          destination: "/app/chat/message",
+          body: JSON.stringify({
+            type: "ENTER",
+            roomId: roomId,
+            sender: session?.user.email,
+          }),
+        });
+      }
+    }
+  };
+
   return (
     <S.Wrapper>
       <S.Modal>
-        <S.Button $isOpen={isOpen} onClick={setIsOpen}>
+        <S.Button $isOpen={isOpen} onClick={toggleModal}>
           {isOpen ? <MdOutlineClose size="2.2rem" /> : <MdOutlineSupportAgent size="2.2rem" />}
         </S.Button>
-        {isOpen ? <Socket gymName={gymName} gymId={gymId} /> : null}
+        {isOpen ? <Socket gymName={gymName} client={client} roomId={roomId} /> : null}
       </S.Modal>
     </S.Wrapper>
   );
@@ -48,4 +118,4 @@ const S = {
   `,
 };
 
-export default HelpModal;
+export default ChatModal;

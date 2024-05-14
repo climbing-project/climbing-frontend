@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import styled from "styled-components";
@@ -24,19 +23,6 @@ const GymInfo = ({
   const { data: session } = useSession();
   const router = useRouter();
   const { isLoading } = useApi(NAVERMAP_API);
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleModal = () => setIsOpen((prev) => !prev);
-
-  useEffect(() => {
-    const handlePageLeave = () => {
-      if (isOpen) setIsOpen(false);
-    };
-    router.events.on("routeChangeStart", handlePageLeave);
-
-    return () => router.events.off("routeChangeStart", handlePageLeave);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   if (error) return <ErrorPage statusCode={statusCode} />;
   return (
@@ -63,12 +49,7 @@ const GymInfo = ({
           session={session}
         />
       </S.Wrapper>
-      <ChatModal
-        gymId={gymData.id}
-        gymName={gymData.name}
-        isOpen={isOpen}
-        setIsOpen={toggleModal}
-      />
+      <ChatModal gymId={gymData.id} gymName={gymData.name} />
     </S.Page>
   );
 };

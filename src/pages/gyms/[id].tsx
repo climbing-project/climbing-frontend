@@ -5,7 +5,7 @@ import styled from "styled-components";
 import Comments from "@/components/gyms/Comments";
 import DynamicMap from "@/components/gyms/DynamicMap";
 import ErrorPage from "@/components/common/ErrorPage";
-import HelpModal from "@/components/chat/HelpModal";
+import ChatModal from "@/components/chat/ChatModal";
 import ImageCarousel from "@/components/gyms/ImageCarousel";
 import MainContent from "@/components/gyms/MainContent";
 import SideContent from "@/components/gyms/SideContent";
@@ -63,7 +63,7 @@ const GymInfo = ({
           session={session}
         />
       </S.Wrapper>
-      <HelpModal
+      <ChatModal
         gymId={gymData.id}
         gymName={gymData.name}
         isOpen={isOpen}

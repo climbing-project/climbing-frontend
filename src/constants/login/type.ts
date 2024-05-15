@@ -59,6 +59,17 @@ const socialType = {
 
 type SocialType = (typeof socialType)[keyof typeof socialType];
 
+export const socialTypeToKorean = (type: SocialType) => {
+  switch (type) {
+    case "KAKAO":
+      return "카카오";
+    case "GOOGLE":
+      return "구글";
+    case "NAVER":
+      return "네이버";
+  }
+};
+
 // 백엔드 요청에 대한 응답
 export interface EmailCheckResponse {
   check: string;

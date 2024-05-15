@@ -10,7 +10,7 @@ import {
   NICKNAME_REGREX,
   PASSWORD_REGREX,
 } from "@/constants/login/constants";
-import { EmailCheckResponse } from "@/constants/login/type";
+import { EmailCheckResponse, socialTypeToKorean } from "@/constants/login/type";
 
 const Join = () => {
   const [isEmailValid, setIsEmailValid] = useState(false);
@@ -50,7 +50,8 @@ const Join = () => {
           setIsEmailValid(true);
           setEmail(currentEmail);
         } else {
-          setEmailMessage(`이미 ${socialType}로 가입된 메일입니다.`);
+          const socialTypeString = socialTypeToKorean(socialType);
+          setEmailMessage(`이미 ${socialTypeString}로 가입된 메일입니다.`);
           setIsEmailValid(false);
         }
       };

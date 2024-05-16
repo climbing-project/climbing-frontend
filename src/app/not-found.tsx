@@ -1,14 +1,15 @@
 "use client";
-import router, { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { styled } from "styled-components";
 
 export default function NotFound() {
   const router = useRouter();
+
   const handleHomeBtn = () => {
     router.replace("/home");
   };
-  const handleLoginBtn = () => {
-    router.push("/login");
+  const handleBackBtn = () => {
+    router.back();
   };
   return (
     <S.Container>
@@ -16,7 +17,7 @@ export default function NotFound() {
       <h4>에러코드 : 404</h4>
       <S.ButtonContainer>
         <S.HomeButton onClick={handleHomeBtn}>홈으로</S.HomeButton>
-        <S.LoginButton onClick={handleLoginBtn}>로그인하기</S.LoginButton>
+        <S.LoginButton onClick={handleBackBtn}>이전 페이지로</S.LoginButton>
       </S.ButtonContainer>
     </S.Container>
   );

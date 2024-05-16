@@ -2,7 +2,7 @@
 import { useRouter } from "next/navigation";
 import { styled } from "styled-components";
 
-export default function NotFound() {
+const NotFound = () => {
   const router = useRouter();
 
   const handleHomeBtn = () => {
@@ -21,7 +21,7 @@ export default function NotFound() {
       </S.ButtonContainer>
     </S.Container>
   );
-}
+};
 
 const S = {
   Container: styled.div`
@@ -47,3 +47,5 @@ const S = {
     margin: 0 10px;
   `,
 };
+
+export default NotFound;

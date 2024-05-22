@@ -54,19 +54,29 @@ export default NextAuth({
         return data as any;
       },
     }),
-    // 다른 경로로 로그인 => 콜백으로 토큰받아서 서버에 넘겨줘야..
-    // GoogleProvider({
-    //   clientId: process.env.GOOGLE_CLIENT_ID!,
-    //   clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-    // }),
-    // KakaoProvider({
-    //   clientId: process.env.KAKAO_CLIENT_ID!,
-    //   clientSecret: process.env.KAKAO_CLIENT_SECRET!,
-    // }),
-    // NaverProvider({
-    //   clientId: process.env.NAVER_CLIENT_ID!,
-    //   clientSecret: process.env.NAVER_CLIENT_SECRET!,
-    // }),
+
+    //OAuth 로그인
+    CredentialsProvider({
+      name: "CredentialsForOAuth",
+
+      credentials: {
+        accessToken: { label: "accessToken", type: "string" },
+        refreshToken: { label: "refreshToken", type: "string" },
+      },
+      async authorize(credentials: any) {
+        //토큰
+        const jwt = {
+          accessToken: credentials.accessToken || "tempAccess",
+          refreshToken: credentials.refreshToken || "tempRefresh",
+        };
+
+        // 유저정보
+        const email = "tempEmail";
+        const nickname = "tempNickname";
+
+        return { user: { email, nickname }, jwt } as any;
+      },
+    }),
   ],
 
   // jwt 설정
@@ -92,7 +102,6 @@ export default NextAuth({
         // 액세스 토큰 만료 전
         console.log("토큰 만료 전");
         return token;
-
       } else {
         console.log("토큰 만료 후");
         // 만료 후 리프레시 토큰으로 액세스 토큰 업데이트 요청

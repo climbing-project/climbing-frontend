@@ -17,7 +17,7 @@ const HomePage: NextPageWithLayout = () => {
       console.log("get");
 
       const saveTokens = async () => {
-        return await signIn("credentials", {
+        return await signIn("CredentialsForOAuth", {
           accessToken: router.query.accessToken,
           refreshToken: router.query.refreshToken,
           redirect: true,

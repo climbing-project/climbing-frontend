@@ -55,28 +55,28 @@ export default NextAuth({
       },
     }),
 
-    //OAuth 로그인
-    CredentialsProvider({
-      name: "CredentialsForOAuth",
+    // //OAuth 로그인
+    // CredentialsProvider({
+    //   name: "CredentialsForOAuth",
 
-      credentials: {
-        accessToken: { label: "accessToken", type: "string" },
-        refreshToken: { label: "refreshToken", type: "string" },
-      },
-      async authorize(credentials: any) {
-        //토큰
-        const jwt = {
-          accessToken: credentials.accessToken || "tempAccess",
-          refreshToken: credentials.refreshToken || "tempRefresh",
-        };
+    //   credentials: {
+    //     accessToken: { label: "accessToken", type: "string" },
+    //     refreshToken: { label: "refreshToken", type: "string" },
+    //   },
+    //   async authorize(credentials: any) {
+    //     //토큰
+    //     const jwt = {
+    //       accessToken: credentials.accessToken || "tempAccess",
+    //       refreshToken: credentials.refreshToken || "tempRefresh",
+    //     };
 
-        // 유저정보
-        const email = "tempEmail";
-        const nickname = "tempNickname";
+    //     // 유저정보
+    //     const email = "tempEmail";
+    //     const nickname = "tempNickname";
 
-        return { user: { email, nickname }, jwt } as any;
-      },
-    }),
+    //     return { user: { email, nickname }, jwt } as any;
+    //   },
+    // }),
   ],
 
   // jwt 설정

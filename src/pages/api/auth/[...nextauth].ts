@@ -71,8 +71,11 @@ export default NextAuth({
           // 유저정보
           const email = "tempEmail";
           const nickname = "tempNickname";
+          credentials.email = "tempEmail";
+          credentials.nickname = "tempNickname";
 
-          return { user: { email, nickname }, jwt } as any;
+          const data = { user: { email, nickname }, jwt };
+          return data as any;
         } else {
           // 잘못된 타입
           console.log("wrong type login");

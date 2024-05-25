@@ -19,7 +19,7 @@ const HomePage: NextPageWithLayout = () => {
         return await signIn("CredentialsForOAuth", {
           accessToken: router.query.accessToken,
           refreshToken: router.query.refreshToken,
-          redirect: true,
+          redirect: false,
           callbackUrl: "/",
         });
       };

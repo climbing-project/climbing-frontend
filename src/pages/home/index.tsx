@@ -14,7 +14,7 @@ const HomePage: NextPageWithLayout = () => {
 
   useEffect(() => {
     if (router.query.accessToken) {
-      console.log("get");
+      console.log(`accessToken: ${router.query.accessToken}`);
       const saveTokens = async () => {
         return await signIn("CredentialsForOAuth", {
           accessToken: router.query.accessToken,

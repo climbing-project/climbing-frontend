@@ -20,6 +20,7 @@ export default NextAuth({
       },
       async authorize(credentials: any) {
         if (credentials.type === "normal") {
+          console.log("일반 로그인");
           const data = await requestData({
             option: "POST",
             url: `/members/login`,
@@ -61,6 +62,7 @@ export default NextAuth({
           });
           return data as any;
         } else if (credentials.type === "oauth") {
+          console.log("oauth 로그인");
           const jwt = {
             accessToken: credentials.accessToken || "tempAccess",
             refreshToken: credentials.refreshToken || "tempRefresh",

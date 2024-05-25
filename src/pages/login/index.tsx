@@ -20,7 +20,7 @@ const Login = () => {
           refreshToken: refreshToken,
           type: "oauth",
           redirect: true,
-          callbackUrl: "http://13.125.164.197:443/",
+          callbackUrl: "/",
         });
 
         if (result?.error) {

@@ -14,16 +14,16 @@ const HomePage: NextPageWithLayout = () => {
 
   useEffect(() => {
     if (router.query.accessToken) {
-      // console.log("get");
-      // const saveTokens = async () => {
-      //   return await signIn("CredentialsForOAuth", {
-      //     accessToken: router.query.accessToken,
-      //     refreshToken: router.query.refreshToken,
-      //     redirect: true,
-      //     callbackUrl: "/",
-      //   });
-      // };
-      // saveTokens().catch(console.error);
+      console.log("get");
+      const saveTokens = async () => {
+        return await signIn("CredentialsForOAuth", {
+          accessToken: router.query.accessToken,
+          refreshToken: router.query.refreshToken,
+          redirect: true,
+          callbackUrl: "/",
+        });
+      };
+      saveTokens().catch(console.error);
     }
   }, [router.query]);
 

@@ -13,9 +13,11 @@ const Login = () => {
     if (router.query.accessToken) {
       console.log(`accessToken: ${router.query.accessToken}`);
       const saveTokens = async () => {
-        const result=await signIn("credentials", {
-          accessToken: router.query.accessToken,
-          refreshToken: router.query.refreshToken,
+        const accessToken = router.query.accessToken;
+        const refreshToken = router.query.refreshToken;
+        const result = await signIn("credentials", {
+          accessToken: accessToken,
+          refreshToken: refreshToken,
           type: "oauth",
           redirect: true,
           callbackUrl: "/",

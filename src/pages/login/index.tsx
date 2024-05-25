@@ -13,17 +13,21 @@ const Login = () => {
     if (router.query.accessToken) {
       console.log(`accessToken: ${router.query.accessToken}`);
       const saveTokens = async () => {
-        return await signIn("credentials", {
-          email: "email",
-          password: "password",
+        const result=await signIn("credentials", {
           accessToken: router.query.accessToken,
           refreshToken: router.query.refreshToken,
           type: "oauth",
           redirect: true,
           callbackUrl: "/",
         });
+
+        if (result?.error) {
+          console.log("login fail");
+        } else {
+          console.log("login success");
+        }
       };
-      saveTokens().catch(console.error);
+      saveTokens();
     }
   }, [router.query]);
   return (

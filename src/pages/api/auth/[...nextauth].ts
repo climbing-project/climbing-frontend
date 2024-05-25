@@ -144,6 +144,8 @@ export default NextAuth({
 
     // jwt에서 return한 값이 token으로 들어옴
     async session({ session, token }) {
+      console.log(session);
+      console.log(token);
       if (token) {
         session.jwt = token.jwt as any;
         session.user = token.user as any;

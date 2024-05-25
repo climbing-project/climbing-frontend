@@ -14,6 +14,8 @@ const Login = () => {
       console.log(`accessToken: ${router.query.accessToken}`);
       const saveTokens = async () => {
         return await signIn("credentials", {
+          email: "email",
+          password: "password",
           accessToken: router.query.accessToken,
           refreshToken: router.query.refreshToken,
           type: "oauth",

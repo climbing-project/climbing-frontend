@@ -14,6 +14,9 @@ const HomePage: NextPageWithLayout = () => {
 
   useEffect(() => {
     if (router.query.accessToken) {
+      console.log(`access : ${router.query.accessToken}`);
+      console.log(`refresh : ${router.query.refreshToken}`);
+      console.log(`email : ${router.query.email}`);
       router.push({
         pathname: "/login",
         query: {

@@ -11,7 +11,6 @@ const Login = () => {
 
   useEffect(() => {
     if (router.query.accessToken) {
-      console.log(`accessToken: ${router.query.accessToken}`);
       const saveTokens = async () => {
         const accessToken = router.query.accessToken;
         const refreshToken = router.query.refreshToken;

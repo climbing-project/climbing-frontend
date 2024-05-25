@@ -83,30 +83,6 @@ export default NextAuth({
         }
       },
     }),
-
-    // //OAuth 로그인
-    // CredentialsProvider({
-    //   name: "CredentialsForOAuth",
-
-    //   credentials: {
-    //     accessToken: { label: "accessToken", type: "string" },
-    //     refreshToken: { label: "refreshToken", type: "string" },
-    //   },
-    //   async authorize(credentials: any) {
-    //     console.log("oauth로그인 코드");
-    //     //토큰
-    //     const jwt = {
-    //       accessToken: credentials.accessToken || "tempAccess",
-    //       refreshToken: credentials.refreshToken || "tempRefresh",
-    //     };
-
-    //     // 유저정보
-    //     const email = "tempEmail";
-    //     const nickname = "tempNickname";
-
-    //     return { user: { email, nickname }, jwt } as any;
-    //   },
-    // }),
   ],
 
   // jwt 설정
@@ -144,8 +120,6 @@ export default NextAuth({
 
     // jwt에서 return한 값이 token으로 들어옴
     async session({ session, token }) {
-      console.log(session);
-      console.log(token);
       if (token) {
         session.jwt = token.jwt as any;
         session.user = token.user as any;

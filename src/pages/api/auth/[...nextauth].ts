@@ -14,71 +14,94 @@ export default NextAuth({
       credentials: {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
+        accessToken: { label: "AccessToken", type: "string" },
+        refreshToken: { label: "RefreshToken", type: "string" },
+        type: { label: "LoginType", type: "string" },
       },
       async authorize(credentials: any) {
-        console.log("일반로그인 코드");
-        const data = await requestData({
-          option: "POST",
-          url: `/members/login`,
-          data: {
-            email: credentials.email,
-            password: credentials.password,
-          },
-          onSuccess: async (response: Response) => {
-            const responseHeaders = response.headers;
-            console.log(responseHeaders);
-            const responseAccessToken = responseHeaders.get("Authorization");
-            const responseRefreshToken = responseHeaders.get(
-              "Authorization-refresh"
-            );
-            if (
-              !(responseHeaders && responseAccessToken && responseRefreshToken)
-            ) {
-              throw Error("missing header or token");
-            }
+        if (credentials.type === "normal") {
+          const data = await requestData({
+            option: "POST",
+            url: `/members/login`,
+            data: {
+              email: credentials.email,
+              password: credentials.password,
+            },
+            onSuccess: async (response: Response) => {
+              const responseHeaders = response.headers;
+              console.log(responseHeaders);
+              const responseAccessToken = responseHeaders.get("Authorization");
+              const responseRefreshToken = responseHeaders.get(
+                "Authorization-refresh"
+              );
+              if (
+                !(
+                  responseHeaders &&
+                  responseAccessToken &&
+                  responseRefreshToken
+                )
+              ) {
+                throw Error("missing header or token");
+              }
 
-            // 받은 토큰
-            const jwt = {
-              accessToken: responseAccessToken || "tempAccess",
-              refreshToken: responseRefreshToken || "tempRefresh",
-            };
+              // 받은 토큰
+              const jwt = {
+                accessToken: responseAccessToken || "tempAccess",
+                refreshToken: responseRefreshToken || "tempRefresh",
+              };
 
-            // 받은 유저정보
-            const body = await response.json();
-            const email = body.email || "tempEmail";
-            const nickname = body.nickname || "tempNickname";
+              // 받은 유저정보
+              const body = await response.json();
+              const email = body.email || "tempEmail";
+              const nickname = body.nickname || "tempNickname";
 
-            return { user: { email, nickname }, jwt };
-          },
-          hasBody: false,
-        });
-        return data as any;
+              return { user: { email, nickname }, jwt };
+            },
+            hasBody: false,
+          });
+          return data as any;
+        } else if (credentials.type === "oauth") {
+          const jwt = {
+            accessToken: credentials.accessToken || "tempAccess",
+            refreshToken: credentials.refreshToken || "tempRefresh",
+          };
+
+          // 유저정보
+          const email = "tempEmail";
+          const nickname = "tempNickname";
+
+          return { user: { email, nickname }, jwt } as any;
+        } else {
+          // 잘못된 타입
+          console.log("wrong type login");
+          return null;
+        }
       },
     }),
 
-    //OAuth 로그인
-    CredentialsProvider({
-      name: "CredentialsForOAuth",
+    // //OAuth 로그인
+    // CredentialsProvider({
+    //   name: "CredentialsForOAuth",
 
-      credentials: {
-        accessToken: { label: "accessToken", type: "string" },
-        refreshToken: { label: "refreshToken", type: "string" },
-      },
-      async authorize(credentials: any) {
-        console.log("oauth로그인 코드");
-        //토큰
-        const jwt = {
-          accessToken: credentials.accessToken || "tempAccess",
-          refreshToken: credentials.refreshToken || "tempRefresh",
-        };
+    //   credentials: {
+    //     accessToken: { label: "accessToken", type: "string" },
+    //     refreshToken: { label: "refreshToken", type: "string" },
+    //   },
+    //   async authorize(credentials: any) {
+    //     console.log("oauth로그인 코드");
+    //     //토큰
+    //     const jwt = {
+    //       accessToken: credentials.accessToken || "tempAccess",
+    //       refreshToken: credentials.refreshToken || "tempRefresh",
+    //     };
 
-        // 유저정보
-        const email = "tempEmail";
-        const nickname = "tempNickname";
+    //     // 유저정보
+    //     const email = "tempEmail";
+    //     const nickname = "tempNickname";
 
-        return { user: { email, nickname }, jwt } as any;
-      },
-    }),
+    //     return { user: { email, nickname }, jwt } as any;
+    //   },
+    // }),
   ],
 
   // jwt 설정

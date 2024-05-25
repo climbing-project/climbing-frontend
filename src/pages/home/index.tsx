@@ -14,18 +14,26 @@ const HomePage: NextPageWithLayout = () => {
 
   useEffect(() => {
     if (router.query.accessToken) {
-      console.log(`accessToken: ${router.query.accessToken}`);
-      const saveTokens = async () => {
-        return await signIn("CredentialsForOAuth", {
+      router.push({
+        pathname: "/login",
+        query: {
           accessToken: router.query.accessToken,
           refreshToken: router.query.refreshToken,
-          redirect: false,
-          callbackUrl: "/",
-        });
-      };
-      saveTokens().catch(console.error);
+        },
+      });
+      // console.log(`accessToken: ${router.query.accessToken}`);
+      // const saveTokens = async () => {
+      //   return await signIn("CredentialsForOAuth", {
+      //     accessToken: router.query.accessToken,
+      //     refreshToken: router.query.refreshToken,
+      //     type: "oauth",
+      //     redirect: false,
+      //     callbackUrl: "/",
+      //   });
+      // };
+      // router.push("/login").then(saveTokens().catch(console.error));
     }
-  }, [router.query]);
+  }, [router, router.query]);
 
   return (
     <Styled.Wrapper>

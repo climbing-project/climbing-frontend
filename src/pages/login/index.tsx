@@ -12,21 +12,20 @@ const Login = () => {
   useEffect(() => {
     if (router.query.accessToken) {
       const saveTokens = async () => {
-        const accessToken = router.query.accessToken;
-        const refreshToken = router.query.refreshToken;
-        const result = await signIn("credentials", {
-          accessToken: accessToken,
-          refreshToken: refreshToken,
-          type: "oauth",
-          redirect: true,
-          callbackUrl: "/",
-        });
-
-        if (result?.error) {
-          console.log("login fail");
-        } else {
-          console.log("login success");
-        }
+        // const accessToken = router.query.accessToken;
+        // const refreshToken = router.query.refreshToken;
+        // const result = await signIn("credentials", {
+        //   accessToken: accessToken,
+        //   refreshToken: refreshToken,
+        //   type: "oauth",
+        //   redirect: true,
+        //   callbackUrl: "/",
+        // });
+        // if (result?.error) {
+        //   console.log("login fail");
+        // } else {
+        //   console.log("login success");
+        // }
       };
       saveTokens();
     }

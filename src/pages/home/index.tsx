@@ -7,36 +7,9 @@ import SearchBanner from "@/components/search/searchBanner";
 import GymListBanner from "@/components/search/GymListBanner";
 import { useRouter } from "next/router";
 import { COLOR } from "@/styles/global-color";
-import { signIn } from "next-auth/react";
 
 const HomePage: NextPageWithLayout = () => {
   const router = useRouter();
-
-  useEffect(() => {
-    if (router.query.accessToken) {
-      console.log(`access : ${router.query.accessToken}`);
-      console.log(`refresh : ${router.query.refreshToken}`);
-      console.log(`email : ${router.query.email}`);
-      router.push({
-        pathname: "/login",
-        query: {
-          accessToken: router.query.accessToken,
-          refreshToken: router.query.refreshToken,
-        },
-      });
-      // console.log(`accessToken: ${router.query.accessToken}`);
-      // const saveTokens = async () => {
-      //   return await signIn("CredentialsForOAuth", {
-      //     accessToken: router.query.accessToken,
-      //     refreshToken: router.query.refreshToken,
-      //     type: "oauth",
-      //     redirect: false,
-      //     callbackUrl: "/",
-      //   });
-      // };
-      // router.push("/login").then(saveTokens().catch(console.error));
-    }
-  }, [router, router.query]);
 
   return (
     <Styled.Wrapper>

@@ -1,9 +1,6 @@
 import { requestData } from "@/service/api";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import GoogleProvider from "next-auth/providers/google";
-import KakaoProvider from "next-auth/providers/kakao";
-import NaverProvider from "next-auth/providers/naver";
 
 export default NextAuth({
   providers: [

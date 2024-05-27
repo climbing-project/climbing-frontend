@@ -17,7 +17,7 @@ const GeneralLogin = () => {
       password: password,
       type: "normal",
       redirect: true,
-      callbackUrl: "/home",
+      callbackUrl: "/",
     });
 
     if (result?.error) {

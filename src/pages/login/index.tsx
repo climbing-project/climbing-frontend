@@ -18,7 +18,7 @@ const Login = () => {
           accessToken: accessToken,
           refreshToken: refreshToken,
           type: "oauth",
-          redirect: true,
+          redirect: false,
           callbackUrl: "/",
         });
 

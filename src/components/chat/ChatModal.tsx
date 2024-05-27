@@ -21,35 +21,37 @@ const ChatModal = ({ gymId, gymName }: ChatModalProps) => {
     if (!session || client) return;
 
     const clientInstance = new Client({
-      brokerURL: `ws://${SOCKET_ADDRESS}/ws/chat`,
+      brokerURL: `${SOCKET_ADDRESS}/ws/chat`,
       connectHeaders: { Authorization: "Bearer " + session.jwt.accessToken },
     });
 
-    // 추후 fetchRoom 로직 추가 (성공 시 fetch한 roomId 사용, 실패 시 신규 생성)
+    const joinRoom = async () => {
+      // 추후 existing room fetch 로직 추가 (성공 시 fetch한 roomId 사용)
+      // ↓ 신규 room 생성
+      try {
+        const res = await fetch(`${SERVER_ADDRESS}/chat/room/${gymId}`, {
+          method: "POST",
+          headers: { Authorization: "Bearer " + session.jwt.accessToken },
+        });
+        if (res.redirected) throw new Error("로그인이 필요한 서비스입니다.");
+        const { roomId } = await res.json();
+        setRoomId(roomId);
+      } catch (e) {
+        console.log(e);
+      }
+    };
 
-    const createRoom = async () => {
-      const res = await fetch(`${SERVER_ADDRESS}/chat/room/${gymId}`, {
-        method: "POST",
-        headers: { Authorization: "Bearer " + session.jwt.accessToken },
-      });
-      if (res.redirected) throw new Error("로그인이 필요한 서비스입니다.");
-      const { roomId } = await res.json();
-      setRoomId(roomId);
+    clientInstance.activate();
+
+    clientInstance.onConnect = () => {
+      joinRoom();
+      setClient(clientInstance);
     };
 
     clientInstance.onStompError = (frame: IFrame) => {
       console.log("에러 발생");
       console.log(frame); // 에러 확인
     };
-
-    try {
-      clientInstance.activate();
-      createRoom();
-      setClient(clientInstance);
-    } catch (e) {
-      // 클라이언트를 activate할 수 없는 경우
-      console.log(e);
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
 
@@ -86,7 +88,7 @@ const ChatModal = ({ gymId, gymName }: ChatModalProps) => {
         <S.Button $isOpen={isOpen} onClick={toggleModal}>
           {isOpen ? <MdOutlineClose size="2.2rem" /> : <MdOutlineSupportAgent size="2.2rem" />}
         </S.Button>
-        {isOpen ? <Socket gymName={gymName} client={client} roomId={roomId} /> : null}
+        {isOpen && <Socket gymName={gymName} client={client} roomId={roomId} />}
       </S.Modal>
     </S.Wrapper>
   );

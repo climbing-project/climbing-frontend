@@ -8,17 +8,52 @@ import { useEffect } from "react";
 const Test = () => {
   const { data: session, status } = useSession();
   // 테스트할 함수
-  const testFunc = () => {
-    alert("테스트 키 입력됨");
 
-    console.log(status);
-    console.log(session);
+  const testFunc = async () => {
+    alert("테스트 키 입력됨");
+    const email = "eunjitest90@gmail.com";
+    const password = "hello1234!";
+    const data = await requestData({
+      option: "POST",
+      url: `/members/login`,
+      data: {
+        email: email,
+        password: password,
+      },
+      onSuccess: async (response: Response) => {
+        const responseHeaders = response.headers;
+        const responseAccessToken = responseHeaders.get("Authorization");
+        console.log(responseAccessToken);
+        const responseRefreshToken = responseHeaders.get(
+          "Authorization-refresh"
+        );
+        if (!(responseHeaders && responseAccessToken && responseRefreshToken)) {
+          throw Error("missing header or token");
+        }
+
+        // 받은 토큰
+        const jwt = {
+          accessToken: responseAccessToken || "tempAccess",
+          refreshToken: responseRefreshToken || "tempRefresh",
+        };
+
+        // 받은 유저정보
+        const body = await response.json();
+        const email = body.email || "tempEmail";
+        const nickname = body.nickname || "tempNickname";
+
+        return { user: { email, nickname }, jwt };
+      },
+      hasBody: false,
+    });
+    console.log(data);
+    return data as any;
   };
 
   const keyDown = (event: { key: string; preventDefault: () => void }) => {
     if (event.key === "t") {
       event.preventDefault();
-      testFunc();
+      console.log(testFunc());
     }
   };
 

@@ -78,7 +78,7 @@ export default NextAuth({
           } else {
             // 잘못된 타입
             console.log("wrong type login");
-            // return null;
+            return null;
           }
         } catch (err) {
           console.log(`여기에러1 : ${err}`);

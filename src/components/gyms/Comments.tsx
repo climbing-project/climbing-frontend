@@ -61,22 +61,22 @@ const Comments = ({ id, comments, session }: CommentsProps) => {
         {session ? (
           <>
             <CommentTextarea handleAddComment={handleAddComment} />
-            {currentComments && currentComments.length > 0
-              ? currentComments.map(({ user, date, text }, i) => (
-                  <S.Comment key={i}>
-                    <div>
-                      <span className="comment__user">{user}</span>
-                      <span className="comment__date">{date}</span>
-                      {session.user.nickname === user ? (
-                        <ReactIcon clickable={true}>
-                          <IoTrash onClick={handleDeleteComment} />
-                        </ReactIcon>
-                      ) : null}
-                    </div>
-                    <div>{text}</div>
-                  </S.Comment>
-                ))
-              : null}
+            {currentComments &&
+              currentComments.length > 0 &&
+              currentComments.map(({ user, date, text }, i) => (
+                <S.Comment key={i}>
+                  <div style={{ display: "flex" }}>
+                    <span className="comment__user">{user}</span>
+                    <span className="comment__date">{date}</span>
+                    {session.user.nickname === user && (
+                      <ReactIcon clickable={true}>
+                        <IoTrash onClick={handleDeleteComment} />
+                      </ReactIcon>
+                    )}
+                  </div>
+                  <div>{text}</div>
+                </S.Comment>
+              ))}
           </>
         ) : (
           <div className="login-prompt">
@@ -124,6 +124,7 @@ const S = {
     }
     .comment__date {
       color: #c3c3c3;
+      margin-right: 1.25rem;
     }
   `,
   Link: styled(Link)`

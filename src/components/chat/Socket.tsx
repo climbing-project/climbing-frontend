@@ -47,7 +47,7 @@ const Socket = ({ gymName, client, roomId }: SocketProps) => {
 
   useEffect(() => {
     if (!isLoading) return;
-    if (!session && !client && !isLoading) {
+    if ((!session && !client && !isLoading) || (client && !client.connected)) {
       setIsLoading(false);
       setIsError(true);
       return;
@@ -86,13 +86,12 @@ const Socket = ({ gymName, client, roomId }: SocketProps) => {
       console.log("입장한 방이 없음");
       return false;
     }
-    console.log("서버에 메시지 전송 시도");
     client.publish({
       destination: "/app/chat/message",
       body: JSON.stringify({
         type: "TALK",
         roomId: roomId,
-        sender: session?.user.email,
+        sender: session.user.email,
         message,
       }),
     });

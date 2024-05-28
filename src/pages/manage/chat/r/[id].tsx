@@ -42,7 +42,7 @@ const ChatPopup: NextPageWithLayout = ({
     if (!session || clientRef.current) return;
 
     clientRef.current = new Client({
-      brokerURL: `ws://${SOCKET_ADDRESS}/ws/chat`,
+      brokerURL: `${SOCKET_ADDRESS}/ws/chat`,
       connectHeaders: { Authorization: "Bearer " + session.jwt.accessToken },
     });
     const client = clientRef.current;

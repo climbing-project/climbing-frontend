@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import styled from "styled-components";
 import { BiSolidHelpCircle } from "react-icons/bi";
+import { COLOR } from "@/styles/global-color";
 
 // 소켓 동작 확인 후에 적용
 export type MessageFormat = {
@@ -117,7 +118,7 @@ const Wrapper = styled.div`
     border-radius: 10px;
   }
   &::-webkit-scrollbar-thumb:hover {
-    background: #cacaca;
+    background: ${COLOR.DISABLED};
   }
   & .batch {
     display: flex;

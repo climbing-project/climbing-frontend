@@ -59,7 +59,7 @@ const ChatPage: NextPageWithLayout = () => {
   };
 
   const openNewWindow = (url: string) => {
-    const newWindow = window.open(url, "_blank", "popup=true,left=50,top=50,width=370,height=550");
+    const newWindow = window.open(url, "_blank", "popup=true,left=50,top=50,width=370,height=600");
     setOpenWindows((prev) => [...prev, { url, windowRef: newWindow as Window }]);
     return;
   };
@@ -83,7 +83,7 @@ const ChatPage: NextPageWithLayout = () => {
                     </S.Row>
                   ))
                 ) : (
-                  <div>현재 진행 중인 채팅이 없습니다.</div>
+                  <div>현재 진행 중인 1:1 문의가 없습니다.</div>
                 )}
               </S.Content>
             </>

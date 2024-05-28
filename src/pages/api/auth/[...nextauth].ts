@@ -104,6 +104,7 @@ export default NextAuth({
       } else if (Date.now() < Date.now() + expireDate) {
         // 액세스 토큰 만료 전
         console.log("토큰 만료 전");
+        console.log(token);
         return token;
       } else {
         console.log("토큰 만료 후");
@@ -117,6 +118,7 @@ export default NextAuth({
 
     // jwt에서 return한 값이 token으로 들어옴
     async session({ session, token }) {
+      console.log(`session은 : ${session}`);
       if (token) {
         session.jwt = token.jwt as any;
         session.user = token.user as any;
@@ -129,6 +131,7 @@ export default NextAuth({
     signIn: "/login",
     error: "error",
   },
+  secret: process.env.NEXTAUTH_SECRET,
 });
 
 async function updateAccessToken(refreshToken: string) {

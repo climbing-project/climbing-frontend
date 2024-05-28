@@ -76,7 +76,7 @@ export default NextAuth({
         } else {
           // 잘못된 타입
           console.log("wrong type login");
-          return null;
+          // return null;
         }
       },
     }),
@@ -131,7 +131,6 @@ export default NextAuth({
     signIn: "/login",
     error: "error",
   },
-  secret: process.env.NEXTAUTH_SECRET,
 });
 
 async function updateAccessToken(refreshToken: string) {

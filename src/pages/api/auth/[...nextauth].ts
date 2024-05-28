@@ -95,6 +95,21 @@ export default NextAuth({
 
   //  jwt나 세션 쓸때
   callbacks: {
+    async redirect({ url, baseUrl }) {
+      // let result = url;
+      // if (url.startsWith("/")) {
+      //   result = `${baseUrl}${url}`;
+      // }
+      // return result;
+      // Allows relative callback URLs
+      console.log(`url: ${url}`);
+      console.log(`baseUrl: ${baseUrl}`);
+      if (url.startsWith("/")) return `${baseUrl}${url}`;
+      // Allows callback URLs on the same origin
+      else if (new URL(url).origin === baseUrl) return url;
+      return baseUrl;
+    },
+
     // 로그인 시 return한 값이 user로 들어옴
     async jwt({ token, user }) {
       try {

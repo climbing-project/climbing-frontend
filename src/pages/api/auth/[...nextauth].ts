@@ -122,6 +122,7 @@ export default NextAuth({
         }
       } catch (err) {
         console.log(`여기에러2 : ${err}`);
+        return token;
       }
     },
 

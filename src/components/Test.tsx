@@ -11,8 +11,40 @@ const Test = () => {
 
   const testFunc = async () => {
     alert("테스트 키 입력됨");
-    console.log(session);
-    console.log(status);
+    const data = await requestData({
+      option: "POST",
+      url: `/members/login`,
+      data: {
+        email: "eunjitest90@gmail.com",
+        password: "hello1234!",
+      },
+      onSuccess: async (response: Response) => {
+        const responseHeaders = response.headers;
+        console.log(responseHeaders);
+        const responseAccessToken = responseHeaders.get("Authorization");
+        const responseRefreshToken = responseHeaders.get(
+          "Authorization-refresh"
+        );
+        if (!(responseHeaders && responseAccessToken && responseRefreshToken)) {
+          throw Error("missing header or token");
+        }
+
+        // 받은 토큰
+        const jwt = {
+          accessToken: responseAccessToken || "tempAccess",
+          refreshToken: responseRefreshToken || "tempRefresh",
+        };
+
+        // 받은 유저정보
+        const body = await response.json();
+        const email = body.email || "tempEmail";
+        const nickname = body.nickname || "tempNickname";
+
+        return { user: { email, nickname }, jwt };
+      },
+      hasBody: false,
+    });
+    console.log(data);
   };
 
   const keyDown = async (event: {

@@ -82,6 +82,7 @@ export default NextAuth({
           }
         } catch (err) {
           console.log(`여기에러1 : ${err}`);
+          return null;
         }
       },
     }),

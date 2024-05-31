@@ -19,6 +19,10 @@ export default NextAuth({
         // try {
         // if (credentials.type === "normal") {
         console.log("일반 로그인");
+        let email = "tempEmail";
+        let nickname = "tempNickname";
+        let jwt = { accessToken: "tempAccess", refreshToken: "tempRefresh" };
+
         const data = await requestData({
           option: "POST",
           url: `/members/login`,
@@ -39,22 +43,29 @@ export default NextAuth({
             }
 
             // 받은 토큰
-            const jwt = {
+            // const jwt = {
+            //   accessToken: responseAccessToken || "tempAccess",
+            //   refreshToken: responseRefreshToken || "tempRefresh",
+            // };
+            jwt = {
               accessToken: responseAccessToken || "tempAccess",
               refreshToken: responseRefreshToken || "tempRefresh",
             };
 
             // 받은 유저정보
             const body = await response.json();
-            const email = body.email || "tempEmail";
-            const nickname = body.nickname || "tempNickname";
-
-            return { user: { email, nickname }, jwt };
+            // const email = body.email || "tempEmail";
+            // const nickname = body.nickname || "tempNickname";
+            email = body.email || "tempEmail";
+            nickname = body.nickname || "tempNickname";
+            return;
+            // return { user: { email, nickname }, jwt };
           },
           hasBody: false,
         });
-        // console.log(data);
-        return data as any;
+        console.log(data);
+
+        return { user: { email, nickname }, jwt } as any;
         //     } else if (credentials.type === "oauth") {
         //       console.log("oauth 로그인");
         //       const jwt = {
@@ -62,7 +73,8 @@ export default NextAuth({
         //         refreshToken: credentials.refreshToken || "tempRefresh",
         //       };
 
-        //       // 유저정보
+        //
+        // 유저정보
         //       const email = "tempEmail";
         //       const nickname = "tempNickname";
         //       credentials.email = "tempEmail";

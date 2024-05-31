@@ -54,7 +54,7 @@ export default NextAuth({
           hasBody: false,
         });
         // console.log(data);
-        return data;
+        return data as any;
         //     } else if (credentials.type === "oauth") {
         //       console.log("oauth 로그인");
         //       const jwt = {

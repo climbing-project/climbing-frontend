@@ -11,79 +11,75 @@ export default NextAuth({
       credentials: {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
-        accessToken: { label: "AccessToken", type: "string" },
-        refreshToken: { label: "RefreshToken", type: "string" },
-        type: { label: "LoginType", type: "string" },
+        // accessToken: { label: "AccessToken", type: "string" },
+        // refreshToken: { label: "RefreshToken", type: "string" },
+        // type: { label: "LoginType", type: "string" },
       },
       async authorize(credentials: any) {
-        try {
-          if (credentials.type === "normal") {
-            console.log("일반 로그인");
-            const data = await requestData({
-              option: "POST",
-              url: `/members/login`,
-              data: {
-                email: credentials.email,
-                password: credentials.password,
-              },
-              onSuccess: async (response: Response) => {
-                const responseHeaders = response.headers;
-                const responseAccessToken =
-                  responseHeaders.get("Authorization");
-                const responseRefreshToken = responseHeaders.get(
-                  "Authorization-refresh"
-                );
-                if (
-                  !(
-                    responseHeaders &&
-                    responseAccessToken &&
-                    responseRefreshToken
-                  )
-                ) {
-                  throw Error("missing header or token");
-                }
+        // try {
+        // if (credentials.type === "normal") {
+        console.log("일반 로그인");
+        const data = await requestData({
+          option: "POST",
+          url: `/members/login`,
+          data: {
+            email: credentials.email,
+            password: credentials.password,
+          },
+          onSuccess: async (response: Response) => {
+            const responseHeaders = response.headers;
+            const responseAccessToken = responseHeaders.get("Authorization");
+            const responseRefreshToken = responseHeaders.get(
+              "Authorization-refresh"
+            );
+            if (
+              !(responseHeaders && responseAccessToken && responseRefreshToken)
+            ) {
+              throw Error("missing header or token");
+            }
 
-                // 받은 토큰
-                const jwt = {
-                  accessToken: responseAccessToken || "tempAccess",
-                  refreshToken: responseRefreshToken || "tempRefresh",
-                };
-
-                // 받은 유저정보
-                const body = await response.json();
-                const email = body.email || "tempEmail";
-                const nickname = body.nickname || "tempNickname";
-
-                return { user: { email, nickname }, jwt };
-              },
-              hasBody: false,
-            });
-            // console.log(data);
-            return data;
-          } else if (credentials.type === "oauth") {
-            console.log("oauth 로그인");
+            // 받은 토큰
             const jwt = {
-              accessToken: credentials.accessToken || "tempAccess",
-              refreshToken: credentials.refreshToken || "tempRefresh",
+              accessToken: responseAccessToken || "tempAccess",
+              refreshToken: responseRefreshToken || "tempRefresh",
             };
 
-            // 유저정보
-            const email = "tempEmail";
-            const nickname = "tempNickname";
-            credentials.email = "tempEmail";
-            credentials.nickname = "tempNickname";
+            // 받은 유저정보
+            const body = await response.json();
+            const email = body.email || "tempEmail";
+            const nickname = body.nickname || "tempNickname";
 
-            const data = { user: { email, nickname }, jwt };
-            return data as any;
-          } else {
-            // 잘못된 타입
-            console.log("wrong type login");
-            return null;
-          }
-        } catch (err) {
-          console.log(`여기에러1 : ${err}`);
-          return null;
-        }
+            return { user: { email, nickname }, jwt };
+          },
+          hasBody: false,
+        });
+        // console.log(data);
+        return data;
+        //     } else if (credentials.type === "oauth") {
+        //       console.log("oauth 로그인");
+        //       const jwt = {
+        //         accessToken: credentials.accessToken || "tempAccess",
+        //         refreshToken: credentials.refreshToken || "tempRefresh",
+        //       };
+
+        //       // 유저정보
+        //       const email = "tempEmail";
+        //       const nickname = "tempNickname";
+        //       credentials.email = "tempEmail";
+        //       credentials.nickname = "tempNickname";
+
+        //       const data = { user: { email, nickname }, jwt };
+        //       return data as any;
+        //     } else {
+        //       // 잘못된 타입
+        //       console.log("wrong type login");
+        //       return null;
+        //     }
+        //   } catch (err) {
+        //     console.log(`여기에러1 : ${err}`);
+        //     return null;
+        //   }
+        // },
       },
     }),
   ],
@@ -120,49 +116,52 @@ export default NextAuth({
 
     // 로그인 시 return한 값이 user로 들어옴
     async jwt({ token, user }) {
-      try {
-        const expireDate = 3000;
+      // try {
+      //   const expireDate = 3000;
 
-        // 로그인 시
-        if (user) {
-          return {
-            ...token,
-            ...user,
-            jwt: user.jwt,
-          };
-        } else if (Date.now() < Date.now() + expireDate) {
-          // 액세스 토큰 만료 전
-          console.log("토큰 만료 전");
-          console.log(token);
-          return token;
-        } else {
-          console.log("토큰 만료 후");
-          // 만료 후 리프레시 토큰으로 액세스 토큰 업데이트 요청
-          if (!token.jwt.refreshToken) throw new Error("Missing refresh token");
-          // 리프레시 토큰도 만료되었을 시, 데이터삭제 및 로그아웃
-          return token;
-          // return updateAccessToken(token.jwt.refreshToken);
-        }
-      } catch (err) {
-        console.log(`여기에러2 : ${err}`);
+      // 로그인 시
+      if (user) {
+        return {
+          ...token,
+          ...user,
+          jwt: user.jwt,
+        };
+        //   } else if (Date.now() < Date.now() + expireDate) {
+        //     // 액세스 토큰 만료 전
+        //     console.log("토큰 만료 전");
+        //     console.log(token);
+        //     return token;
+        //   } else {
+        //     console.log("토큰 만료 후");
+        //     // 만료 후 리프레시 토큰으로 액세스 토큰 업데이트 요청
+        //     if (!token.jwt.refreshToken) throw new Error("Missing refresh token");
+        //     // 리프레시 토큰도 만료되었을 시, 데이터삭제 및 로그아웃
+        //     return token;
+        //     // return updateAccessToken(token.jwt.refreshToken);
+        //   }
+        // } catch (err) {
+        //   console.log(`여기에러2 : ${err}`);
+        //   return token;
+        // }
+      } else {
         return token;
       }
     },
 
     // jwt에서 return한 값이 token으로 들어옴
     async session({ session, token }) {
-      try {
-        console.log(`session은 : ${session}`);
-        console.log(`token은 : ${token}`);
-        if (token) {
-          session.jwt = token.jwt as any;
-          session.user = token.user as any;
-        }
-        return session;
-      } catch (err) {
-        console.log(`여기에러3 : ${err}`);
-        return session;
+      // try {
+      console.log(`session은 : ${session}`);
+      console.log(`token은 : ${token}`);
+      if (token) {
+        session.jwt = token.jwt as any;
+        session.user = token.user as any;
       }
+      return session;
+      // } catch (err) {
+      //   console.log(`여기에러3 : ${err}`);
+      //   return session;
+      // }
     },
   },
 

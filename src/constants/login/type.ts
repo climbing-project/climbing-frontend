@@ -24,10 +24,10 @@ declare module "next-auth" {
 
 declare module "next-auth/jwt" {
   interface JWT extends DefaultJWT {
-    jwt: {
-      accessToken: string;
-      refreshToken: string;
-    };
+    // jwt: {
+    accessToken: string;
+    refreshToken: string;
+    // };
   }
 }
 

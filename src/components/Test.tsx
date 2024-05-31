@@ -44,7 +44,7 @@ const Test = () => {
       },
       hasBody: false,
     });
-    console.log(data);
+    return data;
   };
 
   const keyDown = async (event: {

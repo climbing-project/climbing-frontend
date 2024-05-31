@@ -28,7 +28,6 @@ export default NextAuth({
               },
               onSuccess: async (response: Response) => {
                 const responseHeaders = response.headers;
-                console.log(responseHeaders);
                 const responseAccessToken =
                   responseHeaders.get("Authorization");
                 const responseRefreshToken = responseHeaders.get(
@@ -59,7 +58,8 @@ export default NextAuth({
               },
               hasBody: false,
             });
-            return data as any;
+            // console.log(data);
+            return data;
           } else if (credentials.type === "oauth") {
             console.log("oauth 로그인");
             const jwt = {
@@ -96,27 +96,27 @@ export default NextAuth({
 
   //  jwt나 세션 쓸때
   callbacks: {
-    async redirect({ url, baseUrl }) {
-      // let result = url;
-      // if (url.startsWith("/")) {
-      //   result = `${baseUrl}${url}`;
-      // }
-      // return result;
-      // Allows relative callback URLs
-      console.log(`url: ${url}`);
-      console.log(`baseUrl: ${baseUrl}`);
-      if (url.startsWith("/")) {
-        console.log("1");
-        return `${baseUrl}${url}`;
-      }
-      // Allows callback URLs on the same origin
-      else if (new URL(url).origin === baseUrl) {
-        console.log("2");
-        return url;
-      }
-      console.log("3");
-      return baseUrl;
-    },
+    // async redirect({ url, baseUrl }) {
+    //   // let result = url;
+    //   // if (url.startsWith("/")) {
+    //   //   result = `${baseUrl}${url}`;
+    //   // }
+    //   // return result;
+    //   // Allows relative callback URLs
+    //   console.log(`url: ${url}`);
+    //   console.log(`baseUrl: ${baseUrl}`);
+    //   if (url.startsWith("/")) {
+    //     console.log("1");
+    //     return `${baseUrl}${url}`;
+    //   }
+    //   // Allows callback URLs on the same origin
+    //   else if (new URL(url).origin === baseUrl) {
+    //     console.log("2");
+    //     return url;
+    //   }
+    //   console.log("3");
+    //   return baseUrl;
+    // },
 
     // 로그인 시 return한 값이 user로 들어옴
     async jwt({ token, user }) {
@@ -153,6 +153,7 @@ export default NextAuth({
     async session({ session, token }) {
       try {
         console.log(`session은 : ${session}`);
+        console.log(`token은 : ${token}`);
         if (token) {
           session.jwt = token.jwt as any;
           session.user = token.user as any;

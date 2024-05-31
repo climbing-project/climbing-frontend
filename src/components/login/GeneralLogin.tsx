@@ -13,10 +13,10 @@ const GeneralLogin = () => {
     const password = event.target.password.value;
 
     const result = await signIn("credentials", {
-      email: email,
-      password: password,
+      email,
+      password,
       // type: "normal",
-      redirect: false,
+      redirect: true,
       callbackUrl: "/",
     });
 

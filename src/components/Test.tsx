@@ -53,7 +53,7 @@ const Test = () => {
   }) => {
     if (event.key === "t") {
       event.preventDefault();
-      const data = testFunc();
+      const data = await testFunc();
       console.log(data);
     }
   };

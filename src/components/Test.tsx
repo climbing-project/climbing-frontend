@@ -46,7 +46,7 @@ const Test = () => {
     //   },
     //   hasBody: false,
     // });
-    return data;
+    return session?.jwt;
   };
 
   const keyDown = async (event: {

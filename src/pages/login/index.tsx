@@ -12,12 +12,15 @@ const Login = () => {
   useEffect(() => {
     if (router.query.accessToken) {
       const saveTokens = async () => {
+        const email = router.query.email;
+        const nickname = router.query.nickname;
         const accessToken = router.query.accessToken;
         const refreshToken = router.query.refreshToken;
-        const result = await signIn("credentials", {
-          accessToken: accessToken,
-          refreshToken: refreshToken,
-          type: "oauth",
+        const result = await signIn("OAuthCredential", {
+          email,
+          nickname,
+          accessToken,
+          refreshToken,
           redirect: true,
           callbackUrl: "/",
         });

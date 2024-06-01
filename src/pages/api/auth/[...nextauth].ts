@@ -6,8 +6,7 @@ export default NextAuth({
   providers: [
     //자체 로그인
     CredentialsProvider({
-      name: "Credentials",
-
+      name: "credential",
       credentials: {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
@@ -56,14 +55,16 @@ export default NextAuth({
             // const nickname = body.nickname || "tempNickname";
             email = body.email || "tempEmail";
             nickname = body.nickname || "tempNickname";
+            const user = { email: email, nickname: nickname };
+            const data = { user, jwt };
             // return;
-            return { user: { email, nickname }, jwt };
+            return data;
           },
           hasBody: false,
         });
-        console.log(data);
+        // console.log(data);
 
-        return { user: { email, nickname }, jwt } as any;
+        return data as any;
       },
     }),
     //     } else if (credentials.type === "oauth") {
@@ -91,12 +92,12 @@ export default NextAuth({
     // }),
     CredentialsProvider({
       name: "OAuthCredential",
-
+      id: "oAuthCredential",
       credentials: {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
-        accessToken: { label: "AccessToken", type: "string" },
-        refreshToken: { label: "RefreshToken", type: "string" },
+        accessToken: { label: "AccessToken" },
+        refreshToken: { label: "RefreshToken" },
       },
       async authorize(credentials: any) {
         console.log("oauth 로그인");
@@ -108,8 +109,10 @@ export default NextAuth({
         // 유저정보
         const email = credentials.email || "tempEmail";
         const nickname = credentials.nickname || "tempNickname";
-
-        return { user: { email, nickname }, jwt } as any;
+        const user = { email: email, nickname: nickname };
+        const data = { user, jwt };
+        console.log(data);
+        return data as any;
       },
     }),
   ],

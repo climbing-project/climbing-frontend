@@ -11,87 +11,85 @@ export default NextAuth({
       credentials: {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
-        // accessToken: { label: "AccessToken", type: "string" },
-        // refreshToken: { label: "RefreshToken", type: "string" },
-        // type: { label: "LoginType", type: "string" },
+        accessToken: { label: "AccessToken", type: "string" },
+        refreshToken: { label: "RefreshToken", type: "string" },
+        type: { label: "LoginType", type: "string" },
       },
       async authorize(credentials: any) {
-        // try {
-        // if (credentials.type === "normal") {
-        console.log("일반 로그인");
-        let email = "tempEmail";
-        let nickname = "tempNickname";
-        let jwt = { accessToken: "tempAccess", refreshToken: "tempRefresh" };
+        if (credentials.type === "normal") {
+          console.log("일반 로그인");
+          let email = "tempEmail";
+          let nickname = "tempNickname";
+          let jwt = { accessToken: "tempAccess", refreshToken: "tempRefresh" };
 
-        const data = await requestData({
-          option: "POST",
-          url: `/members/login`,
-          data: {
-            email: credentials.email,
-            password: credentials.password,
-          },
-          onSuccess: async (response: Response) => {
-            const responseHeaders = response.headers;
-            const responseAccessToken = responseHeaders.get("Authorization");
-            const responseRefreshToken = responseHeaders.get(
-              "Authorization-refresh"
-            );
-            if (
-              !(responseHeaders && responseAccessToken && responseRefreshToken)
-            ) {
-              throw Error("missing header or token");
-            }
+          const data = await requestData({
+            option: "POST",
+            url: `/members/login`,
+            data: {
+              email: credentials.email,
+              password: credentials.password,
+            },
+            onSuccess: async (response: Response) => {
+              const responseHeaders = response.headers;
+              const responseAccessToken = responseHeaders.get("Authorization");
+              const responseRefreshToken = responseHeaders.get(
+                "Authorization-refresh"
+              );
+              if (
+                !(
+                  responseHeaders &&
+                  responseAccessToken &&
+                  responseRefreshToken
+                )
+              ) {
+                throw Error("missing header or token");
+              }
 
-            // 받은 토큰
-            // const jwt = {
-            //   accessToken: responseAccessToken || "tempAccess",
-            //   refreshToken: responseRefreshToken || "tempRefresh",
-            // };
-            jwt = {
-              accessToken: responseAccessToken || "tempAccess",
-              refreshToken: responseRefreshToken || "tempRefresh",
-            };
+              // 받은 토큰
+              // const jwt = {
+              //   accessToken: responseAccessToken || "tempAccess",
+              //   refreshToken: responseRefreshToken || "tempRefresh",
+              // };
+              jwt = {
+                accessToken: responseAccessToken || "tempAccess",
+                refreshToken: responseRefreshToken || "tempRefresh",
+              };
 
-            // 받은 유저정보
-            const body = await response.json();
-            // const email = body.email || "tempEmail";
-            // const nickname = body.nickname || "tempNickname";
-            email = body.email || "tempEmail";
-            nickname = body.nickname || "tempNickname";
-            // return;
-            return { user: { email, nickname }, jwt };
-          },
-          hasBody: false,
-        });
-        console.log(data);
+              // 받은 유저정보
+              const body = await response.json();
+              // const email = body.email || "tempEmail";
+              // const nickname = body.nickname || "tempNickname";
+              email = body.email || "tempEmail";
+              nickname = body.nickname || "tempNickname";
+              // return;
+              return { user: { email, nickname }, jwt };
+            },
+            hasBody: false,
+          });
+          console.log(data);
 
-        return { user: { email, nickname }, jwt } as any;
-        //     } else if (credentials.type === "oauth") {
-        //       console.log("oauth 로그인");
-        //       const jwt = {
-        //         accessToken: credentials.accessToken || "tempAccess",
-        //         refreshToken: credentials.refreshToken || "tempRefresh",
-        //       };
+          return { user: { email, nickname }, jwt } as any;
+        } else if (credentials.type === "oauth") {
+          console.log("oauth 로그인");
+          const jwt = {
+            accessToken: credentials.accessToken || "tempAccess",
+            refreshToken: credentials.refreshToken || "tempRefresh",
+          };
 
-        //
-        // 유저정보
-        //       const email = "tempEmail";
-        //       const nickname = "tempNickname";
-        //       credentials.email = "tempEmail";
-        //       credentials.nickname = "tempNickname";
+          //
+          // 유저정보
+          const email = "tempEmail";
+          const nickname = "tempNickname";
+          credentials.email = "tempEmail";
+          credentials.nickname = "tempNickname";
 
-        //       const data = { user: { email, nickname }, jwt };
-        //       return data as any;
-        //     } else {
-        //       // 잘못된 타입
-        //       console.log("wrong type login");
-        //       return null;
-        //     }
-        //   } catch (err) {
-        //     console.log(`여기에러1 : ${err}`);
-        //     return null;
-        //   }
-        // },
+          const data = { user: { email, nickname }, jwt };
+          return data as any;
+        } else {
+          // 잘못된 타입
+          console.log("wrong type login");
+          return null;
+        }
       },
     }),
   ],

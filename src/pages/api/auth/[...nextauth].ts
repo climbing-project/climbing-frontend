@@ -58,8 +58,8 @@ export default NextAuth({
             // const nickname = body.nickname || "tempNickname";
             email = body.email || "tempEmail";
             nickname = body.nickname || "tempNickname";
-            return;
-            // return { user: { email, nickname }, jwt };
+            // return;
+            return { user: { email, nickname }, jwt };
           },
           hasBody: false,
         });

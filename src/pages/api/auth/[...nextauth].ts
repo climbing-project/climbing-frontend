@@ -55,16 +55,16 @@ export default NextAuth({
             // const nickname = body.nickname || "tempNickname";
             email = body.email || "tempEmail";
             nickname = body.nickname || "tempNickname";
-            const user = { email: email, nickname: nickname };
-            const data = { user, jwt };
+            // const user = { email: email, nickname: nickname };
+            // const data = { user, jwt };
             // return;
-            return data;
+            return;
           },
           hasBody: false,
         });
         // console.log(data);
 
-        return data as any;
+        return { user: { email, nickname }, jwt } as any;
       },
     }),
     //     } else if (credentials.type === "oauth") {

@@ -124,7 +124,7 @@ export default NextAuth({
   // jwt 설정
   session: {
     strategy: "jwt",
-    // maxAge: 3 * 24 * 60 * 60, // 로그인 유지 기간 (=3일)
+    maxAge: 3 * 24 * 60 * 60, // 로그인 유지 기간 (=3일)
   },
 
   //  jwt나 세션 쓸때

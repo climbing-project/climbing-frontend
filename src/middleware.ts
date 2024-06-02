@@ -1,5 +1,5 @@
-import { withAuth } from "next-auth/middleware";
-import { jwtVerify } from "jose";
+// import { withAuth } from "next-auth/middleware";
+// import { jwtVerify } from "jose";
 
 // export default withAuth({
 //   callbacks: {
@@ -20,4 +20,4 @@ import { jwtVerify } from "jose";
 //   },
 // });
 
-export const config = { matcher: ["/manage/:path*"] };
+// export const config = { matcher: ["/manage/:path*"] };

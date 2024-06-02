@@ -153,7 +153,7 @@ export default NextAuth({
         return {
           ...token,
           ...user,
-          jwt: user.jwt,
+          // jwt: user.jwt,
         };
         //   } else if (Date.now() < Date.now() + expireDate) {
         //     // 액세스 토큰 만료 전

@@ -1,5 +1,6 @@
 import { SERVER_ADDRESS } from "@/constants/constants";
 import { requestData } from "@/service/api";
+import getLoginInfos from "@/service/api/login";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
@@ -18,53 +19,21 @@ export default NextAuth({
       async authorize(credentials: any) {
         console.log("일반 로그인");
         if (!credentials.email || !credentials.password) {
-          return Error("no credential info");
+          return new Error("no credential info");
         }
         const tempResult = {
           user: { email: "tempEmail", nickname: "tempNickname" },
           jwt: { accessToken: "tempAccess", refreshToken: "tempRefresh" },
         };
 
-        const data = {
-          email: credentials.email,
-          password: credentials.password,
-        };
-        const result = await fetch(`${SERVER_ADDRESS}/members/login`, {
-          method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: JSON.stringify(data),
-        })
-          .then((res) => {
-            if (!res.ok) {
-              throw new Error(`${res.status} 에러`);
-            }
-            return res;
-          })
-          .then(async (response) => {
-            const responseHeaders = response.headers;
-            const responseAccessToken = responseHeaders.get("Authorization");
-            const responseRefreshToken = responseHeaders.get(
-              "Authorization-refresh"
-            );
-            if (
-              !(responseHeaders && responseAccessToken && responseRefreshToken)
-            ) {
-              throw Error("missing header or token");
-            }
-
-            // 받은 토큰
-            const jwt = {
-              accessToken: responseAccessToken || "tempAccess",
-              refreshToken: responseRefreshToken || "tempRefresh",
-            };
-
-            const body = await response.json();
-            // const email = body.email || "tempEmail";
-            // const nickname = body.nickname || "tempNickname";
-            const email = body.email || "tempEmail";
-            const nickname = body.nickname || "tempNickname";
-            return { user: { email: email, nickname: nickname }, jwt };
-          });
+        // const data = {
+        //   email: credentials.email,
+        //   password: credentials.password,
+        // };
+        const result = await getLoginInfos(
+          credentials.email,
+          credentials.password
+        );
         // .catch((error) => {
         //   console.log(error);
         //   console.log("fetch Error");

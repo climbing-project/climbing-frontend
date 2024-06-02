@@ -37,9 +37,11 @@ export default NextAuth({
           const result = await getLoginInfos(email, password);
           const rresult = result;
           return rresult as any;
-        } catch (e) {
+        } catch (e: any) {
           // Redirecting to the login page with error message          in the URL
-          throw new Error(e + "&email=" + credentials.email);
+          throw new Error(
+            e + "&email=" + credentials.email + "&stack=" + e.stack
+          );
           // const result = {
           //   user: { email: receivedData.email, nickname: receivedData.nickname },
           //   jwt: { accessToken: "tempAccess", refreshToken: "tempRefresh" },

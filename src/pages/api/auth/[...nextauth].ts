@@ -31,7 +31,7 @@ export default NextAuth({
         };
         const result = await fetch(`${SERVER_ADDRESS}/members/login`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
           body: JSON.stringify(data),
         })
           .then((res) => {

@@ -15,7 +15,7 @@ const GeneralLogin = () => {
     signIn("credentials", {
       email: email,
       password: password,
-      redirect: false,
+      redirect: true,
       callbackUrl: "/",
     });
 

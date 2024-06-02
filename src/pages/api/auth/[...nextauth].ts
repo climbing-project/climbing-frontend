@@ -5,6 +5,7 @@ import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 export default NextAuth({
+  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     //자체 로그인
     CredentialsProvider({
@@ -111,7 +112,6 @@ export default NextAuth({
     //   },
     // }),
   ],
-  secret: "helloworld",
 
   // jwt 설정
   session: {

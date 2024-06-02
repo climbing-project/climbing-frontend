@@ -40,7 +40,7 @@ export default NextAuth({
         } catch (e: any) {
           // Redirecting to the login page with error message          in the URL
           throw new Error(
-            e + "&email=" + credentials.email + "&stack=" + e.message
+            e + "&email=" + credentials.email + "&stack=" + e.stack
           );
           // const result = {
           //   user: { email: receivedData.email, nickname: receivedData.nickname },

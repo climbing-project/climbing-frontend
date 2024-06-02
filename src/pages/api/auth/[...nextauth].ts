@@ -1,3 +1,4 @@
+import { SERVER_ADDRESS } from "@/constants/constants";
 import { requestData } from "@/service/api";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -19,15 +20,22 @@ export default NextAuth({
         let email = "tempEmail";
         let nickname = "tempNickname";
         let jwt = { accessToken: "tempAccess", refreshToken: "tempRefresh" };
-
-        const data = await requestData({
-          option: "POST",
-          url: `/members/login`,
-          data: {
-            email: credentials.email,
-            password: credentials.password,
-          },
-          onSuccess: async (response: Response) => {
+        const data = {
+          email: credentials.email,
+          password: credentials.password,
+        };
+        const result = await fetch(`${SERVER_ADDRESS}/members/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        })
+          .then((res) => {
+            if (!res.ok) {
+              throw new Error(`${res.status} 에러`);
+            }
+            return res;
+          })
+          .then(async (response) => {
             const responseHeaders = response.headers;
             const responseAccessToken = responseHeaders.get("Authorization");
             const responseRefreshToken = responseHeaders.get(
@@ -40,31 +48,70 @@ export default NextAuth({
             }
 
             // 받은 토큰
-            // const jwt = {
-            //   accessToken: responseAccessToken || "tempAccess",
-            //   refreshToken: responseRefreshToken || "tempRefresh",
-            // };
-            jwt = {
+            const jwt = {
               accessToken: responseAccessToken || "tempAccess",
               refreshToken: responseRefreshToken || "tempRefresh",
             };
 
-            // 받은 유저정보
             const body = await response.json();
             // const email = body.email || "tempEmail";
             // const nickname = body.nickname || "tempNickname";
-            email = body.email || "tempEmail";
-            nickname = body.nickname || "tempNickname";
-            // const user = { email: email, nickname: nickname };
-            // const data = { user, jwt };
-            // return;
-            return;
-          },
-          hasBody: false,
-        });
+            const email = body.email || "tempEmail";
+            const nickname = body.nickname || "tempNickname";
+            return { user: { email: email, nickname: nickname }, jwt };
+          })
+          .catch((error) => {
+            console.log("\n로그인에러");
+            console.log("옵션 : POST");
+            console.log(error.stack + "\n");
+          });
+        console.log(result);
+        return result as any;
+        // const data = await requestData({
+        //   option: "POST",
+        //   url: `/members/login`,
+        //   data: {
+        //     email: credentials.email,
+        //     password: credentials.password,
+        //   },
+        //   onSuccess: async (response: Response) => {
+        //     const responseHeaders = response.headers;
+        //     const responseAccessToken = responseHeaders.get("Authorization");
+        //     const responseRefreshToken = responseHeaders.get(
+        //       "Authorization-refresh"
+        //     );
+        //     if (
+        //       !(responseHeaders && responseAccessToken && responseRefreshToken)
+        //     ) {
+        //       throw Error("missing header or token");
+        //     }
+
+        //     // 받은 토큰
+        //     // const jwt = {
+        //     //   accessToken: responseAccessToken || "tempAccess",
+        //     //   refreshToken: responseRefreshToken || "tempRefresh",
+        //     // };
+        //     jwt = {
+        //       accessToken: responseAccessToken || "tempAccess",
+        //       refreshToken: responseRefreshToken || "tempRefresh",
+        //     };
+
+        //     // 받은 유저정보
+        //     const body = await response.json();
+        //     // const email = body.email || "tempEmail";
+        //     // const nickname = body.nickname || "tempNickname";
+        //     email = body.email || "tempEmail";
+        //     nickname = body.nickname || "tempNickname";
+        //     // const user = { email: email, nickname: nickname };
+        //     // const data = { user, jwt };
+        //     // return;
+        //     return;
+        //   },
+        //   hasBody: false,
+        // });
         // console.log(data);
 
-        return { user: { email, nickname }, jwt } as any;
+        // return { user: { email, nickname }, jwt } as any;
       },
     }),
     //     } else if (credentials.type === "oauth") {

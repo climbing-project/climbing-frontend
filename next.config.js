@@ -35,7 +35,8 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "oruritest.s3.ap-northeast-2.amazonaws.com",
+        hostname:
+          "ec2-13-125-164-197.ap-northeast-2.compute.amazonaws.com",
         port: "",
       },
     ],

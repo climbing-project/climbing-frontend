@@ -61,11 +61,6 @@ export default NextAuth({
             const email = body.email || "tempEmail";
             const nickname = body.nickname || "tempNickname";
             return { user: { email: email, nickname: nickname }, jwt };
-          })
-          .catch((error) => {
-            console.log("\n로그인에러");
-            console.log("옵션 : POST");
-            console.log(error.stack + "\n");
           });
         const rresult = result || tempResult;
         return rresult as any;

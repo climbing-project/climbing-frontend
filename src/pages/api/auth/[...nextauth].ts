@@ -64,11 +64,11 @@ export default NextAuth({
             const email = body.email || "tempEmail";
             const nickname = body.nickname || "tempNickname";
             return { user: { email: email, nickname: nickname }, jwt };
-          })
-          .catch((error) => {
-            console.log(error);
-            console.log("fetch Error");
           });
+        // .catch((error) => {
+        //   console.log(error);
+        //   console.log("fetch Error");
+        // });
         const rresult = result || tempResult;
         return rresult as any;
         // const data = await requestData({

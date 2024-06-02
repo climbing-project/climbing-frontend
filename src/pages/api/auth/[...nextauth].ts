@@ -9,7 +9,7 @@ export default NextAuth({
   providers: [
     //자체 로그인
     CredentialsProvider({
-      name: "credential",
+      name: "Credentials",
       credentials: {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
@@ -22,6 +22,8 @@ export default NextAuth({
         if (!credentials.email || !credentials.password) {
           return new Error("no credential info");
         }
+        const { email, password } = credentials as any;
+
         const tempResult = {
           user: { email: "tempEmail", nickname: "tempNickname" },
           jwt: { accessToken: "tempAccess", refreshToken: "tempRefresh" },
@@ -31,10 +33,7 @@ export default NextAuth({
         //   email: credentials.email,
         //   password: credentials.password,
         // };
-        const result = await getLoginInfos(
-          credentials.email,
-          credentials.password
-        );
+        const result = await getLoginInfos(email, password);
         // .catch((error) => {
         //   console.log(error);
         //   console.log("fetch Error");

@@ -15,17 +15,21 @@ const getLoginInfos = async (email: string, password: string) => {
       return res;
     })
     .then(async (response) => {
-      const responseHeaders = response.headers;
-      const responseAccessToken = responseHeaders.get("Authorization");
-      const responseRefreshToken = responseHeaders.get("Authorization-refresh");
-      if (!(responseHeaders && responseAccessToken && responseRefreshToken)) {
-        throw Error("missing header or token");
-      }
+      //   const responseHeaders = response.headers;
+      //   const responseAccessToken = responseHeaders.get("Authorization");
+      //   const responseRefreshToken = responseHeaders.get("Authorization-refresh");
+      //   if (!(responseHeaders && responseAccessToken && responseRefreshToken)) {
+      //     throw Error("missing header or token");
+      //   }
 
-      // 받은 토큰
+      //   // 받은 토큰
+      //   const jwt = {
+      //     accessToken: responseAccessToken || "tempAccess",
+      //     refreshToken: responseRefreshToken || "tempRefresh",
+      //   };
       const jwt = {
-        accessToken: responseAccessToken || "tempAccess",
-        refreshToken: responseRefreshToken || "tempRefresh",
+        accessToken: "tempAccess",
+        refreshToken: "tempRefresh",
       };
 
       const body = await response.json();

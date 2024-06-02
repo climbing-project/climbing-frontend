@@ -13,8 +13,8 @@ const GeneralLogin = () => {
     const password = event.target.password.value;
 
     signIn("credentials", {
-      email,
-      password,
+      email: email,
+      password: password,
       redirect: false,
       callbackUrl: "/",
     });

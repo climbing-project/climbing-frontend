@@ -17,9 +17,9 @@ export default NextAuth({
       },
       async authorize(credentials: any) {
         console.log("일반 로그인");
-        // if (!credentials.email || !credentials.password) {
-        //   return null;
-        // }
+        if (!credentials.email || !credentials.password) {
+          return Error("no credential info");
+        }
         const tempResult = {
           user: { email: "tempEmail", nickname: "tempNickname" },
           jwt: { accessToken: "tempAccess", refreshToken: "tempRefresh" },
@@ -64,6 +64,10 @@ export default NextAuth({
             const email = body.email || "tempEmail";
             const nickname = body.nickname || "tempNickname";
             return { user: { email: email, nickname: nickname }, jwt };
+          })
+          .catch((error) => {
+            console.log(error);
+            console.log("fetch Error");
           });
         const rresult = result || tempResult;
         return rresult as any;

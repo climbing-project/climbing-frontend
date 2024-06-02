@@ -17,7 +17,7 @@ export default NextAuth({
         // refreshToken: { label: "RefreshToken", type: "string" },
         // type: { label: "LoginType", type: "string" },
       },
-      async authorize(credentials: any) {
+      async authorize(credentials: any, req) {
         console.log("일반 로그인");
         if (!credentials.email || !credentials.password) {
           return new Error("no credential info");
@@ -39,7 +39,7 @@ export default NextAuth({
         //   console.log(error);
         //   console.log("fetch Error");
         // });
-        const rresult = result || tempResult;
+        const rresult = result || null;
         return rresult as any;
         // const data = await requestData({
         //   option: "POST",

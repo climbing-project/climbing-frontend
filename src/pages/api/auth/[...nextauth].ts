@@ -17,9 +17,11 @@ export default NextAuth({
       },
       async authorize(credentials: any) {
         console.log("일반 로그인");
-        // let email = "tempEmail";
-        // let nickname = "tempNickname";
-        // let jwt = { accessToken: "tempAccess", refreshToken: "tempRefresh" };
+        const tempResult = {
+          user: { email: "tempEmail", nickname: "tempNickname" },
+          jwt: { accessToken: "tempAccess", refreshToken: "tempRefresh" },
+        };
+
         const data = {
           email: credentials.email,
           password: credentials.password,
@@ -65,8 +67,8 @@ export default NextAuth({
             console.log("옵션 : POST");
             console.log(error.stack + "\n");
           });
-        console.log(result);
-        return result as any;
+        const rresult = result || tempResult;
+        return rresult as any;
         // const data = await requestData({
         //   option: "POST",
         //   url: `/members/login`,

@@ -138,6 +138,7 @@ export default NextAuth({
     //   },
     // }),
   ],
+  secret: "helloworld",
 
   // jwt 설정
   session: {

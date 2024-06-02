@@ -1,4 +1,4 @@
-import { DefaultSession, DefaultUser } from "next-auth";
+import { DefaultSession } from "next-auth";
 import { DefaultJWT } from "next-auth/jwt";
 import { Dispatch, SetStateAction } from "react";
 
@@ -14,12 +14,12 @@ declare module "next-auth" {
       refreshToken: string;
     };
   }
-  interface User extends DefaultUser {
-    jwt: {
-      accessToken: string;
-      refreshToken: string;
-    };
-  }
+  // interface User extends DefaultUser {
+  //   jwt: {
+  //     accessToken: string;
+  //     refreshToken: string;
+  //   };
+  // }
 }
 
 declare module "next-auth/jwt" {

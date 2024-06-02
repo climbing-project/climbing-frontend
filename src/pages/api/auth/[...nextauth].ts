@@ -17,9 +17,9 @@ export default NextAuth({
       },
       async authorize(credentials: any) {
         console.log("일반 로그인");
-        let email = "tempEmail";
-        let nickname = "tempNickname";
-        let jwt = { accessToken: "tempAccess", refreshToken: "tempRefresh" };
+        // let email = "tempEmail";
+        // let nickname = "tempNickname";
+        // let jwt = { accessToken: "tempAccess", refreshToken: "tempRefresh" };
         const data = {
           email: credentials.email,
           password: credentials.password,

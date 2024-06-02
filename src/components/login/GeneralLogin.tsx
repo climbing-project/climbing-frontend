@@ -12,18 +12,18 @@ const GeneralLogin = () => {
     const email = event.target.email.value;
     const password = event.target.password.value;
 
-    const result = await signIn("credentials", {
+    signIn("credentials", {
       email,
       password,
       redirect: true,
       callbackUrl: "/",
     });
 
-    if (result?.error) {
-      console.log("login fail");
-    } else {
-      console.log("login success");
-    }
+    // if (result?.error) {
+    //   console.log("login fail");
+    // } else {
+    //   console.log("login success");
+    // }
   };
 
   return (

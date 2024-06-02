@@ -1,6 +1,6 @@
 import { SERVER_ADDRESS } from "@/constants/constants";
 import { requestData } from "@/service/api";
-import { useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { useEffect } from "react";
 
 // api 테스트를 위한 컴포넌트
@@ -11,42 +11,16 @@ const Test = () => {
 
   const testFunc = async () => {
     alert("테스트 키 입력됨");
-    console.log(session);
-    console.log(status);
-    // const data = await requestData({
-    //   option: "POST",
-    //   url: `/members/login`,
-    //   data: {
-    //     email: "eunjitest90@gmail.com",
-    //     password: "hello1234!",
-    //   },
-    //   onSuccess: async (response: Response) => {
-    //     const responseHeaders = response.headers;
-    //     console.log(responseHeaders);
-    //     const responseAccessToken = responseHeaders.get("Authorization");
-    //     const responseRefreshToken = responseHeaders.get(
-    //       "Authorization-refresh"
-    //     );
-    //     if (!(responseHeaders && responseAccessToken && responseRefreshToken)) {
-    //       throw Error("missing header or token");
-    //     }
-
-    //     // 받은 토큰
-    //     const jwt = {
-    //       accessToken: responseAccessToken || "tempAccess",
-    //       refreshToken: responseRefreshToken || "tempRefresh",
-    //     };
-
-    //     // 받은 유저정보
-    //     const body = await response.json();
-    //     const email = body.email || "tempEmail";
-    //     const nickname = body.nickname || "tempNickname";
-
-    //     return { user: { email, nickname }, jwt };
-    //   },
-    //   hasBody: false,
-    // });
-    return session?.jwt;
+    // console.log(session);
+    // console.log(status);
+    // return session?.jwt;
+    signIn("credentials", {
+      email: "eunjitest90@gmail.com",
+      password: "hello1234!",
+      redirect: true,
+      callbackUrl: "/",
+    });
+    return "hello";
   };
 
   const testFunc2 = async () => {
@@ -98,6 +72,13 @@ const Test = () => {
     return result as any;
   };
 
+  const testFunc3 = async () => {
+    alert("테스트 키3 입력됨");
+    console.log(session);
+    console.log(status);
+    return session?.jwt;
+  };
+
   const keyDown = async (event: {
     key: string;
     preventDefault: () => void;
@@ -109,6 +90,10 @@ const Test = () => {
     } else if (event.key === "d") {
       event.preventDefault();
       const data = await testFunc2();
+      console.log(data);
+    } else if (event.key === "f") {
+      event.preventDefault();
+      const data = await testFunc3();
       console.log(data);
     }
   };

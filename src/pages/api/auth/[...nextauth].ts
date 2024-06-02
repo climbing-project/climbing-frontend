@@ -33,17 +33,22 @@ export default NextAuth({
         //   email: credentials.email,
         //   password: credentials.password,
         // };
-        const result = await getLoginInfos(email, password);
-        // const result = {
-        //   user: { email: receivedData.email, nickname: receivedData.nickname },
-        //   jwt: { accessToken: "tempAccess", refreshToken: "tempRefresh" },
-        // };
-        // .catch((error) => {
-        //   console.log(error);
-        //   console.log("fetch Error");
-        // });
-        const rresult = result;
-        return rresult as any;
+        try {
+          const result = await getLoginInfos(email, password);
+          const rresult = result;
+          return rresult as any;
+        } catch (e) {
+          // Redirecting to the login page with error message          in the URL
+          throw new Error(e + "&email=" + credentials.email);
+          // const result = {
+          //   user: { email: receivedData.email, nickname: receivedData.nickname },
+          //   jwt: { accessToken: "tempAccess", refreshToken: "tempRefresh" },
+          // };
+          // .catch((error) => {
+          //   console.log(error);
+          //   console.log("fetch Error");
+          // });
+        }
         // const data = await requestData({
         //   option: "POST",
         //   url: `/members/login`,
@@ -199,7 +204,7 @@ export default NextAuth({
 
   pages: {
     signIn: "/login",
-    error: "/error",
+    error: "/error/login",
   },
 });
 

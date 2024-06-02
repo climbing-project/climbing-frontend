@@ -5,7 +5,7 @@ const getLoginInfos = async (email: string, password: string) => {
 
   return await fetch(`${SERVER_ADDRESS}/members/login`, {
     method: "POST",
-    headers: { "Content-Type": "application/json", "Accept-Language": "en-US" },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(sendInfo),
   })
     .then((res) => {

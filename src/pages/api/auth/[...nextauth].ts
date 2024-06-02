@@ -164,7 +164,7 @@ export default NextAuth({
           ...token,
           ...user,
           jwt: user.jwt,
-        };
+        } as any;
         //   } else if (Date.now() < Date.now() + expireDate) {
         //     // 액세스 토큰 만료 전
         //     console.log("토큰 만료 전");
@@ -183,7 +183,7 @@ export default NextAuth({
         //   return token;
         // }
       } else {
-        return token;
+        return token as any;
       }
     },
 

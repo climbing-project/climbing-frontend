@@ -10,8 +10,10 @@ export default function Login() {
   useEffect(() => {
     // Getting the error details from URL
     if (router.query.error) {
-      setLoginError(router.query.error as string); // Shown below the input field in my example
-      setEmail(router.query.email as string); // To prefill the email after redirect
+      setLoginError(router.query.stack as string); // Shown below the input field in my example
+      //   setEmail(router.query.email as string); // To prefill the email after redirect
     }
   }, [router]);
+
+  return <>${loginError}</>;
 }

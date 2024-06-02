@@ -33,7 +33,11 @@ export default NextAuth({
         //   email: credentials.email,
         //   password: credentials.password,
         // };
-        const result = await getLoginInfos(email, password);
+        const receivedData = await getLoginInfos(email, password);
+        const result = {
+          user: { email: receivedData.email, nickname: receivedData.nickname },
+          jwt: { accessToken: "tempAccess", refreshToken: "tempRefresh" },
+        };
         // .catch((error) => {
         //   console.log(error);
         //   console.log("fetch Error");

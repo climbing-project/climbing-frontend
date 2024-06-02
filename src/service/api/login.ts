@@ -14,7 +14,7 @@ const getLoginInfos = async (email: string, password: string) => {
       }
       return res;
     })
-    .then(async (response) => {
+    .then((response) => {
       //   const responseHeaders = response.headers;
       //   const responseAccessToken = responseHeaders.get("Authorization");
       //   const responseRefreshToken = responseHeaders.get("Authorization-refresh");
@@ -27,17 +27,18 @@ const getLoginInfos = async (email: string, password: string) => {
       //     accessToken: responseAccessToken || "tempAccess",
       //     refreshToken: responseRefreshToken || "tempRefresh",
       //   };
-      const jwt = {
-        accessToken: "tempAccess",
-        refreshToken: "tempRefresh",
-      };
+      return response.json();
+      //   const jwt = {
+      //     accessToken: "tempAccess",
+      //     refreshToken: "tempRefresh",
+      //   };
 
-      const body = await response.json();
-      // const email = body.email || "tempEmail";
-      // const nickname = body.nickname || "tempNickname";
-      const email = body.email || "tempEmail";
-      const nickname = body.nickname || "tempNickname";
-      return { user: { email: email, nickname: nickname }, jwt };
+      //   const body = await response.json();
+      //   // const email = body.email || "tempEmail";
+      //   // const nickname = body.nickname || "tempNickname";
+      //   const email = body.email || "tempEmail";
+      //   const nickname = body.nickname || "tempNickname";
+      //   return { user: { email: email, nickname: nickname }, jwt };
     });
 };
 

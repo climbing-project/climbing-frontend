@@ -17,9 +17,9 @@ export default NextAuth({
       },
       async authorize(credentials: any) {
         console.log("일반 로그인");
-        if (!credentials.email || !credentials.password) {
-          return null;
-        }
+        // if (!credentials.email || !credentials.password) {
+        //   return null;
+        // }
         const tempResult = {
           user: { email: "tempEmail", nickname: "tempNickname" },
           jwt: { accessToken: "tempAccess", refreshToken: "tempRefresh" },

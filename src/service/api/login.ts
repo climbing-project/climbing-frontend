@@ -14,31 +14,31 @@ const getLoginInfos = async (email: string, password: string) => {
       }
       return res;
     })
-    .then((response) => {
-      //   const responseHeaders = response.headers;
-      //   const responseAccessToken = responseHeaders.get("Authorization");
-      //   const responseRefreshToken = responseHeaders.get("Authorization-refresh");
-      //   if (!(responseHeaders && responseAccessToken && responseRefreshToken)) {
-      //     throw Error("missing header or token");
-      //   }
+    .then(async (response) => {
+      const responseHeaders = response.headers;
+      const responseAccessToken = responseHeaders.get("Authorization");
+      const responseRefreshToken = responseHeaders.get("Authorization-refresh");
+      if (!(responseHeaders && responseAccessToken && responseRefreshToken)) {
+        throw Error("missing header or token");
+      }
 
-      //   // 받은 토큰
-      //   const jwt = {
-      //     accessToken: responseAccessToken || "tempAccess",
-      //     refreshToken: responseRefreshToken || "tempRefresh",
-      //   };
-      return response.json();
+      // 받은 토큰
+      const jwt = {
+        accessToken: responseAccessToken || "tempAccess",
+        refreshToken: responseRefreshToken || "tempRefresh",
+      };
+      //   return response.json();
       //   const jwt = {
       //     accessToken: "tempAccess",
       //     refreshToken: "tempRefresh",
       //   };
 
-      //   const body = await response.json();
+      const body = await response.json();
       //   // const email = body.email || "tempEmail";
       //   // const nickname = body.nickname || "tempNickname";
-      //   const email = body.email || "tempEmail";
-      //   const nickname = body.nickname || "tempNickname";
-      //   return { user: { email: email, nickname: nickname }, jwt };
+      const email = body.email || "tempEmail";
+      const nickname = body.nickname || "tempNickname";
+      return { user: { email: email, nickname: nickname }, jwt };
     });
 };
 

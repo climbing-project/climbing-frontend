@@ -17,7 +17,7 @@ export default NextAuth({
         // refreshToken: { label: "RefreshToken", type: "string" },
         // type: { label: "LoginType", type: "string" },
       },
-      async authorize(credentials: any, req) {
+      async authorize(credentials: any) {
         console.log("일반 로그인");
         if (!credentials.email || !credentials.password) {
           return new Error("no credential info");
@@ -33,16 +33,16 @@ export default NextAuth({
         //   email: credentials.email,
         //   password: credentials.password,
         // };
-        const receivedData = await getLoginInfos(email, password);
-        const result = {
-          user: { email: receivedData.email, nickname: receivedData.nickname },
-          jwt: { accessToken: "tempAccess", refreshToken: "tempRefresh" },
-        };
+        const result = await getLoginInfos(email, password);
+        // const result = {
+        //   user: { email: receivedData.email, nickname: receivedData.nickname },
+        //   jwt: { accessToken: "tempAccess", refreshToken: "tempRefresh" },
+        // };
         // .catch((error) => {
         //   console.log(error);
         //   console.log("fetch Error");
         // });
-        const rresult = result || null;
+        const rresult = result;
         return rresult as any;
         // const data = await requestData({
         //   option: "POST",

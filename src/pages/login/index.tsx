@@ -10,13 +10,13 @@ const Login = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (router.query.accessToken) {
+    if (router.query?.accessToken) {
       const saveTokens = async () => {
         const email = router.query.email;
         const nickname = router.query.nickname;
         const accessToken = router.query.accessToken;
         const refreshToken = router.query.refreshToken;
-        const result = await signIn("Credentials", {
+        const result = await signIn("credentials", {
           email: email,
           nickname: nickname,
           accessToken: accessToken,

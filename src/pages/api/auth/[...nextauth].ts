@@ -12,115 +12,77 @@ export default NextAuth({
       name: "Credentials",
       credentials: {
         email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" },
-        // accessToken: { label: "AccessToken", type: "string" },
-        // refreshToken: { label: "RefreshToken", type: "string" },
-        // type: { label: "LoginType", type: "string" },
+        nickname: { label: "Nickname", type: "nickname" },
+        accessToken: { label: "AccessToken", type: "token" },
+        refreshToken: { label: "RefreshToken", type: "token" },
+        loginType: { label: "LoginType", type: "string" },
       },
       async authorize(credentials: any) {
-        console.log("일반 로그인");
-        if (!credentials.email || !credentials.password) {
-          return new Error("no credential info");
+        if (credentials.loginType === "general") {
+          console.log("일반 로그인");
+
+          const tempUserInfo = {
+            user: {
+              email: "tempEmail(normal)",
+              nickname: "tempNickname(normal)",
+            },
+            jwt: {
+              accessToken: "tempAccess(normal)",
+              refreshToken: "tempRefresh(normal)",
+            },
+          };
+
+          if (
+            !credentials.accessToken ||
+            !credentials.refreshToken ||
+            !credentials.nickname
+          ) {
+            return tempUserInfo;
+          }
+
+          const jwt = {
+            accessToken: credentials.accessToken,
+            refreshToken: credentials.refreshToken,
+          };
+
+          return {
+            user: { email: credentials.email, nickname: credentials.nickname },
+            jwt,
+          } as any;
+        } else if ((credentials.loginType = "oauth")) {
+          console.log("간편 로그인");
+          const tempUserInfo = {
+            user: {
+              email: "tempEmail(oauth)",
+              nickname: "tempNickname(oauth)",
+            },
+            jwt: {
+              accessToken: "tempAccess(oauth)",
+              refreshToken: "tempRefresh(oauth)",
+            },
+          };
+          if (
+            !credentials.accessToken ||
+            !credentials.refreshToken ||
+            !credentials.nickname ||
+            !credentials.email
+          ) {
+            return tempUserInfo;
+          }
+          const jwt = {
+            accessToken: credentials.accessToken,
+            refreshToken: credentials.refreshToken,
+          };
+
+          return {
+            user: { email: credentials.email, nickname: credentials.nickname },
+            jwt,
+          } as any;
         }
-        const { email, password } = credentials as any;
-
-        const tempResult = {
-          user: { email: "tempEmail", nickname: "tempNickname" },
-          jwt: { accessToken: "tempAccess", refreshToken: "tempRefresh" },
-        };
-
-        // const data = {
-        //   email: credentials.email,
-        //   password: credentials.password,
-        // };
-        try {
-          const result = await getLoginInfos(email, password);
-          const rresult = result;
-          return rresult as any;
-        } catch (e: any) {
-          // Redirecting to the login page with error message          in the URL
-          throw new Error(
-            e + "&email=" + credentials.email + "&stack=" + e.stack
-          );
-          // const result = {
-          //   user: { email: receivedData.email, nickname: receivedData.nickname },
-          //   jwt: { accessToken: "tempAccess", refreshToken: "tempRefresh" },
-          // };
-          // .catch((error) => {
-          //   console.log(error);
-          //   console.log("fetch Error");
-          // });
-        }
-        // const data = await requestData({
-        //   option: "POST",
-        //   url: `/members/login`,
-        //   data: {
-        //     email: credentials.email,
-        //     password: credentials.password,
-        //   },
-        //   onSuccess: async (response: Response) => {
-        //     const responseHeaders = response.headers;
-        //     const responseAccessToken = responseHeaders.get("Authorization");
-        //     const responseRefreshToken = responseHeaders.get(
-        //       "Authorization-refresh"
-        //     );
-        //     if (
-        //       !(responseHeaders && responseAccessToken && responseRefreshToken)
-        //     ) {
-        //       throw Error("missing header or token");
-        //     }
-
-        //     // 받은 토큰
-        //     // const jwt = {
-        //     //   accessToken: responseAccessToken || "tempAccess",
-        //     //   refreshToken: responseRefreshToken || "tempRefresh",
-        //     // };
-        //     jwt = {
-        //       accessToken: responseAccessToken || "tempAccess",
-        //       refreshToken: responseRefreshToken || "tempRefresh",
-        //     };
-
-        //     // 받은 유저정보
-        //     const body = await response.json();
-        //     // const email = body.email || "tempEmail";
-        //     // const nickname = body.nickname || "tempNickname";
-        //     email = body.email || "tempEmail";
-        //     nickname = body.nickname || "tempNickname";
-        //     // const user = { email: email, nickname: nickname };
-        //     // const data = { user, jwt };
-        //     // return;
-        //     return;
-        //   },
-        //   hasBody: false,
-        // });
-        // console.log(data);
-
-        // return { user: { email, nickname }, jwt } as any;
+        console.log("잘못된 로그인 타입");
+        return null;
       },
     }),
-    //     } else if (credentials.type === "oauth") {
-    //       console.log("oauth 로그인");
-    //       const jwt = {
-    //         accessToken: credentials.accessToken || "tempAccess",
-    //         refreshToken: credentials.refreshToken || "tempRefresh",
-    //       };
-
-    //       //
-    //       // 유저정보
-    //       const email = "tempEmail";
-    //       const nickname = "tempNickname";
-    //       credentials.email = "tempEmail";
-    //       credentials.nickname = "tempNickname";
-
-    //       const data = { user: { email, nickname }, jwt };
-    //       return data as any;
-    //     } else {
-    //       // 잘못된 타입
-    //       console.log("wrong type login");
-    //       return null;
-    //     }
-    //   },
-    // }),
   ],
 
   // jwt 설정

@@ -3,7 +3,7 @@ import { SERVER_ADDRESS } from "@/constants/constants";
 const getLoginInfos = async (email: string, password: string) => {
   const sendInfo = { email: email, password: password };
 
-  return await fetch(`${SERVER_ADDRESS}/members/login`, {
+  const userInfo = await fetch(`${SERVER_ADDRESS}/members/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(sendInfo),
@@ -38,8 +38,11 @@ const getLoginInfos = async (email: string, password: string) => {
       //   // const nickname = body.nickname || "tempNickname";
       const email = body.email || "tempEmail";
       const nickname = body.nickname || "tempNickname";
-      return { user: { email: email, nickname: nickname }, jwt };
+      return { user: { email, nickname }, jwt };
     });
+    console.log("1")
+    console.log(userInfo)
+  return userInfo;
 };
 
 export default getLoginInfos;

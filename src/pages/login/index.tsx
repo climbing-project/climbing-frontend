@@ -16,11 +16,12 @@ const Login = () => {
         const nickname = router.query.nickname;
         const accessToken = router.query.accessToken;
         const refreshToken = router.query.refreshToken;
-        const result = await signIn("OAuthCredential", {
+        const result = await signIn("Credentials", {
           email: email,
           nickname: nickname,
           accessToken: accessToken,
           refreshToken: refreshToken,
+          loginType: "oauth",
           redirect: true,
           callbackUrl: "/",
         });

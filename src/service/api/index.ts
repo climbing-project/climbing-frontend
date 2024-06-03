@@ -134,9 +134,7 @@ const postData = ({
     })
     .then((data) => {
       clearTimeout(timeout);
-      console.log("getdata");
       if (onSuccess) {
-        console.log("onSuccess");
         return onSuccess(data);
       }
       return data;

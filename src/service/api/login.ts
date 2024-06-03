@@ -27,21 +27,13 @@ const getLoginInfos = async (email: string, password: string) => {
         accessToken: responseAccessToken || "tempAccess",
         refreshToken: responseRefreshToken || "tempRefresh",
       };
-      //   return response.json();
-      //   const jwt = {
-      //     accessToken: "tempAccess",
-      //     refreshToken: "tempRefresh",
-      //   };
 
       const body = await response.json();
-      //   // const email = body.email || "tempEmail";
-      //   // const nickname = body.nickname || "tempNickname";
+
       const email = body.email || "tempEmail";
       const nickname = body.nickname || "tempNickname";
       return { user: { email, nickname }, jwt };
     });
-    console.log("1")
-    console.log(userInfo)
   return userInfo;
 };
 

@@ -1,17 +1,14 @@
+// nextauth 백단의 노드 에러를 출력하기 위한 페이지
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState("");
   const router = useRouter();
 
   useEffect(() => {
-    // Getting the error details from URL
     if (router.query.error) {
-      setLoginError(router.query.stack as string); // Shown below the input field in my example
-      //   setEmail(router.query.email as string); // To prefill the email after redirect
+      setLoginError(router.query.stack as string);
     }
   }, [router]);
 

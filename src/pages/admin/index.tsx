@@ -18,24 +18,15 @@ const AdminPage = () => {
     setIsOpen(false);
   };
 
+  const updateRole = (role: string) => {
+    // PUT 작업
+  };
+
   return (
     <div>
       <MemberTable members={testData} openModal={openModal} />
       {isOpen && (
-        <Modal closeModal={closeModal}>
-          <h3>멤버 권한 변경</h3>
-          {selectedMember && (
-            <>
-              {selectedMember.nickname}
-              <br />
-              <select defaultValue={selectedMember.role}>
-                <option>admin</option>
-                <option>manager</option>
-                <option>user</option>
-              </select>
-            </>
-          )}
-        </Modal>
+        <Modal closeModal={closeModal} selectedMember={selectedMember} updateRole={updateRole} />
       )}
     </div>
   );

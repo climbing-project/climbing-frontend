@@ -1,80 +1,84 @@
 import { requestData } from "@/service/api";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import GoogleProvider from "next-auth/providers/google";
-import KakaoProvider from "next-auth/providers/kakao";
-import NaverProvider from "next-auth/providers/naver";
 
 export default NextAuth({
+  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     //자체 로그인
     CredentialsProvider({
       name: "Credentials",
-
       credentials: {
         email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" },
+        nickname: { label: "Nickname", type: "nickname" },
+        accessToken: { label: "AccessToken", type: "token" },
+        refreshToken: { label: "RefreshToken", type: "token" },
+        loginType: { label: "LoginType", type: "string" },
       },
       async authorize(credentials: any) {
-        const data = await requestData({
-          option: "POST",
-          url: `/members/login`,
-          data: {
-            email: credentials.email,
-            password: credentials.password,
-          },
-          onSuccess: async (response: Response) => {
-            const responseHeaders = response.headers;
-            console.log(responseHeaders);
-            const responseAccessToken = responseHeaders.get("Authorization");
-            const responseRefreshToken = responseHeaders.get(
-              "Authorization-refresh"
-            );
-            if (
-              !(responseHeaders && responseAccessToken && responseRefreshToken)
-            ) {
-              throw Error("missing header or token");
-            }
+        if (credentials.loginType === "general") {
+          console.log("일반 로그인");
 
-            // 받은 토큰
-            const jwt = {
-              accessToken: responseAccessToken || "tempAccess",
-              refreshToken: responseRefreshToken || "tempRefresh",
-            };
+          const tempUserInfo = {
+            user: {
+              email: "tempEmail(normal)",
+              nickname: "tempNickname(normal)",
+            },
+            jwt: {
+              accessToken: "tempAccess(normal)",
+              refreshToken: "tempRefresh(normal)",
+            },
+          };
 
-            // 받은 유저정보
-            const body = await response.json();
-            const email = body.email || "tempEmail";
-            const nickname = body.nickname || "tempNickname";
+          if (
+            !credentials.accessToken ||
+            !credentials.refreshToken ||
+            !credentials.nickname
+          ) {
+            return tempUserInfo;
+          }
 
-            return { user: { email, nickname }, jwt };
-          },
-          hasBody: false,
-        });
-        return data as any;
-      },
-    }),
+          const jwt = {
+            accessToken: credentials.accessToken,
+            refreshToken: credentials.refreshToken,
+          };
 
-    //OAuth 로그인
-    CredentialsProvider({
-      name: "CredentialsForOAuth",
+          return {
+            user: { email: credentials.email, nickname: credentials.nickname },
+            jwt,
+          } as any;
+        } else if ((credentials.loginType = "oauth")) {
+          console.log("간편 로그인");
+          const tempUserInfo = {
+            user: {
+              email: "tempEmail(oauth)",
+              nickname: "tempNickname(oauth)",
+            },
+            jwt: {
+              accessToken: "tempAccess(oauth)",
+              refreshToken: "tempRefresh(oauth)",
+            },
+          };
+          if (
+            !credentials.accessToken ||
+            !credentials.refreshToken ||
+            !credentials.nickname ||
+            !credentials.email
+          ) {
+            return tempUserInfo;
+          }
+          const jwt = {
+            accessToken: credentials.accessToken,
+            refreshToken: credentials.refreshToken,
+          };
 
-      credentials: {
-        accessToken: { label: "accessToken", type: "string" },
-        refreshToken: { label: "refreshToken", type: "string" },
-      },
-      async authorize(credentials: any) {
-        //토큰
-        const jwt = {
-          accessToken: credentials.accessToken || "tempAccess",
-          refreshToken: credentials.refreshToken || "tempRefresh",
-        };
-
-        // 유저정보
-        const email = "tempEmail";
-        const nickname = "tempNickname";
-
-        return { user: { email, nickname }, jwt } as any;
+          return {
+            user: { email: credentials.email, nickname: credentials.nickname },
+            jwt,
+          } as any;
+        }
+        console.log("잘못된 로그인 타입");
+        return null;
       },
     }),
   ],
@@ -82,7 +86,7 @@ export default NextAuth({
   // jwt 설정
   session: {
     strategy: "jwt",
-    // maxAge: 3 * 24 * 60 * 60, // 로그인 유지 기간 (=3일)
+    maxAge: 3 * 24 * 60 * 60, // 로그인 유지 기간 (=3일)
   },
 
   //  jwt나 세션 쓸때
@@ -108,8 +112,8 @@ export default NextAuth({
         if (!token.jwt.refreshToken) throw new Error("Missing refresh token");
         // 리프레시 토큰도 만료되었을 시, 데이터삭제 및 로그아웃
         return token;
-        // return updateAccessToken(token.jwt.refreshToken);
       }
+      // return updateAccessToken(token.jwt.refreshToken);
     },
 
     // jwt에서 return한 값이 token으로 들어옴
@@ -124,7 +128,7 @@ export default NextAuth({
 
   pages: {
     signIn: "/login",
-    error: "error",
+    error: "/error/login",
   },
 });
 

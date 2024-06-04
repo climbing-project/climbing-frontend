@@ -1,4 +1,3 @@
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import styled from "styled-components";
 import Comments from "@/components/gyms/Comments";
@@ -9,10 +8,9 @@ import ImageCarousel from "@/components/gyms/ImageCarousel";
 import MainContent from "@/components/gyms/MainContent";
 import SideContent from "@/components/gyms/SideContent";
 import useApi from "@/hooks/useApi";
-import { requestData } from "@/service/api";
 import { DEVICE_SIZE } from "@/constants/styles";
 import { IMAGE_SIZE } from "@/constants/gyms/constants";
-import { NAVERMAP_API, SERVER_ADDRESS, TEST_ADDRESS } from "@/constants/constants";
+import { NAVERMAP_API, SERVER_ADDRESS } from "@/constants/constants";
 import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 
 const GymInfo = ({
@@ -21,7 +19,6 @@ const GymInfo = ({
   statusCode,
 }: InferGetServerSidePropsType<GetServerSideProps>) => {
   const { data: session } = useSession();
-  const router = useRouter();
   const { isLoading } = useApi(NAVERMAP_API);
 
   if (error) return <ErrorPage statusCode={statusCode} />;
@@ -152,13 +149,16 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const controller = new AbortController();
   setTimeout(() => controller.abort(), 3000);
   try {
-    const response = await fetch(`${TEST_ADDRESS}/gyms/${gymId}`, { signal: controller.signal });
+    const response = await fetch(`${SERVER_ADDRESS}/gyms/${gymId}`, { signal: controller.signal });
     if (response.status === 200) {
       const gymData = await response.json();
       return { props: { gymData } };
     } else throw response.status;
-  } catch (statusCode) {
-    return { props: { error: true, statusCode } };
+  } catch (e) {
+    if (typeof e === "object") {
+      return { props: { error: true, statusCode: 500 } };
+    }
+    return { props: { error: true, statusCode: e } };
   }
 };
 

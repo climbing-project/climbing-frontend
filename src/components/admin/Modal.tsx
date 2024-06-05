@@ -25,7 +25,9 @@ export default function Modal({ closeModal, selectedMember, updateRole }: ModalP
 
   const handleConfirm = () => {
     if (role === selectedMember?.role) return;
-    const response = confirm("진행하시겠습니까?");
+    const response = confirm(
+      `해당 멤버의 권한을 '${selectedMember?.role}'에서 '${role}'로 변경할까요?`,
+    );
     if (!response) return;
     updateRole(role);
   };

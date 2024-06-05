@@ -1,4 +1,5 @@
 import { useState } from "react";
+import styled from "styled-components";
 import MemberTable from "@/components/admin/MemberTable";
 import Modal from "@/components/admin/Modal";
 import type { Member } from "@/components/admin/MemberTable";
@@ -23,14 +24,51 @@ const AdminPage = () => {
   };
 
   return (
-    <div>
+    <Wrapper>
       <MemberTable members={testData} openModal={openModal} />
       {isOpen && (
         <Modal closeModal={closeModal} selectedMember={selectedMember} updateRole={updateRole} />
       )}
-    </div>
+    </Wrapper>
   );
 };
+
+const Wrapper = styled.div`
+  display: grid;
+  place-content: center center;
+  table {
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+  tr {
+    height: 3rem;
+    border-bottom: 1px solid #e5e5e5;
+  }
+  thead > tr {
+    font-weight: 600;
+  }
+  tbody > tr:last-child {
+    border: none;
+  }
+  td {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .role {
+    width: 90px;
+  }
+  .nickname {
+    width: 300px;
+    line-height: 1.5rem;
+  }
+  .email {
+    width: 430px;
+  }
+  .button {
+    width: 40px;
+  }
+`;
 
 const testData = [
   { nickname: "스피커", role: "admin", email: "sdfklj@gmail.com" },
@@ -38,7 +76,7 @@ const testData = [
   { nickname: "마우스", role: "manager", email: "383__dflskdj@gmail.com" },
   { nickname: "키보드", role: "user", email: "dfe5fe82@gmail.com" },
   { nickname: "데스크탑", role: "user", email: "sd6f8eg__@gmail.com" },
-  { nickname: "케이블", role: "user", email: "fsle_ef5@gmail.com" },
+  { nickname: "케이블케이블케이블케이블케이블케이블", role: "user", email: "fsle_ef5@gmail.com" },
 ];
 
 export default AdminPage;

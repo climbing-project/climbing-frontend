@@ -77,8 +77,8 @@ const ChatPage: NextPageWithLayout = () => {
               <S.Header>1:1 문의</S.Header>
               <S.Content $direction="column">
                 {chatrooms.length > 0 ? (
-                  chatrooms.map(({ roomId, roomName }) => (
-                    <S.Row key={roomId} onClick={() => handleChatroomClick(roomId)}>
+                  chatrooms.map(({ id, roomName }) => (
+                    <S.Row key={id} onClick={() => handleChatroomClick(id)}>
                       {roomName}님의 문의
                     </S.Row>
                   ))

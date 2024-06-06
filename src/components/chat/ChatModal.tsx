@@ -11,6 +11,11 @@ interface ChatModalProps {
   gymName: string;
 }
 
+type ExistingRoom = {
+  exists: boolean;
+  roomId: string | null;
+};
+
 const ChatModal = ({ gymId, gymName }: ChatModalProps) => {
   const { data: session } = useSession();
   const [isOpen, setIsOpen] = useState(false);
@@ -25,20 +30,42 @@ const ChatModal = ({ gymId, gymName }: ChatModalProps) => {
       connectHeaders: { Authorization: "Bearer " + session.jwt.accessToken },
     });
 
-    const joinRoom = async () => {
-      // 추후 existing room fetch 로직 추가 (성공 시 fetch한 roomId 사용)
-      // ↓ 신규 room 생성
+    const checkExistingRoom = async (nickname: string): Promise<ExistingRoom> => {
       try {
-        const res = await fetch(`${SERVER_ADDRESS}/chat/room/${gymId}`, {
+        const res = await fetch(`${SERVER_ADDRESS}/chat/room-check/${nickname}/${gymId}`, {
+          headers: {
+            Authorization: "Bearer " + session.jwt.accessToken,
+          },
+        });
+        if (!res.ok) throw new Error("알 수 없는 오류가 발생했습니다.");
+        const data = await res.json();
+        return data;
+      } catch (e) {
+        console.log(e);
+      }
+      return { exists: false, roomId: null };
+    };
+
+    const createRoom = async (nickname: string) => {
+      console.log("새 채팅방을 생성합니다.");
+      try {
+        const res = await fetch(`${SERVER_ADDRESS}/chat/room/${nickname}/${gymId}`, {
           method: "POST",
           headers: { Authorization: "Bearer " + session.jwt.accessToken },
         });
         if (res.redirected) throw new Error("로그인이 필요한 서비스입니다.");
-        const { roomId } = await res.json();
-        setRoomId(roomId);
+        const { id } = await res.json();
+        setRoomId(id);
       } catch (e) {
         console.log(e);
       }
+    };
+
+    const joinRoom = async () => {
+      const nickname = session.user.nickname;
+      const fetchedRoom = await checkExistingRoom(nickname);
+      if (fetchedRoom.exists) return setRoomId(fetchedRoom.roomId);
+      createRoom(nickname);
     };
 
     clientInstance.activate();
@@ -58,27 +85,8 @@ const ChatModal = ({ gymId, gymName }: ChatModalProps) => {
   const toggleModal = () => {
     if (isOpen) {
       setIsOpen(false);
-      if (client && client.connected) {
-        client.publish({
-          destination: "/app/chat/message",
-          body: JSON.stringify({
-            type: "LEAVE",
-            roomId: roomId,
-          }),
-        });
-      }
     } else if (!isOpen) {
       setIsOpen(true);
-      if (client && client.connected) {
-        client.publish({
-          destination: "/app/chat/message",
-          body: JSON.stringify({
-            type: "ENTER",
-            roomId: roomId,
-            sender: session?.user.email,
-          }),
-        });
-      }
     }
   };
 

@@ -41,12 +41,13 @@ export default function Modal({ closeModal, selectedMember, updateRole }: ModalP
           {selectedMember && (
             <M.Row>
               {selectedMember.nickname}
-              <br />
-              <M.Select defaultValue={selectedMember.role} onChange={handleSelect}>
-                <option>admin</option>
-                <option>manager</option>
-                <option>user</option>
-              </M.Select>
+              <div>
+                <M.Select defaultValue={selectedMember.role} onChange={handleSelect}>
+                  <option>admin</option>
+                  <option>manager</option>
+                  <option>user</option>
+                </M.Select>
+              </div>
             </M.Row>
           )}
           <M.Warning ref={warning}></M.Warning>
@@ -67,7 +68,7 @@ export default function Modal({ closeModal, selectedMember, updateRole }: ModalP
 const M = {
   Container: styled.div`
     display: flex;
-    height: 140px;
+    min-height: 140px;
     flex-direction: column;
   `,
   Title: styled.h3`
@@ -78,7 +79,8 @@ const M = {
   Row: styled.div`
     display: flex;
     width: 300px;
-    justify-content: center;
+    justify-content: space-between;
+    gap: 8px;
     & button {
       width: 80px;
     }
@@ -87,7 +89,7 @@ const M = {
     margin-left: auto;
   `,
   Warning: styled.div`
-    height: 1rem;
+    height: 1.5rem;
     color: rgb(255, 0, 0);
     font-size: 0.75rem;
     margin-bottom: auto;

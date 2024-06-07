@@ -50,20 +50,15 @@ const Wrapper = styled.div`
   tbody > tr:last-child {
     border: none;
   }
-  td {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
   .role {
     width: 90px;
   }
   .nickname {
     width: 300px;
-    line-height: 1.5rem;
   }
   .email {
     width: 430px;
+    line-height: 1.5rem;
   }
   .button {
     width: 40px;
@@ -76,7 +71,17 @@ const testData = [
   { nickname: "마우스", role: "manager", email: "383__dflskdj@gmail.com" },
   { nickname: "키보드", role: "user", email: "dfe5fe82@gmail.com" },
   { nickname: "데스크탑", role: "user", email: "sd6f8eg__@gmail.com" },
-  { nickname: "케이블케이블케이블케이블케이블케이블", role: "user", email: "fsle_ef5@gmail.com" },
+  {
+    nickname: "케이블케이블케이블케이블케이블케이블케이블케이블케이블케이블케이블케이블",
+    role: "user",
+    email: "fsle_ef5@gmail.com",
+  },
+  {
+    nickname:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum et consectetur neque totam cum sed, fugiat est suscipit, itaque saepe officiis adipisci eligendi? Quasi eius repellat, dolorem temporibus fugit delectus, mollitia reiciendis quaerat numquam itaque labore suscipit odit eveniet expedita, corrupti deserunt! Quod eos sequi ipsam molestiae explicabo at quas!",
+    role: "user",
+    email: "fsle_ef5@gmail.com",
+  },
 ];
 
 export default AdminPage;

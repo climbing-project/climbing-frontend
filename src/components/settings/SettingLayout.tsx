@@ -27,6 +27,13 @@ const SettingLayout = ({ children }: React.PropsWithChildren<{}>) => {
         >
           비밀번호 변경
         </Link>
+        <Link
+          className="link-plain"
+          href={{ pathname: "/settings", query: { page: "deleteAccount" } }}
+          as="/settings/deleteAccount"
+        >
+          계정 탈퇴
+        </Link>
       </S.Sidebar>
       <S.Main>{children}</S.Main>
     </S.Wrapper>

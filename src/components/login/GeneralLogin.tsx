@@ -64,7 +64,7 @@ const GeneralLogin = () => {
           아이디 찾기
         </S.Option>
         <S.Divider>|</S.Divider> */}
-        <S.Option className="link-plain" href={"/find"}>
+        <S.Option className="link-plain" href={"/login/find"}>
           비밀번호 찾기
         </S.Option>
         <S.Divider>|</S.Divider>

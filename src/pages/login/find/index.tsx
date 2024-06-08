@@ -1,8 +1,9 @@
 import InputWithTitle from "@/components/common/InputWithTitle";
-import { CONFIRM_MESSAGE, EMAIL_REGREX } from "@/constants/login/constants";
+import { EMAIL_REGREX } from "@/constants/login/constants";
 import { EmailCheckResponse } from "@/constants/login/type";
 import { requestData } from "@/service/api";
 import { COLOR } from "@/styles/global-color";
+import router from "next/router";
 import { useState } from "react";
 import { styled } from "styled-components";
 
@@ -24,7 +25,7 @@ const FindPassword = () => {
     } else {
       const onSuccess = ({ check }: EmailCheckResponse) => {
         if (!check) {
-          setEmailMessage(CONFIRM_MESSAGE);
+          setEmailMessage("");
           setIsEmailValid(true);
           setEmail(currentEmail);
         } else {
@@ -45,7 +46,10 @@ const FindPassword = () => {
     event.preventDefault();
 
     const onSuccess = () => {
-      console.log("임시비밀번호 전송");
+      router.push({
+        pathname: "/login/find/verify",
+        query: { email: email },
+      });
     };
 
     requestData({

@@ -120,8 +120,8 @@ export default NextAuth({
           if (!token.jwt.refreshToken) throw new Error("Missing refresh token");
           // 리프레시 토큰도 만료되었을 시, 데이터삭제 및 로그아웃
 
-          const hello = await getUpdatedToken(token.jwt.refreshToken);
-          console.log(hello);
+          // const hello = await getUpdatedToken(token.jwt.refreshToken);
+          // console.log(hello);
           return token;
         }
       }

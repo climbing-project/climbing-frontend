@@ -1,4 +1,4 @@
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useState } from "react";
 import InputWithTitle from "../common/InputWithTitle";
 import { PASSWORD_REGREX } from "@/constants/login/constants";
@@ -6,7 +6,7 @@ import { styled } from "styled-components";
 import { requestData } from "@/service/api";
 
 const ChangePassword = () => {
-  const { status } = useSession();
+  const { status, data: session } = useSession();
 
   const [isCurrentValid, setIsCurrentValid] = useState(false);
   const [CurrentMessage, setCurrentMessage] = useState("");
@@ -27,10 +27,7 @@ const ChangePassword = () => {
   }) => {
     const currentPassword = event.target.value;
 
-    if (!PASSWORD_REGREX.test(currentPassword)) {
-      setCurrentMessage(
-        "숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요."
-      );
+    if (currentPassword.length <= 0) {
       setIsCurrentValid(false);
     } else {
       setCurrentMessage("");
@@ -77,13 +74,21 @@ const ChangePassword = () => {
     event.preventDefault();
 
     const onSuccess = () => {
-      alert("비밀번호 변경 완료");
+      alert(`비밀번호가 변경되었습니다.
+재로그인 하시기 바랍니다.`);
+      return requestData({
+        option: "GET",
+        url: "/members/logout",
+        onSuccess: () => signOut({ callbackUrl: "/" }),
+        hasBody: false,
+      });
     };
 
     requestData({
-      option: "POST",
-      url: "/members/join",
+      option: "PUT",
+      url: "/members/update-password",
       data: { beforePassword: currentPassword, afterPassword: newPassword },
+      token: session!.jwt.accessToken,
       onSuccess,
       hasBody: false,
     });
@@ -92,7 +97,6 @@ const ChangePassword = () => {
   if (status !== "authenticated") {
     return <div>잘못된 접근입니다.</div>;
   }
-
   return (
     <S.Wrapper>
       <S.JoinForm className="container" onSubmit={handleSubmit}>

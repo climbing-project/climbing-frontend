@@ -112,10 +112,10 @@ export default NextAuth({
 
         if (Date.now() < expireDate) {
           // 액세스 토큰 만료 전
-          console.log("토큰 만료 전");
+          // console.log("토큰 만료 전");
           return token;
         } else {
-          console.log("토큰 만료 후");
+          // console.log("토큰 만료 후");
           // 만료 후 리프레시 토큰으로 액세스 토큰 업데이트 요청
           if (!token.jwt.refreshToken) throw new Error("Missing refresh token");
           // 리프레시 토큰도 만료되었을 시, 데이터삭제 및 로그아웃

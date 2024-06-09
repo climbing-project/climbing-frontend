@@ -3,23 +3,25 @@ import { useSession } from "next-auth/react";
 import router, { Router } from "next/router";
 import { useState } from "react";
 import { styled } from "styled-components";
-
+import { signOut } from "next-auth/react";
+import handleSignOut from "@/service/api/logout";
 const DeleteAccount = () => {
   const { data: session, status } = useSession();
 
-  const [isChecked, setIsChecked] = useState(false);
+  const [isChecked, setIsChecked] = useState(true);
 
   const handleDeleteAccount = (event: { preventDefault: () => void }) => {
     event.preventDefault();
 
     const onSuccess = () => {
+      //TODO: 삭제후 로그아웃 논의필요
       alert("계정이 삭제되었습니다.");
-      router.push("/home");
+      return handleSignOut();
     };
 
     requestData({
       option: "DELETE",
-      url: "/members/delete",
+      url: "/members",
       data: {
         checkPassword: "Password",
       },

@@ -1,9 +1,10 @@
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import InputWithTitle from "../common/InputWithTitle";
 import { PASSWORD_REGREX } from "@/constants/login/constants";
 import { styled } from "styled-components";
 import { requestData } from "@/service/api";
+import handleSignOut from "@/service/api/logout";
 
 const ChangePassword = () => {
   const { status, data: session } = useSession();
@@ -76,12 +77,7 @@ const ChangePassword = () => {
     const onSuccess = () => {
       alert(`비밀번호가 변경되었습니다.
 재로그인 하시기 바랍니다.`);
-      return requestData({
-        option: "GET",
-        url: "/members/logout",
-        onSuccess: () => signOut({ callbackUrl: "/" }),
-        hasBody: false,
-      });
+      return handleSignOut();
     };
 
     requestData({

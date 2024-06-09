@@ -22,6 +22,7 @@ const ChatModal = ({ gymId, gymName }: ChatModalProps) => {
   const [client, setClient] = useState<null | Client>(null);
   const [roomId, setRoomId] = useState<null | string>(null);
   const [isRoomFetchError, setIsRoomFetchError] = useState(false);
+  const [isSocketError, setIsSocketError] = useState(false);
 
   useEffect(() => {
     if (!session || client) return;
@@ -85,6 +86,7 @@ const ChatModal = ({ gymId, gymName }: ChatModalProps) => {
     clientInstance.onStompError = (frame: IFrame) => {
       console.log("에러 발생");
       console.log(frame); // 에러 확인
+      setIsSocketError(true)
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
@@ -103,6 +105,7 @@ const ChatModal = ({ gymId, gymName }: ChatModalProps) => {
             client={client}
             roomId={roomId}
             isRoomFetchError={isRoomFetchError}
+            isSocketError={isSocketError}
           />
         )}
       </S.Modal>

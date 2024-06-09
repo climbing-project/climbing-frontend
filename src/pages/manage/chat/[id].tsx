@@ -28,8 +28,8 @@ const ChatPage: NextPageWithLayout = () => {
       if (!id) return;
       requestData({
         option: "GET",
-        url: `/chat/room`,
-        token: session?.jwt.accessToken,
+        url: `/chat/room/gym/${id}`,
+        token: session.jwt.accessToken,
         onSuccess: (chatrooms: Chatroom[]) => setChatrooms(chatrooms),
         onError: (e) => console.log(e),
       });

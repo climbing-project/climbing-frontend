@@ -1,17 +1,15 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { styled } from "styled-components";
-import handleSignOut from "@/service/api/logout";
 import React from "react";
 import { requestData } from "@/service/api";
 import InputWithTitle from "@/components/common/InputWithTitle";
-import { signIn } from "next-auth/react";
 import {
   CONFIRM_MESSAGE,
   NICKNAME_REGREX,
   PASSWORD_REGREX,
 } from "@/constants/login/constants";
-import getLoginInfos from "@/service/api/login";
+import handleSignOut from "@/service/api/logout";
 
 const Mypage = () => {
   // 현재 정보업데이트시 비밀번호 미사용

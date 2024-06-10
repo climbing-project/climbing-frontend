@@ -2,11 +2,11 @@ import { requestData } from "@/service/api";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { styled } from "styled-components";
-import handleSignOut from "@/service/api/logout";
 import InputWithTitle from "../common/InputWithTitle";
 import { IoWarning } from "react-icons/io5";
 import { COLOR } from "@/styles/global-color";
 import { FaCircleCheck } from "react-icons/fa6";
+import handleSignOut from "@/service/api/logout";
 
 const DeleteAccount = () => {
   const { data: session, status } = useSession();

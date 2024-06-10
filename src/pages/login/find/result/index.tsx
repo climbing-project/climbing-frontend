@@ -1,10 +1,12 @@
 import React from "react";
-import router from "next/router";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 import { FaCircleCheck } from "react-icons/fa6";
 import { COLOR } from "@/styles/global-color";
 
 const ChangeReseult = () => {
+  const router = useRouter();
+
   const handleHomeBtn = () => {
     router.push("/home");
   };

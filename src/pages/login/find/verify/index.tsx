@@ -1,11 +1,12 @@
 import InputWithTitle from "@/components/common/InputWithTitle";
 import { requestData } from "@/service/api";
 import { COLOR } from "@/styles/global-color";
-import router from "next/router";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { styled } from "styled-components";
 
 const VerifyPassword = () => {
+  const router = useRouter();
   const [emailMessage, setEmailMessage] = useState("");
 
   const email = router.query.email as string;

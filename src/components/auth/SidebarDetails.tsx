@@ -21,7 +21,10 @@ const SidebarDetails = ({
 }: SidebarDetailProps) => {
   return (
     showSidebar && (
-      <S.SidebarWrapper>
+      <S.SidebarWrapper
+      // className={`${showSidebar ? "sideOpen" : "sideClose"}`}
+      // className={"sideClose"}
+      >
         <S.CloseButton onClick={() => setShowSidebar(false)}>
           <IoClose size="20" />
         </S.CloseButton>
@@ -54,6 +57,15 @@ const SidebarDetails = ({
 
 const S = {
   SidebarWrapper: styled.div`
+    /* & .sliding {
+      transition: 1s ease-in-out;
+    } */
+    /* & .sideOpen {
+      width: 4000px;
+    }
+    & .sideClose {
+      width: 0px;
+    } */
     border: 3px solid #f9f2f2;
     background-color: white;
     position: fixed;
@@ -101,6 +113,7 @@ const S = {
     position: fixed;
     top: 20px;
     right: 20px;
+    cursor: pointer;
   `,
 };
 

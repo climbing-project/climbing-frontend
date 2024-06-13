@@ -40,7 +40,8 @@ const InputWithTitle = ({
           ) : null}
         </Styled.InputContainer>
         <Styled.Result $isWarning={message !== CONFIRM_MESSAGE}>
-          {message}
+          {message !== "" && "*"}
+          {` ${message}`}
         </Styled.Result>
       </Styled.Container>
     </Styled.Wrapper>
@@ -71,7 +72,7 @@ const Styled = {
     padding: 0 ${(props) => props.$inputPadding};
     flex: 1 1 auto;
     &::placeholder {
-      font-size: 0.8rem;
+      font-size: 0.9rem;
     }
   `,
   InputContainer: styled.div`
@@ -82,8 +83,10 @@ const Styled = {
     padding: 0;
   `,
   Result: styled.div<{ $isWarning: boolean }>`
+    margin: 5px 2px;
     height: 10px;
     font-size: 12px;
+    text-align: left;
     color: ${(props) => (props.$isWarning ? "red" : "green")};
   `,
 };

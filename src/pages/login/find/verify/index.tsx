@@ -63,7 +63,7 @@ const VerifyPassword = () => {
 
 const S = {
   Container: styled.div`
-    height: 700px;
+    height: 600px;
     width: 500px;
     display: flex;
     flex-direction: column;

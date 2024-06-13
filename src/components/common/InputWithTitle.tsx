@@ -14,14 +14,18 @@ const InputWithTitle = ({
   onDisabled,
   defaultValue,
   isDisabled = false,
+  inputHeight = "40px",
+  inputPadding = "10px",
 }: InputProps) => {
   return (
     <Styled.Wrapper>
-      <Styled.Title>{title}</Styled.Title>
+      {title && <Styled.Title>{title}</Styled.Title>}
       <Styled.Container>
         <Styled.InputContainer>
           <Styled.Input
             $isWarning={message !== "" && message !== CONFIRM_MESSAGE}
+            $inputHeight={inputHeight}
+            $inputPadding={inputPadding}
             placeholder={placeholder}
             name={name}
             type={type}
@@ -55,9 +59,16 @@ const Styled = {
   Container: styled.div`
     width: 100%;
   `,
-  Input: styled.input<{ $isWarning: boolean }>`
-    height: 30px;
+  Input: styled.input<{
+    $isWarning: boolean;
+    $inputHeight: string;
+    $inputPadding: string;
+  }>`
+    height: ${(props) => props.$inputHeight};
     outline-color: ${(props) => (props.$isWarning ? "red" : "green")};
+    border-radius: 5px;
+    border: 1px solid black;
+    padding: 0 ${(props) => props.$inputPadding};
     flex: 1 1 auto;
     &::placeholder {
       font-size: 0.8rem;

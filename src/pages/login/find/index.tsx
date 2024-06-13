@@ -80,7 +80,7 @@ const FindPassword = () => {
       </S.InputWrapper>
       <S.ButtonWrapper>
         <S.SubmitButton disabled={!isEmailValid} onClick={handleSubmit}>
-          》 다음
+          임시 비밀번호 전송하기
         </S.SubmitButton>
       </S.ButtonWrapper>
     </S.Container>
@@ -104,26 +104,24 @@ const S = {
   InputWrapper: styled.div`
     width: 350px;
     margin: 30px auto;
+    margin-bottom: 5px;
   `,
   HighlightText: styled.span`
     color: ${COLOR.MAIN};
   `,
-  ButtonWrapper: styled.div`
-    text-align: right;
-  `,
+  ButtonWrapper: styled.div``,
   SubmitButton: styled.button`
     &:disabled {
-      background-color: #f0f0f0;
-      border: 1px solid lightGrey;
+      opacity: 0.3;
     }
-    width: 80px;
-    margin-top: 30px;
-    margin-right: 30px;
-    background-color: ${COLOR.LIGHT_MAIN};
-    border: 1px solid ${COLOR.LIGHT_MAIN};
-    border-radius: 10px;
-    padding: 5px;
-    font-style: italic;
+    width: 350px;
+    background-color: ${COLOR.MAIN};
+    border: 1px solid ${COLOR.MAIN};
+    border: none;
+    color: white;
+    border-radius: 5px;
+    padding: 10px;
+    font-weight: bold;
   `,
 };
 

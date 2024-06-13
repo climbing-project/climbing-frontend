@@ -62,7 +62,6 @@ const S = {
   HomeButton: styled.button`
     background-color: white;
     border: 1px solid ${COLOR.MAIN};
-    // border: none;
     flex-grow: 1;
     border-radius: 5px;
     padding: 10px;
@@ -71,7 +70,6 @@ const S = {
   LoginButton: styled.button`
     background-color: ${COLOR.MAIN};
     border: 1px solid ${COLOR.MAIN};
-    // border: none;
     color: white;
     font-weight: bold;
     flex-grow: 3;

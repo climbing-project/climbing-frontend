@@ -1,12 +1,13 @@
 import { useEffect } from "react";
 import styled from "styled-components";
 import { BiSolidHelpCircle } from "react-icons/bi";
+import { getFormattedDate, getFormattedTime } from "@/ChatHistoryContext";
+import { COLOR } from "@/styles/global-color";
 
-// 소켓 동작 확인 후에 적용
 export type MessageFormat = {
   userType: string;
   message: string;
-  time: number;
+  createdAt: string;
 };
 
 type SortedMessageList = {
@@ -27,7 +28,7 @@ const ChatHistory = ({ history, speaker }: ChatHistoryProps) => {
   const sortMessages = (messages: MessageFormat[]) => {
     const list: SortedMessageList = [];
     messages.forEach((message) => {
-      const date = getDate(message.time);
+      const date = getFormattedDate(message.createdAt);
       const listItem = list.find((item) => item.date === date);
       if (!listItem) {
         const newItem = { date, messages: [message] };
@@ -37,14 +38,6 @@ const ChatHistory = ({ history, speaker }: ChatHistoryProps) => {
       }
     });
     return list;
-  };
-
-  const getDate = (epoch: number) => {
-    return new Date(epoch).toLocaleDateString("ko-KR");
-  };
-
-  const getTime = (epoch: number) => {
-    return new Date(epoch).toLocaleTimeString("ko-KR").slice(0, -3);
   };
 
   const sortedMessages: SortedMessageList = history ? sortMessages(history) : [];
@@ -66,7 +59,7 @@ const ChatHistory = ({ history, speaker }: ChatHistoryProps) => {
         sortedMessages.map((batch, i) => (
           <div className="batch" key={i}>
             <div className="divider">{batch.date}</div>
-            {batch.messages.map(({ userType, message, time }, i) => (
+            {batch.messages.map(({ userType, message, createdAt }, i) => (
               <M.Wrapper key={i}>
                 <M.Message
                   $speaker={userType === speaker}
@@ -75,15 +68,17 @@ const ChatHistory = ({ history, speaker }: ChatHistoryProps) => {
                   {userType !== speaker ||
                   (batch.messages[i + 1]?.userType === userType &&
                     batch.messages[i + 1] &&
-                    getTime(batch.messages[i + 1].time) === getTime(time)) ? null : (
-                    <span>{getTime(time)}</span>
+                    getFormattedTime(batch.messages[i + 1].createdAt) ===
+                      getFormattedTime(createdAt)) ? null : (
+                    <span>{getFormattedTime(createdAt)}</span>
                   )}
                   <div>{message}</div>
                   {userType === speaker ||
                   (batch.messages[i + 1]?.userType === userType &&
                     batch.messages[i + 1] &&
-                    getTime(batch.messages[i + 1].time) === getTime(time)) ? null : (
-                    <span>{getTime(time)}</span>
+                    getFormattedTime(batch.messages[i + 1].createdAt) ===
+                      getFormattedTime(createdAt)) ? null : (
+                    <span>{getFormattedTime(createdAt)}</span>
                   )}
                 </M.Message>
               </M.Wrapper>
@@ -98,19 +93,32 @@ const ChatHistory = ({ history, speaker }: ChatHistoryProps) => {
 
 const Wrapper = styled.div`
   border-radius: 6px;
-  padding: 5px;
-  padding-left: 22px;
+  padding-right: 4px;
+  padding-left: 12px;
   flex: 1 0 0;
   margin-bottom: 12px;
   overflow-y: auto;
   scrollbar-gutter: stable;
-
+  word-break: break-all;
+  overflow-x: hidden;
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #e5e5e5;
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: ${COLOR.DISABLED};
+  }
   & .batch {
     display: flex;
     flex-direction: column;
     gap: 6px;
   }
-
   & .divider {
     text-align: center;
     font-weight: 700;
@@ -131,19 +139,16 @@ const M = {
     display: flex;
     align-items: flex-end;
     gap: 4px;
-    max-width: 90%;
+    max-width: 85%;
     align-self: ${({ $speaker }) => ($speaker ? "flex-end" : "flex-start")};
-
     &.lastMessage {
       margin-bottom: 18px;
     }
-
     & span {
       color: #9a9a9a;
       font-size: 0.8rem;
       flex-shrink: 0;
     }
-
     & > div {
       border-radius: 6px;
       border: 1px solid #cacaca;

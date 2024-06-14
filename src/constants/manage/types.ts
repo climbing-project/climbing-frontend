@@ -1,4 +1,4 @@
-import type { Dispatch, SetStateAction } from "react";
+import type { Dispatch, ReactNode, SetStateAction } from "react";
 import type { BaseGymData, GymData, GymDataObject } from "../gyms/types";
 
 // 데이터 타입 정의
@@ -7,18 +7,13 @@ type ValuePiece = Date | null;
 type GymDataStateAction = Dispatch<SetStateAction<GymData | null>>;
 type SetNewData = (obj: GymDataObject) => void;
 export type Value = ValuePiece | Range<ValuePiece>;
-export type Chatroom = { roomId: number; roomName: string };
+export type Chatroom = { id: number; roomName: string };
 export type ChatroomRef = {
   url: string;
   windowRef: Window;
 };
 
 // 컴포넌트 props 타입 정의
-export interface DescriptionEditorProps {
-  description: string | null | undefined;
-  setNewData: SetNewData;
-}
-
 export interface AccommodationsEditorProps {
   accommodationsList: string[] | null | undefined;
   setNewData: SetNewData;
@@ -41,6 +36,17 @@ export interface BasicInfoProps {
 
 export interface ColorPickerProps {
   handleColorSelect: (color: string) => void;
+}
+
+export interface ContentContainerProps {
+  direction?: string;
+  gap?: string;
+  children: ReactNode;
+}
+
+export interface DescriptionEditorProps {
+  description: string | null | undefined;
+  setNewData: SetNewData;
 }
 
 export interface GradeBlockProps {

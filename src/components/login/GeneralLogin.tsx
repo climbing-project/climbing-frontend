@@ -5,7 +5,6 @@ import { IoLockClosedOutline } from "react-icons/io5";
 import Link from "next/link";
 import { COLOR } from "@/styles/global-color";
 import getLoginInfos from "@/service/api/login";
-import { resourceLimits } from "worker_threads";
 
 const GeneralLogin = () => {
   const handleSubmit = async (event: any) => {
@@ -61,11 +60,11 @@ const GeneralLogin = () => {
         <S.ButtonBox type="submit">로그인</S.ButtonBox>
       </S.LoginForm>
       <S.OptionContainer>
-        <S.Option className="link-plain" href={"/find/id"}>
+        {/* <S.Option className="link-plain" href={"/find/id"}>
           아이디 찾기
         </S.Option>
-        <S.Divider>|</S.Divider>
-        <S.Option className="link-plain" href={"/find/password"}>
+        <S.Divider>|</S.Divider> */}
+        <S.Option className="link-plain" href={"/login/find"}>
           비밀번호 찾기
         </S.Option>
         <S.Divider>|</S.Divider>

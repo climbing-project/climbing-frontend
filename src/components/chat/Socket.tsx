@@ -1,150 +1,136 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
-import { Client, Message, type IFrame } from "@stomp/stompjs";
+import { Client, type StompSubscription, type Message } from "@stomp/stompjs";
 import styled from "styled-components";
+import { BarLoader } from "react-spinners";
 import ChatForm from "./ChatForm";
 import ChatHistory from "./ChatHistory";
+import ErrorFallback from "../common/ErrorFallback";
 import LoginPrompt from "../common/LoginPrompt";
-import { type ChatHistoryProps, ChatHistoryContext } from "@/ChatHistoryContext";
-import { SERVER_ADDRESS, SOCKET_ADDRESS } from "@/constants/constants";
+import {
+  type ChatHistoryProps,
+  ChatHistoryContext,
+  getFormattedChatHistory,
+} from "@/ChatHistoryContext";
+import { requestData } from "@/service/api";
 
-const Socket = ({ gymName, gymId }: { gymName: string; gymId: string }) => {
+interface SocketProps {
+  gymName: string;
+  client: Client | null;
+  roomId: string | null;
+  isRoomFetchError: boolean;
+  isSocketError: boolean;
+}
+
+const Socket = ({ gymName, client, roomId, isRoomFetchError, isSocketError }: SocketProps) => {
   const { data: session } = useSession();
   const [isLoading, setIsLoading] = useState(true);
-  const clientRef = useRef<null | Client>(null);
-  const roomRef = useRef(null);
+  const subscriptionRef = useRef<null | StompSubscription>(null);
   const { history, updateHistory } = useContext(ChatHistoryContext);
   const currentHistory = useRef(history);
 
-  const onServerMessage = (res: Message) => {
-    if (!session || !roomRef.current) return;
-    const messageBody = JSON.parse(res.body);
-    const { type, message, sender } = messageBody;
-    console.log(messageBody);
+  // session값은 page visibility가 바뀔 때마다 갱신되기 때문에 사이드이펙트를 줄이기 위해 session dependency를 분리
+  useEffect(() => {
+    if (!session) setIsLoading(false);
+  }, [session]);
 
-    if (type === "TALK") {
+  useEffect(() => {
+    if (!session || !isLoading || !client || !roomId) return;
+
+    const onServerMessage = (response: Message) => {
+      const messageBody = JSON.parse(response.body);
+      const { message, sender, createdAt } = messageBody;
       const newMessage = {
-        userType: sender === session.user.email ? "customer" : "manager",
+        userType: sender === session.user.nickname ? "customer" : "manager",
         message,
-        time: Date.now(),
+        createdAt,
       };
       const newHistory: ChatHistoryProps = { ...currentHistory.current };
-      newHistory[roomRef.current as keyof typeof newHistory] = [
-        ...(currentHistory.current?.[roomRef.current as keyof typeof currentHistory.current] || []),
+      newHistory[roomId as keyof typeof newHistory] = [
+        ...(currentHistory.current?.[roomId as keyof typeof currentHistory.current] || []),
         newMessage,
       ];
       currentHistory.current = { ...currentHistory.current, ...newHistory };
       updateHistory((prev) => ({ ...prev, ...newHistory }));
-    }
-  };
-
-  useEffect(() => {
-    if (!session) return setIsLoading(false);
-
-    clientRef.current = new Client({
-      brokerURL: `ws://${SOCKET_ADDRESS}/ws/chat`,
-      connectHeaders: { Authorization: "Bearer " + session.jwt.accessToken },
-    });
-    const client = clientRef.current;
-
-    const connectClient = async () => {
-      try {
-        await getRoomId();
-      } catch (e) {
-        console.log(e);
-        return;
-      }
-
-      client.onConnect = () => {
-        console.log("roomId: " + roomRef.current);
-        client.subscribe(`/queue/chat/room/${roomRef.current}`, onServerMessage);
-        client.publish({
-          destination: "/app/chat/message",
-          body: JSON.stringify({
-            type: "ENTER",
-            roomId: roomRef.current,
-            sender: session.user.email,
-          }),
-        });
-      };
-
-      client.onStompError = (frame: IFrame) => {
-        console.log("에러 발생");
-        console.log(frame); // 에러 확인
-      };
-
-      client.activate();
-      setIsLoading(false);
     };
 
-    const getRoomId = async () => {
-      const res = await fetch(`${SERVER_ADDRESS}/chat/room`, {
-        method: "POST",
-        headers: { Authorization: "Bearer " + session.jwt.accessToken },
+    const fetchHistory = async () =>
+      requestData({
+        option: "GET",
+        url: `/chat/find/message/${roomId}`,
+        token: session.jwt.accessToken,
+        onSuccess: (data) => {
+          const loadedHistory: ChatHistoryProps = {};
+          loadedHistory[roomId as keyof ChatHistoryProps] = getFormattedChatHistory(
+            data,
+            session.user.nickname,
+            "manager",
+            "customer",
+          );
+          updateHistory((prev) => ({ ...prev, ...loadedHistory }));
+          currentHistory.current = { ...loadedHistory };
+        },
+        onError: () => {
+          console.log("에러 발생");
+        },
       });
-      if (res.redirected) throw new Error("로그인이 필요한 서비스입니다.");
-      const { roomId } = await res.json();
-      roomRef.current = roomId;
-    };
 
-    const loadedHistory: ChatHistoryProps = {};
+    subscriptionRef.current = client.subscribe(`/queue/chat/room/${roomId}`, onServerMessage);
+    setIsLoading(false);
+    // 이전 채팅 기록을 fetch하고 context에 저장
+    if (!currentHistory.current || !currentHistory.current[roomId]) fetchHistory();
 
-    // 해당 room의 이전 채팅기록 fetch하고 context에 업데이트
-    // fetch()
-    // loadedHistory[roomRef.current as keyof typeof loadedHistory] = "fetch한 값"
-    // updateHistory((prev) => ({ ...prev, ...loadedHistory }));
-    // currentHistory.current = {...loadedHistory}
-
-    connectClient();
-
-    return () => {
-      client.publish({
-        destination: "/app/chat/message",
-        body: JSON.stringify({
-          type: "LEAVE",
-          roomId: roomRef.current,
-        }),
-      });
-      client.deactivate();
-    };
+    return () => subscriptionRef.current?.unsubscribe();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSend = (message: string) => {
-    if (message === "") return;
-    if (!clientRef.current || !clientRef.current.connected) {
+    if (message === "") return false;
+    if (!session) {
+      console.log("로그인한 유저가 아님");
+      return false;
+    }
+    if (!client || !client.connected) {
       console.log("소켓 연결 안됨");
-      return;
+      return false;
     }
-    if (roomRef.current === "") {
+    if (!roomId || roomId === "") {
       console.log("입장한 방이 없음");
-      return;
+      return false;
     }
-    clientRef.current.publish({
+    client.publish({
       destination: "/app/chat/message",
       body: JSON.stringify({
-        type: "TALK",
-        roomId: roomRef.current,
-        sender: session?.user.email,
+        roomId: roomId,
+        sender: session.user.nickname,
         message,
       }),
     });
+    return true;
   };
 
   return (
     <S.Wrapper>
       <S.Container>
-        <S.Header>{gymName}</S.Header>
-        {isLoading ? null : session ? (
-          <>
-            <ChatHistory
-              speaker="customer"
-              history={currentHistory.current?.[roomRef.current ?? ""]}
-            />
-            <ChatForm placeholder="문의를 남겨주세요 :)" handleSend={handleSend} />
-          </>
+        {isSocketError || isRoomFetchError ? (
+          <ErrorFallback error={"Server error"} resetErrorBoundary={() => {}} />
         ) : (
-          <LoginPrompt />
+          <>
+            <S.Header>{gymName}</S.Header>
+            {isLoading ? (
+              <S.Loader>
+                연결 중...
+                <BarLoader />
+              </S.Loader>
+            ) : session ? (
+              <>
+                <ChatHistory speaker="customer" history={currentHistory.current?.[roomId ?? ""]} />
+                <ChatForm placeholder="문의를 남겨주세요 :)" handleSend={handleSend} />
+              </>
+            ) : (
+              <LoginPrompt />
+            )}
+          </>
         )}
       </S.Container>
     </S.Wrapper>
@@ -179,6 +165,13 @@ const S = {
     -webkit-box-shadow: 0 3px 7px -7px #cacaca;
     -moz-box-shadow: 0 3px 7px -7px #cacaca;
     box-shadow: 0 3px 7px -7px #cacaca;
+  `,
+  Loader: styled.div`
+    display: grid;
+    place-content: center center;
+    height: 100%;
+    text-align: center;
+    gap: 1.3rem;
   `,
 };
 

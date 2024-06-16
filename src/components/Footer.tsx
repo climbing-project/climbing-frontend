@@ -19,7 +19,7 @@ const Footer = () => {
   if (!showFooter) return;
 
   return (
-    <S.Wrapper $needMargin={true}>
+    <S.Wrapper className={"pretendard-font"} $needMargin={true}>
       <S.TitleContainer href={"/"}>
         <FaRegHandRock />
         <S.Title>오르리</S.Title>

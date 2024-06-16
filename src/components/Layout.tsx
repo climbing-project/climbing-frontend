@@ -2,10 +2,7 @@ import GlobalStyle from "@/styles/global-styles";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import Test from "./Test";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "오르리",
@@ -18,7 +15,7 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
       <Test />
       <GlobalStyle />
       <Navbar />
-      <main>{children}</main>
+      <main className={"pretendard-font"}>{children}</main>
       <Footer />
     </>
   );

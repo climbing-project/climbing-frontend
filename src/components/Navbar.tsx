@@ -27,7 +27,7 @@ const Navbar = () => {
 
   // 햄버거 바는 기능이 적을시, 닉네임클릭시 나오는 네비와 합칠수도있음. 현재는 그대로 둠
   return (
-    <div className={"pretendard-font"}>
+    <>
       <S.Space></S.Space>
       <S.Wrapper $needMargin={needMargin}>
         <S.BarContainer>
@@ -41,7 +41,7 @@ const Navbar = () => {
           </S.MenuContainer>
         </S.BarContainer>
       </S.Wrapper>
-    </div>
+    </>
   );
 };
 

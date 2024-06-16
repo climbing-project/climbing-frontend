@@ -15,7 +15,7 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
       <Test />
       <GlobalStyle />
       <Navbar />
-      <main className={"pretendard-font"}>{children}</main>
+      <main>{children}</main>
       <Footer />
     </>
   );

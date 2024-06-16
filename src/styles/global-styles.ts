@@ -10,9 +10,10 @@ ${normalize}
     font-style: normal;
   }
 
-  .pretendard-font{
+  * {
   font-family: 'Pretendard-Regular', sans-serif;
-}
+  }
+
   .container {
     border-radius: 5px;
     overflow: hidden;

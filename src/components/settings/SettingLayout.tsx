@@ -19,7 +19,7 @@ const SettingLayout = ({ children }: React.PropsWithChildren<{}>) => {
           <S.Title>설정</S.Title>
         </S.TitleContainer>
         <S.Menu
-          $isClicked={page === "myBookmark"}
+          $isClicked={page === "myBookmark" || !page}
           className="link-plain"
           onClick={() => handleMenuClick("myBookmark")}
         >
@@ -31,13 +31,6 @@ const SettingLayout = ({ children }: React.PropsWithChildren<{}>) => {
           onClick={() => handleMenuClick("myPage")}
         >
           내 정보 수정
-        </S.Menu>
-        <S.Menu
-          $isClicked={page === "changePassword"}
-          className="link-plain"
-          onClick={() => handleMenuClick("changePassword")}
-        >
-          비밀번호 변경
         </S.Menu>
         <S.Menu
           $isClicked={page === "deleteAccount"}
@@ -60,6 +53,7 @@ const S = {
   TitleContainer: styled.div`
     display: flex;
     align-items: center;
+    padding: 10px 0;
   `,
   Title: styled.h2`
     margin-left: 10px;
@@ -69,10 +63,9 @@ const S = {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding: 0 15px;
-    /* gap: 10px; */
+    padding: 0 30px;
     flex-shrink: 0;
-    width: 250px;
+    width: 350px;
     border-right: 1px solid ${COLOR.BORDER_UNFOCUSED};
   `,
   Menu: styled.button<{ $isClicked: boolean }>`
@@ -84,6 +77,7 @@ const S = {
     border-radius: 5px;
     background: white;
     font-weight: ${({ $isClicked }) => ($isClicked ? "bold" : "400")};
+    margin: 5px 0;
   `,
   Main: styled.div`
     display: flex;

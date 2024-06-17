@@ -1,14 +1,31 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import MemberTable from "@/components/admin/MemberTable";
 import Modal from "@/components/admin/Modal";
 import type { Member } from "@/components/admin/MemberTable";
+import { useSession } from "next-auth/react";
+import { SERVER_ADDRESS } from "@/constants/constants";
+import { DEVICE_SIZE } from "@/constants/styles";
 
 const AdminPage = () => {
+  const { data: session } = useSession();
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
   const [isOpen, setIsOpen] = useState(false);
 
-  // fetch 로직 추가
+  useEffect(() => {
+    if (!session) return;
+    fetch(`${SERVER_ADDRESS}/admin/members`, {
+      headers: {
+        Authorization: "Bearer " + session.jwt.accessToken,
+      },
+    })
+      .then((res) => {
+        console.log(res);
+        return res.json();
+      })
+      .then((data) => console.log(data))
+      .catch((e) => console.log(e));
+  }, [session]);
 
   const openModal = (member: Member) => {
     setSelectedMember(member);
@@ -55,10 +72,22 @@ const Wrapper = styled.div`
   }
   .nickname {
     width: 300px;
+    @media ${DEVICE_SIZE.tablet} {
+      width: 180px;
+    }
+    @media ${DEVICE_SIZE.mobileLarge} {
+      width: 140px;
+    }
   }
   .email {
     width: 430px;
     line-height: 1.5rem;
+    @media ${DEVICE_SIZE.tablet} {
+      width: 250px;
+    }
+    @media ${DEVICE_SIZE.mobileLarge} {
+      width: 180px;
+    }
   }
   .button {
     width: 40px;

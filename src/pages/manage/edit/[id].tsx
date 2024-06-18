@@ -92,7 +92,7 @@ const EditPage = () => {
     // };
 
     const handlePageLeave = () => {
-      const dataChanged = tracker.current === "edited" ? true : false;
+      const dataChanged = tracker.current === "edited";
       if (!dataChanged) return setIsLoading(true);
       const response = confirm("수정 중인 데이터가 있습니다. 이동할까요?");
       if (!response) {
@@ -131,7 +131,6 @@ const EditPage = () => {
     return JSON.stringify(oldData) !== JSON.stringify(newData);
   };
 
-  // if (!session) return null;
   if (isError)
     return (
       <ManageLayout>
@@ -217,7 +216,23 @@ const EditPage = () => {
           <LoadContainer>
             <BarLoader />
           </LoadContainer>
-        ) : p === "1" || !p ? (
+        ) : p === "2" ? (
+          <>
+            <PricingEditor pricingList={currentData?.pricing} setNewData={setNewData} />
+            <OpenHoursEditor openHoursList={currentData?.openHours} setNewData={setNewData} />
+            <AccommodationsEditor
+              accommodationsList={currentData?.accommodations}
+              setNewData={setNewData}
+            />
+            <GradeEditor gradesList={currentData?.grades} setNewData={setNewData} />
+            <SettingDayEditor date={currentData?.latestSettingDay} setNewData={setNewData} />
+            <Button>
+              <button className="btn-primary" onClick={handleSave} disabled={isUpdating}>
+                {isUpdating ? "저장중..." : "저장하기"}
+              </button>
+            </Button>
+          </>
+        ) : (
           <>
             <ImageEditor
               images={currentData?.images}
@@ -241,23 +256,7 @@ const EditPage = () => {
               </button>
             </Button>
           </>
-        ) : p === "2" ? (
-          <>
-            <PricingEditor pricingList={currentData?.pricing} setNewData={setNewData} />
-            <OpenHoursEditor openHoursList={currentData?.openHours} setNewData={setNewData} />
-            <AccommodationsEditor
-              accommodationsList={currentData?.accommodations}
-              setNewData={setNewData}
-            />
-            <GradeEditor gradesList={currentData?.grades} setNewData={setNewData} />
-            <SettingDayEditor date={currentData?.latestSettingDay} setNewData={setNewData} />
-            <Button>
-              <button className="btn-primary" onClick={handleSave} disabled={isUpdating}>
-                {isUpdating ? "저장중..." : "저장하기"}
-              </button>
-            </Button>
-          </>
-        ) : null}
+        )}
       </ManageLayout>
     </ErrorBoundary>
   );

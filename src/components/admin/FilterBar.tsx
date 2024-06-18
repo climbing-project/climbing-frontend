@@ -5,7 +5,7 @@ interface FilterBarProps {
   handleFilterSelect: (value: string) => void;
 }
 
-export default function FilterBar({ handleFilterSelect }: FilterBarProps) {
+const FilterBar = ({ handleFilterSelect }: FilterBarProps) => {
   const handleSelect = (e: ChangeEvent<HTMLSelectElement>) => handleFilterSelect(e.target.value);
   return (
     <S.Wrapper>
@@ -18,10 +18,12 @@ export default function FilterBar({ handleFilterSelect }: FilterBarProps) {
       </select>
     </S.Wrapper>
   );
-}
+};
 
 const S = {
   Wrapper: styled.div`
     justify-self: flex-end;
   `,
 };
+
+export default FilterBar;

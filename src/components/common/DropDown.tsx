@@ -1,25 +1,8 @@
 import { styled } from "styled-components";
 import reactStringReplace from "react-string-replace";
 import CurrentLocationBtn from "../search/CurrentLocationBtn";
-import { Dispatch, SetStateAction } from "react";
 import { COLOR } from "@/styles/global-color";
-
-interface DropDownProps {
-  dropItems: Array<DropItem>;
-  prefixIcon?: JSX.Element; // list왼쪽 react-icon 컴포넌트 태그
-  highlightWord?: String; // 강조 문구 있을 시, 강조 표시
-  highlightIndex?: number; // 강조할 행은 강조표시
-  setHighlightIndex?: Dispatch<SetStateAction<number>>;
-  width?: string; // search컴포넌트 없이 dropdown 단독으로 쓸때만 사용
-  fontSize?: string;
-  useLocation?: boolean;
-  handleClick?: (arg: unknown) => unknown;
-}
-
-export interface DropItem {
-  id: number;
-  info: string;
-}
+import { DropDownProps, DropItem } from "@/constants/search/types";
 
 const DropDown = ({
   dropItems,
@@ -56,7 +39,7 @@ const DropDown = ({
   return (
     <S.Wrapper className="container" width={width}>
       <S.Group>{listItems}</S.Group>
-      {useLocation && <CurrentLocationBtn />}
+      {useLocation && <CurrentLocationBtn fontSize={fontSize} />}
     </S.Wrapper>
   );
 };
@@ -68,7 +51,6 @@ const S = {
     position: absolute;
     z-index: 1;
     background-color: white;
-
     width: ${(props) => props.width || `100%`};
     border: 2px solid ${COLOR.LIGHT_MAIN};
     border-radius: 5px;

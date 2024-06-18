@@ -1,25 +1,12 @@
 "use client";
-
 import { styled } from "styled-components";
 import { useEffect, useRef, useState } from "react";
-import DropDown, { DropItem } from "./DropDown";
 import router from "next/router";
 import { COLOR } from "@/styles/global-color";
+import DropDown from "./DropDown";
+import { SearchProps } from "@/constants/search/types";
 
-interface SearchProps {
-  dataList: Array<DropItem>;
-  width?: string;
-  height?: string;
-  fontSize?: string;
-  placeholder?: string;
-  postfixIcon?: JSX.Element; // 검색창에 표시되는 아이콘
-  onSubmit?: (event: any) => any; // 엔터 클릭시 발생되는 이벤트
-  useLocation?: boolean; // 현재 위치로 검색
-  searchWord?: string;
-  border?: string;
-}
-
-export const Search = ({
+const Search = ({
   dataList,
   width,
   height,

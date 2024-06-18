@@ -1,4 +1,3 @@
-import { Search } from "@/components/common/Search";
 import { IoSearch } from "react-icons/io5";
 import styled from "styled-components";
 import router from "next/router";
@@ -6,6 +5,7 @@ import Image from "next/image";
 import img from "../../../public/magnifier.png";
 import { SearchBannerProps, sampleAddress } from "@/constants/search/types";
 import { COLOR } from "@/styles/global-color";
+import Search from "../common/Search";
 
 const SearchBanner = ({ searchWord }: SearchBannerProps) => {
   const handleSubmit = (event: {

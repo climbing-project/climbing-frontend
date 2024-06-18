@@ -38,7 +38,7 @@ const SearchBanner = ({ searchWord }: SearchBannerProps) => {
         />
       </Styled.SearchContainer>
       <Styled.ImageWrapper>
-        <Styled.BigImage src={img} alt="image" />
+        <Image src={img} alt="image" width={200} height={200} />
       </Styled.ImageWrapper>
     </Styled.Wrapper>
   );
@@ -50,7 +50,7 @@ const Styled = {
     justify-content: center;
     flex-direction: row;
     margin-top: 50px;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
   `,
   Title1: styled.div`
     font-size: 40px;
@@ -64,19 +64,12 @@ const Styled = {
     color: ${COLOR.MAIN};
   `,
   SearchContainer: styled.div`
+    margin-top: 30px;
     width: 400px;
     display: flex;
     flex-direction: column;
   `,
-  ImageWrapper: styled.div`
-    width: 200px;
-    height: 200px;
-  `,
-  BigImage: styled(Image)`
-    width: 100%;
-    height: 100%;
-    object-fit: "cover";
-  `,
+  ImageWrapper: styled.div``,
 };
 
 export default SearchBanner;

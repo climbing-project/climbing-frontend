@@ -49,7 +49,7 @@ const Styled = {
     display: flex;
     justify-content: center;
     flex-direction: row;
-    margin-top: 50px;
+    margin-top: 30px;
     margin-bottom: 30px;
   `,
   Title1: styled.div`
@@ -64,7 +64,7 @@ const Styled = {
     color: ${COLOR.MAIN};
   `,
   SearchContainer: styled.div`
-    margin-top: 30px;
+    margin-top: 20px;
     width: 400px;
     display: flex;
     flex-direction: column;

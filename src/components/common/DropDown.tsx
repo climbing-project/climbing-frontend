@@ -46,14 +46,15 @@ const DropDown = ({
       onMouseEnter={() => handleMouseHover(index)}
     >
       {prefixIcon || null}
+      <S.Space></S.Space>
       {reactStringReplace(info, highlightWord as string, (match, index) => (
-        <b key={index}>{match}</b>
+        <strong key={index}>{match}</strong>
       ))}
     </S.Element>
   ));
 
   return (
-    <S.Wrapper width={width}>
+    <S.Wrapper className="container" width={width}>
       <S.Group>{listItems}</S.Group>
       {useLocation && <CurrentLocationBtn />}
     </S.Wrapper>
@@ -66,14 +67,11 @@ const S = {
   }>`
     position: absolute;
     z-index: 1;
-    margin: 0px;
     background-color: white;
 
     width: ${(props) => props.width || `100%`};
-    border: 1px solid black;
+    border: 2px solid ${COLOR.LIGHT_MAIN};
     border-radius: 5px;
-    padding-top: 5px;
-    padding-bottom: 5px;
   `,
   Group: styled.ul`
     margin: 0;
@@ -83,10 +81,17 @@ const S = {
     $highlight: boolean;
     fontSize?: string;
   }>`
-    padding-left: 5px;
+    display: flex;
+    flex-direction: row;
+    height: 30px;
+    padding: 3px 10px;
+    align-items: center;
     list-style: none;
     ${(props) => props.fontSize && `font-size: ${props.fontSize}`};
     ${(props) => props.$highlight && `background-color: ${COLOR.LIGHT_MAIN}`};
+  `,
+  Space: styled.div`
+    margin-left: 10px;
   `,
 };
 

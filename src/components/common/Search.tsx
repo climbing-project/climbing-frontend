@@ -4,10 +4,12 @@ import { styled } from "styled-components";
 import { useEffect, useRef, useState } from "react";
 import DropDown, { DropItem } from "./DropDown";
 import router from "next/router";
+import { COLOR } from "@/styles/global-color";
 
 interface SearchProps {
   dataList: Array<DropItem>;
   width?: string;
+  height?: string;
   fontSize?: string;
   placeholder?: string;
   postfixIcon?: JSX.Element; // 검색창에 표시되는 아이콘
@@ -20,7 +22,8 @@ interface SearchProps {
 export const Search = ({
   dataList,
   width,
-  fontSize,
+  height,
+  fontSize = "18px",
   placeholder = "",
   postfixIcon,
   onSubmit,
@@ -69,6 +72,7 @@ export const Search = ({
         autoComplete="off"
         $border={border}
         $inputFocus={isInputFocus}
+        $height={height}
       >
         {/* form에 action 요소 추가하여 전송할 주소 설정가능 */}
         <Styled.Input
@@ -135,13 +139,20 @@ const Styled = {
     position: relative;
     ${(props) => props.width && `width: ${props.width};`}
   `,
-  Form: styled.form<{ $border?: string; $inputFocus?: boolean }>`
+  Form: styled.form<{
+    $border?: string;
+    $inputFocus?: boolean;
+    $height?: string;
+  }>`
+    align-items: center;
     display: flex;
     justify-content: space-between;
+    ${(props) => props.$height && `height: ${props.$height};`}
     border: ${(props) =>
-      (!props.$inputFocus && props.$border) || `1px solid black;`};
+      (!props.$inputFocus && props.$border) ||
+      `2px solid ${COLOR.LIGHT_MAIN};`};
     border-radius: 5px;
-    padding: 5px;
+    padding: 0 10px;
     margin-bottom: 5px;
   `,
   Input: styled.input<{
@@ -149,7 +160,7 @@ const Styled = {
   }>`
     border: none;
     outline: none; // input 포커스시의 볼더 없애기
-    width: 80%;
+    width: 90%;
     ${(props) => props.fontSize && `font-size: ${props.fontSize};`}
   `,
 };

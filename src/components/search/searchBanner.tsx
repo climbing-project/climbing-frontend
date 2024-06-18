@@ -28,8 +28,9 @@ const SearchBanner = ({ searchWord }: SearchBannerProps) => {
         <Styled.Title2>오르-리</Styled.Title2>
         <Search
           dataList={sampleAddress}
-          width="400px"
-          postfixIcon={<IoSearch />}
+          width="450px"
+          height="40px"
+          postfixIcon={<IoSearch size="23" color={COLOR.MAIN} />}
           placeholder="주소를 입력하면 실내암벽장을 찾아드려요."
           onSubmit={handleSubmit}
           useLocation={true}
@@ -38,7 +39,7 @@ const SearchBanner = ({ searchWord }: SearchBannerProps) => {
         />
       </Styled.SearchContainer>
       <Styled.ImageWrapper>
-        <Image src={img} alt="image" width={200} height={200} />
+        <Image src={img} alt="image" width={210} height={210} />
       </Styled.ImageWrapper>
     </Styled.Wrapper>
   );
@@ -65,7 +66,7 @@ const Styled = {
   `,
   SearchContainer: styled.div`
     margin-top: 20px;
-    width: 400px;
+    width: 430px;
     display: flex;
     flex-direction: column;
   `,

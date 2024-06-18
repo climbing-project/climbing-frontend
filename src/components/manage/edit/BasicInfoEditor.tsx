@@ -129,6 +129,7 @@ const S = {
     align-items: center;
     gap: 6px;
     background: #fafafa;
+    color: #666666;
     border-radius: 8px;
     border: 1px solid #d0d0d0;
     padding: 12px 18px;
@@ -138,6 +139,10 @@ const S = {
       background: transparent;
       width: 100%;
       padding: 0;
+      color: #666666;
+    }
+    input:focus {
+      color: black;
     }
     input:nth-child(3) {
       width: 50%;

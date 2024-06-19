@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import styled from "styled-components";
@@ -6,6 +6,7 @@ import { BarLoader } from "react-spinners";
 import FilterBar from "@/components/admin/FilterBar";
 import MemberTable from "@/components/admin/MemberTable";
 import Modal from "@/components/admin/Modal";
+import PageNavigator from "@/components/admin/PageNavigator";
 import { SERVER_ADDRESS, TEST_ADDRESS } from "@/constants/constants";
 import { DEVICE_SIZE } from "@/constants/styles";
 import type { Member } from "@/components/admin/MemberTable";
@@ -41,6 +42,8 @@ const AdminPage = () => {
     },
   });
 
+  useEffect(() => setPage(1), [filter]);
+
   const openModal = (member: Member) => {
     setSelectedMember(member);
     setIsOpen(true);
@@ -56,6 +59,8 @@ const AdminPage = () => {
 
   const handleFilterSelect = (value: string) => setFilter(value);
 
+  const handlePageSelect = (value: number) => setPage(value);
+
   return (
     <Wrapper>
       <h1>멤버 관리</h1>
@@ -66,6 +71,13 @@ const AdminPage = () => {
         </Placeholder>
       ) : (
         data && <MemberTable members={data.data} openModal={openModal} />
+      )}
+      {data && (
+        <PageNavigator
+          currentPage={data.prev + 1}
+          pages={data.pages}
+          handlePageSelect={handlePageSelect}
+        />
       )}
       {isOpen && (
         <Modal closeModal={closeModal} selectedMember={selectedMember} updateRole={updateRole} />

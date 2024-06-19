@@ -6,8 +6,16 @@ import img from "../../../public/magnifier.png";
 import { SearchBannerProps, sampleAddress } from "@/constants/search/types";
 import { COLOR } from "@/styles/global-color";
 import Search from "../common/Search";
+import { useEffect } from "react";
+import { getDistrictList } from "./getDistrictList";
 
 const SearchBanner = ({ searchWord }: SearchBannerProps) => {
+  useEffect(() => {
+    console.log("load")
+    const districtList = getDistrictList();
+    // console.log(districtList);
+  }, []);
+
   const handleSubmit = (event: {
     preventDefault: () => void;
     target: { [x: string]: { value: any } };

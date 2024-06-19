@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import { GymData, SimpleGymData } from "../gyms/types";
 
-// 주소 데이터
+// 검색 드롭다운 표시되는 주소 데이터
 export const sampleAddress = [
   { id: 1, info: "잠실" },
   { id: 2, info: "잠실2동" },

@@ -51,7 +51,9 @@ const S = {
     position: absolute;
     z-index: 1;
     background-color: white;
-    width: ${(props) => props.width || `100%`};
+    // TODO: 사이즈가 안맞음..
+    width: ${(props) =>
+      props.width ? `${parseInt(props.width, 10) - 3}px` : `99.4%`};
     border: 2px solid ${COLOR.LIGHT_MAIN};
     border-radius: 5px;
   `,

@@ -34,7 +34,7 @@ const SearchPage: NextPageWithLayout = () => {
           dataList={sampleAddress}
           width="400px"
           postfixIcon={<IoSearch />}
-          placeholder="주소를 입력하면 실내암벽장을 찾아드려요."
+          placeholder="주소 또는 암벽장을 입력하면 실내암벽장을 찾아드려요."
           onSubmit={handleSubmit}
           useLocation={true}
           searchWord={searchWord}

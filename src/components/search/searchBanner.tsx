@@ -39,7 +39,7 @@ const SearchBanner = ({ searchWord }: SearchBannerProps) => {
           width="450px"
           height="40px"
           postfixIcon={<IoSearch size="23" color={COLOR.MAIN} />}
-          placeholder="주소를 입력하면 실내암벽장을 찾아드려요."
+          placeholder="주소 또는 암벽장을 입력하면 실내암벽장을 찾아드려요."
           onSubmit={handleSubmit}
           useLocation={true}
           border={"3px solid " + COLOR.LIGHT_MAIN}

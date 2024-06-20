@@ -147,7 +147,7 @@ const Styled = {
   }>`
     border: none;
     outline: none; // input 포커스시의 볼더 없애기
-    width: 90%;
+    width: 95%;
     ${(props) => props.fontSize && `font-size: ${props.fontSize};`}
   `,
 };

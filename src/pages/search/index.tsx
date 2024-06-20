@@ -8,6 +8,7 @@ import { NextPageWithLayout } from "../_app";
 import GymListBanner from "@/components/search/GymListBanner";
 import { useRouter } from "next/router";
 import { sampleAddress } from "@/constants/search/types";
+import { COLOR } from "@/styles/global-color";
 
 const SearchPage: NextPageWithLayout = () => {
   const router = useRouter();
@@ -33,10 +34,12 @@ const SearchPage: NextPageWithLayout = () => {
         <Search
           dataList={sampleAddress}
           width="400px"
-          postfixIcon={<IoSearch />}
+          height="40px"
+          postfixIcon={<IoSearch size="23" color={COLOR.MAIN} />}
           placeholder="주소 또는 암벽장을 입력하면 실내암벽장을 찾아드려요."
           onSubmit={handleSubmit}
           useLocation={true}
+          border={"3px solid " + COLOR.LIGHT_MAIN}
           searchWord={searchWord}
         />
       </Styled.SearchWrapper>

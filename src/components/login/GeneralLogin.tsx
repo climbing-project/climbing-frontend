@@ -8,15 +8,15 @@ import getLoginInfos from "@/service/api/login";
 import { useRouter } from "next/router";
 
 const GeneralLogin = () => {
-  const router = useRouter();
+  // const router = useRouter();
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
-    let callbackUrl = "/";
+    // let callbackUrl = "/";
 
-    if (router.query.callbackUrl) {
-      callbackUrl = router.query.callbackUrl as string;
-    }
+    // if (router.query.callbackUrl) {
+    //   callbackUrl = router.query.callbackUrl as string;
+    // }
 
     const email = event.target.email.value;
     const password = event.target.password.value;
@@ -29,7 +29,7 @@ const GeneralLogin = () => {
         refreshToken: user.jwt.refreshToken,
         loginType: "general",
         redirect: true,
-        callbackUrl: callbackUrl,
+        callbackUrl: "/",
       })
     );
 

@@ -127,9 +127,3 @@ export interface TextFieldProps {
   formName?: string | undefined;
   characterLimit: number;
 }
-
-export interface UserCommentProps {
-  user: string;
-  date: string;
-  text: string;
-}

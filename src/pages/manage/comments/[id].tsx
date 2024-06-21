@@ -4,25 +4,24 @@ import { useRouter } from "next/router";
 import { ErrorBoundary } from "react-error-boundary";
 import styled from "styled-components";
 import { IoTrash } from "react-icons/io5";
+import Comment from "@/components/manage/comments/Comment";
 import ManageLayout from "@/components/manage/ManageLayout";
 import ErrorFallback from "@/components/common/ErrorFallback";
-import UserComment from "@/components/manage/comments/UserComment";
 import { NavContext, type NavStateProps } from "@/NavContext";
 import { SERVER_ADDRESS, TEST_ADDRESS } from "@/constants/constants";
 import type { NextPageWithLayout } from "@/pages/_app";
-import type { UserComments } from "@/constants/gyms/types";
+import type { UserComment } from "@/constants/gyms/types";
 
 const CommentsPage: NextPageWithLayout = () => {
   const { data: session } = useSession();
   const router = useRouter();
   const { id } = router.query;
-  const [comments, setComments] = useState<UserComments>([]);
+  const [comments, setComments] = useState<UserComment[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { selectedGymId } = useContext(NavContext) as NavStateProps;
 
   useEffect(() => {
-    // if (!session) router.push({ pathname: "/login" });
-    let comments: UserComments;
+    let comments: UserComment[];
 
     const fetchData = async () => {
       try {
@@ -52,8 +51,6 @@ const CommentsPage: NextPageWithLayout = () => {
   }, [router]);
 
   useEffect(() => {
-    // console.log("???")
-    // console.log(selectedGymId)
     if (selectedGymId !== null && selectedGymId !== id) {
       setIsLoading(true);
       router.push(`/manage/comments/${selectedGymId}`);
@@ -61,7 +58,7 @@ const CommentsPage: NextPageWithLayout = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedGymId]);
 
-  const updateDatabase = async (comments: UserComments) => {
+  const updateDatabase = async (comments: UserComment[]) => {
     try {
       const response = await Promise.race([
         fetch(`${SERVER_ADDRESS}/gyms/${id}`, {
@@ -99,9 +96,9 @@ const CommentsPage: NextPageWithLayout = () => {
               <div className="editor-header">댓글 관리</div>
               <S.Content $direction="column">
                 {comments.length > 0 ? (
-                  comments.map(({ user, date, text }, i) => (
+                  comments.map(({ user, createdAt, text }, i) => (
                     <S.Row key={i}>
-                      <UserComment user={user} date={date} text={text} />
+                      <Comment user={user} createdAt={createdAt} text={text} />
                       <S.Icon size="1.3rem" onClick={() => handleDelete(i)} />
                     </S.Row>
                   ))

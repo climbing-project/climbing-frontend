@@ -8,7 +8,6 @@ on:
 env: # 사용할 env
   AWS_REGION: ap-northeast-2
   ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
-
 jobs:
   deploy:
     name: Deploy
@@ -35,7 +34,6 @@ jobs:
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ github.sha }}
-          JWT_SECRET : ${{ secrets.JWT_SECRET }}
           
         # 아래처럼 docker 커맨드를 실행한다.
         run: |
@@ -56,6 +54,7 @@ jobs:
         uses: appleboy/ssh-action@v1.0.3
         env:
           IMAGE_TAG: ${{ github.sha }}
+          JWT_SECRET : ${{ secrets.JWT_SECRET }}
         with:
           host: ${{ secrets.AWS_DEPLOY_SSH_HOST }}
           username: ${{ secrets.AWS_DEPLOY_SSH_USERNAME }}

@@ -21,8 +21,7 @@ export default withAuth({
         } catch (error) {
           console.log(error);
         }
-        // 배포버전 테스트, 해결 후 복구
-        // return false;
+        return false;
       }
 
       return true; // true 반환 시 로그인 허용

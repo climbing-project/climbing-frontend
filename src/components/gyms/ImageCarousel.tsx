@@ -6,10 +6,32 @@ import { DEVICE_SIZE } from "@/constants/styles";
 import { IMAGE_SIZE } from "@/constants/gyms/constants";
 import type { ImageCarouselProps } from "@/constants/gyms/types";
 
+const checkImageValidity = (images: string[]) => {
+  let error;
+  images.forEach((image) => {
+    const url = image.toLowerCase();
+    if (
+      !url.startsWith("https://") ||
+      !url.startsWith("http://") ||
+      !url.endsWith(".png") ||
+      !url.endsWith(".jpg") ||
+      !url.endsWith(".jpeg") ||
+      !url.endsWith(".gif") ||
+      !url.endsWith(".webp") ||
+      !url.endsWith(".avif")
+    ) {
+      error = true;
+    }
+  });
+  if (error) return null;
+};
+
 const ImageCarousel = ({ defaultImage, imageList }: ImageCarouselProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   if ((!defaultImage && !imageList) || (!defaultImage && imageList.length < 1)) return null;
   const images = defaultImage && defaultImage !== "" ? [defaultImage, ...imageList] : imageList;
+  const valid = checkImageValidity(images);
+  if (!valid) return null;
   return (
     <S.Wrapper>
       <S.Overlay>

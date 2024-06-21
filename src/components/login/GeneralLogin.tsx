@@ -5,10 +5,18 @@ import { IoLockClosedOutline } from "react-icons/io5";
 import Link from "next/link";
 import { COLOR } from "@/styles/global-color";
 import getLoginInfos from "@/service/api/login";
+import { useRouter } from "next/router";
 
 const GeneralLogin = () => {
+  const router = useRouter();
+
   const handleSubmit = async (event: any) => {
     event.preventDefault();
+    let callbackUrl = "/";
+
+    if (router.query.callbackUrl) {
+      callbackUrl = router.query.callbackUrl as string;
+    }
 
     const email = event.target.email.value;
     const password = event.target.password.value;
@@ -21,7 +29,7 @@ const GeneralLogin = () => {
         refreshToken: user.jwt.refreshToken,
         loginType: "general",
         redirect: true,
-        callbackUrl: "/",
+        callbackUrl: callbackUrl,
       })
     );
 

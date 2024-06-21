@@ -17,14 +17,18 @@ const ContactInfo = ({ contact, snsList }: ContactInfoProps) => {
         {CONTACT_ICONS.phone} {contact}
       </div>
       {platforms.map((platform) => {
-        if (snsList && snsList[platform as keyof SnsList] !== "") {
-          return (
-            <div key={platform}>
-              {CONTACT_ICONS[platform as keyof typeof CONTACT_ICONS]}{" "}
-              {snsList[platform as keyof SnsList]}
-            </div>
-          );
-        }
+        if (
+          !snsList ||
+          snsList[platform as keyof SnsList] !== "" ||
+          !snsList[platform as keyof SnsList]
+        )
+          return null;
+        return (
+          <div key={platform}>
+            {CONTACT_ICONS[platform as keyof typeof CONTACT_ICONS]}{" "}
+            {snsList[platform as keyof SnsList]}
+          </div>
+        );
       })}
     </S.Wrapper>
   );

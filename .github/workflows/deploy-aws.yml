@@ -8,6 +8,8 @@ on:
 env: # 사용할 env
   AWS_REGION: ap-northeast-2
   ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+  JWT_SECRET: ${{ secrets.JWT_SECRET }}
+  
 jobs:
   deploy:
     name: Deploy
@@ -37,10 +39,11 @@ jobs:
           
         # 아래처럼 docker 커맨드를 실행한다.
         run: |
+          echo "JWT_SECRET=$JWT_SECRET" >> .env
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
-
+          
         # 아래-github action 자동배포 명령어 추가
       - name: Get Github Actions IP
         id: ip

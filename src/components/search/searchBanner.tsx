@@ -3,19 +3,12 @@ import styled from "styled-components";
 import router from "next/router";
 import Image from "next/image";
 import img from "../../../public/magnifier.png";
-import { SearchBannerProps, sampleAddress } from "@/constants/search/types";
+import { SearchBannerProps } from "@/constants/search/types";
 import { COLOR } from "@/styles/global-color";
 import Search from "../common/Search";
-import { useEffect } from "react";
-import { getDistrictList } from "./getDistrictList";
+import { DISTRCIT_CITY_DATA } from "@/constants/search/constants";
 
 const SearchBanner = ({ searchWord }: SearchBannerProps) => {
-  useEffect(() => {
-    console.log("load")
-    const districtList = getDistrictList();
-    // console.log(districtList);
-  }, []);
-
   const handleSubmit = (event: {
     preventDefault: () => void;
     target: { [x: string]: { value: any } };
@@ -35,7 +28,7 @@ const SearchBanner = ({ searchWord }: SearchBannerProps) => {
         <Styled.Title1>주변 암벽장 찾을 땐,</Styled.Title1>
         <Styled.Title2>오르-리</Styled.Title2>
         <Search
-          dataList={sampleAddress}
+          dataList={DISTRCIT_CITY_DATA}
           width="450px"
           height="40px"
           postfixIcon={<IoSearch size="23" color={COLOR.MAIN} />}

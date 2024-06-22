@@ -15,12 +15,14 @@ const DropDown = ({
   useLocation = false,
   handleClick,
 }: DropDownProps) => {
+
   const handleMouseHover = (index: number) => {
     if (setHighlightIndex) {
       setHighlightIndex(index);
     }
   };
-  const listItems = dropItems.map(({ id, info }: DropItem, index) => (
+
+  const listItems = dropItems.map(({ cityDistrict }: DropItem, index) => (
     <S.Element
       key={index}
       $highlight={index == highlightIndex}
@@ -30,9 +32,13 @@ const DropDown = ({
     >
       {prefixIcon || null}
       <S.Space></S.Space>
-      {reactStringReplace(info, highlightWord as string, (match, index) => (
-        <strong key={index}>{match}</strong>
-      ))}
+      {reactStringReplace(
+        cityDistrict,
+        highlightWord as string,
+        (match, index) => (
+          <strong key={index}>{match}</strong>
+        )
+      )}
     </S.Element>
   ));
 

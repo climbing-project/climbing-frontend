@@ -7,8 +7,8 @@ import SearchLayout from "@/components/search/SearchLayout";
 import { NextPageWithLayout } from "../_app";
 import GymListBanner from "@/components/search/GymListBanner";
 import { useRouter } from "next/router";
-import { sampleAddress } from "@/constants/search/types";
 import { COLOR } from "@/styles/global-color";
+import { DISTRCIT_CITY_DATA } from "@/constants/search/constants";
 
 const SearchPage: NextPageWithLayout = () => {
   const router = useRouter();
@@ -32,7 +32,7 @@ const SearchPage: NextPageWithLayout = () => {
     <Styled.Wrapper>
       <Styled.SearchWrapper>
         <Search
-          dataList={sampleAddress}
+          dataList={DISTRCIT_CITY_DATA}
           width="400px"
           height="40px"
           postfixIcon={<IoSearch size="23" color={COLOR.MAIN} />}

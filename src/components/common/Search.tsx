@@ -23,7 +23,7 @@ const Search = ({
   const [isInputFocus, setInputFocus] = useState(false);
   const [filterStr, setFilterStr] = useState("");
   const filteredList = dataList.filter((dataItem) =>
-    dataItem.info.match(filterStr)
+    dataItem.cityDistrict.match(filterStr)
   );
 
   const handleClick = (event: { target: { innerText: any } }) => {
@@ -80,14 +80,14 @@ const Search = ({
               if (index > -1) {
                 if (index != 0) {
                   (e.target as HTMLInputElement).value =
-                    filteredList[index - 1].info;
+                    filteredList[index - 1].cityDistrict;
                 }
                 setIndex(index - 1);
               }
             } else if (e.key == "ArrowDown") {
               if (index < filteredList.length - 1) {
                 (e.target as HTMLInputElement).value =
-                  filteredList[index + 1].info;
+                  filteredList[index + 1].cityDistrict;
                 setIndex(index + 1);
               }
             } else if (e.key == "Escape") {

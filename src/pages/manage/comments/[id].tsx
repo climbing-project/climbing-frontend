@@ -3,8 +3,10 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { ErrorBoundary } from "react-error-boundary";
 import styled from "styled-components";
+import { BarLoader } from "react-spinners";
 import { IoTrash } from "react-icons/io5";
 import Comment from "@/components/manage/comments/Comment";
+import LoadContainer from "@/components/manage/LoadContainer";
 import ManageLayout from "@/components/manage/ManageLayout";
 import ErrorFallback from "@/components/common/ErrorFallback";
 import { NavContext, type NavStateProps } from "@/NavContext";
@@ -90,25 +92,27 @@ const CommentsPage: NextPageWithLayout = () => {
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <ManageLayout>
-        <div className="editor-wrapper">
-          {!isLoading && (
-            <>
-              <div className="editor-header">댓글 관리</div>
-              <S.Content $direction="column">
-                {comments.length > 0 ? (
-                  comments.map(({ user, createdAt, text }, i) => (
-                    <S.Row key={i}>
-                      <Comment user={user} createdAt={createdAt} text={text} />
-                      <S.Icon size="1.3rem" onClick={() => handleDelete(i)} />
-                    </S.Row>
-                  ))
-                ) : (
-                  <div>관리할 댓글이 없습니다.</div>
-                )}
-              </S.Content>
-            </>
-          )}
-        </div>
+        {isLoading ? (
+          <LoadContainer>
+            <BarLoader />
+          </LoadContainer>
+        ) : (
+          <div className="editor-wrapper">
+            <div className="editor-header">댓글 관리</div>
+            <S.Content $direction="column">
+              {comments.length > 0 ? (
+                comments.map(({ user, createdAt, text }, i) => (
+                  <S.Row key={i}>
+                    <Comment user={user} createdAt={createdAt} text={text} />
+                    <S.Icon size="1.3rem" onClick={() => handleDelete(i)} />
+                  </S.Row>
+                ))
+              ) : (
+                <div>관리할 댓글이 없습니다.</div>
+              )}
+            </S.Content>
+          </div>
+        )}
       </ManageLayout>
     </ErrorBoundary>
   );

@@ -23,6 +23,10 @@ const OpenHoursEditor = lazy(() => import("@/components/manage/edit/OpenHoursEdi
 const PricingEditor = lazy(() => import("@/components/manage/edit/PricingEditor"));
 const SettingDayEditor = lazy(() => import("@/components/manage/edit/SettingDayEditor"));
 
+const isEdited = (oldData: any, newData: any) => {
+  return JSON.stringify(oldData) !== JSON.stringify(newData);
+};
+
 const EditPage = () => {
   const { data: session } = useSession();
   const router = useRouter();
@@ -86,10 +90,6 @@ const EditPage = () => {
       return e.preventDefault();
     } else return undefined;
   });
-
-  const isEdited = (oldData: any, newData: any) => {
-    return JSON.stringify(oldData) !== JSON.stringify(newData);
-  };
 
   if (isError)
     return (

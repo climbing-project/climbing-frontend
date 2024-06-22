@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { MdOutlineClose, MdOutlineSupportAgent } from "react-icons/md";
 import Socket from "./Socket";
 import { SERVER_ADDRESS, SOCKET_ADDRESS } from "@/constants/constants";
+import { COLOR } from "@/styles/global-color";
 
 interface ChatModalProps {
   gymId: string;
@@ -86,7 +87,7 @@ const ChatModal = ({ gymId, gymName }: ChatModalProps) => {
     clientInstance.onStompError = (frame: IFrame) => {
       console.log("에러 발생");
       console.log(frame); // 에러 확인
-      setIsSocketError(true)
+      setIsSocketError(true);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
@@ -97,7 +98,7 @@ const ChatModal = ({ gymId, gymName }: ChatModalProps) => {
     <S.Wrapper>
       <S.Modal>
         <S.Button $isOpen={isOpen} onClick={toggleModal}>
-          {isOpen ? <MdOutlineClose size="2.2rem" /> : <MdOutlineSupportAgent size="2.2rem" />}
+          {isOpen ? <MdOutlineClose size="2.2rem" /> : <S.ModalIcon size="2.2rem" />}
         </S.Button>
         {isOpen && (
           <Socket
@@ -129,13 +130,42 @@ const S = {
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    background: ${({ $isOpen }) => ($isOpen ? "coral" : "black")};
+    background: ${({ $isOpen }) => ($isOpen ? "#666666" : COLOR.MAIN)};
     color: white;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 1.5rem;
     cursor: pointer;
+    transition: 100ms;
+    &:active {
+      scale: 0.9;
+    }
+  `,
+  ModalIcon: styled(MdOutlineSupportAgent)`
+    &:hover {
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% {
+        transform: translateY(0);
+      }
+      3% {
+        transform: translateY(-4px);
+      }
+      10% {
+        transform: translateY(0);
+      }
+      13% {
+        transform: translateY(-4px);
+      }
+      20% {
+        transform: translateY(0);
+      }
+      100% {
+        transform: translateY(0);
+      }
+    }
   `,
 };
 

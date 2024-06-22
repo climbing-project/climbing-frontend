@@ -1,6 +1,7 @@
 export const PRICE_REGEX = /^[0-9]*$/;
 export const PHONE_REGEX = /^[0-9-]*$/;
 export const SNS_REGEX = /^[a-zA-Z0-9_.@-]*$/;
+export const IMG_URL_REGEX = /^https?:\/\/.*\.(png|jpg|jpeg|gif|webp|avif)$/;
 
 export const DAYS_TEXT = [
   { value: "weekdays", text: "평일" },

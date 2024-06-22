@@ -5,7 +5,9 @@ import ContentContainer from "../ContentContainer";
 import ImageList from "./ImageList";
 import ImageUploader from "./ImageUploader";
 import useS3, { FOLDER_NAME, THUMBNAIL_PREFIX } from "../../../hooks/useS3";
+import { checkImageValidity } from "@/components/gyms/ImageCarousel";
 import type { ImageEditorProps } from "@/constants/manage/types";
+import { IMG_URL_REGEX } from "@/constants/manage/constants";
 
 const ImageEditor = ({
   images,
@@ -18,6 +20,11 @@ const ImageEditor = ({
     images?.map((image) =>
       image.replace(`${FOLDER_NAME}/`, `${FOLDER_NAME}/${THUMBNAIL_PREFIX}`),
     ) || [];
+  const validThumbnails: string[] = [];
+  thumbnails.forEach((img) => {
+    const url = img.toLowerCase();
+    if (IMG_URL_REGEX.test(url)) validThumbnails.push(img);
+  });
 
   const uploadImage = (url: string, key: string) => {
     // 썸네일 이미지가 아닌 URL만 DB 및 상태에 반영
@@ -75,7 +82,7 @@ const ImageEditor = ({
       <ContentContainer direction="column" gap="20px">
         <S.Row>
           <strong>대표 이미지</strong>
-          {defaultImage ? (
+          {defaultImage && checkImageValidity([defaultImage]) ? (
             <S.Image>
               <S.DeleteButton onClick={() => handleS3Delete(defaultImage, "default")}>
                 <RiDeleteBin6Fill color="#ffffff" />
@@ -90,18 +97,18 @@ const ImageEditor = ({
           <strong>
             추가 이미지
             <br />
-            {thumbnails ? thumbnails.length : 0}/10
+            {validThumbnails ? validThumbnails.length : 0}/10
           </strong>
-          {thumbnails ? (
+          {validThumbnails ? (
             <>
-              {thumbnails.length < 10 ? (
+              {validThumbnails.length < 10 ? (
                 <ImageUploader
                   dataKey="display"
-                  imageCount={thumbnails.length}
+                  imageCount={validThumbnails.length}
                   handleS3Upload={handleS3Upload}
                 />
               ) : null}
-              <ImageList handleS3Delete={handleS3Delete} images={thumbnails} />
+              <ImageList handleS3Delete={handleS3Delete} images={validThumbnails} />
             </>
           ) : (
             <ImageUploader dataKey="display" handleS3Upload={handleS3Upload} />

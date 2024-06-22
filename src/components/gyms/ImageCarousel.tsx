@@ -4,34 +4,29 @@ import styled from "styled-components";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { DEVICE_SIZE } from "@/constants/styles";
 import { IMAGE_SIZE } from "@/constants/gyms/constants";
+import { IMG_URL_REGEX } from "@/constants/manage/constants";
 import type { ImageCarouselProps } from "@/constants/gyms/types";
 
-const checkImageValidity = (images: string[]) => {
-  let error;
+export const checkImageValidity = (images: string[]) => {
+  let error = false;
   images.forEach((image) => {
     const url = image.toLowerCase();
-    if (
-      !url.startsWith("https://") ||
-      !url.startsWith("http://") ||
-      !url.endsWith(".png") ||
-      !url.endsWith(".jpg") ||
-      !url.endsWith(".jpeg") ||
-      !url.endsWith(".gif") ||
-      !url.endsWith(".webp") ||
-      !url.endsWith(".avif")
-    ) {
-      error = true;
-    }
+    if (!IMG_URL_REGEX.test(url)) error = true;
   });
-  if (error) return null;
+  if (error) return false;
+  return true;
 };
 
 const ImageCarousel = ({ defaultImage, imageList }: ImageCarouselProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   if ((!defaultImage && !imageList) || (!defaultImage && imageList.length < 1)) return null;
   const images = defaultImage && defaultImage !== "" ? [defaultImage, ...imageList] : imageList;
-  const valid = checkImageValidity(images);
-  if (!valid) return null;
+  const validImages: string[] = [];
+  images.forEach((img) => {
+    const url = img.toLowerCase();
+    if (IMG_URL_REGEX.test(url)) validImages.push(img);
+  });
+
   return (
     <S.Wrapper>
       <S.Overlay>
@@ -46,17 +41,17 @@ const ImageCarousel = ({ defaultImage, imageList }: ImageCarouselProps) => {
           <S.Button
             $direction="right"
             onClick={() => setCurrentIndex((prev) => prev + 1)}
-            disabled={currentIndex === images.length - 1}
+            disabled={currentIndex === validImages.length - 1}
           >
             <S.ArrowRight />
           </S.Button>
         </S.OverlayButtons>
         <S.OverlayText>
-          {currentIndex + 1}/{images.length}
+          {currentIndex + 1}/{validImages.length}
         </S.OverlayText>
       </S.Overlay>
       <S.Container $shiftIndex={currentIndex}>
-        {images.map((image, i) => (
+        {validImages.map((image, i) => (
           <S.Image key={image}>
             <Image
               src={image}

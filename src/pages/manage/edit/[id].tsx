@@ -14,6 +14,7 @@ import LoadContainer from "@/components/manage/LoadContainer";
 import { NavContext, type NavStateProps } from "@/NavContext";
 import { requestData } from "@/service/api";
 import { SERVER_ADDRESS } from "@/constants/constants";
+import { UNKNOWN_ERROR } from "@/constants/manage/constants";
 import type { GymData, GymDataObject } from "@/constants/gyms/types";
 
 const AccommodationsEditor = lazy(() => import("@/components/manage/edit/AccommodationsEditor"));
@@ -36,25 +37,20 @@ const EditPage = () => {
 
   useEffect(() => {
     if (!session || !isLoading) return;
-    let data: GymData;
 
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`http://localhost:8000/gyms/${id}`, {
-          method: "GET",
-        });
-        if (!response.ok) throw new Error(`${response.status}`);
-        else {
-          data = await response.json();
-          setLoadedData(JSON.parse(JSON.stringify(data)));
-          setCurrentData(JSON.parse(JSON.stringify(data)));
-        }
-      } catch (e) {
-        console.log(e);
+    requestData({
+      option: "GET",
+      url: `/gyms/${id}`,
+      onSuccess: (data) => {
+        setLoadedData(JSON.parse(JSON.stringify(data)));
+        setCurrentData(JSON.parse(JSON.stringify(data)));
+      },
+      onError: () => {
         setIsError(true);
-      }
-      setIsLoading(false);
-    };
+      },
+    });
+
+    setIsLoading(false);
 
     const handlePageLeave = () => {
       const dataChanged = tracker.current === "edited";
@@ -68,7 +64,6 @@ const EditPage = () => {
       setIsLoading(true);
     };
 
-    fetchData();
     router.events.on("routeChangeStart", handlePageLeave);
     return () => router.events.off("routeChangeStart", handlePageLeave);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -103,20 +98,21 @@ const EditPage = () => {
       </ManageLayout>
     );
 
-  const updateData = async (data: string) => {
+  const updateImageData = async (data: string) => {
     try {
-      const response = await fetch(`http://localhost:8000/gyms/${id}`, {
+      const response = await fetch(`${SERVER_ADDRESS}/gyms/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          Authorization: "Bearer " + session?.jwt.accessToken,
         },
         body: data,
       });
       if (!response.ok) throw new Error(`${response.status}`);
     } catch (e) {
-      return false;
+      alert(UNKNOWN_ERROR);
+      router.reload();
     }
-    return true;
   };
 
   const setNewData = (obj: GymDataObject) => {
@@ -131,34 +127,24 @@ const EditPage = () => {
     setIsUpdating(true);
     const token = session.jwt.accessToken;
 
-    // ▼ 백엔드 준비될 시 사용
-    // requestData({
-    //   option: "PUT",
-    //   url: `/gyms/${id}`,
-    //   token,
-    //   data: currentData,
-    //   onSuccess: () => {
-    //     setLoadedData(JSON.parse(JSON.stringify(currentData)));
-    //     tracker.current = null;
-    //     setIsUpdating(false);
-    //   },
-    //   onError: (error) => {
-    //     // 에러 핸들링
-    //     console.log(error);
-    //     setIsUpdating(false);
-    //     return alert("오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
-    //   },
-    // });
-
-    const isSuccess = await updateData(JSON.stringify(currentData));
-    if (!isSuccess) {
-      // 에러 핸들링
-      setIsUpdating(false);
-      return alert("오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
-    }
-    setLoadedData(JSON.parse(JSON.stringify(currentData)));
-    tracker.current = null;
-    setIsUpdating(false);
+    requestData({
+      option: "PUT",
+      url: `/gyms/${id}`,
+      token,
+      data: currentData,
+      hasBody: false,
+      onSuccess: () => {
+        setLoadedData(JSON.parse(JSON.stringify(currentData)));
+        tracker.current = null;
+        setIsUpdating(false);
+      },
+      onError: (error) => {
+        // 에러 핸들링
+        console.log(error);
+        setIsUpdating(false);
+        return alert(UNKNOWN_ERROR);
+      },
+    });
   };
 
   return (
@@ -191,7 +177,7 @@ const EditPage = () => {
               defaultImage={currentData?.defaultImage}
               setCurrentData={setCurrentData}
               setLoadedData={setLoadedData}
-              updateData={updateData}
+              updateImageData={updateImageData}
             />
             <BasicInfoEditor
               name={currentData?.name}

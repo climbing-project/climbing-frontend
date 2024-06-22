@@ -65,7 +65,7 @@ export interface ImageEditorProps {
   defaultImage: string | null | undefined;
   setCurrentData: GymDataStateAction;
   setLoadedData: GymDataStateAction;
-  updateData: (data: string) => Promise<boolean>;
+  updateImageData: (data: string) => Promise<void>;
 }
 
 export interface ImageListProps {

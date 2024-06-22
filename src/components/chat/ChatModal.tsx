@@ -144,9 +144,9 @@ const S = {
   `,
   ModalIcon: styled(MdOutlineSupportAgent)`
     &:hover {
-      animation: pulse 2s infinite;
+      animation: bounce 2s infinite;
     }
-    @keyframes pulse {
+    @keyframes bounce {
       0% {
         transform: translateY(0);
       }

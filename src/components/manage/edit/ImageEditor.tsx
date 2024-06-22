@@ -14,7 +14,7 @@ const ImageEditor = ({
   defaultImage,
   setCurrentData,
   setLoadedData,
-  updateData,
+  updateImageData,
 }: ImageEditorProps) => {
   const thumbnails =
     images?.map((image) =>
@@ -34,7 +34,7 @@ const ImageEditor = ({
       if (key === "default") {
         setLoadedData((prev) => {
           if (!prev) return null;
-          updateData(JSON.stringify({ ...prev, defaultImage: url }));
+          updateImageData(JSON.stringify({ ...prev, defaultImage: url }));
           return { ...prev, defaultImage: url };
         });
         return { ...current, defaultImage: url };
@@ -43,7 +43,7 @@ const ImageEditor = ({
         const images = [...currentImages, url];
         setLoadedData((prev) => {
           if (!prev) return null;
-          updateData(JSON.stringify({ ...prev, images }));
+          updateImageData(JSON.stringify({ ...prev, images }));
           return { ...prev, images };
         });
         return { ...current, images };
@@ -57,7 +57,7 @@ const ImageEditor = ({
       if (key === "default") {
         setLoadedData((prev) => {
           if (!prev) return null;
-          updateData(JSON.stringify({ ...prev, defaultImage: "" }));
+          updateImageData(JSON.stringify({ ...prev, defaultImage: "" }));
           return { ...prev, defaultImage: "" };
         });
         return { ...current, defaultImage: "" };
@@ -66,7 +66,7 @@ const ImageEditor = ({
         const images = current.images!.filter((img) => img !== originUrl);
         setLoadedData((prev) => {
           if (!prev) return null;
-          updateData(JSON.stringify({ ...prev, images }));
+          updateImageData(JSON.stringify({ ...prev, images }));
           return { ...prev, images };
         });
         return { ...current, images };

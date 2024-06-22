@@ -27,6 +27,7 @@ const ImageCarousel = ({ defaultImage, imageList }: ImageCarouselProps) => {
     if (IMG_URL_REGEX.test(url)) validImages.push(img);
   });
 
+  if (validImages.length < 1) return null;
   return (
     <S.Wrapper>
       <S.Overlay>

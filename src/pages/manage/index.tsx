@@ -9,10 +9,11 @@ import Overview from "@/components/manage/Overview";
 import { requestData } from "@/service/api";
 import { COLOR } from "@/styles/global-color";
 import GymList from "@/components/manage/GymList";
+import { SERVER_ADDRESS } from "@/constants/constants";
 
 type GymListItem = {
   name: string;
-  id: string;
+  id: number;
 };
 
 const ManageHome = () => {
@@ -38,12 +39,12 @@ const ManageHome = () => {
       setIsError(true);
     };
 
-    fetch("http://localhost:8000/gymids?user=hopp")
+    fetch(`${SERVER_ADDRESS}/gyms`)
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
         if (data.length < 1) return handleSuccess([]);
-        handleSuccess(data[0].gyms);
+        handleSuccess(data);
       })
       .catch((e) => handleError(e));
 
@@ -70,7 +71,7 @@ const ManageHome = () => {
         <Header>내 암장 목록</Header>
         {gymList && gymList.length >= 1 ? (
           <>
-            {gymList?.map((gym) => <GymList key={gym.id} id={gym.id} name={gym.name} />)}
+            {gymList?.map((gym) => <GymList key={gym.id} id={(gym.id).toString()} name={gym.name} />)}
             <br />
             <Btn onClick={() => router.push("/manage/register")}>+ 암장 등록</Btn>
           </>

@@ -106,6 +106,7 @@ const S = {
     width: 100%;
   `,
   ButtonBox: styled.button`
+    cursor: pointer;
     border-radius: 5px;
     height: 40px;
     background-color: ${COLOR.MAIN};

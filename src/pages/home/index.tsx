@@ -41,6 +41,7 @@ const Styled = {
     text-align: right;
   `,
   MoreButton: styled.button`
+    cursor: pointer;
     background-color: white;
     display: inline-block;
     margin-bottom: 300px;

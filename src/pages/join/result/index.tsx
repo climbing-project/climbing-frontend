@@ -70,6 +70,7 @@ const S = {
     margin-top: 30px;
   `,
   HomeButton: styled.button`
+    cursor: pointer;
     background-color: white;
     border: 1px solid ${COLOR.MAIN};
     flex-grow: 1;
@@ -78,6 +79,7 @@ const S = {
     font-weight: bold;
   `,
   LoginButton: styled.button`
+    cursor: pointer;
     background-color: ${COLOR.MAIN};
     border: 1px solid ${COLOR.MAIN};
     color: white;

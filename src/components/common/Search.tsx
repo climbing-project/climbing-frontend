@@ -123,6 +123,7 @@ const Styled = {
   Wrapper: styled.div<{
     width?: string;
   }>`
+    border-radius: 5px;
     background-color: white;
     position: relative;
     ${(props) => props.width && `width: ${props.width};`}

@@ -33,7 +33,7 @@ const SearchPage: NextPageWithLayout = () => {
       <Styled.SearchWrapper>
         <Search
           dataList={DISTRCIT_CITY_DATA}
-          width="400px"
+          width="600px"
           height="40px"
           postfixIcon={<IoSearch size="23" color={COLOR.MAIN} />}
           placeholder="주소 또는 암벽장을 입력하면 실내암벽장을 찾아드려요."
@@ -59,10 +59,11 @@ SearchPage.getLayout = (page: ReactElement) => {
 const Styled = {
   Wrapper: styled.div``,
   SearchWrapper: styled.div`
-    margin-top: 10px;
+    margin-top: 5px;
+    margin-left: 100px;
     top: 0;
     position: fixed;
-    z-index: 101;
+    z-index: 201;
   `,
 };
 

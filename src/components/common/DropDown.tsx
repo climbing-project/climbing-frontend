@@ -15,7 +15,6 @@ const DropDown = ({
   useLocation = false,
   handleClick,
 }: DropDownProps) => {
-
   const handleMouseHover = (index: number) => {
     if (setHighlightIndex) {
       setHighlightIndex(index);
@@ -32,13 +31,15 @@ const DropDown = ({
     >
       {prefixIcon || null}
       <S.Space></S.Space>
-      {reactStringReplace(
-        cityDistrict,
-        highlightWord as string,
-        (match, index) => (
-          <strong key={index}>{match}</strong>
-        )
-      )}
+      <S.MatchContainer>
+        {reactStringReplace(
+          cityDistrict,
+          highlightWord as string,
+          (match, index) => {
+            return <strong key={index}>{match}</strong>;
+          }
+        )}
+      </S.MatchContainer>
     </S.Element>
   ));
 
@@ -82,6 +83,11 @@ const S = {
   `,
   Space: styled.div`
     margin-left: 10px;
+  `,
+  MatchContainer: styled.div`
+    align-items: center;
+    padding: 0;
+    margin: 0;
   `,
 };
 

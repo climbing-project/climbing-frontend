@@ -61,6 +61,7 @@ export interface SearchProps {
   useLocation?: boolean; // 현재 위치로 검색
   searchWord?: string;
   border?: string;
+  dropDownCount?: number;
 }
 
 export interface CardProps {

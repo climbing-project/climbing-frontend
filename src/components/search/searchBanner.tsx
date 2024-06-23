@@ -37,6 +37,7 @@ const SearchBanner = ({ searchWord }: SearchBannerProps) => {
           useLocation={true}
           border={"3px solid " + COLOR.LIGHT_MAIN}
           searchWord={searchWord}
+          dropDownCount={5}
         />
       </Styled.SearchContainer>
       <Styled.ImageWrapper>

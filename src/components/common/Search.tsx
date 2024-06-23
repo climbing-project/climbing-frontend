@@ -17,14 +17,15 @@ const Search = ({
   useLocation = false,
   searchWord,
   border,
+  dropDownCount = 10,
 }: SearchProps) => {
   const searchRef = useRef<HTMLInputElement>(null);
   const [index, setIndex] = useState(-1);
   const [isInputFocus, setInputFocus] = useState(false);
   const [filterStr, setFilterStr] = useState("");
-  const filteredList = dataList.filter((dataItem) =>
-    dataItem.cityDistrict.match(filterStr)
-  );
+  const filteredList = dataList
+    .filter((dataItem) => dataItem.cityDistrict.match(filterStr))
+    .slice(0, dropDownCount);
 
   const handleClick = (event: { target: { innerText: any } }) => {
     if (onSubmit) {

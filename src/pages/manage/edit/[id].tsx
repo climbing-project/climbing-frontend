@@ -150,6 +150,7 @@ const EditPage = () => {
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <ManageLayout>
+        <h1 style={{ margin: 0 }}>{p === "2" ? "상세 정보 수정" : "기본 정보 수정"}</h1>
         {isLoading ? (
           <LoadContainer>
             <BarLoader />

@@ -45,7 +45,7 @@ const ManageLayout = ({ children }: React.PropsWithChildren<{}>) => {
         else if (selectedGymId) setSelectedGymId(selectedGymId);
         else setSelectedGymId(data[0].gyms[0].id);
       };
-      fetch("http://localhost:8000/gymids?user=hopp")
+      fetch("http://localhost:8000/gymids?user=jim")
         .then((res) => res.json())
         .then(onFetch)
         .catch((e) => console.log(e));

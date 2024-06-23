@@ -67,11 +67,11 @@ const ManageHome = () => {
     );
   return (
     <ManageLayout>
+      <h1 style={{ margin: 0 }}>내 암장</h1>
       <Wrapper>
-        <Header>내 암장 목록</Header>
         {gymList && gymList.length >= 1 ? (
           <>
-            {gymList?.map((gym) => <GymList key={gym.id} id={(gym.id).toString()} name={gym.name} />)}
+            {gymList?.map((gym) => <GymList key={gym.id} id={gym.id.toString()} name={gym.name} />)}
             <br />
             <Btn onClick={() => router.push("/manage/register")}>+ 암장 등록</Btn>
           </>
@@ -90,12 +90,6 @@ const Wrapper = styled.div`
   background: white;
   border: 1px solid #d0d0d0;
   padding: 32px 40px;
-`;
-
-const Header = styled.div`
-  font-weight: 700;
-  font-size: 24px;
-  margin-bottom: 2rem;
 `;
 
 const Message = styled.div`

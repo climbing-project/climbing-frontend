@@ -20,7 +20,7 @@ const ChatPage: NextPageWithLayout = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [openWindows, setOpenWindows] = useState<ChatroomRef[]>([]);
   const { selectedGymId } = useContext(NavContext) as NavStateProps;
-console.log(chatrooms)
+
   useEffect(() => {
     if (!session) return;
 
@@ -67,13 +67,13 @@ console.log(chatrooms)
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <ManageLayout>
+        <h1 style={{ margin: 0 }}>1:1 문의</h1>
         {isLoading ? (
           <LoadContainer>
             <BarLoader />
           </LoadContainer>
         ) : (
           <div className="editor-wrapper">
-            <S.Header>1:1 문의</S.Header>
             <S.Content $direction="column">
               {chatrooms.length > 0 ? (
                 chatrooms.map(({ id, roomName }) => (
@@ -97,12 +97,6 @@ export const getServerSideProps = async () => {
 };
 
 const S = {
-  Header: styled.div`
-    border-bottom: 1px solid #d0d0d0;
-    font-weight: 700;
-    font-size: 24px;
-    padding: 32px 40px;
-  `,
   Content: styled.div<{ $direction?: string }>`
     padding: 32px 40px;
     display: flex;

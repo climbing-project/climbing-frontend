@@ -92,13 +92,13 @@ const CommentsPage: NextPageWithLayout = () => {
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <ManageLayout>
+        <h1 style={{ margin: 0 }}>댓글 관리</h1>
         {isLoading ? (
           <LoadContainer>
             <BarLoader />
           </LoadContainer>
         ) : (
           <div className="editor-wrapper">
-            <div className="editor-header">댓글 관리</div>
             <S.Content $direction="column">
               {comments.length > 0 ? (
                 comments.map(({ user, createdAt, text }, i) => (

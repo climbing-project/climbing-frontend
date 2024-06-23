@@ -30,7 +30,8 @@ const AccommodationsEditor = ({ accommodationsList, setNewData }: Accommodations
             <input
               type="checkbox"
               name={text}
-              defaultChecked={accommodationsList?.includes(text)}
+              checked={accommodationsList?.includes(text)}
+              readOnly
             />
             <span>{text}</span>
           </S.TextField>

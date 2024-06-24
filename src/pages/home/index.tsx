@@ -20,7 +20,7 @@ const HomePage: NextPageWithLayout = () => {
           className="container"
           onClick={() => router.push("/search")}
         >
-          암장 더보기 〉
+          암장 더 알아보기 〉
         </Styled.MoreButton>
       </Styled.ButtonWrapper>
     </Styled.Wrapper>
@@ -39,12 +39,23 @@ const Styled = {
   Wrapper: styled.div``,
   ButtonWrapper: styled.div`
     text-align: right;
+    margin: 0 auto;
+    max-width: 1140px;
   `,
   MoreButton: styled.button`
     cursor: pointer;
     background-color: white;
     display: inline-block;
+    margin-top: 20px;
     margin-bottom: 300px;
+    margin-right: 10px;
+
+    // color: white;
+    // background-color: ${COLOR.MAIN};
+    // border: 2px solid ${COLOR.MAIN};
+    // font-weight: bold;
+    font-style: italic;
+
     color: ${COLOR.MAIN};
     border: 2px solid ${COLOR.MAIN};
     border-radius: 5px;

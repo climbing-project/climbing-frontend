@@ -92,7 +92,12 @@ const CommentsPage: NextPageWithLayout = () => {
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <ManageLayout>
-        <h1 style={{ margin: 0 }}>댓글 관리</h1>
+        <h1 className="desktop-view" style={{ margin: 0 }}>
+          댓글 관리
+        </h1>
+        <h2 className="mobile-view" style={{ margin: 0 }}>
+          댓글 관리
+        </h2>
         {isLoading ? (
           <LoadContainer>
             <BarLoader />

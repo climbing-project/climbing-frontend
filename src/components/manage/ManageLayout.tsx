@@ -233,6 +233,9 @@ const S = {
       outline: none;
     }
     @media ${DEVICE_SIZE.laptop} {
+      padding: 0.75rem;
+      gap: 1rem;
+      scrollbar-gutter: auto;
       border: none;
     }
   `,

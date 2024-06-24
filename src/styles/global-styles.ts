@@ -85,10 +85,16 @@ ${normalize}
   }
 
   .editor-header {
-    border-bottom: 1px solid #d0d0d0;
-    font-weight: 700;
-    font-size: 24px;
-    padding: 32px 40px;
+    @media ${DEVICE_SIZE.desktop} {
+      border-bottom: 1px solid #d0d0d0;
+      font-weight: 700;
+      font-size: 24px;
+      padding: 32px 40px;
+    }
+    @media ${DEVICE_SIZE.laptop} {
+      font-size: 19px;
+      padding: 1rem;
+    }
   }
 
   .editor-removable {

@@ -67,7 +67,12 @@ const ManageHome = () => {
     );
   return (
     <ManageLayout>
-      <h1 style={{ margin: 0 }}>내 암장</h1>
+      <h1 className="desktop-view" style={{ margin: 0 }}>
+        내 암장
+      </h1>
+      <h2 className="mobile-view" style={{ margin: 0 }}>
+        내 암장
+      </h2>
       <Wrapper>
         {gymList && gymList.length >= 1 ? (
           <>

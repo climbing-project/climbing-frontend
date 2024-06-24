@@ -1,6 +1,7 @@
 import { createGlobalStyle } from "styled-components";
 import { normalize } from "styled-normalize";
 import { COLOR } from "./global-color";
+import { DEVICE_SIZE } from "@/constants/styles";
 
 const GlobalStyle = createGlobalStyle`
 ${normalize}
@@ -93,6 +94,20 @@ ${normalize}
   .editor-removable {
     display: flex;
     justify-content: space-between;
+  }
+
+  .mobile-view {
+    display: none;
+    @media ${DEVICE_SIZE.laptop} {
+      display: block;
+    }
+  }
+
+  .desktop-view {
+    display: block;
+    @media ${DEVICE_SIZE.laptop} {
+      display: none;
+    } 
   }
 `;
 

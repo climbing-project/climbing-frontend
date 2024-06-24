@@ -5,6 +5,7 @@ import router from "next/router";
 import { COLOR } from "@/styles/global-color";
 import DropDown from "./DropDown";
 import { SearchProps } from "@/constants/search/types";
+import CurrentLocationBtn from "../search/CurrentLocationBtn";
 
 const Search = ({
   dataList,
@@ -54,6 +55,7 @@ const Search = ({
 
   return (
     <Styled.Wrapper width={width} ref={searchRef}>
+      {useLocation && <CurrentLocationBtn fontSize="17px" />}
       <Styled.Form
         className={isInputFocus ? "container" : ""}
         onSubmit={onSubmit}
@@ -111,8 +113,6 @@ const Search = ({
           setHighlightIndex={setIndex}
           fontSize={fontSize}
           handleClick={handleClick as (arg: unknown) => unknown}
-          // onMouseOver={handleMouseOver}
-          useLocation={useLocation}
         />
       )}
     </Styled.Wrapper>

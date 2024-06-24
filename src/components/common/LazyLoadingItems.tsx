@@ -67,13 +67,13 @@ const LazyLoadingItems = ({
       hasMore={hasMore}
       scrollableTarget="scrollableDiv"
       loader={<h4>Loading ...</h4>}
-      endMessage={
-        <p style={{ textAlign: "center" }}>
-          <b>마지막</b>
-        </p>
-      }
+      // endMessage={
+      //   <p style={{ textAlign: "center" }}>
+      //     <b>마지막</b>
+      //   </p>
+      // }
     >
-      {PreviewCards}
+      {pathName.includes("search") ? PreviewCards : PreviewCards.slice(0, 6)}
     </InfiniteScroll>
   );
 };

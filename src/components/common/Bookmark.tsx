@@ -71,7 +71,8 @@ const Bookmark = ({ token, gymId, size }: BookmarkProps) => {
 
 const S = {
   BookmarkWrapper: styled.button`
-    // 버튼의 기본효과 없애기
+    margin: 0;
+    padding: 0;
     border: 0;
     background-color: transparent;
   `,

@@ -5,8 +5,11 @@ import { IoHeartOutline } from "react-icons/io5";
 import Bookmark from "./Bookmark";
 import { CardProps } from "@/constants/search/types";
 import router from "next/router";
+import { useSession } from "next-auth/react";
 
 const PreviewCard = ({ width, height, cardInfo }: CardProps) => {
+  const { data: session } = useSession();
+
   const handleCardOnClick = () => {
     router.push(`/gyms/${cardInfo.id}`);
   };
@@ -23,7 +26,11 @@ const PreviewCard = ({ width, height, cardInfo }: CardProps) => {
               <S.Address>{cardInfo.address.roadAddress}</S.Address>
               <S.Name>{cardInfo.name}</S.Name>
             </S.NameContainer>
-            <Bookmark token="임시token" gymId="임시gymId" size="20px" />
+            <Bookmark
+              token={session?.jwt.accessToken}
+              gymId={cardInfo.id.toString()}
+              size="20px"
+            />
           </S.MainInfoContainer>
           <S.SubInfoContainer>
             <S.Date>

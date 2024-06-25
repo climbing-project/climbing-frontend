@@ -12,13 +12,12 @@ import ErrorFallback from "@/components/common/ErrorFallback";
 import { requestData } from "@/service/api";
 import { NavContext, type NavStateProps } from "@/NavContext";
 import { SERVER_ADDRESS } from "@/constants/constants";
-import type { NextPageWithLayout } from "@/pages/_app";
+import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import type { UserComment } from "@/constants/gyms/types";
 
-const CommentsPage: NextPageWithLayout = () => {
+const CommentsPage = ({ id }: InferGetServerSidePropsType<GetServerSideProps>) => {
   const { data: session } = useSession();
   const router = useRouter();
-  const { id } = router.query;
   const [comments, setComments] = useState<UserComment[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { selectedGymId } = useContext(NavContext) as NavStateProps;
@@ -111,8 +110,9 @@ const CommentsPage: NextPageWithLayout = () => {
   );
 };
 
-export const getServerSideProps = async () => {
-  return { props: {} };
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const id = context.query.id;
+  return { props: { id } };
 };
 
 const S = {

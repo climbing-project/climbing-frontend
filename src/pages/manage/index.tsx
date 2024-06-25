@@ -5,6 +5,7 @@ import GymList from "@/components/manage/GymList";
 import ManageLayout from "@/components/manage/ManageLayout";
 import { NavContext, type NavStateProps } from "@/NavContext";
 import { COLOR } from "@/styles/global-color";
+import { DEVICE_SIZE } from "@/constants/styles";
 
 const ManageHome = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -49,6 +50,9 @@ const S = {
     background: white;
     border: 1px solid #d0d0d0;
     padding: 32px 40px;
+    @media ${DEVICE_SIZE.laptop} {
+      padding: 1.3rem 1rem;
+    }
   `,
   Link: styled.div`
     padding: 1rem 2rem;

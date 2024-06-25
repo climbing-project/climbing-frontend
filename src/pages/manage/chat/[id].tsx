@@ -20,7 +20,7 @@ const ChatPage: NextPageWithLayout = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [openWindows, setOpenWindows] = useState<ChatroomRef[]>([]);
   const { selectedGymId } = useContext(NavContext) as NavStateProps;
-
+console.log(chatrooms)
   useEffect(() => {
     if (!session) return;
 

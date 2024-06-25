@@ -5,8 +5,8 @@ import Image from "next/image";
 import img from "../../../public/magnifier.png";
 import { SearchBannerProps } from "@/constants/search/types";
 import { COLOR } from "@/styles/global-color";
-import Search from "../common/Search";
 import { DISTRCIT_CITY_DATA } from "@/constants/search/constants";
+import Search from "../common/Search";
 
 const SearchBanner = ({ searchWord }: SearchBannerProps) => {
   const handleSubmit = (event: {

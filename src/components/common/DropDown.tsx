@@ -1,6 +1,5 @@
 import { styled } from "styled-components";
 import reactStringReplace from "react-string-replace";
-import CurrentLocationBtn from "../search/CurrentLocationBtn";
 import { COLOR } from "@/styles/global-color";
 import { DropDownProps, DropItem } from "@/constants/search/types";
 
@@ -12,7 +11,6 @@ const DropDown = ({
   setHighlightIndex,
   width,
   fontSize,
-  useLocation = false,
   handleClick,
 }: DropDownProps) => {
   const handleMouseHover = (index: number) => {
@@ -46,7 +44,6 @@ const DropDown = ({
   return (
     <S.Wrapper className="container" width={width}>
       <S.Group>{listItems}</S.Group>
-      {useLocation && <CurrentLocationBtn fontSize={fontSize} />}
     </S.Wrapper>
   );
 };

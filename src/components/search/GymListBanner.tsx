@@ -57,7 +57,12 @@ const GymListBanner = ({
 };
 
 const Styled = {
-  Wrapper: styled.div``,
+  Wrapper: styled.div`
+    display: flex;
+    flex-direction: column;
+    max-width: 1140px;
+    margin: 0 auto;
+  `,
   Container: styled.div`
     display: flex;
   `,

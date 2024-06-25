@@ -57,6 +57,8 @@ const S = {
     margin: 15px;
   `,
   Link: styled.div`
+    display: flex;
+    flex-direction: column;
     height: 100%;
     padding: 0;
     margin: 0;
@@ -80,7 +82,7 @@ const S = {
     object-fit: "cover";
   `,
   InfoContainer: styled.div`
-    height: 30%;
+    flex: 1 0 auto;
     display: flex;
     flex-direction: column;
     justify-content: space-between;

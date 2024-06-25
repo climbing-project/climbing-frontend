@@ -28,7 +28,6 @@ export interface DropDownProps {
   setHighlightIndex?: Dispatch<SetStateAction<number>>;
   width?: string; // search컴포넌트 없이 dropdown 단독으로 쓸때만 사용
   fontSize?: string;
-  useLocation?: boolean;
   handleClick?: (arg: unknown) => unknown;
 }
 

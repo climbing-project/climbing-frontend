@@ -21,35 +21,24 @@ const ManageLayout = ({ children }: React.PropsWithChildren<{}>) => {
   ) as NavStateProps;
 
   useEffect(() => {
-    // const onSuccess = (data: any) => {
-    //   if (data.length < 1) return setGymList([]);
-    //   setGymList(data[0].gyms);
-    //   if (router.query.id) {
-    //     setSelectedGymId(router.query.id as string);
-    //   } else {
-    //     setSelectedGymId(data[0].gyms[0].id);
-    //   }
-    // };
-    // const onError = (e: Error) => {};
-    // requestData({
-    //   option: "GET",
-    //   url: `/gymids?user=${"userid"}`,
-    //   onSuccess,
-    //   onError,
-    // });
     if (!selectedGymId) {
-      // 백엔드 준비되면 수정
       const onFetch = (data: any) => {
-        const init = data[0].gyms ?? [];
-        setGymList(init);
+        console.log(data);
+        const gymList = data && data.length >= 1 ? data : [];
+        setGymList(gymList);
         if (router.query.id) setSelectedGymId(router.query.id as string);
         else if (selectedGymId) setSelectedGymId(selectedGymId);
-        else setSelectedGymId(data[0].gyms[0].id);
+        else setSelectedGymId(data[0].id);
       };
-      fetch("http://localhost:8000/gymids?user=jim")
-        .then((res) => res.json())
-        .then(onFetch)
-        .catch((e) => console.log(e));
+      requestData({
+        option: "GET",
+        url: "/gyms", // 백엔드 준비되면 수정
+        onSuccess: onFetch,
+        onError: (e) => {
+          console.log(e);
+          setGymList([]);
+        },
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

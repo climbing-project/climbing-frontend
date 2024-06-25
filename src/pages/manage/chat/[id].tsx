@@ -20,25 +20,20 @@ const ChatPage: NextPageWithLayout = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [openWindows, setOpenWindows] = useState<ChatroomRef[]>([]);
   const { selectedGymId } = useContext(NavContext) as NavStateProps;
-console.log(chatrooms)
+  console.log(chatrooms);
+
   useEffect(() => {
-    if (!session) return;
-
-    const fetchRooms = async () => {
-      if (!id) return;
-      requestData({
-        option: "GET",
-        url: `/chat/room/gym/${id}`,
-        token: session.jwt.accessToken,
-        onSuccess: (chatrooms: Chatroom[]) => setChatrooms(chatrooms),
-        onError: (e) => console.log(e),
-      });
-      setIsLoading(false);
-    };
-
-    fetchRooms();
+    if (!session || !isLoading) return;
+    requestData({
+      option: "GET",
+      url: `/chat/room/gym/${id}`,
+      token: session.jwt.accessToken,
+      onSuccess: (data) => setChatrooms(data),
+      onError: (e) => console.log(e),
+    });
+    setIsLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [session]);
+  }, [session, router]);
 
   useEffect(() => {
     if (selectedGymId !== null && selectedGymId !== id) {

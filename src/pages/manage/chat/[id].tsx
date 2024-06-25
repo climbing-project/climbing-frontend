@@ -9,6 +9,7 @@ import ErrorFallback from "@/components/common/ErrorFallback";
 import LoadContainer from "@/components/manage/LoadContainer";
 import { requestData } from "@/service/api";
 import { NavContext, type NavStateProps } from "@/NavContext";
+import { DEVICE_SIZE } from "@/constants/styles";
 import type { NextPageWithLayout } from "@/pages/_app";
 import type { Chatroom, ChatroomRef } from "@/constants/manage/types";
 
@@ -103,6 +104,9 @@ const S = {
     flex-direction: ${(props) => props.$direction};
     flex-wrap: wrap;
     gap: 20px;
+    @media ${DEVICE_SIZE.laptop} {
+      padding: 1.3rem 1rem;
+    }
   `,
   Row: styled.div`
     border: 1px solid #d0d0d0;

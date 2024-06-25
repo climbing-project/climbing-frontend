@@ -12,6 +12,7 @@ import ErrorFallback from "@/components/common/ErrorFallback";
 import { requestData } from "@/service/api";
 import { NavContext, type NavStateProps } from "@/NavContext";
 import { SERVER_ADDRESS } from "@/constants/constants";
+import { DEVICE_SIZE } from "@/constants/styles";
 import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import type { UserComment } from "@/constants/gyms/types";
 
@@ -122,6 +123,9 @@ const S = {
     flex-direction: ${(props) => props.$direction};
     flex-wrap: wrap;
     gap: 20px;
+    @media ${DEVICE_SIZE.laptop} {
+      padding: 1.3rem 1rem;
+    }
   `,
   Link: styled.div`
     cursor: pointer;
@@ -136,6 +140,9 @@ const S = {
     padding: 16px;
     display: flex;
     gap: 36px;
+    @media ${DEVICE_SIZE.laptop} {
+      gap: 0;
+    }
   `,
   Icon: styled(IoTrash)`
     cursor: pointer;

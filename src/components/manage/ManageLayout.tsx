@@ -195,7 +195,7 @@ const S = {
     width: 200px;
     gap: 6px;
     padding: 0.3rem 0.75rem;
-    background: ${({ $visiting }) => ($visiting ? COLOR.LIGHT_MAIN : "transparent")};
+    color: ${({ $visiting }) => ($visiting ? COLOR.MAIN : "black")};
     transition: 100ms;
     &:hover {
       background-color: ${({ $visiting }) => !$visiting && "#f3f3f3"};

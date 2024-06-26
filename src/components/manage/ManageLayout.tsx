@@ -130,7 +130,7 @@ const ManageLayout = ({ children }: React.PropsWithChildren<{}>) => {
 const S = {
   Wrapper: styled.div`
     position: fixed;
-    top: 82px;
+    top: 53px;
     bottom: 0;
     left: 0;
     right: 0;

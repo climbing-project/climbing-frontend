@@ -60,7 +60,7 @@ const SettingDayCalendar = ({ setNewData }: SettingDayCalendarProps) => {
           <FaCalendarDay size="1.3rem" />
         </Icon>
       </div>
-      <CalendarContainer>
+      <CalendarContainer $isClosed={isClosed}>
         <Calendar
           className={isClosed ? "closed" : null}
           onChange={handleChange}
@@ -83,7 +83,7 @@ const Background = styled.div`
   }
 `;
 
-const CalendarContainer = styled.div`
+const CalendarContainer = styled.div<{ $isClosed: boolean }>`
   position: absolute;
   bottom: 85px;
   left: 190px;
@@ -116,6 +116,7 @@ const CalendarContainer = styled.div`
     .react-calendar {
       box-shadow: none;
     }
+    ${({ $isClosed }) => $isClosed && "display: none;"}
   }
 `;
 

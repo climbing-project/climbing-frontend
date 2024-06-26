@@ -144,7 +144,6 @@ const S = {
     border-radius: 8px;
     border: 1px solid #d0d0d0;
     padding: 12px 18px;
-
     select {
       border: none;
       background: transparent;
@@ -158,6 +157,9 @@ const S = {
     }
     @media ${DEVICE_SIZE.laptop} {
       max-width: fit-content;
+    }
+    @media ${DEVICE_SIZE.mobileLarge} {
+      gap: 0.75rem;
     }
   `,
 };

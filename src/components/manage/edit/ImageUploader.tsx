@@ -34,7 +34,7 @@ const ImageUploader = ({ dataKey, imageCount, handleS3Upload }: ImageUploadProps
         85,
         0,
         (resizedImg) => {
-          const randomizedFileName = `${crypto.randomUUID()}.${IMG_FORMAT}`;
+          const randomizedFileName = `${Date.now()}.${IMG_FORMAT}`;
           handleS3Upload(resizedImg as File, randomizedFileName, dataKey);
           FileResizer.imageFileResizer(
             resizedImg as File,

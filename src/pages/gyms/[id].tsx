@@ -52,7 +52,6 @@ const GymInfo = () => {
         <>
           <S.Wrapper>
             <ImageCarousel
-              key={crypto.randomUUID()}
               defaultImage={gymData.defaultImage ?? ""}
               imageList={gymData.images ?? []}
             />
@@ -66,13 +65,13 @@ const GymInfo = () => {
               <SideContent gymData={gymData} />
             </S.InfoContainer>
             <Comments
-              key={crypto.randomUUID()}
+              key={gymData.id}
               id={gymData.id ?? ""}
               comments={gymData.comments ?? []}
               session={session}
             />
           </S.Wrapper>
-          <ChatModal key={crypto.randomUUID()} gymId={gymData.id ?? ""} gymName={gymData.name} />
+          <ChatModal key={gymData.id} gymId={gymData.id ?? ""} gymName={gymData.name} />
         </>
       )}
     </S.Page>

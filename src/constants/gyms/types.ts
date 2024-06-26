@@ -98,8 +98,8 @@ export interface GradeBarProps {
 }
 
 export interface ImageCarouselProps {
-  defaultImage: string;
-  imageList: string[];
+  defaultImage: string | null;
+  imageList: string[] | null;
 }
 
 export interface MapProps {

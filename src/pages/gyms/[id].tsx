@@ -51,10 +51,7 @@ const GymInfo = () => {
       ) : (
         <>
           <S.Wrapper>
-            <ImageCarousel
-              defaultImage={gymData.defaultImage ?? ""}
-              imageList={gymData.images ?? []}
-            />
+            <ImageCarousel defaultImage={gymData.defaultImage} imageList={gymData.images} />
             <S.InfoContainer>
               <S.Main>
                 <MainContent gymData={gymData} />

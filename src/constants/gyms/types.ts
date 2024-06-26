@@ -115,6 +115,10 @@ export interface PricingTableProps {
   pricing: Array<Pricing> | null;
 }
 
+export interface TagListProps {
+  tags: string[] | null;
+}
+
 export interface TagProps {
   prefix?: string;
   text: string;

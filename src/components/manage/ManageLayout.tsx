@@ -135,7 +135,7 @@ const S = {
     left: 0;
     right: 0;
     display: flex;
-    border-top: 1px solid #d0d0d0;
+    border-top: 1px solid ${COLOR.DISABLED};
     a {
       text-decoration: none;
     }
@@ -167,7 +167,7 @@ const S = {
       padding: 0.5rem 0;
       gap: 0;
       width: 100%;
-      border-bottom: 1px solid #d0d0d0;
+      border-bottom: 1px solid ${COLOR.DISABLED};
     }
   `,
   Links: styled.div`
@@ -213,7 +213,7 @@ const S = {
     gap: 36px;
     background: #fafafa;
     padding: 36px 63px;
-    border-left: 1px solid #d0d0d0;
+    border-left: 1px solid ${COLOR.DISABLED};
     overflow: auto;
     scrollbar-gutter: stable;
     & input:focus,

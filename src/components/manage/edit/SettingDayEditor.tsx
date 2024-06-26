@@ -3,6 +3,7 @@ import { IoTrash } from "react-icons/io5";
 import ReactIcon from "@/components/common/ReactIcon";
 import SettingDayCalendar from "./SettingDayCalendar";
 import { CURRENT_CENTURY } from "@/constants/manage/constants";
+import { COLOR } from "@/styles/global-color";
 import { DEVICE_SIZE } from "@/constants/styles";
 import type { SettingDayEditorProps } from "@/constants/manage/types";
 
@@ -79,7 +80,7 @@ const S = {
     background: #fafafa;
     color: #666666;
     border-radius: 8px;
-    border: 1px solid #d0d0d0;
+    border: 1px solid ${COLOR.DISABLED};
     padding: 12px 18px;
     user-select: none;
   `,

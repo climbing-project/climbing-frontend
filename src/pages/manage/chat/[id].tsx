@@ -9,6 +9,7 @@ import ErrorFallback from "@/components/common/ErrorFallback";
 import LoadContainer from "@/components/manage/LoadContainer";
 import { requestData } from "@/service/api";
 import { NavContext, type NavStateProps } from "@/NavContext";
+import { COLOR } from "@/styles/global-color";
 import { DEVICE_SIZE } from "@/constants/styles";
 import type { NextPageWithLayout } from "@/pages/_app";
 import type { Chatroom, ChatroomRef } from "@/constants/manage/types";
@@ -109,7 +110,7 @@ const S = {
     }
   `,
   Row: styled.div`
-    border: 1px solid #d0d0d0;
+    border: 1px solid ${COLOR.DISABLED};
     background: #fafafa;
     border-radius: 12px;
     padding: 16px;

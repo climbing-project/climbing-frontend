@@ -145,15 +145,15 @@ const M = {
       margin-bottom: 18px;
     }
     & span {
-      color: #9a9a9a;
+      color: #666;
       font-size: 0.8rem;
       flex-shrink: 0;
     }
     & > div {
       border-radius: 6px;
-      border: 1px solid #cacaca;
+      border: 1px solid ${COLOR.DISABLED};
       padding: 8px;
-      background: ${({ $speaker }) => ($speaker ? null : "#cacaca")};
+      background: ${({ $speaker }) => ($speaker ? COLOR.DISABLED : null)};
     }
   `,
   Placeholder: styled.div`

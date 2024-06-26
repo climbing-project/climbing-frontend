@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { DAYS_TEXT, HOURS, MINUTES } from "@/constants/manage/constants";
+import { COLOR } from "@/styles/global-color";
 import { DEVICE_SIZE } from "@/constants/styles";
 import type { OpenHoursFieldProps } from "@/constants/manage/types";
 
@@ -142,7 +143,7 @@ const S = {
     align-items: center;
     background: #fafafa;
     border-radius: 8px;
-    border: 1px solid #d0d0d0;
+    border: 1px solid ${COLOR.DISABLED};
     padding: 12px 18px;
     select {
       border: none;

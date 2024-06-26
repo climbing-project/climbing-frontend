@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import ContentContainer from "../ContentContainer";
+import { COLOR } from "@/styles/global-color";
 import type { DescriptionEditorProps } from "@/constants/manage/types";
 
 const DescriptionEditor = ({ description, setNewData }: DescriptionEditorProps) => {
@@ -30,7 +31,7 @@ const S = {
     gap: 6px;
     background: #fafafa;
     border-radius: 8px;
-    border: 1px solid #d0d0d0;
+    border: 1px solid ${COLOR.DISABLED};
     padding: 12px 18px;
     width: 100%;
     height: 150px;

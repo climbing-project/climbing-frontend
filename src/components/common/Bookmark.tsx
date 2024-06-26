@@ -21,7 +21,7 @@ const Bookmark = ({ token, gymId, size }: BookmarkProps) => {
         };
         requestData({
           option: "GET",
-          url: `/api/bookmarks/${gymId}`,
+          url: `/gyms/${gymId}/check/bookmark`,
           token: `${token}`,
           hasBody: true,
           onSuccess,
@@ -35,10 +35,22 @@ const Bookmark = ({ token, gymId, size }: BookmarkProps) => {
     }
   }, [gymId, token]);
 
-  const handleClick = () => {
+  const handleClick = (e: { stopPropagation: () => void }) => {
+    e.stopPropagation();
+
     try {
       if (token) {
-        setIsMarked(!isMarked);
+        const onSuccess = (data: { status: boolean }) => {
+          setIsMarked(data.status);
+        };
+
+        requestData({
+          option: "POST",
+          url: `/gyms/${gymId}/bookmark`,
+          token: `${token}`,
+          hasBody: true,
+          onSuccess,
+        });
       } else {
         router.push("/login");
       }

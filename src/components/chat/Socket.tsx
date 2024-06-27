@@ -12,6 +12,7 @@ import {
   getFormattedChatHistory,
 } from "@/ChatHistoryContext";
 import { requestData } from "@/service/api";
+import { COLOR } from "@/styles/global-color";
 import type { StompSubscription, Message } from "@stomp/stompjs";
 import type { SocketProps } from "@/constants/chat/types";
 
@@ -136,8 +137,8 @@ const S = {
     right: 0;
     border-radius: 16px;
     padding: 20px;
-    border: 1px solid #cacaca;
-    box-shadow: 0 3px 7px #cacaca;
+    border: 1px solid ${COLOR.DISABLED};
+    box-shadow: 0 3px 7px ${COLOR.DISABLED};
     background: white;
     width: 370px;
     height: 500px;
@@ -153,9 +154,9 @@ const S = {
     font-size: 1.2rem;
     font-weight: 700;
     padding-bottom: 8px;
-    -webkit-box-shadow: 0 3px 7px -7px #cacaca;
-    -moz-box-shadow: 0 3px 7px -7px #cacaca;
-    box-shadow: 0 3px 7px -7px #cacaca;
+    -webkit-box-shadow: 0 3px 7px -7px ${COLOR.DISABLED};
+    -moz-box-shadow: 0 3px 7px -7px ${COLOR.DISABLED};
+    box-shadow: 0 3px 7px -7px ${COLOR.DISABLED};
   `,
   Loader: styled.div`
     display: grid;

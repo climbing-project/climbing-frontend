@@ -64,8 +64,8 @@ const S = {
     box-sizing: border-box;
     display: flex;
     align-items: center;
-    background: #fafafa;
-    color: #666666;
+    background: ${COLOR.BACKGROUND_LIGHT};
+    color: ${COLOR.BACKGROUND_DARK};
     border-radius: 8px;
     border: 1px solid ${COLOR.DISABLED};
     padding: 12px 18px;
@@ -79,7 +79,7 @@ const S = {
       background: transparent;
       width: 100%;
       padding: 0px;
-      color: #666666;
+      color: ${COLOR.BACKGROUND_DARK};
     }
     input:focus {
       color: black;

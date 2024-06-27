@@ -17,7 +17,7 @@ const fetchChatroom = async (
   try {
     const controller = new AbortController();
     const signal = controller.signal;
-    setTimeout(() => controller.abort(), 3000);
+    const timeout = setTimeout(() => controller.abort(), 3000);
     const response = await fetch(`${SERVER_ADDRESS}/chat/room-check/${nickname}/${gymId}`, {
       headers: {
         "Content-Type": "application/json",
@@ -26,6 +26,7 @@ const fetchChatroom = async (
       signal,
     });
     if (!response.ok) throw new Error("roomId를 불러올 수 없습니다.");
+    clearTimeout(timeout);
     const data = await response.json();
     console.log(data);
     return data;
@@ -40,13 +41,14 @@ const createRoom = async (gymId: string, nickname: string, token: string) => {
   try {
     const controller = new AbortController();
     const signal = controller.signal;
-    setTimeout(() => controller.abort(), 3000);
+    const timeout = setTimeout(() => controller.abort(), 3000);
     const response = await fetch(`${SERVER_ADDRESS}/chat/room/${nickname}/${gymId}`, {
       method: "POST",
       headers: { Authorization: "Bearer " + token },
       signal,
     });
     if (response.redirected) throw new Error("로그인이 필요한 서비스입니다.");
+    clearTimeout(timeout);
     const { id } = await response.json();
     console.log(id);
     return id;
@@ -139,7 +141,7 @@ const S = {
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    background: ${({ $isOpen }) => ($isOpen ? "#666666" : COLOR.MAIN)};
+    background: ${({ $isOpen }) => ($isOpen ? COLOR.BACKGROUND_DARK : COLOR.MAIN)};
     color: white;
     display: flex;
     justify-content: center;

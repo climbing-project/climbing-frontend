@@ -7,6 +7,7 @@ import { FaLocationDot } from "react-icons/fa6";
 import Bookmark from "../common/Bookmark";
 import { requestData } from "@/service/api";
 import { SERVER_ADDRESS } from "@/constants/constants";
+import { COLOR } from "@/styles/global-color";
 import type { GymData } from "@/constants/gyms/types";
 
 const MainContent = ({ gymData }: { gymData: GymData }) => {
@@ -131,7 +132,7 @@ const S = {
   Icon: styled.div<{ $clickable: boolean }>`
     display: flex;
     align-items: center;
-    color: #666666;
+    color: ${COLOR.BACKGROUND_DARK};
     cursor: ${({ $clickable }) => ($clickable ? "pointer" : "default")};
   `,
 };

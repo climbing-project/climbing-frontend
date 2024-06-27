@@ -10,6 +10,7 @@ import {
   THUMBNAIL_HEIGHT,
   THUMBNAIL_WIDTH,
 } from "@/constants/manage/constants";
+import { COLOR } from "@/styles/global-color";
 import { DEVICE_SIZE } from "@/constants/styles";
 import type { ImageUploadProps } from "@/constants/manage/types";
 
@@ -89,8 +90,8 @@ const S = {
     width: ${({ $width }) => $width};
     height: ${({ $height }) => $height};
     border-radius: 6px;
-    border: 2px dashed #cacaca;
-    background: #f4f4f4;
+    border: 2px dashed ${COLOR.DISABLED};
+    background: ${COLOR.BACKGROUND_LIGHT};
     overflow: hidden;
     flex-shrink: 0;
     div {

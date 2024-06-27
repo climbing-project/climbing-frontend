@@ -141,15 +141,15 @@ const S = {
     box-sizing: border-box;
     display: flex;
     align-items: center;
-    background: #fafafa;
+    background: ${COLOR.BACKGROUND_LIGHT};
     border-radius: 8px;
     border: 1px solid ${COLOR.DISABLED};
-    padding: 12px 18px;
+    padding: 0.75rem 1rem;
     select {
       border: none;
       background: transparent;
       padding: 0px;
-      color: #666666;
+      color: ${COLOR.BACKGROUND_DARK};
       text-align: center;
     }
     select:active,

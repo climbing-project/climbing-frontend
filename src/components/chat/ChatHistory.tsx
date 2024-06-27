@@ -145,7 +145,7 @@ const M = {
       margin-bottom: 18px;
     }
     & span {
-      color: #666;
+      color: ${COLOR.BACKGROUND_DARK};
       font-size: 0.8rem;
       flex-shrink: 0;
     }

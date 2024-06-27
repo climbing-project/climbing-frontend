@@ -77,8 +77,8 @@ const S = {
   `,
   TextField: styled.div`
     text-align: center;
-    background: #fafafa;
-    color: #666666;
+    background: ${COLOR.BACKGROUND_LIGHT};
+    color: ${COLOR.BACKGROUND_DARK};
     border-radius: 8px;
     border: 1px solid ${COLOR.DISABLED};
     padding: 12px 18px;

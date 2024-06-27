@@ -63,8 +63,8 @@ const S = {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #fafafa;
-    color: #666666;
+    background: ${COLOR.BACKGROUND_LIGHT};
+    color: ${COLOR.BACKGROUND_DARK};
     border-radius: 8px;
     border: 1px solid ${COLOR.DISABLED};
     padding: 12px 18px;
@@ -90,7 +90,7 @@ const S = {
       padding: 0px;
       flex-shrink: 1;
       pointer-events: none;
-      accent-color: #666666;
+      accent-color: ${COLOR.BACKGROUND_DARK};
     }
     span {
       flex: 1 0 0;

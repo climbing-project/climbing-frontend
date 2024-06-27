@@ -183,23 +183,19 @@ const S = {
     }
   `,
   MobileSelect: styled.div`
-    background: #fafafa;
+    background: ${COLOR.BACKGROUND_LIGHT};
     padding: 0.75rem;
   `,
   Header: styled.div<{ $visiting: boolean }>`
     display: flex;
     align-items: center;
     text-align: center;
-    border-radius: 50px;
     margin: auto;
     width: 200px;
     gap: 6px;
     padding: 0.3rem 0.75rem;
     color: ${({ $visiting }) => ($visiting ? COLOR.MAIN : "black")};
     transition: 100ms;
-    &:hover {
-      background-color: ${({ $visiting }) => !$visiting && "#f3f3f3"};
-    }
     @media ${DEVICE_SIZE.laptop} {
       flex-direction: column;
       width: fit-content;
@@ -211,7 +207,7 @@ const S = {
     display: flex;
     flex-direction: column;
     gap: 36px;
-    background: #fafafa;
+    background: ${COLOR.BACKGROUND_LIGHT};
     padding: 36px 63px;
     border-left: 1px solid ${COLOR.DISABLED};
     overflow: auto;

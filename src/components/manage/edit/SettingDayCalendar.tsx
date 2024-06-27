@@ -93,13 +93,13 @@ const CalendarContainer = styled.div<{ $isClosed: boolean }>`
   .react-calendar {
     border-radius: 0.5rem;
     border: none;
-    box-shadow: 0 0 10px #d0d0d0;
+    box-shadow: 0 0 10px ${COLOR.DISABLED};
     overflow: hidden;
   }
   .react-calendar__tile--now {
     background: ${COLOR.LIGHT_MAIN};
     &:hover {
-      background: #c8dfff;
+      background: ${COLOR.LIGHT_MAIN};
     }
   }
   @media ${DEVICE_SIZE.mobileLarge} {

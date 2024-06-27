@@ -136,7 +136,7 @@ const S = {
   `,
   Row: styled.div`
     border: 1px solid ${COLOR.DISABLED};
-    background: #fafafa;
+    background: ${COLOR.BACKGROUND_LIGHT};
     border-radius: 12px;
     padding: 16px;
     display: flex;

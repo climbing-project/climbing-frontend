@@ -29,7 +29,7 @@ const S = {
     display: flex;
     align-items: center;
     gap: 6px;
-    background: #fafafa;
+    background: ${COLOR.BACKGROUND_LIGHT};
     border-radius: 8px;
     border: 1px solid ${COLOR.DISABLED};
     padding: 12px 18px;

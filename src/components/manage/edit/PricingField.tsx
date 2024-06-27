@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import { PRICE_REGEX } from "@/constants/manage/constants";
+import { COLOR } from "@/styles/global-color";
+import { DEVICE_SIZE } from "@/constants/styles";
 import type { PricingFieldProps } from "@/constants/manage/types";
 
 const PricingField = ({ index, item, price, handleChange }: PricingFieldProps) => {
@@ -44,20 +46,28 @@ const S = {
   Wrapper: styled.div`
     display: flex;
     gap: 20px;
+    @media ${DEVICE_SIZE.laptop} {
+      flex-direction: column;
+      gap: 0.75rem;
+      width: 100%;
+    }
   `,
   Block: styled.div`
     display: flex;
     flex-direction: column;
     gap: 8px;
+    @media ${DEVICE_SIZE.laptop} {
+      gap: 0.3rem;
+    }
   `,
   TextField: styled.div<{ $width?: number }>`
     box-sizing: border-box;
     display: flex;
     align-items: center;
-    background: #fafafa;
-    color: #666666;
+    background: ${COLOR.BACKGROUND_LIGHT};
+    color: ${COLOR.BACKGROUND_DARK};
     border-radius: 8px;
-    border: 1px solid #d0d0d0;
+    border: 1px solid ${COLOR.DISABLED};
     padding: 12px 18px;
     width: ${({ $width }) => ($width ? `${$width}px` : "")};
     gap: 4px;
@@ -69,10 +79,13 @@ const S = {
       background: transparent;
       width: 100%;
       padding: 0px;
-      color: #666666;
+      color: ${COLOR.BACKGROUND_DARK};
     }
     input:focus {
       color: black;
+    }
+    @media ${DEVICE_SIZE.laptop} {
+      width: inherit;
     }
   `,
 };

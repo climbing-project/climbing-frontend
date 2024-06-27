@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { FaCalendarDay } from "react-icons/fa";
 import { getDateObject } from "./SettingDayEditor";
 import { COLOR } from "@/styles/global-color";
+import { DEVICE_SIZE } from "@/constants/styles";
 import type { SettingDayCalendarProps, Value } from "@/constants/manage/types";
 import "react-calendar/dist/Calendar.css";
 
@@ -59,7 +60,7 @@ const SettingDayCalendar = ({ setNewData }: SettingDayCalendarProps) => {
           <FaCalendarDay size="1.3rem" />
         </Icon>
       </div>
-      <CalendarContainer>
+      <CalendarContainer $isClosed={isClosed}>
         <Calendar
           className={isClosed ? "closed" : null}
           onChange={handleChange}
@@ -77,9 +78,12 @@ const Background = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
+  @media ${DEVICE_SIZE.mobileLarge} {
+    background: rgba(0, 0, 0, 0.5);
+  }
 `;
 
-const CalendarContainer = styled.div`
+const CalendarContainer = styled.div<{ $isClosed: boolean }>`
   position: absolute;
   bottom: 85px;
   left: 190px;
@@ -89,14 +93,30 @@ const CalendarContainer = styled.div`
   .react-calendar {
     border-radius: 0.5rem;
     border: none;
-    box-shadow: 0 0 10px #d0d0d0;
+    box-shadow: 0 0 10px ${COLOR.DISABLED};
     overflow: hidden;
   }
   .react-calendar__tile--now {
     background: ${COLOR.LIGHT_MAIN};
     &:hover {
-      background: #c8dfff;
+      background: ${COLOR.LIGHT_MAIN};
     }
+  }
+  @media ${DEVICE_SIZE.mobileLarge} {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 30;
+    background: white;
+    padding: 1.5rem 0;
+    border-radius: 1rem 1rem 0 0;
+    display: flex;
+    justify-content: center;
+    .react-calendar {
+      box-shadow: none;
+    }
+    ${({ $isClosed }) => $isClosed && "display: none;"}
   }
 `;
 

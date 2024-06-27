@@ -6,8 +6,10 @@ import ImageList from "./ImageList";
 import ImageUploader from "./ImageUploader";
 import useS3, { FOLDER_NAME, THUMBNAIL_PREFIX } from "../../../hooks/useS3";
 import { checkImageValidity } from "@/components/gyms/ImageCarousel";
-import type { ImageEditorProps } from "@/constants/manage/types";
 import { IMG_URL_REGEX } from "@/constants/manage/constants";
+import { COLOR } from "@/styles/global-color";
+import { DEVICE_SIZE } from "@/constants/styles";
+import type { ImageEditorProps } from "@/constants/manage/types";
 
 const ImageEditor = ({
   images,
@@ -94,10 +96,13 @@ const ImageEditor = ({
           )}
         </S.Row>
         <S.Row>
-          <strong>
+          <strong className="desktop-view">
             추가 이미지
             <br />
             {validThumbnails ? validThumbnails.length : 0}/10
+          </strong>
+          <strong className="mobile-view">
+            추가 이미지 ({validThumbnails ? validThumbnails.length : 0}/10)
           </strong>
           {validThumbnails ? (
             <>
@@ -127,14 +132,26 @@ const S = {
       flex-shrink: 0;
       margin-right: 20px;
     }
+    @media ${DEVICE_SIZE.laptop} {
+      flex-direction: column;
+      gap: 0.5rem;
+      strong {
+        margin-right: 0;
+      }
+      width: 100%;
+    }
   `,
   Image: styled.div`
     position: relative;
-    border: 1px solid #d0d0d0;
+    border: 1px solid ${COLOR.DISABLED};
     width: 462px;
     height: 215px;
     img {
       object-fit: cover;
+      width: inherit;
+    }
+    @media ${DEVICE_SIZE.mobileLarge} {
+      width: inherit;
     }
   `,
   DeleteButton: styled.div`

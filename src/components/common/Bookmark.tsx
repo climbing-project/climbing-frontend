@@ -38,24 +38,20 @@ const Bookmark = ({ token, gymId, size }: BookmarkProps) => {
   const handleClick = (e: { stopPropagation: () => void }) => {
     e.stopPropagation();
 
-    try {
-      if (token) {
-        const onSuccess = (data: { status: boolean }) => {
-          setIsMarked(data.status);
-        };
+    if (token) {
+      const onSuccess = (data: { status: boolean }) => {
+        setIsMarked(data.status);
+      };
 
-        requestData({
-          option: "POST",
-          url: `/gyms/${gymId}/bookmark`,
-          token: `${token}`,
-          hasBody: true,
-          onSuccess,
-        });
-      } else {
-        router.push("/login");
-      }
-    } catch (error) {
-      console.error("북마크 POST 에러", error);
+      requestData({
+        option: "POST",
+        url: `/gyms/${gymId}/bookmark`,
+        token: `${token}`,
+        hasBody: true,
+        onSuccess,
+      });
+    } else {
+      router.push("/login");
     }
   };
 

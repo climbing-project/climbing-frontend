@@ -125,7 +125,7 @@ const ChatPopup: NextPageWithLayout = ({
 
 const S = {
   Wrapper: styled.div`
-    height: 100vh;
+    height: 100dvh;
   `,
   Header: styled.div`
     display: grid;

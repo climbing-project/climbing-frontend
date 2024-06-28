@@ -35,9 +35,9 @@ const ManageHome = () => {
             ) : (
               <S.Message>현재 관리하고 있는 암장이 없습니다.</S.Message>
             )}
-            <S.Btn>
-              <Link href="/manage/register">새 암장 등록</Link>
-            </S.Btn>
+            <Link href="/manage/register">
+              <S.Btn>새 암장 등록</S.Btn>
+            </Link>
           </S.Wrapper>
         </>
       )}
@@ -63,6 +63,7 @@ const S = {
   `,
   Btn: styled.div`
     background: ${COLOR.MAIN};
+    color: #fff;
     padding: 1rem;
     border-radius: 12px;
     display: grid;
@@ -71,9 +72,6 @@ const S = {
     margin: auto;
     margin-top: 2rem;
     cursor: pointer;
-    a {
-      color: white;
-    }
   `,
 };
 

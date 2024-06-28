@@ -31,7 +31,7 @@ const GeneralLogin = () => {
           refreshToken: user.jwt.refreshToken,
           loginType: "general",
           redirect: true,
-          callbackUrl: "/",
+          callbackUrl: callbackUrl,
         });
       } else {
         // 로그인 에러시

@@ -47,7 +47,7 @@ jobs:
           echo "NEXT_PUBLIC_ACCESS_KEY=$NEXT_PUBLIC_ACCESS_KEY" >> .env
           echo "NEXT_PUBLIC_SECRET_ACCESS_KEY=$NEXT_PUBLIC_SECRET_ACCESS_KEY" >> .env
           echo "NEXT_PUBLIC_KAKAO_REST_API=$NEXT_PUBLIC_KAKAO_REST_API" >> .env
-          echo "NEXTAUTH_URL=$NEXT_PUBLIC_KAKAO_REST_API" >> .env
+          echo "NEXTAUTH_URL=$NEXTAUTH_URL" >> .env
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"

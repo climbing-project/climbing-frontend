@@ -15,6 +15,7 @@ import { NavContext, type NavStateProps } from "@/NavContext";
 import { requestData } from "@/service/api";
 import { SERVER_ADDRESS } from "@/constants/constants";
 import { UNKNOWN_ERROR } from "@/constants/manage/constants";
+import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import type { GymData, GymDataObject } from "@/constants/gyms/types";
 
 const AccommodationsEditor = lazy(() => import("@/components/manage/edit/AccommodationsEditor"));
@@ -27,10 +28,9 @@ const isEdited = (oldData: any, newData: any) => {
   return JSON.stringify(oldData) !== JSON.stringify(newData);
 };
 
-const EditPage = () => {
+const EditPage = ({ id, p }: InferGetServerSidePropsType<GetServerSideProps>) => {
   const { data: session } = useSession();
   const router = useRouter();
-  const { id, p } = router.query;
   const [currentData, setCurrentData] = useState<GymData | null>(null);
   const [loadedData, setLoadedData] = useState<GymData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -41,7 +41,6 @@ const EditPage = () => {
 
   useEffect(() => {
     if (!isLoading) return;
-
     requestData({
       option: "GET",
       url: `/gyms/${id}`,
@@ -71,7 +70,7 @@ const EditPage = () => {
     router.events.on("routeChangeStart", handlePageLeave);
     return () => router.events.off("routeChangeStart", handlePageLeave);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [session, router]);
+  }, [router]);
 
   useEffect(() => {
     tracker.current = isEdited(loadedData, currentData) ? "edited" : null;
@@ -81,6 +80,7 @@ const EditPage = () => {
   useEffect(() => {
     if (selectedGymId !== null && selectedGymId !== id) {
       router.push(`/manage/edit/${selectedGymId}?p=${p}`);
+      setIsLoading(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedGymId]);
@@ -123,7 +123,8 @@ const EditPage = () => {
   };
 
   const handleSave = async () => {
-    if (tracker.current !== "edited" || !session) return;
+    if (!session) return alert("로그인 세션이 만료되었습니다. 다시 로그인해 주세요.");
+    if (tracker.current !== "edited") return;
     setIsUpdating(true);
     const token = session.jwt.accessToken;
 
@@ -147,8 +148,8 @@ const EditPage = () => {
     });
   };
 
-  return (
-    <ErrorBoundary FallbackComponent={ErrorFallback}>
+  if (isLoading || !currentData)
+    return (
       <ManageLayout>
         <h1 className="desktop-view" style={{ margin: 0 }}>
           {p === "2" ? "상세 정보 수정" : "기본 정보 수정"}
@@ -156,20 +157,24 @@ const EditPage = () => {
         <h2 className="mobile-view" style={{ margin: 0 }}>
           {p === "2" ? "상세 정보 수정" : "기본 정보 수정"}
         </h2>
-        {isLoading ? (
-          <LoadContainer>
-            <BarLoader />
-          </LoadContainer>
-        ) : p === "2" ? (
+        <LoadContainer>
+          <BarLoader />
+        </LoadContainer>
+      </ManageLayout>
+    );
+  return (
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
+      <ManageLayout>
+        {p === "2" ? (
           <>
-            <PricingEditor pricingList={currentData?.pricing} setNewData={setNewData} />
-            <OpenHoursEditor openHoursList={currentData?.openHours} setNewData={setNewData} />
+            <PricingEditor pricingList={currentData.pricing} setNewData={setNewData} />
+            <OpenHoursEditor openHoursList={currentData.openHours} setNewData={setNewData} />
             <AccommodationsEditor
-              accommodationsList={currentData?.accommodations}
+              accommodationsList={currentData.accommodations}
               setNewData={setNewData}
             />
-            <GradeEditor gradesList={currentData?.grades} setNewData={setNewData} />
-            <SettingDayEditor date={currentData?.latestSettingDay} setNewData={setNewData} />
+            <GradeEditor gradesList={currentData.grades} setNewData={setNewData} />
+            <SettingDayEditor date={currentData.latestSettingDay} setNewData={setNewData} />
             <Button>
               <button className="btn-primary" onClick={handleSave} disabled={isUpdating}>
                 {isUpdating ? "저장중..." : "저장하기"}
@@ -179,21 +184,21 @@ const EditPage = () => {
         ) : (
           <>
             <ImageEditor
-              images={currentData?.images}
-              defaultImage={currentData?.defaultImage}
+              images={currentData.images}
+              defaultImage={currentData.defaultImage}
               setCurrentData={setCurrentData}
               setLoadedData={setLoadedData}
               updateImageData={updateImageData}
             />
             <BasicInfoEditor
-              name={currentData?.name}
-              address={currentData?.address}
-              contact={currentData?.contact}
-              snsList={currentData?.sns}
-              homepage={currentData?.homepage}
+              name={currentData.name}
+              address={currentData.address}
+              contact={currentData.contact}
+              snsList={currentData.sns}
+              homepage={currentData.homepage}
               setNewData={setNewData}
             />
-            <DescriptionEditor description={currentData?.description} setNewData={setNewData} />
+            <DescriptionEditor description={currentData.description} setNewData={setNewData} />
             <Button>
               <button className="btn-primary" onClick={handleSave} disabled={isUpdating}>
                 {isUpdating ? "저장중..." : "저장하기"}
@@ -204,6 +209,12 @@ const EditPage = () => {
       </ManageLayout>
     </ErrorBoundary>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const id = context.query.id;
+  const p = context.query.p;
+  return { props: { id, p } };
 };
 
 const Button = styled.div`

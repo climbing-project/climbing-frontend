@@ -21,23 +21,21 @@ const AccommodationsEditor = ({ accommodationsList, setNewData }: Accommodations
     <div className="editor-wrapper">
       <div className="editor-header">시설 정보</div>
       <S.Wrapper>
-        {ACCOMMODATIONS_LIST.map((text, i) => (
-          <S.TextField
-            key={i}
-            onClick={(e) => {
-              const input = (e.target as HTMLElement).firstElementChild as HTMLInputElement;
-              handleChange(input, input.name, input.checked);
-            }}
-          >
-            <input
-              type="checkbox"
-              name={text}
-              checked={accommodationsList?.includes(text)}
-              readOnly
-            />
-            <span>{text}</span>
-          </S.TextField>
-        ))}
+        {ACCOMMODATIONS_LIST.map((text, i) => {
+          const checked = accommodationsList?.includes(text) ?? false;
+          return (
+            <S.TextField
+              key={i}
+              onClick={(e) => {
+                const input = (e.target as HTMLElement).firstElementChild as HTMLInputElement;
+                handleChange(input, input.name, input.checked);
+              }}
+            >
+              <input type="checkbox" name={text} checked={checked} readOnly />
+              <span>{text}</span>
+            </S.TextField>
+          );
+        })}
       </S.Wrapper>
     </div>
   );

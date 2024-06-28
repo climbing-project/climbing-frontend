@@ -1,12 +1,12 @@
-import { SERVER_ADDRESS } from "@/constants/constants";
-import { requestData } from "@/service/api";
-import getUpdatedToken from "@/service/api/updateToken";
+// import { SERVER_ADDRESS } from "@/constants/constants";
+// import { requestData } from "@/service/api";
+// import getUpdatedToken from "@/service/api/updateToken";
 import { jwtVerify } from "jose";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 export default NextAuth({
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.JWT_SECRET,
   providers: [
     //자체 로그인
     CredentialsProvider({
@@ -96,6 +96,7 @@ export default NextAuth({
   callbacks: {
     // 로그인 시 return한 값이 user로 들어옴
     async jwt({ token, user }) {
+      const expireDate = 3000;
       // 로그인 시
       if (user) {
         return {
@@ -104,10 +105,10 @@ export default NextAuth({
           jwt: user.jwt,
         };
       } else {
-        const textEncoder = new TextEncoder();
-        const secret = textEncoder.encode(process.env.JWT_SECRET);
-        const { payload } = await jwtVerify(token.jwt.accessToken, secret);
-        const expireDate = payload.exp! * 1000;
+        // const textEncoder = new TextEncoder();
+        // const secret = textEncoder.encode(process.env.JWT_SECRET);
+        // const { payload } = await jwtVerify(token.jwt.accessToken, secret);
+        // const expireDate = payload.exp! * 1000;
 
         if (Date.now() < expireDate) {
           // 액세스 토큰 만료 전

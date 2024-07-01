@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 import { ErrorBoundary } from "react-error-boundary";
 import styled from "styled-components";
 import { BarLoader } from "react-spinners";
-import { IoTrash } from "react-icons/io5";
 import Comment from "@/components/manage/comments/Comment";
 import LoadContainer from "@/components/manage/LoadContainer";
 import ManageLayout from "@/components/manage/ManageLayout";
@@ -12,7 +11,6 @@ import ErrorFallback from "@/components/common/ErrorFallback";
 import { requestData } from "@/service/api";
 import { NavContext, type NavStateProps } from "@/NavContext";
 import { SERVER_ADDRESS } from "@/constants/constants";
-import { COLOR } from "@/styles/global-color";
 import { DEVICE_SIZE } from "@/constants/styles";
 import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import type { UserComment } from "@/constants/gyms/types";
@@ -25,13 +23,12 @@ const CommentsPage = ({ id }: InferGetServerSidePropsType<GetServerSideProps>) =
   const { selectedGymId } = useContext(NavContext) as NavStateProps;
 
   useEffect(() => {
+    if (!session || !isLoading) return;
     requestData({
       option: "GET",
-      url: `/gyms/${id}`, // 백엔드 확정 시 수정 필요
-      onSuccess: (data) => {
-        const comments = data.comments ?? [];
-        setComments(comments);
-      },
+      url: `/manage/gyms/${id}/comments`,
+      token: session.jwt.accessToken,
+      onSuccess: (comments: UserComment[]) => setComments(comments),
       onError: (e) => {
         console.log(e);
         setComments([]);
@@ -39,7 +36,7 @@ const CommentsPage = ({ id }: InferGetServerSidePropsType<GetServerSideProps>) =
     });
     setIsLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router]);
+  }, [session, router]);
 
   useEffect(() => {
     if (selectedGymId !== null && selectedGymId !== id) {
@@ -95,11 +92,8 @@ const CommentsPage = ({ id }: InferGetServerSidePropsType<GetServerSideProps>) =
           <div className="editor-wrapper">
             <S.Content $direction="column">
               {comments.length > 0 ? (
-                comments.map(({ user, createdAt, text }, i) => (
-                  <S.Row key={i}>
-                    <Comment user={user} createdAt={createdAt} text={text} />
-                    <S.Icon size="1.3rem" onClick={() => handleDelete(i)} />
-                  </S.Row>
+                comments.map((comment) => (
+                  <Comment comment={comment} key={comment.id} handleDelete={handleDelete} />
                 ))
               ) : (
                 <div>관리할 댓글이 없습니다.</div>
@@ -133,20 +127,6 @@ const S = {
     &:hover {
       color: #1aabff;
     }
-  `,
-  Row: styled.div`
-    border: 1px solid ${COLOR.DISABLED};
-    background: ${COLOR.BACKGROUND_LIGHT};
-    border-radius: 12px;
-    padding: 16px;
-    display: flex;
-    gap: 36px;
-    @media ${DEVICE_SIZE.laptop} {
-      gap: 0;
-    }
-  `,
-  Icon: styled(IoTrash)`
-    cursor: pointer;
   `,
 };
 

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import router from "next/router";
 import Image from "next/image";
 import img from "../../../public/magnifier.png";
+import { DEVICE_SIZE } from "@/constants/styles";
 import { SearchBannerProps } from "@/constants/search/types";
 import { COLOR } from "@/styles/global-color";
 import { DISTRCIT_CITY_DATA } from "@/constants/search/constants";
@@ -32,7 +33,7 @@ const SearchBanner = ({ searchWord }: SearchBannerProps) => {
           width="450px"
           height="40px"
           postfixIcon={<IoSearch size="23" color={COLOR.MAIN} />}
-          placeholder="주소 또는 암벽장을 입력하면 실내암벽장을 찾아드려요."
+          placeholder="주소 또는 암벽장을 입력하세요."
           onSubmit={handleSubmit}
           useLocation={true}
           border={"3px solid " + COLOR.LIGHT_MAIN}
@@ -72,7 +73,11 @@ const Styled = {
     display: flex;
     flex-direction: column;
   `,
-  ImageWrapper: styled.div``,
+  ImageWrapper: styled.div`
+    @media ${DEVICE_SIZE.tablet} {
+      display: none;
+    }
+  `,
 };
 
 export default SearchBanner;

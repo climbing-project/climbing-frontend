@@ -6,6 +6,7 @@ import { COLOR } from "@/styles/global-color";
 import DropDown from "./DropDown";
 import { SearchProps } from "@/constants/search/types";
 import CurrentLocationBtn from "../search/CurrentLocationBtn";
+import { DEVICE_SIZE } from "@/constants/styles";
 
 const Search = ({
   dataList,
@@ -128,6 +129,9 @@ const Styled = {
     background-color: white;
     position: relative;
     ${(props) => props.width && `width: ${props.width};`}
+    @media ${DEVICE_SIZE.mobileLarge} {
+      width: auto;
+    }
   `,
   Form: styled.form<{
     $border?: string;
@@ -152,6 +156,9 @@ const Styled = {
     outline: none; // input 포커스시의 볼더 없애기
     width: 95%;
     ${(props) => props.fontSize && `font-size: ${props.fontSize};`}
+    @media ${DEVICE_SIZE.mobileLarge} {
+      font-size: 1rem;
+    }
   `,
 };
 

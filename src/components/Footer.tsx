@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import { FaRegHandRock } from "react-icons/fa";
 import { COLOR } from "@/styles/global-color";
+import { DEVICE_SIZE } from "@/constants/styles";
 
 // footer가 적용될 페이지(모두 양옆 마진 붙음)
 const footerPage = ["/home", "/gyms"];
@@ -53,6 +54,9 @@ const S = {
       $needMargin === true ? "10%" : "30px"};
     padding-right: ${({ $needMargin }) =>
       $needMargin === true ? "10%" : "20px"};
+    /* @media ${DEVICE_SIZE.mobileLarge} {
+      display: none;
+    } */
   `,
   TitleContainer: styled.a`
     display: flex;

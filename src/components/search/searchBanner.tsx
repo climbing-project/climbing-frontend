@@ -60,12 +60,19 @@ const Styled = {
     font-size: 40px;
     margin-bottom: 10px;
     font-weight: bold;
+    @media ${DEVICE_SIZE.mobileSmall} {
+      font-size: 2rem;
+    }
   `,
   Title2: styled.div`
     font-size: 40px;
     margin-bottom: 30px;
     font-weight: bold;
     color: ${COLOR.MAIN};
+    @media ${DEVICE_SIZE.mobileSmall} {
+      font-size: 2rem;
+      margin-bottom: 5px;
+    }
   `,
   SearchContainer: styled.div`
     margin-top: 20px;

@@ -55,7 +55,11 @@ const Search = ({
   }, [searchRef]);
 
   return (
-    <Styled.Wrapper width={width} ref={searchRef}>
+    <Styled.Wrapper
+      width={width}
+      ref={searchRef}
+      $needChangeWidth={!useLocation}
+    >
       {useLocation && <CurrentLocationBtn fontSize="17px" />}
       <Styled.Form
         className={isInputFocus ? "container" : ""}
@@ -124,11 +128,15 @@ const Search = ({
 const Styled = {
   Wrapper: styled.div<{
     width?: string;
+    $needChangeWidth?: boolean;
   }>`
     border-radius: 5px;
     background-color: white;
     position: relative;
     ${(props) => props.width && `width: ${props.width};`}
+    @media ${DEVICE_SIZE.laptop} {
+      ${(props) => props.$needChangeWidth && `width: 400px;`}
+    }
     @media ${DEVICE_SIZE.mobileLarge} {
       width: auto;
     }

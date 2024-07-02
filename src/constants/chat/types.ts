@@ -7,7 +7,7 @@ export type FetchedChatroom = {
 
 export interface ChatModalProps {
   gymId: string;
-  gymName: string;
+  gymName: string | undefined;
 }
 
 export interface SocketProps {

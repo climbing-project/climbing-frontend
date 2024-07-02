@@ -1,61 +1,59 @@
-import { useEffect } from "react";
-import styled from "styled-components";
-import { DEVICE_SIZE } from "@/constants/styles";
-import { COLOR } from "@/styles/global-color";
+/* eslint-disable @next/next/no-img-element */
+import { useEffect, useState } from "react";
+import { NAVERMAP_STATIC_API } from "@/constants/constants";
 import type { MapProps } from "@/constants/gyms/types";
 
-const getMap = (name: string, lat: number, lng: number) => {
-  const position = new naver.maps.LatLng(lat, lng);
-  const map = new naver.maps.Map("map", {
-    center: position,
-    zoom: 16,
-  });
-  const marker = new naver.maps.Marker({
-    position,
-    map,
-  });
-  const infoWindowElem = `<div class="infowindow">${name}</div>`;
-  const infoWindow = new naver.maps.InfoWindow({
-    content: infoWindowElem,
-    borderWidth: 0,
-    backgroundColor: "transparent",
-    disableAnchor: true,
-  });
-  const startingPosition = map.getBounds();
-
-  const onMarkerClick = () => {
-    map.fitBounds(startingPosition);
-  };
-
-  infoWindow.open(map, marker);
-  naver.maps.Event.addListener(marker, "click", onMarkerClick);
+const MAP_SIZES = {
+  mobile: {
+    width: 280,
+    height: 200,
+  },
+  tablet: {
+    width: 560,
+    height: 400,
+  },
+  desktop: {
+    width: 716,
+    height: 400,
+  },
 };
 
-const DynamicMap = ({ name, coordinates }: MapProps) => {
-  const { latitude, longitude } = coordinates;
+const DynamicMap = ({ isLoading, name, coordinates }: MapProps) => {
+  const [staticImg, setstaticImg] = useState<null | string>(null);
 
   useEffect(() => {
-    getMap(name, latitude, longitude);
-  }, [name, latitude, longitude]);
+    if (!name || !coordinates || isLoading || !window) return;
+    const { latitude, longitude } = coordinates;
+    const encodedName = encodeURIComponent(name);
+    const viewportWidth = window.innerWidth;
+    let imageUrl;
 
-  return <S.Wrapper id="map" />;
-};
+    // Naver StaticMap API를 한번만 호출하기 때문에 렌더링 당시의 viewport 너비에 따라 고정된 이미지 사이즈를 가져옴
+    if (viewportWidth <= 600) {
+      const WIDTH = MAP_SIZES.mobile.width;
+      const HEIGHT = MAP_SIZES.mobile.height;
+      imageUrl = `${NAVERMAP_STATIC_API}w=${WIDTH}&h=${HEIGHT}&markers=type:t|size:small|color:blue|label:${encodedName}|pos:${longitude}%20${latitude}&X-NCP-APIGW-API-KEY-ID=lm660e08li`;
+    } else if (viewportWidth <= 900) {
+      const WIDTH = MAP_SIZES.tablet.width;
+      const HEIGHT = MAP_SIZES.tablet.height;
+      imageUrl = `${NAVERMAP_STATIC_API}w=${WIDTH}&h=${HEIGHT}&markers=type:t|size:small|color:blue|label:${encodedName}|pos:${longitude}%20${latitude}&X-NCP-APIGW-API-KEY-ID=lm660e08li`;
+    } else {
+      const WIDTH = MAP_SIZES.desktop.width;
+      const HEIGHT = MAP_SIZES.desktop.height;
+      imageUrl = `${NAVERMAP_STATIC_API}w=${WIDTH}&h=${HEIGHT}&markers=type:t|size:small|color:blue|label:${encodedName}|pos:${longitude}%20${latitude}&format=png&X-NCP-APIGW-API-KEY-ID=lm660e08li`;
+    }
 
-const S = {
-  Wrapper: styled.div`
-    width: 100%;
-    height: 400px;
-    @media ${DEVICE_SIZE.mobileLarge} {
-      height: 200px;
-    }
-    .infowindow {
-      border-radius: 0.5rem;
-      background: ${COLOR.MAIN};
-      margin-bottom: 0.3rem;
-      padding: 0.5rem;
-      color: white;
-    }
-  `,
+    setstaticImg(imageUrl);
+  }, [name, coordinates, isLoading]);
+
+  if (isLoading) return <div className="skeleton map-container" />;
+  if (staticImg)
+    return (
+      <div className="map-container">
+        <img src={staticImg} alt="암장 지도" />
+      </div>
+    );
+  return null;
 };
 
 export default DynamicMap;

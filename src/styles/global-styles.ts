@@ -2,6 +2,7 @@ import { createGlobalStyle } from "styled-components";
 import { normalize } from "styled-normalize";
 import { COLOR } from "./global-color";
 import { DEVICE_SIZE } from "@/constants/styles";
+import { IMAGE_SIZE } from "@/constants/gyms/constants";
 
 const GlobalStyle = createGlobalStyle`
 ${normalize}
@@ -23,6 +24,44 @@ ${normalize}
     border-radius: 5px;
     overflow: hidden;
     box-shadow: 0 0 10px #d0d0d0;
+  }
+
+  .skeleton {
+    background: yellow;
+  }
+
+  .map-container {
+    width: 100%;
+    height: 400px;
+    @media ${DEVICE_SIZE.mobileLarge} {
+      height: 200px;
+    }
+    overflow: hidden;
+    display: grid;
+    place-content: center;
+  }
+
+  .image-container {
+    overflow: hidden;
+    border-radius: 8px;
+    width: ${IMAGE_SIZE.desktop.width + "px"};
+    height: ${IMAGE_SIZE.desktop.height + "px"};
+    @media ${DEVICE_SIZE.laptop} {
+      width: ${IMAGE_SIZE.laptop.width + "px"};
+      height: ${IMAGE_SIZE.laptop.height + "px"};
+    }
+    @media ${DEVICE_SIZE.tablet} {
+      width: ${IMAGE_SIZE.tablet.width + "px"};
+      height: ${IMAGE_SIZE.tablet.height + "px"};
+    }
+    @media ${DEVICE_SIZE.mobileLarge} {
+      width: ${IMAGE_SIZE.mobileLarge.width + "px"};
+      height: ${IMAGE_SIZE.mobileLarge.height + "px"};
+    }
+    @media ${DEVICE_SIZE.mobileSmall} {
+      width: ${IMAGE_SIZE.mobileSmall.width + "px"};
+      height: ${IMAGE_SIZE.mobileSmall.height + "px"};
+    }
   }
 
   .btn-primary {

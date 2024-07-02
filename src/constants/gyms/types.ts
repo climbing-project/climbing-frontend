@@ -75,12 +75,12 @@ export type SnsList = {
   instagram?: string;
 };
 
-export type UserComment = { user: string; createdAt: string; text: string };
+export type UserComment = { id: number; user: string; createdAt: string; text: string };
 
 // 컴포넌트 props 타입 정의
 export interface CommentsProps {
   id: string;
-  comments: UserComment[] | null;
+  comments: UserComment[] | null | undefined;
   session: Session | null;
 }
 
@@ -89,34 +89,36 @@ export interface CommentTextareaProps {
 }
 
 export interface ContactInfoProps {
-  contact: string;
-  snsList: SnsList | null;
+  contact: string | undefined;
+  snsList: SnsList | null | undefined;
 }
 
 export interface GradeBarProps {
-  grades: string[] | null;
+  grades: string[] | null | undefined;
 }
 
 export interface ImageCarouselProps {
-  defaultImage: string | null;
-  imageList: string[] | null;
+  isLoading: boolean;
+  defaultImage: string | null | undefined;
+  imageList: string[] | null | undefined;
 }
 
 export interface MapProps {
-  name: string;
-  coordinates: MapCoordinates;
+  isLoading: boolean;
+  name: string | undefined;
+  coordinates: MapCoordinates | undefined;
 }
 
 export interface OpenHoursTableProps {
-  openHours: Array<OpenHours> | null;
+  openHours: Array<OpenHours> | null | undefined;
 }
 
 export interface PricingTableProps {
-  pricing: Array<Pricing> | null;
+  pricing: Array<Pricing> | null | undefined;
 }
 
 export interface TagListProps {
-  tags: string[] | null;
+  tags: string[] | null | undefined;
 }
 
 export interface TagProps {

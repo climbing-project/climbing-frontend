@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import styled from "styled-components";
-import { BarLoader } from "react-spinners";
 import Comments from "@/components/gyms/Comments";
 import DynamicMap from "@/components/gyms/DynamicMap";
 import ErrorPage from "@/components/common/ErrorPage";
@@ -12,7 +11,6 @@ import SideContent from "@/components/gyms/SideContent";
 import useApi from "@/hooks/useApi";
 import { requestData } from "@/service/api";
 import { IMAGE_SIZE } from "@/constants/gyms/constants";
-import { NAVERMAP_API } from "@/constants/constants";
 import { DEVICE_SIZE } from "@/constants/styles";
 import type { GymData } from "@/constants/gyms/types";
 import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
@@ -22,7 +20,6 @@ const GymInfo = ({ id }: InferGetServerSidePropsType<GetServerSideProps>) => {
   const [gymData, setGymData] = useState<null | GymData>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
-  const { isLoading: isLoadingMap } = useApi(NAVERMAP_API);
 
   useEffect(() => {
     if (!isLoading) return;
@@ -41,36 +38,38 @@ const GymInfo = ({ id }: InferGetServerSidePropsType<GetServerSideProps>) => {
     setIsLoading(false);
   }, [isLoading, id]);
 
+  if (isError) return <ErrorPage statusCode={500} />;
   return (
-    <S.Page>
-      {isLoading ? (
-        <BarLoader />
-      ) : isError || !gymData ? (
-        <ErrorPage statusCode={500} />
-      ) : (
-        <>
-          <S.Wrapper>
-            <ImageCarousel defaultImage={gymData.defaultImage} imageList={gymData.images} />
-            <S.InfoContainer>
-              <S.Main>
-                <MainContent gymData={gymData} />
-                {!isLoadingMap && (
-                  <DynamicMap name={gymData.name} coordinates={gymData.coordinates} />
-                )}
-              </S.Main>
-              <SideContent gymData={gymData} />
-            </S.InfoContainer>
-            <Comments
-              key={gymData.id}
-              id={gymData.id}
-              comments={gymData.comments}
-              session={session}
+    <div style={{ display: "grid", placeContent: "center" }}>
+      <S.Wrapper style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <ImageCarousel
+          isLoading={isLoading}
+          defaultImage={gymData?.defaultImage}
+          imageList={gymData?.images}
+        />
+        <S.InfoContainer>
+          <S.Main
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              boxSizing: "border-box",
+              flex: "1 0 0",
+              gap: "36px",
+            }}
+          >
+            <MainContent isLoading={isLoading} gymData={gymData} />
+            <DynamicMap
+              isLoading={isLoading}
+              name={gymData?.name}
+              coordinates={gymData?.coordinates}
             />
-          </S.Wrapper>
-          <ChatModal key={gymData.id} gymId={gymData.id} gymName={gymData.name} />
-        </>
-      )}
-    </S.Page>
+          </S.Main>
+          <SideContent gymData={gymData} />
+        </S.InfoContainer>
+        <Comments key={id} id={id} comments={gymData?.comments} session={session} />
+      </S.Wrapper>
+      {!isLoading && <ChatModal key={id} gymId={id} gymName={gymData?.name} />}
+    </div>
   );
 };
 
@@ -80,14 +79,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 const S = {
-  Page: styled.div`
-    display: grid;
-    place-content: center;
-  `,
   Wrapper: styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     width: ${IMAGE_SIZE.desktop.width + "px"};
     .address {
       display: flex;
@@ -116,7 +108,7 @@ const S = {
       white-space: break-spaces;
     }
     @media ${DEVICE_SIZE.laptop} {
-      width: ${IMAGE_SIZE.laptop.width + "px"};
+      width: 850px;
     }
     @media ${DEVICE_SIZE.tablet} {
       width: ${IMAGE_SIZE.tablet.width + "px"};
@@ -147,11 +139,6 @@ const S = {
     }
   `,
   Main: styled.div`
-    box-sizing: border-box;
-    flex: 1 0 0;
-    display: flex;
-    flex-direction: column;
-    gap: 36px;
     @media (min-width: 1281px) {
       padding: 0px 18px;
     }

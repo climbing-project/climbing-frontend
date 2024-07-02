@@ -38,6 +38,11 @@ const nextConfig = {
         port: "",
         pathname: "/bubu/*",
       },
+      {
+        protocol: "https",
+        hostname: "naveropenapi.apigw.ntruss.com",
+        port: "",
+      },
     ],
   },
 };

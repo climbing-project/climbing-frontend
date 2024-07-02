@@ -17,9 +17,11 @@ export const checkImageValidity = (images: string[]) => {
   return true;
 };
 
-const ImageCarousel = ({ defaultImage, imageList }: ImageCarouselProps) => {
+const ImageCarousel = ({ isLoading, defaultImage, imageList }: ImageCarouselProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  if (isLoading) return <div className="skeleton image-container" />;
   if (!defaultImage && (!imageList || imageList.length < 1)) return null;
+
   const images = imageList ? [defaultImage, ...imageList] : [defaultImage];
   const validImages: string[] = [];
   images.forEach((img) => {
@@ -27,9 +29,10 @@ const ImageCarousel = ({ defaultImage, imageList }: ImageCarouselProps) => {
     const url = img.toLowerCase();
     if (IMG_URL_REGEX.test(url)) validImages.push(img);
   });
+
   if (validImages.length < 1) return null;
   return (
-    <S.Wrapper>
+    <div className="image-container">
       <S.Overlay>
         <S.OverlayButtons>
           <S.Button
@@ -63,29 +66,11 @@ const ImageCarousel = ({ defaultImage, imageList }: ImageCarouselProps) => {
           </S.Image>
         ))}
       </S.Container>
-    </S.Wrapper>
+    </div>
   );
 };
 
 const S = {
-  Wrapper: styled.div`
-    overflow: hidden;
-    border-radius: 8px;
-    width: inherit;
-    height: ${IMAGE_SIZE.desktop.height + "px"};
-    @media ${DEVICE_SIZE.laptop} {
-      height: ${IMAGE_SIZE.laptop.height + "px"};
-    }
-    @media ${DEVICE_SIZE.tablet} {
-      height: ${IMAGE_SIZE.tablet.height + "px"};
-    }
-    @media ${DEVICE_SIZE.mobileLarge} {
-      height: ${IMAGE_SIZE.mobileLarge.height + "px"};
-    }
-    @media ${DEVICE_SIZE.mobileSmall} {
-      height: ${IMAGE_SIZE.mobileSmall.height + "px"};
-    }
-  `,
   Overlay: styled.div`
     overflow: hidden;
     border-radius: 8px;

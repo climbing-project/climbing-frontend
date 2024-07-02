@@ -113,7 +113,7 @@ const ChatModal = ({ gymId, gymName }: ChatModalProps) => {
         </S.Button>
         {isOpen && (
           <Socket
-            gymName={gymName}
+            gymName={gymName ?? ""}
             client={client}
             roomId={roomId}
             isRoomFetchError={isRoomFetchError}

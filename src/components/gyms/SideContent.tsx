@@ -8,20 +8,21 @@ import TagList from "./TagList";
 import { DEVICE_SIZE } from "@/constants/styles";
 import type { GymData } from "@/constants/gyms/types";
 
-const SideContent = ({ gymData }: { gymData: GymData }) => {
+const SideContent = ({ gymData }: { gymData: GymData | null }) => {
+  if (!gymData) return null;
   return (
     <Wrapper>
       <div className="container">
         <h4>관련 태그</h4>
-        <TagList tags={gymData.tags} />
+        {<TagList tags={gymData.tags} />}
       </div>
       <div className="container">
         <h4>이용금액</h4>
-        <PricingTable pricing={gymData.pricing} />
+        {<PricingTable pricing={gymData.pricing} />}
       </div>
       <div className="container">
         <h4>영업시간</h4>
-        <OpenHoursTable openHours={gymData.openHours} />
+        {<OpenHoursTable openHours={gymData.openHours} />}
       </div>
       <div className="container">
         <h4>시설 정보</h4>
@@ -29,10 +30,10 @@ const SideContent = ({ gymData }: { gymData: GymData }) => {
       </div>
       <div className="container">
         <h4>난이도</h4>
-        <GradeBar grades={gymData.grades} />
+        {<GradeBar grades={gymData.grades} />}
       </div>
       <div className="container">
-        <ContactInfo contact={gymData.contact} snsList={gymData.sns} />
+        {<ContactInfo contact={gymData.contact} snsList={gymData.sns} />}
       </div>
     </Wrapper>
   );

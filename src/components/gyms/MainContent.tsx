@@ -10,9 +10,9 @@ import { SERVER_ADDRESS } from "@/constants/constants";
 import { COLOR } from "@/styles/global-color";
 import type { GymData } from "@/constants/gyms/types";
 
-const MainContent = ({ gymData }: { gymData: GymData }) => {
+const MainContent = ({ gymData, isLoading }: { gymData: GymData | null; isLoading: boolean }) => {
   const [isLiked, setIsLiked] = useState(false);
-  const [currentLikes, setCurrentLikes] = useState<number>(gymData.likeNumber || 0);
+  const [currentLikes, setCurrentLikes] = useState<number>(gymData?.likeNumber ?? 0);
   const { data: session } = useSession();
 
   // useEffect(() => {
@@ -25,7 +25,7 @@ const MainContent = ({ gymData }: { gymData: GymData }) => {
   // }, [gymData.id, session]);
 
   const handleLike = async () => {
-    if (!session || !session.user) return;
+    if (!session || !session.user || !gymData) return;
 
     if (isLiked) {
       try {
@@ -78,48 +78,51 @@ const MainContent = ({ gymData }: { gymData: GymData }) => {
     }
   };
 
-  return (
-    <>
-      <div>
-        <div className="address">
-          <FaLocationDot /> {gymData.address.roadAddress} {gymData.address.unitAddress}
-        </div>
-        <div className="header">
-          <span className="header__text">{gymData.name}</span>&nbsp;
-          <div className="icons">
-            {session ? (
-              <>
-                {/* <S.Icon $clickable={true} onClick={handleLike}>
+  if (isLoading) return <div style={{ height: 1500 }} />;
+  if (gymData)
+    return (
+      <>
+        <div>
+          <div className="address">
+            <FaLocationDot /> {gymData.address.roadAddress} {gymData.address.unitAddress}
+          </div>
+          <div className="header">
+            <span className="header__text">{gymData.name}</span>&nbsp;
+            <div className="icons">
+              {session ? (
+                <>
+                  {/* <S.Icon $clickable={true} onClick={handleLike}>
                     {isLiked ? <IoHeart size="1.3rem" /> : <IoHeartOutline size="1.3rem" />}
                     {currentLikes}
                   </S.Icon> */}
-                <S.Icon $clickable={true}>
-                  <Bookmark
-                    token={session.jwt.accessToken}
-                    gymId={gymData.id as string}
-                    size="1.3rem"
-                  />
+                  <S.Icon $clickable={true}>
+                    <Bookmark
+                      token={session.jwt.accessToken}
+                      gymId={gymData.id as string}
+                      size="1.3rem"
+                    />
+                  </S.Icon>
+                </>
+              ) : (
+                <S.Icon $clickable={false}>
+                  <IoHeartOutline size="1.3rem" />
+                  {currentLikes}
                 </S.Icon>
-              </>
-            ) : (
-              <S.Icon $clickable={false}>
-                <IoHeartOutline size="1.3rem" />
-                {currentLikes}
-              </S.Icon>
-            )}
-            {gymData.homepage && (
-              <S.Icon $clickable={true}>
-                <S.Link href={gymData.homepage} target="_blank">
-                  <IoShareSocialOutline size="1.3rem" />
-                </S.Link>
-              </S.Icon>
-            )}
+              )}
+              {gymData.homepage && (
+                <S.Icon $clickable={true}>
+                  <S.Link href={gymData.homepage} target="_blank">
+                    <IoShareSocialOutline size="1.3rem" />
+                  </S.Link>
+                </S.Icon>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-      {gymData.description && <div className="description">{gymData.description}</div>}
-    </>
-  );
+        {gymData.description && <div className="description">{gymData.description}</div>}
+      </>
+    );
+  return null;
 };
 
 const S = {

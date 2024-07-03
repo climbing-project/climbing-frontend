@@ -105,10 +105,10 @@ export default NextAuth({
           jwt: user.jwt,
         };
       } else {
-        // const textEncoder = new TextEncoder();
-        // const secret = textEncoder.encode(process.env.JWT_SECRET);
-        // const { payload } = await jwtVerify(token.jwt.accessToken, secret);
-        // const expireDate = payload.exp! * 1000;
+        const textEncoder = new TextEncoder();
+        const secret = textEncoder.encode(process.env.JWT_SECRET);
+        const { payload } = await jwtVerify(token.jwt.accessToken, secret);
+        const expireDate = payload.exp! * 1000;
 
         if (Date.now() < expireDate) {
           // 액세스 토큰 만료 전

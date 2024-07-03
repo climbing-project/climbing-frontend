@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import styled from "styled-components";
 import { IoTrash } from "react-icons/io5";
@@ -17,8 +17,14 @@ const getCurrentDate = () => {
   return `${year}.${month}.${date}`;
 };
 
-const Comments = ({ id, comments, session }: CommentsProps) => {
-  const [currentComments, setCurrentComments] = useState<UserComment[]>(comments || []);
+// 페이지네이션 필요 (실질적으로 필요할 때 백엔드에 API 구현 요청)
+const Comments = ({ id, isLoading, comments, session }: CommentsProps) => {
+  const [currentComments, setCurrentComments] = useState<UserComment[]>([]);
+
+  useEffect(() => {
+    if (isLoading) return;
+    if (comments && comments.length >= 1) setCurrentComments(comments);
+  }, [isLoading, comments]);
 
   const handleAddComment = async (input: string) => {
     if (!session || !session.user) return "login";
@@ -45,7 +51,7 @@ const Comments = ({ id, comments, session }: CommentsProps) => {
       ]);
       console.log(response);
       if (!response.ok) throw new Error(`${response.status}`);
-      setCurrentComments((prev) => [newComment, ...prev]);
+      // setCurrentComments((prev) => [newComment, ...prev]);
       return "successful";
     } catch (e) {
       // 에러 종류에 따라 핸들링
@@ -59,31 +65,29 @@ const Comments = ({ id, comments, session }: CommentsProps) => {
     <S.Wrapper>
       <S.Container>
         {session ? (
-          <>
-            <CommentTextarea handleAddComment={handleAddComment} />
-            {currentComments &&
-              currentComments.length > 0 &&
-              currentComments.map(({ user, createdAt, text }, i) => (
-                <S.Comment key={i}>
-                  <div style={{ display: "flex" }}>
-                    <span className="comment__user">{user}</span>
-                    <span className="comment__date">{createdAt}</span>
-                    {session.user.nickname === user && (
-                      <ReactIcon clickable={true}>
-                        <IoTrash onClick={handleDeleteComment} />
-                      </ReactIcon>
-                    )}
-                  </div>
-                  <div>{text}</div>
-                </S.Comment>
-              ))}
-          </>
+          <CommentTextarea handleAddComment={handleAddComment} />
         ) : (
           <div className="login-prompt">
             로그인해서 후기를 남겨주세요!
             <S.Link href={"/login"}>로그인하기</S.Link>
           </div>
         )}
+        {currentComments &&
+          currentComments.length > 0 &&
+          currentComments.map(({ user, createdAt, text }, i) => (
+            <S.Comment key={i}>
+              <div style={{ display: "flex" }}>
+                <span className="comment__user">{user}</span>
+                <span className="comment__date">{createdAt}</span>
+                {session?.user.nickname === user && (
+                  <ReactIcon clickable={true}>
+                    <IoTrash onClick={handleDeleteComment} />
+                  </ReactIcon>
+                )}
+              </div>
+              <div>{text}</div>
+            </S.Comment>
+          ))}
       </S.Container>
     </S.Wrapper>
   );

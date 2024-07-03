@@ -80,6 +80,7 @@ export type UserComment = { id: number; user: string; createdAt: string; text: s
 // 컴포넌트 props 타입 정의
 export interface CommentsProps {
   id: string;
+  isLoading: boolean;
   comments: UserComment[] | null | undefined;
   session: Session | null;
 }

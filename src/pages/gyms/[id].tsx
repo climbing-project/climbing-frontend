@@ -66,7 +66,7 @@ const GymInfo = ({ id }: InferGetServerSidePropsType<GetServerSideProps>) => {
           </S.Main>
           <SideContent gymData={gymData} />
         </S.InfoContainer>
-        <Comments key={id} id={id} comments={gymData?.comments} session={session} />
+        <Comments key={id} id={id} isLoading={isLoading} comments={gymData?.comments} session={session} />
       </S.Wrapper>
       {!isLoading && <ChatModal key={id} gymId={id} gymName={gymData?.name} />}
     </div>

@@ -96,7 +96,7 @@ export default NextAuth({
   callbacks: {
     // 로그인 시 return한 값이 user로 들어옴
     async jwt({ token, user }) {
-      const expireDate = 3000;
+      // const expireDate = 3000;
       // 로그인 시
       if (user) {
         return {

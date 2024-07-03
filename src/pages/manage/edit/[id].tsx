@@ -151,12 +151,6 @@ const EditPage = ({ id, p }: InferGetServerSidePropsType<GetServerSideProps>) =>
   if (isLoading || !currentData)
     return (
       <ManageLayout>
-        <h1 className="desktop-view" style={{ margin: 0 }}>
-          {p === "2" ? "상세 정보 수정" : "기본 정보 수정"}
-        </h1>
-        <h2 className="mobile-view" style={{ margin: 0 }}>
-          {p === "2" ? "상세 정보 수정" : "기본 정보 수정"}
-        </h2>
         <LoadContainer>
           <BarLoader />
         </LoadContainer>
@@ -165,6 +159,12 @@ const EditPage = ({ id, p }: InferGetServerSidePropsType<GetServerSideProps>) =>
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <ManageLayout>
+        <h1 className="desktop-view" style={{ margin: 0 }}>
+          {p === "2" ? "상세 정보 수정" : "기본 정보 수정"}
+        </h1>
+        <h2 className="mobile-view" style={{ margin: 0 }}>
+          {p === "2" ? "상세 정보 수정" : "기본 정보 수정"}
+        </h2>
         {p === "2" ? (
           <>
             <PricingEditor pricingList={currentData.pricing} setNewData={setNewData} />
@@ -175,11 +175,6 @@ const EditPage = ({ id, p }: InferGetServerSidePropsType<GetServerSideProps>) =>
             />
             <GradeEditor gradesList={currentData.grades} setNewData={setNewData} />
             <SettingDayEditor date={currentData.latestSettingDay} setNewData={setNewData} />
-            <Button>
-              <button className="btn-primary" onClick={handleSave} disabled={isUpdating}>
-                {isUpdating ? "저장중..." : "저장하기"}
-              </button>
-            </Button>
           </>
         ) : (
           <>
@@ -199,13 +194,13 @@ const EditPage = ({ id, p }: InferGetServerSidePropsType<GetServerSideProps>) =>
               setNewData={setNewData}
             />
             <DescriptionEditor description={currentData.description} setNewData={setNewData} />
-            <Button>
-              <button className="btn-primary" onClick={handleSave} disabled={isUpdating}>
-                {isUpdating ? "저장중..." : "저장하기"}
-              </button>
-            </Button>
           </>
         )}
+        <Button>
+          <button className="btn-primary" onClick={handleSave} disabled={isUpdating}>
+            {isUpdating ? "저장중..." : "저장하기"}
+          </button>
+        </Button>
       </ManageLayout>
     </ErrorBoundary>
   );

@@ -3,10 +3,8 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { ErrorBoundary } from "react-error-boundary";
 import styled from "styled-components";
-import { BarLoader } from "react-spinners";
 import ManageLayout from "@/components/manage/ManageLayout";
 import ErrorFallback from "@/components/common/ErrorFallback";
-import LoadContainer from "@/components/manage/LoadContainer";
 import { requestData } from "@/service/api";
 import { NavContext, type NavStateProps } from "@/NavContext";
 import { COLOR } from "@/styles/global-color";
@@ -71,9 +69,13 @@ const ChatPage: NextPageWithLayout = ({ id }: InferGetServerSidePropsType<GetSer
           1:1 문의
         </h2>
         {isLoading ? (
-          <LoadContainer>
-            <BarLoader />
-          </LoadContainer>
+          <div className="editor-wrapper">
+            <S.Content>
+              {Array.from({ length: 4 }, (_, i) => (
+                <div key={i} className="skeleton skeleton__block" style={{ width: "100%" }} />
+              ))}
+            </S.Content>
+          </div>
         ) : (
           <div className="editor-wrapper">
             <S.Content $direction="column">

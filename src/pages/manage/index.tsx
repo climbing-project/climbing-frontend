@@ -17,30 +17,32 @@ const ManageHome = () => {
 
   return (
     <ManageLayout>
-      {!isLoading && (
-        <>
-          <h1 className="desktop-view" style={{ margin: 0 }}>
-            내 암장
-          </h1>
-          <h2 className="mobile-view" style={{ margin: 0 }}>
-            내 암장
-          </h2>
-          <S.Wrapper>
-            {gymList && gymList.length >= 1 ? (
-              <>
-                {gymList?.map((gym) => (
-                  <GymList key={gym.id} id={gym.id.toString()} name={gym.name} />
-                ))}
-              </>
-            ) : (
-              <S.Message>현재 관리하고 있는 암장이 없습니다.</S.Message>
-            )}
-            <Link href="/manage/register">
-              <S.Btn>새 암장 등록</S.Btn>
-            </Link>
-          </S.Wrapper>
-        </>
-      )}
+      <h1 className="desktop-view" style={{ margin: 0 }}>
+        내 암장
+      </h1>
+      <h2 className="mobile-view" style={{ margin: 0 }}>
+        내 암장
+      </h2>
+      <S.Wrapper>
+        {isLoading &&
+          Array.from({ length: 3 }, (_, i) => (
+            <div
+              key={i}
+              className="skeleton skeleton__block"
+              style={{ width: "100%", marginBottom: "1rem" }}
+            />
+          ))}
+        {gymList && gymList.length >= 1 && (
+          <>
+            {gymList.map((gym) => (
+              <GymList key={gym.id} id={gym.id.toString()} name={gym.name} />
+            ))}
+          </>
+        )}
+        <Link href="/manage/register">
+          <S.Btn>새 암장 등록</S.Btn>
+        </Link>
+      </S.Wrapper>
     </ManageLayout>
   );
 };
@@ -53,13 +55,6 @@ const S = {
     @media ${DEVICE_SIZE.laptop} {
       padding: 1.3rem 1rem;
     }
-  `,
-  Link: styled.div`
-    padding: 1rem 2rem;
-  `,
-  Message: styled.div`
-    text-align: center;
-    margin-bottom: 2rem;
   `,
   Btn: styled.div`
     background: ${COLOR.MAIN};

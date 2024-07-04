@@ -52,6 +52,24 @@ ${normalize}
     }
   }
 
+  .skeleton__header-text {
+    width: inherit;
+    height: 1.75rem;
+    border-radius: 0.4rem;
+  }
+
+  .skeleton__normal-text {
+    width: inherit;
+    height: 1rem;
+    border-radius: 0.3rem;
+  }
+
+  .skeleton__block {
+    width: inherit;
+    height: 3rem;
+    border-radius: 0.3rem;
+  }
+
   .map-container {
     width: 100%;
     height: 400px;

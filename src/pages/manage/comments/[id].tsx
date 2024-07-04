@@ -3,9 +3,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { ErrorBoundary } from "react-error-boundary";
 import styled from "styled-components";
-import { BarLoader } from "react-spinners";
 import Comment from "@/components/manage/comments/Comment";
-import LoadContainer from "@/components/manage/LoadContainer";
 import ManageLayout from "@/components/manage/ManageLayout";
 import ErrorFallback from "@/components/common/ErrorFallback";
 import { requestData } from "@/service/api";
@@ -68,11 +66,27 @@ const CommentsPage = ({ id }: InferGetServerSidePropsType<GetServerSideProps>) =
     }
   };
 
-  const handleDelete = (index: number) => {
-    const response = confirm("삭제한 댓글은 복구할 수 없습니다. 댓글을 삭제하시겠습니까?");
-    if (!response) return;
-    const remainingComments = comments.filter((_, i) => index !== i);
-    updateDatabase(remainingComments);
+  const addcomment = async () => {
+    const sample = { id: 100, user: "anon", createdAt: "24.06.30", text: "test" };
+    const response = await fetch(`${SERVER_ADDRESS}/manage/gyms/${id}/comments`, {
+      method: "POST",
+      body: JSON.stringify(sample),
+    });
+    console.log(response);
+  };
+
+  const handleDelete = async (commentId: number) => {
+    const confirmation = confirm("삭제한 댓글은 복구할 수 없습니다. 댓글을 삭제하시겠습니까?");
+    if (!confirmation) return;
+
+    const response = await fetch(`${SERVER_ADDRESS}/manage/gyms/${id}/comments/${commentId}`, {
+      method: "DELETE",
+    });
+    console.log(response);
+
+    const remainingComments = comments.filter((comment) => comment.id !== commentId);
+    setComments(remainingComments);
+    // updateDatabase(remainingComments);
   };
 
   return (
@@ -85,9 +99,23 @@ const CommentsPage = ({ id }: InferGetServerSidePropsType<GetServerSideProps>) =
           댓글 관리
         </h2>
         {isLoading ? (
-          <LoadContainer>
-            <BarLoader />
-          </LoadContainer>
+          <div className="editor-wrapper">
+            <S.Content>
+              {Array.from({ length: 3 }, (_, i) => (
+                <div key={i} style={{ width: "100%", marginBottom: "1rem" }}>
+                  <div
+                    className="skeleton skeleton__normal-text"
+                    style={{ width: "10%", marginBottom: "0.5rem" }}
+                  />
+                  <div
+                    className="skeleton skeleton__normal-text"
+                    style={{ width: "15%", marginBottom: "0.5rem" }}
+                  />
+                  <div className="skeleton skeleton__block" style={{ width: "90%" }} />
+                </div>
+              ))}
+            </S.Content>
+          </div>
         ) : (
           <div className="editor-wrapper">
             <S.Content $direction="column">

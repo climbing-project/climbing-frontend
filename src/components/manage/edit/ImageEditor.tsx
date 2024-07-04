@@ -89,7 +89,7 @@ const ImageEditor = ({
               <S.DeleteButton onClick={() => handleS3Delete(defaultImage, "default")}>
                 <RiDeleteBin6Fill color="#ffffff" />
               </S.DeleteButton>
-              <Image src={defaultImage} width={462} height={215} alt={defaultImage} />
+              <Image src={defaultImage} width={462} height={215} alt={defaultImage} priority />
             </S.Image>
           ) : (
             <ImageUploader dataKey="default" handleS3Upload={handleS3Upload} />

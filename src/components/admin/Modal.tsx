@@ -24,7 +24,7 @@ const Modal = ({ closeModal, selectedMember, updateRole }: ModalProps) => {
   };
 
   const handleConfirm = () => {
-    if (role === selectedMember?.role) return;
+    if (role === selectedMember?.role || role === "") return;
     const response = confirm(
       `해당 멤버의 권한을 '${selectedMember?.role}'에서 '${role}'로 변경할까요?`,
     );
@@ -43,9 +43,9 @@ const Modal = ({ closeModal, selectedMember, updateRole }: ModalProps) => {
               {selectedMember.nickname}
               <div>
                 <M.Select defaultValue={selectedMember.role} onChange={handleSelect}>
-                  <option>admin</option>
-                  <option>manager</option>
-                  <option>user</option>
+                  <option>ADMIN</option>
+                  <option>MANAGER</option>
+                  <option>USER</option>
                 </M.Select>
               </div>
             </M.Row>

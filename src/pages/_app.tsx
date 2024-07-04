@@ -6,6 +6,7 @@ import { NextComponentType, NextPage } from "next/types";
 import { ReactElement, ReactNode } from "react";
 import { NavContextProvider } from "@/NavContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { GymEditContextProvider } from "@/GymEditContext";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<PageTransitionEvent, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -25,9 +26,11 @@ const MyApp: NextComponentType<AppContext, AppInitialProps, AppPropsWithLayout> 
   return (
     <QueryClientProvider client={queryClient}>
       <SessionProvider session={session}>
-        <NavContextProvider>
-          <ChatHistoryProvider>{getLayout(<Component {...pageProps} />)}</ChatHistoryProvider>
-        </NavContextProvider>
+        <GymEditContextProvider>
+          <NavContextProvider>
+            <ChatHistoryProvider>{getLayout(<Component {...pageProps} />)}</ChatHistoryProvider>
+          </NavContextProvider>
+        </GymEditContextProvider>
       </SessionProvider>
     </QueryClientProvider>
   );

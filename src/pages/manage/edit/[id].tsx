@@ -1,4 +1,4 @@
-import { lazy, useContext, useEffect, useRef, useState } from "react";
+import { lazy, useContext, useEffect, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useBeforeunload } from "react-beforeunload";
 import { useRouter } from "next/router";
@@ -12,11 +12,12 @@ import ErrorFallback from "@/components/common/ErrorFallback";
 import ImageEditor from "@/components/manage/edit/ImageEditor";
 import LoadContainer from "@/components/manage/LoadContainer";
 import { NavContext, type NavStateProps } from "@/NavContext";
+import { type EditStateProps, GymEditContext } from "@/GymEditContext";
 import { requestData } from "@/service/api";
 import { SERVER_ADDRESS } from "@/constants/constants";
 import { UNKNOWN_ERROR } from "@/constants/manage/constants";
 import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import type { GymData, GymDataObject } from "@/constants/gyms/types";
+import type { GymDataObject } from "@/constants/gyms/types";
 
 const AccommodationsEditor = lazy(() => import("@/components/manage/edit/AccommodationsEditor"));
 const GradeEditor = lazy(() => import("@/components/manage/edit/GradeEditor"));
@@ -31,12 +32,17 @@ const isEdited = (oldData: any, newData: any) => {
 const EditPage = ({ id, p }: InferGetServerSidePropsType<GetServerSideProps>) => {
   const { data: session } = useSession();
   const router = useRouter();
-  const [currentData, setCurrentData] = useState<GymData | null>(null);
-  const [loadedData, setLoadedData] = useState<GymData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
-  const [isUpdating, setIsUpdating] = useState(false);
-  const tracker = useRef<null | string>(null);
+  const {
+    currentData,
+    setCurrentData,
+    loadedData,
+    setLoadedData,
+    isUpdating,
+    setIsUpdating,
+    tracker,
+  } = useContext(GymEditContext) as EditStateProps;
   const { selectedGymId, setSelectedGymId } = useContext(NavContext) as NavStateProps;
 
   useEffect(() => {
@@ -53,21 +59,21 @@ const EditPage = ({ id, p }: InferGetServerSidePropsType<GetServerSideProps>) =>
       },
     });
 
-    setIsLoading(false);
-
     const handlePageLeave = () => {
       const dataChanged = tracker.current === "edited";
-      if (!dataChanged) return setIsLoading(true);
-      const response = confirm("수정 중인 데이터가 있습니다. 이동할까요?");
-      if (!response) {
-        setSelectedGymId(id as string);
-        throw "Routing reborted in response to the user's request. Please ignore this error message.";
+      if (dataChanged) {
+        const response = confirm("수정 중인 데이터가 있습니다. 이동할까요?");
+        if (!response) {
+          setSelectedGymId(id as string);
+          throw "Routing reborted in response to the user's request. Please ignore this error message.";
+        }
       }
       tracker.current = null;
       setIsLoading(true);
     };
 
     router.events.on("routeChangeStart", handlePageLeave);
+    setIsLoading(false);
     return () => router.events.off("routeChangeStart", handlePageLeave);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);

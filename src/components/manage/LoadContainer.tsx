@@ -9,7 +9,7 @@ const Wrapper = styled.div`
   width: 100%;
   height: 100%;
   display: grid;
-  place-content: center center;
+  place-content: center;
 `;
 
 export default LoadContainer;

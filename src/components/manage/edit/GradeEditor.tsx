@@ -20,7 +20,7 @@ const GradeEditor = ({ gradesList, setNewData }: GradeEditorProps) => {
   };
 
   const handleCountChange = (operation: string) => {
-    const currentList = gradesList ? gradesList : [];
+    const currentList = gradesList ?? [];
     if (operation === "plus") {
       if (gradesList!.length === 10) return;
       setNewData({ grades: [...currentList, DEFAULT_COLOR] });
@@ -36,9 +36,11 @@ const GradeEditor = ({ gradesList, setNewData }: GradeEditorProps) => {
     <div className="editor-wrapper">
       <div className="editor-header editor-removable">
         <span>난이도</span>
-        <ReactIcon clickable={true}>
-          <IoTrash onClick={handleDelete} size="1.3rem" />
-        </ReactIcon>
+        {gradesList && gradesList.length > 0 && (
+          <ReactIcon clickable={true}>
+            <IoTrash onClick={handleDelete} size="1.3rem" />
+          </ReactIcon>
+        )}
       </div>
       <ContentContainer direction="column" gap="6px">
         {gradesList && gradesList.length > 0 ? (

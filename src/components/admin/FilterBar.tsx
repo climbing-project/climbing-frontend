@@ -12,9 +12,9 @@ const FilterBar = ({ handleFilterSelect }: FilterBarProps) => {
       필터:{" "}
       <select onChange={handleSelect}>
         <option value="all">전체</option>
-        <option value="admin">관리자</option>
-        <option value="user">이용자</option>
-        <option value="manager">매니저</option>
+        <option value="ADMIN">관리자</option>
+        <option value="USER">이용자</option>
+        <option value="MANAGER">매니저</option>
       </select>
     </S.Wrapper>
   );

@@ -7,20 +7,19 @@ import FilterBar from "@/components/admin/FilterBar";
 import MemberTable from "@/components/admin/MemberTable";
 import Modal from "@/components/admin/Modal";
 import PageNavigator from "@/components/admin/PageNavigator";
-import { SERVER_ADDRESS, TEST_ADDRESS } from "@/constants/constants";
+import { requestData } from "@/service/api";
+import { SERVER_ADDRESS } from "@/constants/constants";
 import { DEVICE_SIZE } from "@/constants/styles";
 import type { Member } from "@/components/admin/MemberTable";
 
 const fetchMembers = (page = 1, filter = "all") => {
   switch (filter) {
     case "all": {
-      return fetch(`${TEST_ADDRESS}/adminusers?_page=${page}_per_page=10`).then((res) =>
-        res.json(),
-      );
+      return fetch(`${SERVER_ADDRESS}/admin/members?p=${page}&size=3`).then((res) => res.json());
     }
     default: {
-      return fetch(`${TEST_ADDRESS}/adminusers?role=${filter}&_page=${page}_per_page=10`).then(
-        (res) => res.json(),
+      return fetch(`${SERVER_ADDRESS}/admin/members?r=${filter}&p=${page}&size=3`).then((res) =>
+        res.json(),
       );
     }
   }
@@ -37,8 +36,9 @@ const AdminPage = () => {
     queryFn: () => fetchMembers(page, filter),
     placeholderData: keepPreviousData,
     select: (data) => {
+      const members = data.content;
       if (filter === "all") return data;
-      return { ...data, data: data.data.filter((member: Member) => member.role === filter) };
+      return { ...data, content: members.filter((member: Member) => member.role === filter) };
     },
   });
 
@@ -53,8 +53,20 @@ const AdminPage = () => {
     setIsOpen(false);
   };
 
-  const updateRole = (role: string) => {
-    // PUT 작업
+  const updateRole = async (role: string) => {
+    if (!session) return alert("로그인 기간이 만료되었습니다. 다시 로그인해주세요.");
+    if (!selectedMember) return alert("선택된 멤버가 없습니다.");
+
+    requestData({
+      option: "PUT",
+      url: `/admin/members/${selectedMember.id}`,
+      data: { role },
+      onSuccess: () => closeModal(),
+      onError: (e) => {
+        console.log(e);
+        alert("에러가 발생했습니다. 잠시 후에 다시 시도해 주세요.");
+      },
+    });
   };
 
   const handleFilterSelect = (value: string) => setFilter(value);
@@ -70,12 +82,12 @@ const AdminPage = () => {
           <BarLoader />
         </Placeholder>
       ) : (
-        data && <MemberTable members={data.data} openModal={openModal} />
+        data && <MemberTable members={data.content} openModal={openModal} />
       )}
       {data && (
         <PageNavigator
-          currentPage={data.prev + 1}
-          pages={data.pages}
+          currentPage={data.pageable.pageNumber + 1}
+          pages={data.totalPages}
           handlePageSelect={handlePageSelect}
         />
       )}

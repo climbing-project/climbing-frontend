@@ -40,7 +40,7 @@ const Modal = ({ closeModal, selectedMember, updateRole }: ModalProps) => {
           <M.Title>멤버 권한 변경</M.Title>
           {selectedMember && (
             <M.Row>
-              {selectedMember.nickname}
+              {selectedMember.nickName}
               <div>
                 <M.Select defaultValue={selectedMember.role} onChange={handleSelect}>
                   <option>ADMIN</option>

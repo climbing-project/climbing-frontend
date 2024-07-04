@@ -44,49 +44,19 @@ const CommentsPage = ({ id }: InferGetServerSidePropsType<GetServerSideProps>) =
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedGymId]);
 
-  const updateDatabase = async (comments: UserComment[]) => {
-    try {
-      const response = await Promise.race([
-        fetch(`${SERVER_ADDRESS}/gyms/${id}`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ comments }),
-        }),
-        new Promise<Response>((_, reject) =>
-          setTimeout(() => reject(new Response(null, { status: 503 })), 3000),
-        ),
-      ]);
-      if (!response.ok) throw new Error(`${response.status}`);
-      setComments(comments);
-    } catch (e) {
-      // 에러 핸들링
-      alert("서버 오류가 발생했습니다. 나중에 다시 시도해 주세요.");
-    }
-  };
-
-  const addcomment = async () => {
-    const sample = { id: 100, user: "anon", createdAt: "24.06.30", text: "test" };
-    const response = await fetch(`${SERVER_ADDRESS}/manage/gyms/${id}/comments`, {
-      method: "POST",
-      body: JSON.stringify(sample),
-    });
-    console.log(response);
-  };
-
   const handleDelete = async (commentId: number) => {
     const confirmation = confirm("삭제한 댓글은 복구할 수 없습니다. 댓글을 삭제하시겠습니까?");
-    if (!confirmation) return;
+    if (!confirmation || !session) return;
 
-    const response = await fetch(`${SERVER_ADDRESS}/manage/gyms/${id}/comments/${commentId}`, {
+    await fetch(`${SERVER_ADDRESS}/manage/gyms/${id}/comments/${commentId}`, {
       method: "DELETE",
+      headers: {
+        Authorization: "Bearer " + session.jwt.accessToken,
+      },
     });
-    console.log(response);
 
     const remainingComments = comments.filter((comment) => comment.id !== commentId);
     setComments(remainingComments);
-    // updateDatabase(remainingComments);
   };
 
   return (
@@ -121,7 +91,11 @@ const CommentsPage = ({ id }: InferGetServerSidePropsType<GetServerSideProps>) =
             <S.Content $direction="column">
               {comments.length > 0 ? (
                 comments.map((comment) => (
-                  <Comment comment={comment} key={comment.id} handleDelete={handleDelete} />
+                  <Comment
+                    comment={comment}
+                    key={comment.id}
+                    handleDelete={() => handleDelete(comment.id)}
+                  />
                 ))
               ) : (
                 <div>관리할 댓글이 없습니다.</div>
@@ -148,12 +122,6 @@ const S = {
     gap: 20px;
     @media ${DEVICE_SIZE.laptop} {
       padding: 1.3rem 1rem;
-    }
-  `,
-  Link: styled.div`
-    cursor: pointer;
-    &:hover {
-      color: #1aabff;
     }
   `,
 };

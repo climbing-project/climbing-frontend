@@ -15,10 +15,10 @@ import type { Member } from "@/components/admin/MemberTable";
 const fetchMembers = (page = 1, filter = "all") => {
   switch (filter) {
     case "all": {
-      return fetch(`${SERVER_ADDRESS}/admin/members?p=${page}&size=3`).then((res) => res.json());
+      return fetch(`${SERVER_ADDRESS}/admin/members?p=${page}&size=10`).then((res) => res.json());
     }
     default: {
-      return fetch(`${SERVER_ADDRESS}/admin/members?r=${filter}&p=${page}&size=3`).then((res) =>
+      return fetch(`${SERVER_ADDRESS}/admin/members?r=${filter}&p=${page}&size=10`).then((res) =>
         res.json(),
       );
     }

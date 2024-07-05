@@ -34,9 +34,8 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "oruritest.s3.ap-northeast-2.amazonaws.com",
+        hostname: "oruri-gym-images.s3.ap-northeast-2.amazonaws.com",
         port: "",
-        pathname: "/bubu/*",
       },
       {
         protocol: "https",

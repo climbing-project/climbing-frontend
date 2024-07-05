@@ -14,7 +14,7 @@ import { COLOR } from "@/styles/global-color";
 import { DEVICE_SIZE } from "@/constants/styles";
 import type { ImageUploadProps } from "@/constants/manage/types";
 
-const ImageUploader = ({ dataKey, imageCount, handleS3Upload }: ImageUploadProps) => {
+const ImageUploader = ({ gymName, dataKey, imageCount, handleS3Upload }: ImageUploadProps) => {
   const handleFile = (files: FileList | null) => {
     if (!files) return;
     if (dataKey === "default" && files.length > 1)
@@ -35,7 +35,8 @@ const ImageUploader = ({ dataKey, imageCount, handleS3Upload }: ImageUploadProps
         85,
         0,
         (resizedImg) => {
-          const randomizedFileName = `${Date.now()}.${IMG_FORMAT}`;
+          const encodedGymName = encodeURIComponent(gymName.slice(0, 3)).replaceAll("%", "");
+          const randomizedFileName = `${encodedGymName}${Date.now()}.${IMG_FORMAT}`;
           handleS3Upload(resizedImg as File, randomizedFileName, dataKey);
           FileResizer.imageFileResizer(
             resizedImg as File,

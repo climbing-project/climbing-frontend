@@ -185,6 +185,7 @@ const EditPage = ({ id, p }: InferGetServerSidePropsType<GetServerSideProps>) =>
         ) : (
           <>
             <ImageEditor
+              gymName={currentData.name}
               images={currentData.images}
               defaultImage={currentData.defaultImage}
               setCurrentData={setCurrentData}

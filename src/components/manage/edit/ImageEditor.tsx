@@ -4,7 +4,7 @@ import { RiDeleteBin6Fill } from "react-icons/ri";
 import ContentContainer from "../ContentContainer";
 import ImageList from "./ImageList";
 import ImageUploader from "./ImageUploader";
-import useS3, { FOLDER_NAME, THUMBNAIL_PREFIX } from "../../../hooks/useS3";
+import useS3, { DOMAIN_PATH, THUMBNAIL_PREFIX } from "../../../hooks/useS3";
 import { checkImageValidity } from "@/components/gyms/ImageCarousel";
 import { IMG_URL_REGEX } from "@/constants/manage/constants";
 import { COLOR } from "@/styles/global-color";
@@ -12,6 +12,7 @@ import { DEVICE_SIZE } from "@/constants/styles";
 import type { ImageEditorProps } from "@/constants/manage/types";
 
 const ImageEditor = ({
+  gymName,
   images,
   defaultImage,
   setCurrentData,
@@ -19,13 +20,11 @@ const ImageEditor = ({
   updateImageData,
 }: ImageEditorProps) => {
   const thumbnails =
-    images?.map((image) =>
-      image.replace(`${FOLDER_NAME}/`, `${FOLDER_NAME}/${THUMBNAIL_PREFIX}`),
-    ) || [];
+    images?.map((image) => image.replace(`${DOMAIN_PATH}`, `${DOMAIN_PATH}${THUMBNAIL_PREFIX}`)) ||
+    [];
   const validThumbnails: string[] = [];
   thumbnails.forEach((img) => {
-    const url = img.toLowerCase();
-    if (IMG_URL_REGEX.test(url)) validThumbnails.push(img);
+    if (IMG_URL_REGEX.test(img)) validThumbnails.push(img);
   });
 
   const uploadImage = (url: string, key: string) => {
@@ -92,7 +91,7 @@ const ImageEditor = ({
               <Image src={defaultImage} width={462} height={215} alt={defaultImage} priority />
             </S.Image>
           ) : (
-            <ImageUploader dataKey="default" handleS3Upload={handleS3Upload} />
+            <ImageUploader gymName={gymName} dataKey="default" handleS3Upload={handleS3Upload} />
           )}
         </S.Row>
         <S.Row>
@@ -108,6 +107,7 @@ const ImageEditor = ({
             <>
               {validThumbnails.length < 10 ? (
                 <ImageUploader
+                  gymName={gymName}
                   dataKey="display"
                   imageCount={validThumbnails.length}
                   handleS3Upload={handleS3Upload}
@@ -116,7 +116,7 @@ const ImageEditor = ({
               <ImageList handleS3Delete={handleS3Delete} images={validThumbnails} />
             </>
           ) : (
-            <ImageUploader dataKey="display" handleS3Upload={handleS3Upload} />
+            <ImageUploader gymName={gymName} dataKey="display" handleS3Upload={handleS3Upload} />
           )}
         </S.Row>
       </ContentContainer>

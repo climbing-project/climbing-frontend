@@ -79,7 +79,7 @@ const S = {
     border-radius: 50px;
     padding: 0.2rem 0.5rem;
     font-size: 0.85rem;
-    max-width: 55px;
+    max-width: 65px;
     text-align: center;
     user-select: none;
     &.admin {

@@ -63,6 +63,7 @@ export interface GradeEditorProps {
 }
 
 export interface ImageEditorProps {
+  gymName: string;
   images: string[] | null | undefined;
   defaultImage: string | null | undefined;
   setCurrentData: GymDataStateAction;
@@ -76,6 +77,7 @@ export interface ImageListProps {
 }
 
 export interface ImageUploadProps {
+  gymName: string;
   dataKey: string;
   imageCount?: number;
   handleS3Upload: (file: File, fileName: string, dataKey: string) => Promise<void>;

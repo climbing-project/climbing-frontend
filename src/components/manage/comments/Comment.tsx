@@ -24,7 +24,7 @@ const Comment = ({ comment: { id, user, createdAt, text }, handleDelete }: Comme
         </S.Row>
         <S.TextField>{text}</S.TextField>
       </S.Container>
-      <S.Icon size="1.3rem" onClick={() => handleDelete(id)} />
+      <S.Icon size="1.3rem" onClick={() => handleDelete(id!)} />
     </S.Wrapper>
   );
 };

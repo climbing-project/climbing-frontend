@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { IoTrash } from "react-icons/io5";
 import CommentTextarea from "./CommentTextarea";
 import ReactIcon from "../common/ReactIcon";
-import { SERVER_ADDRESS, TEST_ADDRESS } from "@/constants/constants";
+import { SERVER_ADDRESS } from "@/constants/constants";
 import { DEVICE_SIZE } from "@/constants/styles";
 import { COLOR } from "@/styles/global-color";
 import type { CommentsProps, UserComment } from "@/constants/gyms/types";
@@ -29,29 +29,25 @@ const Comments = ({ id, isLoading, comments, session }: CommentsProps) => {
   const handleAddComment = async (input: string) => {
     if (!session || !session.user) return "login";
 
+    const textData = { text: input };
     const newComment = {
       user: session.user.nickname,
       createdAt: getCurrentDate(),
-      text: input,
+      ...textData,
     };
 
-    // 댓글 API가 준비되면 수정
     try {
-      const response = await Promise.race([
-        fetch(`${TEST_ADDRESS}/comments`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ newComment }),
-        }),
-        new Promise<Response>((_, reject) =>
-          setTimeout(() => reject(new Response(null, { status: 503 })), 3000),
-        ),
-      ]);
-      console.log(response);
+      const response = await fetch(`${SERVER_ADDRESS}/gyms/${id}/comments`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + session.jwt.accessToken,
+        },
+        body: JSON.stringify(textData),
+        signal: AbortSignal.timeout(5000),
+      });
       if (!response.ok) throw new Error(`${response.status}`);
-      // setCurrentComments((prev) => [newComment, ...prev]);
+      setCurrentComments((prev) => [newComment, ...prev]);
       return "successful";
     } catch (e) {
       // 에러 종류에 따라 핸들링

@@ -94,7 +94,7 @@ const CommentsPage = ({ id }: InferGetServerSidePropsType<GetServerSideProps>) =
                   <Comment
                     comment={comment}
                     key={comment.id}
-                    handleDelete={() => handleDelete(comment.id)}
+                    handleDelete={() => handleDelete(comment.id!)}
                   />
                 ))
               ) : (

@@ -46,7 +46,7 @@ const ChatPopup: NextPageWithLayout = ({
       option: "GET",
       url: `/chat/room/${roomId}`,
       token,
-      onSuccess: (roomData: Chatroom) => setRoomName(roomData.roomName),
+      onSuccess: (roomData: Chatroom) => setRoomName(roomData.nickName),
     });
 
     const fetchHistory = async () =>

@@ -80,9 +80,9 @@ const ChatPage: NextPageWithLayout = ({ id }: InferGetServerSidePropsType<GetSer
           <div className="editor-wrapper">
             <S.Content $direction="column">
               {chatrooms.length > 0 ? (
-                chatrooms.map(({ id, roomName }) => (
+                chatrooms.map(({ id, nickName }) => (
                   <S.Row key={id} onClick={() => handleChatroomClick(id)}>
-                    {roomName}님의 문의
+                    {nickName}님의 문의
                   </S.Row>
                 ))
               ) : (

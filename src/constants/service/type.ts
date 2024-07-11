@@ -12,7 +12,8 @@ type Option = (typeof requestOptions)[keyof typeof requestOptions];
 export type UpdateTokenInfo = {
   accessToken?: string;
   refreshToken?: string;
-  expireDate?: number;
+  accessExpireDate?: number;
+  refreshExpireDate?: number;
 };
 
 // 데이터 타입 정의

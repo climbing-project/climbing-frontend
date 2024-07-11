@@ -9,7 +9,7 @@ import { FaCircleCheck } from "react-icons/fa6";
 import handleSignOut from "@/service/api/logout";
 
 const DeleteAccount = () => {
-  const { data: session, status,update } = useSession();
+  const { data: session, status, update } = useSession();
 
   const [isChecked, setIsChecked] = useState(false);
   const [passwordMessage, setPasswordMessage] = useState("");
@@ -42,7 +42,7 @@ const DeleteAccount = () => {
     requestData({
       option: "DELETE",
       url: "/members",
-      token: session!.jwt.accessToken,
+      session,
       data: {
         checkPassword: password,
       },

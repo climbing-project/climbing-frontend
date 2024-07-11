@@ -85,7 +85,7 @@ const ChangePassword = () => {
       option: "PUT",
       url: "/members/update-password",
       data: { beforePassword: currentPassword, afterPassword: newPassword },
-      token: session!.jwt.accessToken,
+      session,
       onSuccess,
       hasBody: false,
       update,

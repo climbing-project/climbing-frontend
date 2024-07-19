@@ -1,4 +1,4 @@
-import { SetStateAction, useEffect, useState } from "react";
+import { SetStateAction, useEffect, useRef, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { requestData } from "@/service/api";
 import PreviewCard from "./PreviewCard";
@@ -13,62 +13,67 @@ const LazyLoadingItems = ({
 }: LazyLoadingItemsProps) => {
   const pathName = usePathname() as string;
   const [items, setItems] = useState<SimpleGymData[]>([]);
-  const [page, setPage] = useState(0);
-  const [hasMore, setHasMore] = useState<boolean>(true);
+  const page = useRef(0);
+  const [hasMore, setHasMore] = useState<boolean>(false);
+  const [queryUrl, setQueryUrl] = useState<string>("");
 
   const getMoreData = () => {
     if (pathName.includes("search")) {
-      const onSuccess = (data: { data: SimpleGymData[] }) => {
-        setItems(items.concat(data.data));
-        setPage(page + 1);
+      const onSuccess = (gymsData: SimpleGymData[]) => {
+        if (gymsData.length == 0) {
+          setHasMore(false);
+        } else {
+          setItems(items.concat(gymsData));
+          page.current += 1;
+        }
       };
 
-      requestData({
-        option: "GET",
-        url: `/gyms/search?p=${page}`,
-        onSuccess,
-      });
-      setItems(items.concat(items));
-    } else {
-      setHasMore(false);
+      // requestData({
+      //   option: "GET",
+      //   url: `/gyms/search?${queryUrl}&p=${page.current}`,
+      //   hasBody: true,
+      //   onSuccess,
+      // });
     }
   };
 
   useEffect(() => {
-    // TODO: 쿼리 기준 필요 (둘중 하나만 보내도 될지)
-
     if (pathName?.includes("search")) {
-      let queryUrl = `?q={${searchWord}}`;
+      let query = `q=${searchWord}`;
       if (sortingType) {
-        queryUrl += `&s={${searchWord}}`;
+        query += `&s=${sortingType}`;
       }
-      const onSuccess = (data: { data: SimpleGymData[] }) => {
-        setItems(data.data);
-        setPage(page + 1);
+
+      const onSuccess = (gymsData: SimpleGymData[]) => {
+        setItems(gymsData);
+        if (gymsData.length != 0) {
+          setQueryUrl(query);
+          page.current += 1;
+          setHasMore(true);
+        }
       };
 
-      requestData({
-        option: "GET",
-        url: `/gyms/search?p=${page}`,
-        onSuccess,
-      });
       // requestData({
       //   option: "GET",
-      //   url: `/search${queryUrl}`,
-      // onSuccess: (data) => setItems(data.data),
+      //   url: `/gyms/search?${query}&p=0`,
+      //   hasBody: true,
+      //   onSuccess,
       // });
     } else {
-      // home page의 일부 부르기
-      requestData({
-        option: "GET",
-        url: `/gyms`,
-        onSuccess: (data) => setItems(data),
-      });
+      const onSuccess = (gymsData: SimpleGymData[]) => {
+        setItems(gymsData);
+        setHasMore(false);
+      };
+      // requestData({
+      //   option: "GET",
+      //   url: `/gyms`,
+      //   hasBody: true,
+      //   onSuccess,
+      // });
     }
-
-    setHasMore(true);
   }, [pathName, searchWord, sortingType]);
 
+  // console.log(items);
   const PreviewCards = items.map((gymInfo, index) => {
     return (
       <PreviewCard

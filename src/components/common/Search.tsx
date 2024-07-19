@@ -29,13 +29,20 @@ const Search = ({
     .filter((dataItem) => dataItem.cityDistrict.match(filterStr))
     .slice(0, dropDownCount);
 
-  const handleClick = (event: { target: { innerText: any } }) => {
+  const handleClick = (event: {
+    preventDefault(): unknown;
+    target: { innerText: any };
+  }) => {
+    // event.preventDefault();
+    console.log("onClick");
     if (onSubmit) {
       // 검색내용 포함시켜 라우팅
-      router.push({
-        pathname: "/search",
-        query: { q: event.target.innerText },
-      });
+      router
+        .push({
+          pathname: "/search",
+          query: { q: event.target.innerText },
+        })
+        .then(() => router.reload());
     }
   };
 
@@ -53,6 +60,10 @@ const Search = ({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [searchRef]);
+
+  useEffect(() => {
+    console.log("search Component");
+  }, []);
 
   return (
     <Styled.Wrapper

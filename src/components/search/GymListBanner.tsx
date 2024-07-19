@@ -1,44 +1,84 @@
 import LazyLoadingItems from "@/components/common/LazyLoadingItems";
 import styled from "styled-components";
-import { MouseEventHandler, useState } from "react";
+import { MouseEventHandler, useEffect } from "react";
 import router from "next/router";
 import { GymListBannerProps } from "@/constants/search/types";
 import { COLOR } from "@/styles/global-color";
 import { DEVICE_SIZE } from "@/constants/styles";
+import {
+  queryToSortingType,
+  sortingTypes,
+  sortingTypeToQuery,
+} from "@/constants/search/constants";
 
 const GymListBanner = ({
   searchWord,
   sortingType = "",
 }: GymListBannerProps) => {
-  const [selectedButton, setSelectedButton] = useState(sortingType);
-  const sortingTypes = ["인기순", "최근 세팅일순", "거리순", "이름순"];
+  // const sortingTypes = ["이름순", "인기순", "세팅일순", "거리순"];
+  // const sortingTypeToQuery = (type: string) => {
+  //   switch (type) {
+  //     case "이름순":
+  //       return "NAME";
+  //     case "인기순":
+  //       return "POPU";
+  //     case "세팅일순":
+  //       return "LATE";
+  //     case "거리순":
+  //       return "DIST";
+  //     default:
+  //       return "NAME";
+  //   }
+  // };
+
+  // const queryToSortingType = (query: string) => {
+  //   switch (query) {
+  //     case "NAME":
+  //       return "이름순";
+  //     case "POPU":
+  //       return "인기순";
+  //     case "LATE":
+  //       return "세팅일순";
+  //     case "DIST":
+  //       return "거리순";
+  //     default:
+  //       return "이름순";
+  //   }
+  // };
+  const queryType = queryToSortingType(sortingType);
+  useEffect(() => {
+    console.log("gymListBanner Component");
+  }, []);
 
   const handleButtonClick: MouseEventHandler<HTMLButtonElement> = (event) => {
-    const buttonText = event.currentTarget.textContent!;
+    event.preventDefault();
 
+    const buttonText = event.currentTarget.textContent!;
+    const sortingQuery = sortingTypeToQuery(buttonText);
+    console.log("정렬 버튼 클릭");
     // 검색내용 포함시켜 라우팅
     if (searchWord) {
-      router.push({
-        pathname: "/search",
-        query: { q: searchWord, s: buttonText },
-      });
+      router
+        .push({
+          pathname: "/search",
+          query: { q: searchWord, s: sortingQuery },
+        })
+        .then(() => router.reload());
     } else {
-      router.push({
-        pathname: "/search",
-        query: { s: buttonText },
-      });
+      router
+        .push({
+          pathname: "/search",
+          query: { s: sortingQuery },
+        })
+        .then(() => router.reload());
     }
-
-    setSelectedButton(buttonText);
   };
 
   const SortingButtons = sortingTypes.map((type, index) => {
     return (
       <Styled.Container key={index}>
         <Styled.SortButton
-          className={
-            selectedButton === type ? "btn-plain-clicked" : "btn-plain"
-          }
+          className={queryType === type ? "btn-plain-clicked" : "btn-plain"}
           key={index}
           onClick={handleButtonClick}
         >

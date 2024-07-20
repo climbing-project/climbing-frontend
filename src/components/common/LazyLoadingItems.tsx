@@ -2,7 +2,6 @@ import { SetStateAction, useEffect, useRef, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { requestData } from "@/service/api";
 import PreviewCard from "./PreviewCard";
-import { usePathname } from "next/dist/client/components/navigation";
 import { LazyLoadingItemsProps } from "@/constants/search/types";
 import { SimpleGymData } from "@/constants/gyms/types";
 import { styled } from "styled-components";
@@ -10,35 +9,37 @@ import { styled } from "styled-components";
 const LazyLoadingItems = ({
   searchWord = "",
   sortingType,
+  isSearchPage = true,
 }: LazyLoadingItemsProps) => {
-  const pathName = usePathname() as string;
   const [items, setItems] = useState<SimpleGymData[]>([]);
-  const page = useRef(0);
+  const [currPage, setCurrPage] = useState<number>(0);
   const [hasMore, setHasMore] = useState<boolean>(false);
   const [queryUrl, setQueryUrl] = useState<string>("");
 
   const getMoreData = () => {
-    if (pathName.includes("search")) {
+    if (isSearchPage) {
       const onSuccess = (gymsData: SimpleGymData[]) => {
         if (gymsData.length == 0) {
           setHasMore(false);
         } else {
           setItems(items.concat(gymsData));
-          page.current += 1;
+          setCurrPage(currPage + 1);
         }
       };
 
-      // requestData({
-      //   option: "GET",
-      //   url: `/gyms/search?${queryUrl}&p=${page.current}`,
-      //   hasBody: true,
-      //   onSuccess,
-      // });
+      requestData({
+        option: "GET",
+        url: `/gyms/search?${queryUrl}&p=${currPage}`,
+        hasBody: true,
+        onSuccess,
+      });
     }
   };
 
   useEffect(() => {
-    if (pathName?.includes("search")) {
+    // page.current = 1;
+    // console.log("useEffet : " + page.current);
+    if (isSearchPage) {
       let query = `q=${searchWord}`;
       if (sortingType) {
         query += `&s=${sortingType}`;
@@ -48,30 +49,31 @@ const LazyLoadingItems = ({
         setItems(gymsData);
         if (gymsData.length != 0) {
           setQueryUrl(query);
-          page.current += 1;
+          setCurrPage(currPage + 1);
+          // console.log(page.current);
           setHasMore(true);
         }
       };
 
-      // requestData({
-      //   option: "GET",
-      //   url: `/gyms/search?${query}&p=0`,
-      //   hasBody: true,
-      //   onSuccess,
-      // });
+      requestData({
+        option: "GET",
+        url: `/gyms/search?${query}&p=0`,
+        hasBody: true,
+        onSuccess,
+      });
     } else {
       const onSuccess = (gymsData: SimpleGymData[]) => {
         setItems(gymsData);
         setHasMore(false);
       };
-      // requestData({
-      //   option: "GET",
-      //   url: `/gyms`,
-      //   hasBody: true,
-      //   onSuccess,
-      // });
+      requestData({
+        option: "GET",
+        url: `/gyms`,
+        hasBody: true,
+        onSuccess,
+      });
     }
-  }, [pathName, searchWord, sortingType]);
+  }, [isSearchPage, searchWord, sortingType]);
 
   // console.log(items);
   const PreviewCards = items.map((gymInfo, index) => {
@@ -99,7 +101,7 @@ const LazyLoadingItems = ({
       //   </p>
       // }
     >
-      {pathName.includes("search") ? PreviewCards : PreviewCards.slice(0, 6)}
+      {isSearchPage ? PreviewCards : PreviewCards.slice(0, 6)}
     </InfiniteScroll>
   );
 };

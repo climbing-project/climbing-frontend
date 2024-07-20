@@ -8,7 +8,6 @@ import { SearchBannerProps } from "@/constants/search/types";
 import { COLOR } from "@/styles/global-color";
 import { DISTRCIT_CITY_DATA } from "@/constants/search/constants";
 import Search from "../common/Search";
-import { RiRouterLine } from "react-icons/ri";
 
 const SearchBanner = ({ searchWord }: SearchBannerProps) => {
   const handleSubmit = (event: {
@@ -16,14 +15,19 @@ const SearchBanner = ({ searchWord }: SearchBannerProps) => {
     target: { [x: string]: { value: any } };
   }) => {
     event.preventDefault();
-    console.log("onSubmit");
+
     // 검색내용 포함시켜 라우팅
-    router
-      .push({
-        pathname: "/search",
-        query: { q: event.target["search"].value },
-      })
-      .then(() => router.reload());
+    router.push({
+      pathname: "/search",
+      query: { q: event.target["search"].value },
+    });
+  };
+
+  const handleIconClick = (event: any) => {
+    event.preventDefault();
+    const formTag = event!.target!.parentElement!;
+    console.log(formTag);
+    formTag.submit();
   };
 
   return (
@@ -35,13 +39,21 @@ const SearchBanner = ({ searchWord }: SearchBannerProps) => {
           dataList={DISTRCIT_CITY_DATA}
           width="450px"
           height="40px"
-          postfixIcon={<IoSearch size="23" color={COLOR.MAIN} />}
+          postfixIcon={
+            <IoSearch
+              size="23"
+              color={COLOR.MAIN}
+              onClick={handleIconClick}
+              style={{ cursor: "pointer" }}
+            />
+          }
           placeholder="주소 또는 암벽장을 입력하세요."
           onSubmit={handleSubmit}
           useLocation={true}
           border={"3px solid " + COLOR.LIGHT_MAIN}
           searchWord={searchWord}
           dropDownCount={5}
+          isSearchPage={false}
         />
       </Styled.SearchContainer>
       <Styled.ImageWrapper>

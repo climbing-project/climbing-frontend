@@ -20,6 +20,7 @@ const Search = ({
   searchWord,
   border,
   dropDownCount = 10,
+  isSearchPage = true,
 }: SearchProps) => {
   const searchRef = useRef<HTMLInputElement>(null);
   const [index, setIndex] = useState(-1);
@@ -33,8 +34,8 @@ const Search = ({
     preventDefault(): unknown;
     target: { innerText: any };
   }) => {
-    // event.preventDefault();
-    console.log("onClick");
+    event.preventDefault();
+
     if (onSubmit) {
       // 검색내용 포함시켜 라우팅
       router
@@ -42,7 +43,9 @@ const Search = ({
           pathname: "/search",
           query: { q: event.target.innerText },
         })
-        .then(() => router.reload());
+        .then(() => {
+          if (isSearchPage) router.reload();
+        });
     }
   };
 
@@ -60,10 +63,6 @@ const Search = ({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [searchRef]);
-
-  useEffect(() => {
-    console.log("search Component");
-  }, []);
 
   return (
     <Styled.Wrapper

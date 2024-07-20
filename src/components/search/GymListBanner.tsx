@@ -1,6 +1,6 @@
 import LazyLoadingItems from "@/components/common/LazyLoadingItems";
 import styled from "styled-components";
-import { MouseEventHandler, useEffect } from "react";
+import { MouseEventHandler } from "react";
 import router from "next/router";
 import { GymListBannerProps } from "@/constants/search/types";
 import { COLOR } from "@/styles/global-color";
@@ -14,48 +14,16 @@ import {
 const GymListBanner = ({
   searchWord,
   sortingType = "",
+  isSearchPage = true,
 }: GymListBannerProps) => {
-  // const sortingTypes = ["이름순", "인기순", "세팅일순", "거리순"];
-  // const sortingTypeToQuery = (type: string) => {
-  //   switch (type) {
-  //     case "이름순":
-  //       return "NAME";
-  //     case "인기순":
-  //       return "POPU";
-  //     case "세팅일순":
-  //       return "LATE";
-  //     case "거리순":
-  //       return "DIST";
-  //     default:
-  //       return "NAME";
-  //   }
-  // };
-
-  // const queryToSortingType = (query: string) => {
-  //   switch (query) {
-  //     case "NAME":
-  //       return "이름순";
-  //     case "POPU":
-  //       return "인기순";
-  //     case "LATE":
-  //       return "세팅일순";
-  //     case "DIST":
-  //       return "거리순";
-  //     default:
-  //       return "이름순";
-  //   }
-  // };
-  const queryType = queryToSortingType(sortingType);
-  useEffect(() => {
-    console.log("gymListBanner Component");
-  }, []);
+  const queryType = isSearchPage ? queryToSortingType(sortingType) : "";
 
   const handleButtonClick: MouseEventHandler<HTMLButtonElement> = (event) => {
     event.preventDefault();
 
     const buttonText = event.currentTarget.textContent!;
     const sortingQuery = sortingTypeToQuery(buttonText);
-    console.log("정렬 버튼 클릭");
+
     // 검색내용 포함시켜 라우팅
     if (searchWord) {
       router
@@ -63,14 +31,18 @@ const GymListBanner = ({
           pathname: "/search",
           query: { q: searchWord, s: sortingQuery },
         })
-        .then(() => router.reload());
+        .then(() => {
+          if (isSearchPage) router.reload();
+        });
     } else {
       router
         .push({
           pathname: "/search",
           query: { s: sortingQuery },
         })
-        .then(() => router.reload());
+        .then(() => {
+          if (isSearchPage) router.reload();
+        });
     }
   };
 
@@ -92,7 +64,11 @@ const GymListBanner = ({
   return (
     <Styled.Wrapper>
       <Styled.ButtonWrapper>{SortingButtons}</Styled.ButtonWrapper>
-      <LazyLoadingItems searchWord={searchWord} sortingType={sortingType} />
+      <LazyLoadingItems
+        searchWord={searchWord}
+        sortingType={sortingType}
+        isSearchPage={isSearchPage}
+      />
     </Styled.Wrapper>
   );
 };

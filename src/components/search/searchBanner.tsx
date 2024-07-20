@@ -23,13 +23,6 @@ const SearchBanner = ({ searchWord }: SearchBannerProps) => {
     });
   };
 
-  const handleIconClick = (event: any) => {
-    event.preventDefault();
-    const formTag = event!.target!.parentElement!;
-    console.log(formTag);
-    formTag.submit();
-  };
-
   return (
     <Styled.Wrapper>
       <Styled.SearchContainer>
@@ -43,8 +36,6 @@ const SearchBanner = ({ searchWord }: SearchBannerProps) => {
             <IoSearch
               size="23"
               color={COLOR.MAIN}
-              onClick={handleIconClick}
-              style={{ cursor: "pointer" }}
             />
           }
           placeholder="주소 또는 암벽장을 입력하세요."

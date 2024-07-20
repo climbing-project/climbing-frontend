@@ -118,7 +118,7 @@ const Search = ({
             }
           }}
         />
-        {postfixIcon}
+        <Styled.IconWrapper>{postfixIcon}</Styled.IconWrapper>
       </Styled.Form>
       {isInputFocus && filteredList.length != 0 && (
         <DropDown
@@ -177,6 +177,15 @@ const Styled = {
     @media ${DEVICE_SIZE.mobileLarge} {
       font-size: 1rem;
     }
+  `,
+  IconWrapper: styled.button`
+    margin: 0;
+    padding: 0;
+    display: flex;
+    border: none;
+    outline: none;
+    background-color: inherit;
+    cursor: pointer;
   `,
 };
 

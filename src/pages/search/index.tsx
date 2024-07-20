@@ -29,13 +29,6 @@ const SearchPage: NextPageWithLayout = () => {
       .then(() => router.reload());
   };
 
-  const handleIconClick = (event: any) => {
-    event.preventDefault();
-
-    const target = event!.target!.parentElement!;
-    target.submit();
-  };
-
   return (
     <Styled.Wrapper>
       <Styled.SearchWrapper>
@@ -43,14 +36,7 @@ const SearchPage: NextPageWithLayout = () => {
           dataList={DISTRCIT_CITY_DATA}
           width="600px"
           height="40px"
-          postfixIcon={
-            <IoSearch
-              size="23"
-              color={COLOR.MAIN}
-              onClick={handleIconClick}
-              style={{ cursor: "pointer" }}
-            />
-          }
+          postfixIcon={<IoSearch size="23" color={COLOR.MAIN} />}
           placeholder="주소 또는 암벽장을 입력하세요."
           onSubmit={handleSubmit}
           useLocation={false}

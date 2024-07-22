@@ -6,6 +6,7 @@ import { styled } from "styled-components";
 import { requestData } from "@/service/api";
 import handleSignOut from "@/service/api/logout";
 import { COLOR } from "@/styles/global-color";
+import sha256 from "crypto-js/sha256";
 
 const ChangePassword = () => {
   const { status, data: session, update } = useSession();
@@ -84,7 +85,10 @@ const ChangePassword = () => {
     requestData({
       option: "PUT",
       url: "/members/update-password",
-      data: { beforePassword: currentPassword, afterPassword: newPassword },
+      data: {
+        beforePassword: sha256(currentPassword).toString(),
+        afterPassword: sha256(newPassword).toString(),
+      },
       session,
       onSuccess,
       hasBody: false,

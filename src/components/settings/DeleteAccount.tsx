@@ -7,6 +7,7 @@ import { IoWarning } from "react-icons/io5";
 import { COLOR } from "@/styles/global-color";
 import { FaCircleCheck } from "react-icons/fa6";
 import handleSignOut from "@/service/api/logout";
+import sha256 from "crypto-js/sha256";
 
 const DeleteAccount = () => {
   const { data: session, status, update } = useSession();
@@ -44,7 +45,7 @@ const DeleteAccount = () => {
       url: "/members",
       session,
       data: {
-        checkPassword: password,
+        checkPassword: sha256(password).toString(),
       },
       onSuccess,
       onError,
